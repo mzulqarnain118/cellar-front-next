@@ -1,4 +1,16 @@
 {
-  "typescript.tsdk": "node_modules/typescript/lib",
-  "typescript.enablePromptUseWorkspaceTsdk": true
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true,
+    "source.organizeImports": true
+  },
+  "files.associations": {
+    "*.env.development": "env",
+    "*.env.production": "env",
+    "*.env.development.local": "env",
+    "*.env.production.local": "env",
+    "*.env.template": "env",
+    ".env.local": "env"
+  }
 }

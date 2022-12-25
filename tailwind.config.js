@@ -1,6 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./app/**/*.{ts,tsx}', './pages/**/*.{ts,tsx}', './src/components/**/*.{ts,tsx}'],
+  content: [
+    './pages/**/*.{ts,tsx}',
+    './src/components/**/*.{ts,tsx}',
+    './src/core/components/**/*.{ts,tsx}',
+  ],
   plugins: [],
   theme: {
     colors: {
@@ -8,7 +12,7 @@ module.exports = {
       input: '#E2E2E2',
       neutral: {
         50: '#F4F4F4',
-        100: '#D3D3D2',
+        100: '#e6e6e6',
         200: '#A6A7A6',
         300: '#7A7C79',
         400: '#4E504D',
@@ -52,6 +56,11 @@ module.exports = {
         900: '#120E0B',
       },
     },
+    container: {
+      padding: {
+        DEFAULT: '1rem',
+      },
+    },
     extend: {
       fontSize: {
         base: '1rem',
@@ -65,10 +74,13 @@ module.exports = {
         sm: '0.75rem',
         xs: '0.625rem',
       },
+      transitionDuration: {
+        DEFAULT: '300ms',
+      },
     },
     fontFamily: {
-      body: ['var(--font-inter)', 'ui-sans-serif'],
-      heading: ['var(--font-montserrat)', 'ui-sans-serif'],
+      body: ['var(--font-inter)', 'ui-sans-serif', 'sans-serif'],
+      heading: ['var(--font-montserrat)', 'ui-sans-serif', 'sans-serif'],
     },
   },
 }

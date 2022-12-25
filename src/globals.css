@@ -1,11 +1,14 @@
 @tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 @layer base {
   * {
     @apply font-body;
-    /* line-height: 120%; */
+  }
+
+  body {
+    @apply bg-neutral-50;
+    @apply h-full;
+    @apply text-neutral-400;
   }
 
   h1,
@@ -53,3 +56,6 @@
     @apply text-h6;
   }
 }
+
+@tailwind components;
+@tailwind utilities;

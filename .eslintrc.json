@@ -5,9 +5,11 @@
     "plugin:react/recommended",
     "plugin:react/jsx-runtime",
     "plugin:react-hooks/recommended",
+    "plugin:jsx-a11y/recommended",
     "next/core-web-vitals",
     "prettier"
   ],
+  "ignorePatterns": ["types.generated.ts"],
   "overrides": [
     {
       "env": {
@@ -58,6 +60,33 @@
           { "group": "external", "pattern": "react", "position": "before" }
         ],
         "pathGroupsExcludedImportTypes": ["react"]
+      }
+    ],
+    "import/no-restricted-paths": [
+      "error",
+      {
+        "zones": [
+          {
+            "target": "./src/core",
+            "from": "./src/components"
+          },
+          {
+            "target": "./src/core",
+            "from": "./src/lib"
+          },
+          {
+            "target": "./src/core",
+            "from": "./src/pages"
+          },
+          {
+            "target": "./src/lib",
+            "from": "./src/pages"
+          },
+          {
+            "target": "./src/components",
+            "from": "./src/pages"
+          }
+        ]
       }
     ],
     "no-empty-function": "error",

@@ -1,0 +1,15 @@
+export const NOT_ALLOWED_STATES = [
+  'AE',
+  'AP',
+  'AA',
+  'APO AE',
+  'APO AP',
+  'APO AA',
+  'AMERICAN SAMOA',
+  'NORTHERN MARIANA ISLANDS',
+  'GUAM',
+  'PUERTO RICO',
+  'VIRGIN ISLANDS',
+]
+
+export const CORPORATE_CONSULTANT_ID = '1001'
