@@ -24,25 +24,25 @@ export const DesktopMenu = ({ className }: DesktopMenuProps) => (
       </Link>
       <div className="flex w-full items-center justify-evenly font-bold">
         <Link
-          className="block rounded py-2 px-3 transition hover:bg-neutral-100"
+          className="block rounded-lg py-2 px-3 transition hover:bg-neutral-100"
           href={WINE_PAGE_PATH}
         >
           Wine
         </Link>
         <Link
-          className="block rounded py-2 px-3 transition hover:bg-neutral-100"
+          className="block rounded-lg py-2 px-3 transition hover:bg-neutral-100"
           href={COFFEE_PAGE_PATH}
         >
           Coffee
         </Link>
         <Link
-          className="block rounded py-2 px-3 transition hover:bg-neutral-100"
+          className="block rounded-lg py-2 px-3 transition hover:bg-neutral-100"
           href={CLUBS_PAGE_PATH}
         >
           Clubs
         </Link>
         <Link
-          className="block rounded py-2 px-3 transition hover:bg-neutral-100"
+          className="block rounded-lg py-2 px-3 transition hover:bg-neutral-100"
           href={MERCH_PAGE_PATH}
         >
           Merch

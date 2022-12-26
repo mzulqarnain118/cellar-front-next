@@ -1,8 +1,4 @@
-import {
-  ClientConfig,
-  createClient as createPrismicClient,
-  getRepositoryName,
-} from '@prismicio/client'
+import { ClientConfig, createClient, getRepositoryName } from '@prismicio/client'
 import { CreateClientConfig, enableAutoPreviews } from '@prismicio/next'
 
 import sm from './sm.json'
@@ -26,8 +22,8 @@ const routes: ClientConfig['routes'] = [
  *
  * @param config {prismicNext.CreateClientConfig} - Configuration for the Prismic client.
  */
-export const createClient = (config: CreateClientConfig = {}) => {
-  const client = createPrismicClient(sm.apiEndpoint, {
+export const createLocalClient = (config: CreateClientConfig = {}) => {
+  const client = createClient(sm.apiEndpoint, {
     defaultParams: {
       lang: process.env.NEXT_PUBLIC_PRISMIC_LANGUAGE,
     },
@@ -43,3 +39,5 @@ export const createClient = (config: CreateClientConfig = {}) => {
 
   return client
 }
+
+export { createLocalClient as createClient }

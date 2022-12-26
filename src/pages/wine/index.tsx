@@ -1,9 +1,9 @@
 import { NextPage } from 'next'
 
-const Home: NextPage = () => (
+const WinePage: NextPage = () => (
   <>
-    <main>Wine</main>
+    <main></main>
   </>
 )
 
-export default Home
+export default WinePage

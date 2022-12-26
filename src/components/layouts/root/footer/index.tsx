@@ -4,11 +4,7 @@ import { CompanyLogo } from '@/components/company-logo'
 
 export const Footer = () => (
   // ! TODO: Fetch data from Prismic
-  <footer
-    className={`
-      w-full border-t-2 border-neutral-100 bg-neutral-50 py-6 md:fixed md:bottom-0
-    `}
-  >
+  <footer className="w-full border-t-2 border-neutral-100 bg-neutral-50 py-6">
     <div className="container mx-auto space-y-10">
       <div
         className={`

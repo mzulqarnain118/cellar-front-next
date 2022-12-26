@@ -1,7 +1,9 @@
+const { fontFamily } = require('tailwindcss/defaultTheme')
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    './pages/**/*.{ts,tsx}',
+    './src/pages/**/*.{ts,tsx}',
     './src/components/**/*.{ts,tsx}',
     './src/core/components/**/*.{ts,tsx}',
   ],
@@ -79,8 +81,8 @@ module.exports = {
       },
     },
     fontFamily: {
-      body: ['var(--font-inter)', 'ui-sans-serif', 'sans-serif'],
-      heading: ['var(--font-montserrat)', 'ui-sans-serif', 'sans-serif'],
+      body: ['var(--font-inter)', ...fontFamily.sans],
+      heading: ['var(--font-montserrat)', ...fontFamily.sans],
     },
   },
 }

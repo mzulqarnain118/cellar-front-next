@@ -6,8 +6,12129 @@ import type * as prismic from '@prismicio/client'
 type Simplify<T> = {
   [KeyType in keyof T]: T[KeyType]
 }
+/** Content for 404_page documents */
+interface _404PageDocumentData {
+  /**
+   * Title field in *404_page*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: 404_page.title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.TitleField
+  /**
+   * Message field in *404_page*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: 404_page.message
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  message: prismicT.RichTextField
+}
+/**
+ * 404_page document from Prismic
+ *
+ * - **API ID**: `404_page`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type _404PageDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithUID<Simplify<_404PageDocumentData>, '404_page', Lang>
+/** Content for age_popup documents */
+interface AgePopupDocumentData {
+  /**
+   * title field in *age_popup*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: age_popup.title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.TitleField
+  /**
+   * description field in *age_popup*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: age_popup.description
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  description: prismicT.RichTextField
+  /**
+   * option text field in *age_popup*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: age_popup.option_text
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  option_text: prismicT.RichTextField
+  /**
+   * state select text field in *age_popup*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: age_popup.state_select_text
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  state_select_text: prismicT.RichTextField
+  /**
+   * button text field in *age_popup*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: age_popup.button_text
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  button_text: prismicT.KeyTextField
+  /**
+   * cookies description field in *age_popup*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: age_popup.cookies_description
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  cookies_description: prismicT.RichTextField
+}
+/**
+ * age_popup document from Prismic
+ *
+ * - **API ID**: `age_popup`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type AgePopupDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithUID<Simplify<AgePopupDocumentData>, 'age_popup', Lang>
+/** Content for Aparna Test documents */
+type AparnaTestDocumentData = Record<string, never>
+/**
+ * Aparna Test document from Prismic
+ *
+ * - **API ID**: `aparna_test`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type AparnaTestDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<Simplify<AparnaTestDocumentData>, 'aparna_test', Lang>
+/** Content for become_consultant_agreement documents */
+interface BecomeConsultantAgreementDocumentData {
+  /**
+   * title field in *become_consultant_agreement*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: become_consultant_agreement.title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.TitleField
+  /**
+   * Slice zone field in *become_consultant_agreement*
+   *
+   * - **Field Type**: Slice Zone
+   * - **Placeholder**: *None*
+   * - **API ID Path**: become_consultant_agreement.body[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/slices
+   *
+   */
+  body: prismicT.SliceZone<BecomeConsultantAgreementDocumentDataBodySlice>
+}
+/**
+ * Primary content in become_consultant_agreement → Slice zone → `agreement` → Primary
+ *
+ */
+interface BecomeConsultantAgreementDocumentDataBodyAgreementSlicePrimary {
+  /**
+   * rich text field in *become_consultant_agreement → Slice zone → `agreement` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: become_consultant_agreement.body[].agreement.primary.rich_text
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  rich_text: prismicT.RichTextField
+}
+export type BecomeConsultantAgreementDocumentDataBodyAgreementSlice = prismicT.Slice<
+  'agreement',
+  Simplify<BecomeConsultantAgreementDocumentDataBodyAgreementSlicePrimary>,
+  never
+>
+/**
+ * Item in become_consultant_agreement → Slice zone → `list` → Items
+ *
+ */
+export interface BecomeConsultantAgreementDocumentDataBodyListSliceItem {
+  /**
+   * level field in *become_consultant_agreement → Slice zone → `list` → Items*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **Default Value**: level_1
+   * - **API ID Path**: become_consultant_agreement.body[].list.items[].level
+   * - **Documentation**: https://prismic.io/docs/core-concepts/select
+   *
+   */
+  level: prismicT.SelectField<'level_1' | 'level_2' | 'level_3' | 'level_4', 'filled'>
+  /**
+   * item field in *become_consultant_agreement → Slice zone → `list` → Items*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: become_consultant_agreement.body[].list.items[].item
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  item: prismicT.RichTextField
+}
+export type BecomeConsultantAgreementDocumentDataBodyListSlice = prismicT.Slice<
+  'list',
+  Record<string, never>,
+  Simplify<BecomeConsultantAgreementDocumentDataBodyListSliceItem>
+>
+/**
+ * Slice for *become_consultant_agreement → Slice zone*
+ *
+ */
+type BecomeConsultantAgreementDocumentDataBodySlice =
+  | BecomeConsultantAgreementDocumentDataBodyAgreementSlice
+  | BecomeConsultantAgreementDocumentDataBodyListSlice
+/**
+ * become_consultant_agreement document from Prismic
+ *
+ * - **API ID**: `become_consultant_agreement`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type BecomeConsultantAgreementDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<
+    Simplify<BecomeConsultantAgreementDocumentData>,
+    'become_consultant_agreement',
+    Lang
+  >
+/** Content for become consultant page documents */
+interface BecomeConsultantDocumentData {
+  /**
+   * top hero field in *become consultant page*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: become-consultant.top_hero
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  top_hero: prismicT.RelationField<'marketing_section'>
+  /**
+   * arc hero field in *become consultant page*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: become-consultant.arc_hero
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  arc_hero: prismicT.RelationField<'marketing_section'>
+  /**
+   * middle section field in *become consultant page*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: become-consultant.middle_section
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  middle_section: prismicT.RelationField<'marketing_section'>
+  /**
+   * stories field in *become consultant page*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: become-consultant.stories
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  stories: prismicT.RelationField<'quotes'>
+}
+/**
+ * become consultant page document from Prismic
+ *
+ * - **API ID**: `become-consultant`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type BecomeConsultantDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithUID<Simplify<BecomeConsultantDocumentData>, 'become-consultant', Lang>
+/** Content for bottle_collections documents */
+interface BottleCollectionsDocumentData {
+  /**
+   * collection name field in *bottle_collections*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: bottle_collections.name
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  name: prismicT.TitleField
+  /**
+   * collection description field in *bottle_collections*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: bottle_collections.description
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  description: prismicT.RichTextField
+  /**
+   * products field in *bottle_collections*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: bottle_collections.products[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  products: prismicT.GroupField<Simplify<BottleCollectionsDocumentDataProductsItem>>
+}
+/**
+ * Item in bottle_collections → products
+ *
+ */
+export interface BottleCollectionsDocumentDataProductsItem {
+  /**
+   * SKU field in *bottle_collections → products*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: bottle_collections.products[].sku
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  sku: prismicT.KeyTextField
+}
+/**
+ * bottle_collections document from Prismic
+ *
+ * - **API ID**: `bottle_collections`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type BottleCollectionsDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithUID<
+    Simplify<BottleCollectionsDocumentData>,
+    'bottle_collections',
+    Lang
+  >
+/** Content for Brand documents */
+interface BrandDocumentData {
+  /**
+   * image field in *Brand*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand.image
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  image: prismicT.ImageField<never>
+}
+/**
+ * Brand document from Prismic
+ *
+ * - **API ID**: `brand`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type BrandDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithUID<Simplify<BrandDocumentData>, 'brand', Lang>
+/** Content for brand_details documents */
+interface BrandDetailsDocumentData {
+  /**
+   * Brand_highlight_color field in *brand_details*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand-details.brand_highlight_color
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  brand_highlight_color: prismicT.ColorField
+  /**
+   * URL field in *brand_details*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand-details.url
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  url: prismicT.RichTextField
+  /**
+   * Brand_Background_Image field in *brand_details*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand-details.brand_background_image
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  brand_background_image: prismicT.ImageField<never>
+  /**
+   * Brand_Logo_Image field in *brand_details*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand-details.brand_logo_image
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  brand_logo_image: prismicT.ImageField<never>
+  /**
+   * brand_title_white field in *brand_details*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: brand-details.brand_title_white
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  brand_title_white: prismicT.BooleanField
+  /**
+   * Brand_title field in *brand_details*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand-details.brand_title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  brand_title: prismicT.RichTextField
+  /**
+   * Brand_Subtitle field in *brand_details*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand-details.brand_subtitle
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  brand_subtitle: prismicT.RichTextField
+  /**
+   * Brand_Flavor_Profile_Background field in *brand_details*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand-details.brand_flavor_profile_background
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  brand_flavor_profile_background: prismicT.ImageField<never>
+  /**
+   * Brand_Flavor_Profile field in *brand_details*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand-details.brand_flavor_profile
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  brand_flavor_profile: prismicT.TitleField
+  /**
+   * Flavor_Profiles field in *brand_details*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand-details.flavor_profiles[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  flavor_profiles: prismicT.GroupField<Simplify<BrandDetailsDocumentDataFlavorProfilesItem>>
+  /**
+   * Brand_Story_Background field in *brand_details*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand-details.brand_story_background
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  brand_story_background: prismicT.ImageField<never>
+  /**
+   * Brand_Story_Side_Image field in *brand_details*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand-details.brand_story_side_image
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  brand_story_side_image: prismicT.ImageField<never>
+  /**
+   * brand_story_white field in *brand_details*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: brand-details.brand_story_white
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  brand_story_white: prismicT.BooleanField
+  /**
+   * Brand_Story_Title field in *brand_details*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand-details.brand_story_title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  brand_story_title: prismicT.TitleField
+  /**
+   * Brand_Story_Text field in *brand_details*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand-details.brand_story_text
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  brand_story_text: prismicT.RichTextField
+  /**
+   * Our_Products_Background field in *brand_details*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand-details.our_products_background
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  our_products_background: prismicT.ImageField<never>
+  /**
+   * Products field in *brand_details*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand-details.products
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  products: prismicT.TitleField
+  /**
+   * Brand_Products field in *brand_details*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand-details.brand_products[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  brand_products: prismicT.GroupField<Simplify<BrandDetailsDocumentDataBrandProductsItem>>
+  /**
+   * Brand_Media_Title field in *brand_details*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand-details.brand_media_title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  brand_media_title: prismicT.TitleField
+  /**
+   * Brand_Media_Group field in *brand_details*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand-details.brand_media_group[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  brand_media_group: prismicT.GroupField<Simplify<BrandDetailsDocumentDataBrandMediaGroupItem>>
+  /**
+   * Brand_Content_Title field in *brand_details*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand-details.brand_content_title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  brand_content_title: prismicT.TitleField
+  /**
+   * Brand_content_Images field in *brand_details*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand-details.brand_content_images[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  brand_content_images: prismicT.GroupField<
+    Simplify<BrandDetailsDocumentDataBrandContentImagesItem>
+  >
+  /**
+   * Brand_Social_Title field in *brand_details*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand-details.brand_social_title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  brand_social_title: prismicT.RichTextField
+  /**
+   * Brand_Social field in *brand_details*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand-details.brand_social[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  brand_social: prismicT.GroupField<Simplify<BrandDetailsDocumentDataBrandSocialItem>>
+}
+/**
+ * Item in brand_details → Flavor_Profiles
+ *
+ */
+export interface BrandDetailsDocumentDataFlavorProfilesItem {
+  /**
+   * Profile field in *brand_details → Flavor_Profiles*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand-details.flavor_profiles[].profile
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  profile: prismicT.RichTextField
+}
+/**
+ * Item in brand_details → Brand_Products
+ *
+ */
+export interface BrandDetailsDocumentDataBrandProductsItem {
+  /**
+   * SKU field in *brand_details → Brand_Products*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand-details.brand_products[].sku
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  sku: prismicT.LinkField
+}
+/**
+ * Item in brand_details → Brand_Media_Group
+ *
+ */
+export interface BrandDetailsDocumentDataBrandMediaGroupItem {
+  /**
+   * Brand_Story_Media field in *brand_details → Brand_Media_Group*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand-details.brand_media_group[].brand_story_media
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  brand_story_media: prismicT.LinkField
+}
+/**
+ * Item in brand_details → Brand_content_Images
+ *
+ */
+export interface BrandDetailsDocumentDataBrandContentImagesItem {
+  /**
+   * brand_content_images field in *brand_details → Brand_content_Images*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand-details.brand_content_images[].brand_content_images
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  brand_content_images: prismicT.ImageField<never>
+  /**
+   * Brand_content_link field in *brand_details → Brand_content_Images*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand-details.brand_content_images[].brand_content_link
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  brand_content_link: prismicT.LinkField
+  /**
+   * Brand_content_text field in *brand_details → Brand_content_Images*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand-details.brand_content_images[].brand_content_text
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  brand_content_text: prismicT.TitleField
+  /**
+   * Content_image_alt_text field in *brand_details → Brand_content_Images*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand-details.brand_content_images[].content_image_alt_text
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  content_image_alt_text: prismicT.RichTextField
+}
+/**
+ * Item in brand_details → Brand_Social
+ *
+ */
+export interface BrandDetailsDocumentDataBrandSocialItem {
+  /**
+   * Brand_Social_image field in *brand_details → Brand_Social*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand-details.brand_social[].brand_social_image
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  brand_social_image: prismicT.ImageField<never>
+  /**
+   * brand_social_link field in *brand_details → Brand_Social*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand-details.brand_social[].brand_social_link
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  brand_social_link: prismicT.LinkField
+  /**
+   * image_alt_text field in *brand_details → Brand_Social*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand-details.brand_social[].image_alt_text
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  image_alt_text: prismicT.RichTextField
+}
+/**
+ * brand_details document from Prismic
+ *
+ * - **API ID**: `brand-details`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type BrandDetailsDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithUID<Simplify<BrandDetailsDocumentData>, 'brand-details', Lang>
+/** Content for brand_landing_template documents */
+interface BrandLandingTempDocumentData {
+  /**
+   * URL field in *brand_landing_template*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand-landing-temp.url
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  url: prismicT.RichTextField
+  /**
+   * Brand_Title field in *brand_landing_template*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand-landing-temp.brand_title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  brand_title: prismicT.TitleField
+  /**
+   * Brand_Subtitle field in *brand_landing_template*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand-landing-temp.brand_subtitle
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  brand_subtitle: prismicT.RichTextField
+  /**
+   * Brand_Background_Image field in *brand_landing_template*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand-landing-temp.brand_background_image
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  brand_background_image: prismicT.ImageField<never>
+  /**
+   * Brands field in *brand_landing_template*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand-landing-temp.brands[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  brands: prismicT.GroupField<Simplify<BrandLandingTempDocumentDataBrandsItem>>
+}
+/**
+ * Item in brand_landing_template → Brands
+ *
+ */
+export interface BrandLandingTempDocumentDataBrandsItem {
+  /**
+   * Brand_Image field in *brand_landing_template → Brands*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand-landing-temp.brands[].brand_image
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  brand_image: prismicT.ImageField<never>
+  /**
+   * Brand field in *brand_landing_template → Brands*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand-landing-temp.brands[].brand
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  brand: prismicT.TitleField
+  /**
+   * Brand_Link field in *brand_landing_template → Brands*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand-landing-temp.brands[].brand_link
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  brand_link: prismicT.LinkField
+  /**
+   * Image_Alt_Text field in *brand_landing_template → Brands*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand-landing-temp.brands[].image_alt_text
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  image_alt_text: prismicT.RichTextField
+  /**
+   * Link field in *brand_landing_template → Brands*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Enter link if no brand link is linked
+   * - **API ID Path**: brand-landing-temp.brands[].link
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  link: prismicT.RichTextField
+  /**
+   * Open Link in New Tab field in *brand_landing_template → Brands*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: brand-landing-temp.brands[].open_link_in_new_tab
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  open_link_in_new_tab: prismicT.BooleanField
+}
+/**
+ * brand_landing_template document from Prismic
+ *
+ * - **API ID**: `brand-landing-temp`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type BrandLandingTempDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithUID<
+    Simplify<BrandLandingTempDocumentData>,
+    'brand-landing-temp',
+    Lang
+  >
+/** Content for Button documents */
+interface ButDocumentData {
+  /**
+   * Button Key field in *Button*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Button Key
+   * - **API ID Path**: but.button_key
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  button_key: prismicT.KeyTextField
+  /**
+   * Link field in *Button*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: but.link
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  link: prismicT.KeyTextField
+  /**
+   * Button Text field in *Button*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: Button Text
+   * - **API ID Path**: but.button_text
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  button_text: prismicT.TitleField
+}
+/**
+ * Button document from Prismic
+ *
+ * - **API ID**: `but`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type ButDocument<Lang extends string = 'en-us' | 'en-bz'> = prismicT.PrismicDocumentWithUID<
+  Simplify<ButDocumentData>,
+  'but',
+  Lang
+>
+/** Content for Carousel documents */
+interface CarouselDocumentData {
+  /**
+   * Slides field in *Carousel*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: carousel.slides[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  slides: prismicT.GroupField<Simplify<CarouselDocumentDataSlidesItem>>
+}
+/**
+ * Item in Carousel → Slides
+ *
+ */
+export interface CarouselDocumentDataSlidesItem {
+  /**
+   * Image field in *Carousel → Slides*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: carousel.slides[].image
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  image: prismicT.ImageField<never>
+  /**
+   * Title field in *Carousel → Slides*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: carousel.slides[].title
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.TitleField
+  /**
+   * Subtitle field in *Carousel → Slides*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: carousel.slides[].subtitle
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  subtitle: prismicT.RichTextField
+  /**
+   * Button Text field in *Carousel → Slides*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: carousel.slides[].button_text
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  button_text: prismicT.RichTextField
+  /**
+   * Button Link field in *Carousel → Slides*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: carousel.slides[].button_link
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  button_link: prismicT.RichTextField
+}
+/**
+ * Carousel document from Prismic
+ *
+ * - **API ID**: `carousel`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type CarouselDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<Simplify<CarouselDocumentData>, 'carousel', Lang>
+/** Content for cart_promo_msgs documents */
+interface CartPromoMsgsDocumentData {
+  /**
+   * promos field in *cart_promo_msgs*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: cart_promo_msgs.promos[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  promos: prismicT.GroupField<Simplify<CartPromoMsgsDocumentDataPromosItem>>
+}
+/**
+ * Item in cart_promo_msgs → promos
+ *
+ */
+export interface CartPromoMsgsDocumentDataPromosItem {
+  /**
+   * type field in *cart_promo_msgs → promos*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **API ID Path**: cart_promo_msgs.promos[].type
+   * - **Documentation**: https://prismic.io/docs/core-concepts/select
+   *
+   */
+  type: prismicT.SelectField<'simple'>
+  /**
+   * msg field in *cart_promo_msgs → promos*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: cart_promo_msgs.promos[].msg
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  msg: prismicT.RichTextField
+  /**
+   * isSticky field in *cart_promo_msgs → promos*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: cart_promo_msgs.promos[].issticky
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  issticky: prismicT.BooleanField
+}
+/**
+ * cart_promo_msgs document from Prismic
+ *
+ * - **API ID**: `cart_promo_msgs`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type CartPromoMsgsDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithUID<Simplify<CartPromoMsgsDocumentData>, 'cart_promo_msgs', Lang>
+/** Content for Categories documents */
+interface CategoriesDocumentData {
+  /**
+   * Categories field in *Categories*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: categories.categories
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  categories: prismicT.TitleField
+  /**
+   * Product field in *Categories*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: categories.product[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  product: prismicT.GroupField<Simplify<CategoriesDocumentDataProductItem>>
+}
+/**
+ * Item in Categories → Product
+ *
+ */
+export interface CategoriesDocumentDataProductItem {
+  /**
+   * ROSE field in *Categories → Product*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: categories.product[].rose
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  rose: prismicT.LinkField
+}
+/**
+ * Categories document from Prismic
+ *
+ * - **API ID**: `categories`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type CategoriesDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<Simplify<CategoriesDocumentData>, 'categories', Lang>
+/** Content for checkout_popup documents */
+interface CheckoutPopupDocumentData {
+  /**
+   * Title field in *checkout_popup*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: checkout_popup.title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.TitleField
+  /**
+   * description field in *checkout_popup*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: checkout_popup.description
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  description: prismicT.RichTextField
+  /**
+   * Visibility field in *checkout_popup*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: true
+   * - **API ID Path**: checkout_popup.visibility
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  visibility: prismicT.BooleanField
+}
+/**
+ * checkout_popup document from Prismic
+ *
+ * - **API ID**: `checkout_popup`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type CheckoutPopupDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<Simplify<CheckoutPopupDocumentData>, 'checkout_popup', Lang>
+/** Content for clean_crafted_page documents */
+interface CleanCraftedPageDocumentData {
+  /**
+   * Title field in *clean_crafted_page*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: clean_crafted_page.title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.TitleField
+  /**
+   * Header image field in *clean_crafted_page*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: clean_crafted_page.header_image
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  header_image: prismicT.ImageField<never>
+  /**
+   * Top Section field in *clean_crafted_page*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: clean_crafted_page.top_section
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  top_section: prismicT.RelationField<'marketing_section'>
+  /**
+   * Mid Section field in *clean_crafted_page*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: clean_crafted_page.mid_section
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  mid_section: prismicT.RelationField<'marketing_section'>
+  /**
+   * Bottom Section field in *clean_crafted_page*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: clean_crafted_page.bottom_section
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  bottom_section: prismicT.RelationField<'marketing_section'>
+}
+/**
+ * clean_crafted_page document from Prismic
+ *
+ * - **API ID**: `clean_crafted_page`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type CleanCraftedPageDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithUID<
+    Simplify<CleanCraftedPageDocumentData>,
+    'clean_crafted_page',
+    Lang
+  >
+/** Content for consultant_search_page documents */
+interface ConsultantSearchPageDocumentData {
+  /**
+   * title field in *consultant_search_page*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: consultant_search_page.title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.TitleField
+  /**
+   * instructions field in *consultant_search_page*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: consultant_search_page.instructions
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  instructions: prismicT.RichTextField
+  /**
+   * widget name field in *consultant_search_page*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: consultant_search_page.widget_name
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  widget_name: prismicT.TitleField
+  /**
+   * Zero result description field in *consultant_search_page*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: consultant_search_page.zero_result_description
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  zero_result_description: prismicT.RichTextField
+}
+/**
+ * consultant_search_page document from Prismic
+ *
+ * - **API ID**: `consultant_search_page`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type ConsultantSearchPageDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithUID<
+    Simplify<ConsultantSearchPageDocumentData>,
+    'consultant_search_page',
+    Lang
+  >
+/** Content for consultant-portal-announcement documents */
+interface ConsultantPortalAnnouncemenDocumentData {
+  /**
+   * title field in *consultant-portal-announcement*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: consultant-portal-announcemen.title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.TitleField
+  /**
+   * description field in *consultant-portal-announcement*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: consultant-portal-announcemen.description
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  description: prismicT.RichTextField
+  /**
+   * start date field in *consultant-portal-announcement*
+   *
+   * - **Field Type**: Date
+   * - **Placeholder**: *None*
+   * - **API ID Path**: consultant-portal-announcemen.start_date
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/date
+   *
+   */
+  start_date: prismicT.DateField
+  /**
+   * finish date field in *consultant-portal-announcement*
+   *
+   * - **Field Type**: Date
+   * - **Placeholder**: *None*
+   * - **API ID Path**: consultant-portal-announcemen.finish_date
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/date
+   *
+   */
+  finish_date: prismicT.DateField
+  /**
+   * is_sticky field in *consultant-portal-announcement*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: consultant-portal-announcemen.is_sticky
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  is_sticky: prismicT.BooleanField
+  /**
+   * type field in *consultant-portal-announcement*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **API ID Path**: consultant-portal-announcemen.type
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/select
+   *
+   */
+  type: prismicT.SelectField<'text' | 'image' | 'text & image'>
+  /**
+   * image field in *consultant-portal-announcement*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: consultant-portal-announcemen.image
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  image: prismicT.ImageField<never>
+  /**
+   * link to a content field in *consultant-portal-announcement*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: consultant-portal-announcemen.link_to_a_content
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  link_to_a_content: prismicT.LinkField
+}
+/**
+ * consultant-portal-announcement document from Prismic
+ *
+ * - **API ID**: `consultant-portal-announcemen`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type ConsultantPortalAnnouncemenDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<
+    Simplify<ConsultantPortalAnnouncemenDocumentData>,
+    'consultant-portal-announcemen',
+    Lang
+  >
+/** Content for consultant-portal-header-image documents */
+interface ConsultantPortalHeaderImageDocumentData {
+  /**
+   * title field in *consultant-portal-header-image*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: consultant-portal-header-image.title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.TitleField
+  /**
+   * display on all pages field in *consultant-portal-header-image*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: consultant-portal-header-image.display_on_all_pages
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  display_on_all_pages: prismicT.BooleanField
+  /**
+   * Header image field in *consultant-portal-header-image*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: consultant-portal-header-image.header_image
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  header_image: prismicT.ImageField<never>
+  /**
+   * button link field in *consultant-portal-header-image*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: consultant-portal-header-image.button_link
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  button_link: prismicT.LinkField
+}
+/**
+ * consultant-portal-header-image document from Prismic
+ *
+ * - **API ID**: `consultant-portal-header-image`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type ConsultantPortalHeaderImageDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<
+    Simplify<ConsultantPortalHeaderImageDocumentData>,
+    'consultant-portal-header-image',
+    Lang
+  >
+/** Content for Content Hero documents */
+interface ContentHeroDocumentData {
+  /**
+   * Hero Title field in *Content Hero*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: Hero Title
+   * - **API ID Path**: content_hero.hero_title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  hero_title: prismicT.TitleField
+  /**
+   * Hero Description field in *Content Hero*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Hero Description
+   * - **API ID Path**: content_hero.hero_description
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  hero_description: prismicT.RichTextField
+  /**
+   * Hero Image field in *Content Hero*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: Hero Image
+   * - **API ID Path**: content_hero.hero_image
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  hero_image: prismicT.RelationField<'image'>
+  /**
+   * Primary Button field in *Content Hero*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: Primary Button
+   * - **API ID Path**: content_hero.primary_button
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  primary_button: prismicT.RelationField<'but'>
+  /**
+   * Secondary Button field in *Content Hero*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: Secondary Button
+   * - **API ID Path**: content_hero.secondary_button
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  secondary_button: prismicT.RelationField<'but'>
+}
+/**
+ * Content Hero document from Prismic
+ *
+ * - **API ID**: `content_hero`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type ContentHeroDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<Simplify<ContentHeroDocumentData>, 'content_hero', Lang>
+/** Content for Content Page documents */
+interface ContentPageDocumentData {
+  /**
+   * url field in *Content Page*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: content_page.url
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  url: prismicT.KeyTextField
+  /**
+   * title field in *Content Page*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: content_page.title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.TitleField
+  /**
+   * description field in *Content Page*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: content_page.description
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  description: prismicT.RichTextField
+  /**
+   * header img field in *Content Page*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: content_page.header_img
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  header_img: prismicT.ImageField<never>
+  /**
+   * body field in *Content Page*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: content_page.body
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  body: prismicT.RichTextField
+}
+/**
+ * Content Page document from Prismic
+ *
+ * - **API ID**: `content_page`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type ContentPageDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithUID<Simplify<ContentPageDocumentData>, 'content_page', Lang>
+/** Content for CTA documents */
+interface CtaDocumentData {
+  /**
+   * data field in *CTA*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: cta.data[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  data: prismicT.GroupField<Simplify<CtaDocumentDataDataItem>>
+}
+/**
+ * Item in CTA → data
+ *
+ */
+export interface CtaDocumentDataDataItem {
+  /**
+   * Text field in *CTA → data*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: cta.data[].text
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  text: prismicT.KeyTextField
+  /**
+   * Url field in *CTA → data*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: cta.data[].url
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  url: prismicT.KeyTextField
+  /**
+   * type field in *CTA → data*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **API ID Path**: cta.data[].type
+   * - **Documentation**: https://prismic.io/docs/core-concepts/select
+   *
+   */
+  type: prismicT.SelectField<'link' | 'button'>
+}
+/**
+ * CTA document from Prismic
+ *
+ * - **API ID**: `cta`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type CtaDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<Simplify<CtaDocumentData>, 'cta', Lang>
+/** Content for custom nav documents */
+interface CustomNavDocumentData {
+  /**
+   * navs field in *custom nav*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: custom_nav.navs[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  navs: prismicT.GroupField<Simplify<CustomNavDocumentDataNavsItem>>
+}
+/**
+ * Item in custom nav → navs
+ *
+ */
+export interface CustomNavDocumentDataNavsItem {
+  /**
+   * name field in *custom nav → navs*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: custom_nav.navs[].name
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  name: prismicT.KeyTextField
+  /**
+   * url field in *custom nav → navs*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: custom_nav.navs[].url
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  url: prismicT.KeyTextField
+  /**
+   * children field in *custom nav → navs*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: custom_nav.navs[].children
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  children: prismicT.RelationField<'custom_nav'>
+}
+/**
+ * custom nav document from Prismic
+ *
+ * - **API ID**: `custom_nav`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type CustomNavDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithUID<Simplify<CustomNavDocumentData>, 'custom_nav', Lang>
+/** Content for customer-portal-header-image documents */
+interface CustomerPortalHeaderImageDocumentData {
+  /**
+   * title field in *customer-portal-header-image*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: customer-portal-header-image.title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.TitleField
+  /**
+   * display on all pages field in *customer-portal-header-image*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: customer-portal-header-image.display_on_all_pages
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  display_on_all_pages: prismicT.BooleanField
+  /**
+   * Header image field in *customer-portal-header-image*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: customer-portal-header-image.header_image
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  header_image: prismicT.ImageField<never>
+  /**
+   * button link field in *customer-portal-header-image*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: customer-portal-header-image.button_link
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  button_link: prismicT.LinkField
+}
+/**
+ * customer-portal-header-image document from Prismic
+ *
+ * - **API ID**: `customer-portal-header-image`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type CustomerPortalHeaderImageDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<
+    Simplify<CustomerPortalHeaderImageDocumentData>,
+    'customer-portal-header-image',
+    Lang
+  >
+/** Content for download Link documents */
+interface DownloadLinkDocumentData {
+  /**
+   * Caption field in *download Link*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: download_link.caption
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  caption: prismicT.TitleField
+  /**
+   * download Link field in *download Link*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: download_link.download_link
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  download_link: prismicT.LinkField
+}
+/**
+ * download Link document from Prismic
+ *
+ * - **API ID**: `download_link`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type DownloadLinkDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithUID<Simplify<DownloadLinkDocumentData>, 'download_link', Lang>
+/** Content for filtering_menu documents */
+interface DummyWineCategoriesDocumentData {
+  /**
+   * Filtering Title field in *filtering_menu*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: i.e. Categories, Labels
+   * - **API ID Path**: dummy_wine_categories.filtering_title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  filtering_title: prismicT.RichTextField
+  /**
+   * Order ID field in *filtering_menu*
+   *
+   * - **Field Type**: Number
+   * - **Placeholder**: Show non negative integer for order in the filter bar
+   * - **API ID Path**: dummy_wine_categories.order_id
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/number
+   *
+   */
+  order_id: prismicT.NumberField
+  /**
+   * group items field in *filtering_menu*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: dummy_wine_categories.group_items[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  group_items: prismicT.GroupField<Simplify<DummyWineCategoriesDocumentDataGroupItemsItem>>
+  /**
+   * optional text items field in *filtering_menu*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: dummy_wine_categories.optional_text_items[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  optional_text_items: prismicT.GroupField<
+    Simplify<DummyWineCategoriesDocumentDataOptionalTextItemsItem>
+  >
+  /**
+   * minimum listing size field in *filtering_menu*
+   *
+   * - **Field Type**: Number
+   * - **Placeholder**: Menu collapsed. I.e. - 6
+   * - **API ID Path**: dummy_wine_categories.minimum_listing_size
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/number
+   *
+   */
+  minimum_listing_size: prismicT.NumberField
+  /**
+   * maxium listing size field in *filtering_menu*
+   *
+   * - **Field Type**: Number
+   * - **Placeholder**: After the menu expanded. I.e. - 24
+   * - **API ID Path**: dummy_wine_categories.listing_size
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/number
+   *
+   */
+  listing_size: prismicT.NumberField
+}
+/**
+ * Item in filtering_menu → group items
+ *
+ */
+export interface DummyWineCategoriesDocumentDataGroupItemsItem {
+  /**
+   * item field in *filtering_menu → group items*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: i.e. Pinot Noir(product_section)
+   * - **API ID Path**: dummy_wine_categories.group_items[].item
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  item: prismicT.RelationField
+}
+/**
+ * Item in filtering_menu → optional text items
+ *
+ */
+export interface DummyWineCategoriesDocumentDataOptionalTextItemsItem {
+  /**
+   * text item field in *filtering_menu → optional text items*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: dummy_wine_categories.optional_text_items[].text_item
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  text_item: prismicT.RichTextField
+}
+/**
+ * filtering_menu document from Prismic
+ *
+ * - **API ID**: `dummy_wine_categories`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type DummyWineCategoriesDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<
+    Simplify<DummyWineCategoriesDocumentData>,
+    'dummy_wine_categories',
+    Lang
+  >
+/** Content for duo_product_landing documents */
+interface DuoProductLandingDocumentData {
+  /**
+   * url field in *duo_product_landing*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: duo_product_landing.url
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  url: prismicT.KeyTextField
+  /**
+   * general description field in *duo_product_landing*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: duo_product_landing.general_description
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  general_description: prismicT.RichTextField
+  /**
+   * banner img field in *duo_product_landing*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: duo_product_landing.banner_img
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  banner_img: prismicT.ImageField<never>
+  /**
+   * banner url field in *duo_product_landing*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: duo_product_landing.banner_url
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  banner_url: prismicT.KeyTextField
+  /**
+   * product left img field in *duo_product_landing*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: duo_product_landing.product_left_img
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  product_left_img: prismicT.ImageField<never>
+  /**
+   * product left name field in *duo_product_landing*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: duo_product_landing.product_left_name
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  product_left_name: prismicT.TitleField
+  /**
+   * Product left price field in *duo_product_landing*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: duo_product_landing.product_left_price
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  product_left_price: prismicT.RichTextField
+  /**
+   * product left description field in *duo_product_landing*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: duo_product_landing.product_left_desc
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  product_left_desc: prismicT.RichTextField
+  /**
+   * product left SKU field in *duo_product_landing*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: duo_product_landing.product_left_sku
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  product_left_sku: prismicT.KeyTextField
+  /**
+   * product right img field in *duo_product_landing*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: duo_product_landing.product_right_img
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  product_right_img: prismicT.ImageField<never>
+  /**
+   * product right name field in *duo_product_landing*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: duo_product_landing.product_right_name
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  product_right_name: prismicT.TitleField
+  /**
+   * Product right price field in *duo_product_landing*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: duo_product_landing.product_right_price
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  product_right_price: prismicT.RichTextField
+  /**
+   * product right description field in *duo_product_landing*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: duo_product_landing.product_right_desc
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  product_right_desc: prismicT.RichTextField
+  /**
+   * product right SKU field in *duo_product_landing*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: duo_product_landing.product_right_sku
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  product_right_sku: prismicT.KeyTextField
+  /**
+   * landing page category field in *duo_product_landing*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: duo_product_landing.landing_page_category
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  landing_page_category: prismicT.KeyTextField
+}
+/**
+ * duo_product_landing document from Prismic
+ *
+ * - **API ID**: `duo_product_landing`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type DuoProductLandingDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithUID<
+    Simplify<DuoProductLandingDocumentData>,
+    'duo_product_landing',
+    Lang
+  >
+/** Content for EP About Page documents */
+interface EpAboutPageDocumentData {
+  /**
+   * Sections field in *EP About Page*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_about_page.sections[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  sections: prismicT.GroupField<Simplify<EpAboutPageDocumentDataSectionsItem>>
+}
+/**
+ * Item in EP About Page → Sections
+ *
+ */
+export interface EpAboutPageDocumentDataSectionsItem {
+  /**
+   * Section field in *EP About Page → Sections*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_about_page.sections[].section
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  section: prismicT.RelationField<
+    'ep_article_card' | 'ep_video_block' | 'ep_seperator' | 'marketing_section'
+  >
+}
+/**
+ * EP About Page document from Prismic
+ *
+ * - **API ID**: `ep_about_page`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type EpAboutPageDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<Simplify<EpAboutPageDocumentData>, 'ep_about_page', Lang>
+/** Content for EP Article Cards documents */
+interface EpArticleCardDocumentData {
+  /**
+   * Article Card field in *EP Article Cards*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_article_card.article_card[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  article_card: prismicT.GroupField<Simplify<EpArticleCardDocumentDataArticleCardItem>>
+}
+/**
+ * Item in EP Article Cards → Article Card
+ *
+ */
+export interface EpArticleCardDocumentDataArticleCardItem {
+  /**
+   * Image field in *EP Article Cards → Article Card*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_article_card.article_card[].image
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  image: prismicT.ImageField<never>
+  /**
+   * Title field in *EP Article Cards → Article Card*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_article_card.article_card[].title
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  title: prismicT.KeyTextField
+  /**
+   * Eyebrow field in *EP Article Cards → Article Card*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_article_card.article_card[].eyebrow
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  eyebrow: prismicT.KeyTextField
+  /**
+   * Description field in *EP Article Cards → Article Card*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_article_card.article_card[].description
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  description: prismicT.KeyTextField
+  /**
+   * Link field in *EP Article Cards → Article Card*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_article_card.article_card[].link
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  link: prismicT.LinkField
+  /**
+   * Text Link field in *EP Article Cards → Article Card*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_article_card.article_card[].text_link
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  text_link: prismicT.KeyTextField
+}
+/**
+ * EP Article Cards document from Prismic
+ *
+ * - **API ID**: `ep_article_card`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type EpArticleCardDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<Simplify<EpArticleCardDocumentData>, 'ep_article_card', Lang>
+/** Content for EP Split Banner documents */
+interface EpBannerCardDocumentData {
+  /**
+   * `section_data` field in *EP Split Banner*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_banner_card.section_data[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  section_data: prismicT.GroupField<Simplify<EpBannerCardDocumentDataSectionDataItem>>
+}
+/**
+ * Item in EP Split Banner → `section_data`
+ *
+ */
+export interface EpBannerCardDocumentDataSectionDataItem {
+  /**
+   * Image field in *EP Split Banner → `section_data`*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_banner_card.section_data[].image
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  image: prismicT.ImageField<never>
+  /**
+   * Title field in *EP Split Banner → `section_data`*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_banner_card.section_data[].title
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  title: prismicT.KeyTextField
+  /**
+   * Eyebrow field in *EP Split Banner → `section_data`*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_banner_card.section_data[].eyebrow
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  eyebrow: prismicT.KeyTextField
+  /**
+   * Description field in *EP Split Banner → `section_data`*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_banner_card.section_data[].description
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  description: prismicT.KeyTextField
+  /**
+   * reverse field in *EP Split Banner → `section_data`*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: ep_banner_card.section_data[].reverse
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  reverse: prismicT.BooleanField
+  /**
+   * theme field in *EP Split Banner → `section_data`*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **Default Value**: light
+   * - **API ID Path**: ep_banner_card.section_data[].theme
+   * - **Documentation**: https://prismic.io/docs/core-concepts/select
+   *
+   */
+  theme: prismicT.SelectField<'light' | 'dark', 'filled'>
+  /**
+   * cta field in *EP Split Banner → `section_data`*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_banner_card.section_data[].cta
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  cta: prismicT.RelationField<'cta'>
+}
+/**
+ * EP Split Banner document from Prismic
+ *
+ * - **API ID**: `ep_banner_card`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type EpBannerCardDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<Simplify<EpBannerCardDocumentData>, 'ep_banner_card', Lang>
+/** Content for EP Button documents */
+interface EpButtonDocumentData {
+  /**
+   * Button Label field in *EP Button*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_button.button_label
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  button_label: prismicT.KeyTextField
+  /**
+   * Link field in *EP Button*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_button.link
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  link: prismicT.LinkField
+  /**
+   * Text Link field in *EP Button*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_button.text_link
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  text_link: prismicT.KeyTextField
+  /**
+   * Button Key field in *EP Button*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_button.button_key
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  button_key: prismicT.KeyTextField
+}
+/**
+ * EP Button document from Prismic
+ *
+ * - **API ID**: `ep_button`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type EpButtonDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithUID<Simplify<EpButtonDocumentData>, 'ep_button', Lang>
+/** Content for EP Cards documents */
+interface EpCardsDocumentData {
+  /**
+   * Card field in *EP Cards*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_cards.section_data[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  section_data: prismicT.GroupField<Simplify<EpCardsDocumentDataSectionDataItem>>
+}
+/**
+ * Item in EP Cards → Card
+ *
+ */
+export interface EpCardsDocumentDataSectionDataItem {
+  /**
+   * Image field in *EP Cards → Card*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_cards.section_data[].image
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  image: prismicT.ImageField<never>
+  /**
+   * Title field in *EP Cards → Card*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_cards.section_data[].title
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  title: prismicT.KeyTextField
+  /**
+   * Description field in *EP Cards → Card*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_cards.section_data[].description
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  description: prismicT.KeyTextField
+}
+/**
+ * EP Cards document from Prismic
+ *
+ * - **API ID**: `ep_cards`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type EpCardsDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<Simplify<EpCardsDocumentData>, 'ep_cards', Lang>
+/** Content for Ep cards dashboard documents */
+interface EpCardsDashboardDocumentData {
+  /**
+   * Card field in *Ep cards dashboard*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_cards_dashboard.section_data[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  section_data: prismicT.GroupField<Simplify<EpCardsDashboardDocumentDataSectionDataItem>>
+}
+/**
+ * Item in Ep cards dashboard → Card
+ *
+ */
+export interface EpCardsDashboardDocumentDataSectionDataItem {
+  /**
+   * Image field in *Ep cards dashboard → Card*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_cards_dashboard.section_data[].image
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  image: prismicT.ImageField<never>
+  /**
+   * Title field in *Ep cards dashboard → Card*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_cards_dashboard.section_data[].title
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  title: prismicT.KeyTextField
+  /**
+   * Description field in *Ep cards dashboard → Card*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_cards_dashboard.section_data[].description
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  description: prismicT.KeyTextField
+  /**
+   * Text field in *Ep cards dashboard → Card*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_cards_dashboard.section_data[].link_text
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  link_text: prismicT.KeyTextField
+  /**
+   * Url field in *Ep cards dashboard → Card*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_cards_dashboard.section_data[].link_url
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  link_url: prismicT.KeyTextField
+}
+/**
+ * Ep cards dashboard document from Prismic
+ *
+ * - **API ID**: `ep_cards_dashboard`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type EpCardsDashboardDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<
+    Simplify<EpCardsDashboardDocumentData>,
+    'ep_cards_dashboard',
+    Lang
+  >
+/** Content for EP dashboard page documents */
+interface EpDashboardPageDocumentData {
+  /**
+   * Sections field in *EP dashboard page*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_dashboard_page.sections[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  sections: prismicT.GroupField<Simplify<EpDashboardPageDocumentDataSectionsItem>>
+}
+/**
+ * Item in EP dashboard page → Sections
+ *
+ */
+export interface EpDashboardPageDocumentDataSectionsItem {
+  /**
+   * Section field in *EP dashboard page → Sections*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_dashboard_page.sections[].section
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  section: prismicT.RelationField<
+    'ep_split_banners' | 'ep_title' | 'ep_seperator' | 'ep_separator' | 'ep_full_banner'
+  >
+}
+/**
+ * EP dashboard page document from Prismic
+ *
+ * - **API ID**: `ep_dashboard_page`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type EpDashboardPageDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithUID<Simplify<EpDashboardPageDocumentData>, 'ep_dashboard_page', Lang>
+/** Content for EP full banner documents */
+interface EpFullBannerDocumentData {
+  /**
+   * `section_data` field in *EP full banner*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_full_banner.section_data[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  section_data: prismicT.GroupField<Simplify<EpFullBannerDocumentDataSectionDataItem>>
+}
+/**
+ * Item in EP full banner → `section_data`
+ *
+ */
+export interface EpFullBannerDocumentDataSectionDataItem {
+  /**
+   * Title field in *EP full banner → `section_data`*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_full_banner.section_data[].title
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  title: prismicT.KeyTextField
+  /**
+   * Text field in *EP full banner → `section_data`*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_full_banner.section_data[].text
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  text: prismicT.KeyTextField
+  /**
+   * Button field in *EP full banner → `section_data`*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: Button
+   * - **API ID Path**: ep_full_banner.section_data[].button
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  button: prismicT.RelationField<'but'>
+}
+/**
+ * EP full banner document from Prismic
+ *
+ * - **API ID**: `ep_full_banner`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type EpFullBannerDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<Simplify<EpFullBannerDocumentData>, 'ep_full_banner', Lang>
+/** Content for EP Hero documents */
+interface EpHeroDocumentData {
+  /**
+   * Hero Title field in *EP Hero*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_hero.hero_title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  hero_title: prismicT.KeyTextField
+  /**
+   * Hero Description field in *EP Hero*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_hero.hero_description
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  hero_description: prismicT.KeyTextField
+  /**
+   * Hero Image field in *EP Hero*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_hero.hero_image
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  hero_image: prismicT.ImageField<never>
+  /**
+   * Links field in *EP Hero*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_hero.links[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  links: prismicT.GroupField<Simplify<EpHeroDocumentDataLinksItem>>
+}
+/**
+ * Item in EP Hero → Links
+ *
+ */
+export interface EpHeroDocumentDataLinksItem {
+  /**
+   * Link field in *EP Hero → Links*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_hero.links[].link
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  link: prismicT.RelationField<'ep_button'>
+}
+/**
+ * EP Hero document from Prismic
+ *
+ * - **API ID**: `ep_hero`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type EpHeroDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<Simplify<EpHeroDocumentData>, 'ep_hero', Lang>
+/** Content for EP Landing Page documents */
+interface EpLandingPageDocumentData {
+  /**
+   * Admin Title field in *EP Landing Page*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_landing_page.admin_title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  admin_title: prismicT.TitleField
+  /**
+   * Hero Banner field in *EP Landing Page*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_landing_page.hero_banner
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  hero_banner: prismicT.RelationField<'ep_hero'>
+  /**
+   * Sections field in *EP Landing Page*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_landing_page.sections[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  sections: prismicT.GroupField<Simplify<EpLandingPageDocumentDataSectionsItem>>
+}
+/**
+ * Item in EP Landing Page → Sections
+ *
+ */
+export interface EpLandingPageDocumentDataSectionsItem {
+  /**
+   * Section field in *EP Landing Page → Sections*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_landing_page.sections[].section
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  section: prismicT.RelationField<
+    'ep_cards' | 'ep_article_card' | 'ep_button' | 'ep_seperator' | 'ep_video_block'
+  >
+}
+/**
+ * EP Landing Page document from Prismic
+ *
+ * - **API ID**: `ep_landing_page`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type EpLandingPageDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithUID<Simplify<EpLandingPageDocumentData>, 'ep_landing_page', Lang>
+/** Content for EP Nav documents */
+interface EpNavDocumentData {
+  /**
+   * links field in *EP Nav*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_nav.links[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  links: prismicT.GroupField<Simplify<EpNavDocumentDataLinksItem>>
+}
+/**
+ * Item in EP Nav → links
+ *
+ */
+export interface EpNavDocumentDataLinksItem {
+  /**
+   * label field in *EP Nav → links*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_nav.links[].label
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  label: prismicT.KeyTextField
+  /**
+   * url field in *EP Nav → links*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_nav.links[].url
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  url: prismicT.KeyTextField
+  /**
+   * externalUrl field in *EP Nav → links*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_nav.links[].external_url
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  external_url: prismicT.LinkField
+  /**
+   * image field in *EP Nav → links*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: Required on Mobile
+   * - **API ID Path**: ep_nav.links[].image
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  image: prismicT.ImageField<never>
+  /**
+   * external field in *EP Nav → links*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: ep_nav.links[].external
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  external: prismicT.BooleanField
+  /**
+   * user field in *EP Nav → links*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_nav.links[].user
+   * - **Documentation**: https://prismic.io/docs/core-concepts/select
+   *
+   */
+  user: prismicT.SelectField<'guest' | 'customer'>
+}
+/**
+ * EP Nav document from Prismic
+ *
+ * - **API ID**: `ep_nav`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type EpNavDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<Simplify<EpNavDocumentData>, 'ep_nav', Lang>
+/** Content for EP Separator documents */
+interface EpSeperatorDocumentData {
+  /**
+   * image-md field in *EP Separator*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_seperator.image_md
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  image_md: prismicT.ImageField<never>
+  /**
+   * image-xs field in *EP Separator*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_seperator.image_xs
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  image_xs: prismicT.ImageField<never>
+  /**
+   * image-xl field in *EP Separator*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_seperator.image_xl
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  image_xl: prismicT.ImageField<never>
+}
+/**
+ * EP Separator document from Prismic
+ *
+ * - **API ID**: `ep_seperator`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type EpSeperatorDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<Simplify<EpSeperatorDocumentData>, 'ep_seperator', Lang>
+/** Content for EP Split Banners documents */
+interface EpSplitBannersDocumentData {
+  /**
+   * `section_data` field in *EP Split Banners*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_split_banners.section_data[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  section_data: prismicT.GroupField<Simplify<EpSplitBannersDocumentDataSectionDataItem>>
+}
+/**
+ * Item in EP Split Banners → `section_data`
+ *
+ */
+export interface EpSplitBannersDocumentDataSectionDataItem {
+  /**
+   * Image field in *EP Split Banners → `section_data`*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_split_banners.section_data[].image
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  image: prismicT.ImageField<never>
+  /**
+   * Headline field in *EP Split Banners → `section_data`*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_split_banners.section_data[].headline
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  headline: prismicT.KeyTextField
+  /**
+   * Eyebrow field in *EP Split Banners → `section_data`*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_split_banners.section_data[].eyebrow
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  eyebrow: prismicT.KeyTextField
+  /**
+   * Description field in *EP Split Banners → `section_data`*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_split_banners.section_data[].description
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  description: prismicT.KeyTextField
+  /**
+   * reverse field in *EP Split Banners → `section_data`*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: ep_split_banners.section_data[].reverse
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  reverse: prismicT.BooleanField
+  /**
+   * theme field in *EP Split Banners → `section_data`*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **Default Value**: light
+   * - **API ID Path**: ep_split_banners.section_data[].theme
+   * - **Documentation**: https://prismic.io/docs/core-concepts/select
+   *
+   */
+  theme: prismicT.SelectField<'light' | 'dark', 'filled'>
+  /**
+   * cta field in *EP Split Banners → `section_data`*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_split_banners.section_data[].cta
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  cta: prismicT.RelationField<'cta'>
+}
+/**
+ * EP Split Banners document from Prismic
+ *
+ * - **API ID**: `ep_split_banners`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type EpSplitBannersDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<Simplify<EpSplitBannersDocumentData>, 'ep_split_banners', Lang>
+/** Content for EP Title documents */
+interface EpTitleDocumentData {
+  /**
+   * data field in *EP Title*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_title.section_data[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  section_data: prismicT.GroupField<Simplify<EpTitleDocumentDataSectionDataItem>>
+}
+/**
+ * Item in EP Title → data
+ *
+ */
+export interface EpTitleDocumentDataSectionDataItem {
+  /**
+   * Text field in *EP Title → data*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_title.section_data[].text
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  text: prismicT.KeyTextField
+}
+/**
+ * EP Title document from Prismic
+ *
+ * - **API ID**: `ep_title`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type EpTitleDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<Simplify<EpTitleDocumentData>, 'ep_title', Lang>
+/** Content for EP Video Block documents */
+interface EpVideoBlockDocumentData {
+  /**
+   * Title field in *EP Video Block*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_video_block.title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  title: prismicT.KeyTextField
+  /**
+   * Subtitle field in *EP Video Block*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_video_block.subtitle
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  subtitle: prismicT.KeyTextField
+  /**
+   * Text field in *EP Video Block*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_video_block.text
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  text: prismicT.KeyTextField
+  /**
+   * Image field in *EP Video Block*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_video_block.image
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  image: prismicT.ImageField<never>
+  /**
+   * Video URL field in *EP Video Block*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: https://www.youtube.com/watch?v=abcdefgh
+   * - **API ID Path**: ep_video_block.video_url
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  video_url: prismicT.KeyTextField
+}
+/**
+ * EP Video Block document from Prismic
+ *
+ * - **API ID**: `ep_video_block`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type EpVideoBlockDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<Simplify<EpVideoBlockDocumentData>, 'ep_video_block', Lang>
+/** Content for EP Welcome documents */
+interface EpWelcomDocumentData {
+  /**
+   * Sections field in *EP Welcome*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_welcom.sections[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  sections: prismicT.GroupField<Simplify<EpWelcomDocumentDataSectionsItem>>
+}
+/**
+ * Item in EP Welcome → Sections
+ *
+ */
+export interface EpWelcomDocumentDataSectionsItem {
+  /**
+   * Section field in *EP Welcome → Sections*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_welcom.sections[].section
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  section: prismicT.RelationField<'ep_cards' | 'ep_welcome'>
+}
+/**
+ * EP Welcome document from Prismic
+ *
+ * - **API ID**: `ep_welcom`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type EpWelcomDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<Simplify<EpWelcomDocumentData>, 'ep_welcom', Lang>
+/** Content for Welcome Header documents */
+interface EpWelcomeHeaderDocumentData {
+  /**
+   * customer field in *Welcome Header*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_welcome_header.customer
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  customer: prismicT.RelationField<'welcome_section'>
+  /**
+   * consultant field in *Welcome Header*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_welcome_header.consultant
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  consultant: prismicT.RelationField<'welcome_section'>
+  /**
+   * consultantWithSubscription field in *Welcome Header*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_welcome_header.consultantWithSubscription
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  consultantWithSubscription: prismicT.RelationField<'welcome_section'>
+}
+/**
+ * Welcome Header document from Prismic
+ *
+ * - **API ID**: `ep_welcome_header`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type EpWelcomeHeaderDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithUID<Simplify<EpWelcomeHeaderDocumentData>, 'ep_welcome_header', Lang>
+/** Content for EP Wine type selector documents */
+interface EpWineTypeSelectorDocumentData {
+  /**
+   * Title field in *EP Wine type selector*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_wine_type_selector.title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  title: prismicT.KeyTextField
+  /**
+   * description field in *EP Wine type selector*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_wine_type_selector.description
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  description: prismicT.KeyTextField
+  /**
+   * note field in *EP Wine type selector*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_wine_type_selector.note
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  note: prismicT.KeyTextField
+  /**
+   * types field in *EP Wine type selector*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ep_wine_type_selector.types
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  types: prismicT.RelationField<'ep_cards'>
+}
+/**
+ * EP Wine type selector document from Prismic
+ *
+ * - **API ID**: `ep_wine_type_selector`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type EpWineTypeSelectorDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithUID<
+    Simplify<EpWineTypeSelectorDocumentData>,
+    'ep_wine_type_selector',
+    Lang
+  >
+/** Content for FAQs documents */
+interface FaqsDocumentData {
+  /**
+   * FAQs Page field in *FAQs*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: faqs.faqs_page
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  faqs_page: prismicT.TitleField
+  /**
+   * FAQs Page field in *FAQs*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: faqs.faqs_page1
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  faqs_page1: prismicT.RichTextField
+  /**
+   * FAQ_Page field in *FAQs*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: faqs.faq_page
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  faq_page: prismicT.RichTextField
+}
+/**
+ * FAQs document from Prismic
+ *
+ * - **API ID**: `faqs`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type FaqsDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<Simplify<FaqsDocumentData>, 'faqs', Lang>
+/** Content for filtering menu documents */
+interface FilteringMenuDocumentData {
+  /**
+   * Filtering Title field in *filtering menu*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: i.e. Categories, Labels
+   * - **API ID Path**: filtering_menu.filtering_title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  filtering_title: prismicT.RichTextField
+  /**
+   * Order ID field in *filtering menu*
+   *
+   * - **Field Type**: Number
+   * - **Placeholder**: Show non negative integer for order in the filter bar
+   * - **API ID Path**: filtering_menu.order_id
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/number
+   *
+   */
+  order_id: prismicT.NumberField
+  /**
+   * group items field in *filtering menu*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: filtering_menu.group_items[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  group_items: prismicT.GroupField<Simplify<FilteringMenuDocumentDataGroupItemsItem>>
+  /**
+   * optional text items field in *filtering menu*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: filtering_menu.optional_text_items[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  optional_text_items: prismicT.GroupField<Simplify<FilteringMenuDocumentDataOptionalTextItemsItem>>
+  /**
+   * minimum listing size field in *filtering menu*
+   *
+   * - **Field Type**: Number
+   * - **Placeholder**: Menu collapsed. I.e. - 6
+   * - **API ID Path**: filtering_menu.minimum_listing_size
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/number
+   *
+   */
+  minimum_listing_size: prismicT.NumberField
+  /**
+   * maxium listing size field in *filtering menu*
+   *
+   * - **Field Type**: Number
+   * - **Placeholder**: After the menu expanded. I.e. - 24
+   * - **API ID Path**: filtering_menu.maxium_listing_size
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/number
+   *
+   */
+  maxium_listing_size: prismicT.NumberField
+}
+/**
+ * Item in filtering menu → group items
+ *
+ */
+export interface FilteringMenuDocumentDataGroupItemsItem {
+  /**
+   * item field in *filtering menu → group items*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: i.e. Pinot Noir(product_section)
+   * - **API ID Path**: filtering_menu.group_items[].item
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  item: prismicT.RelationField
+}
+/**
+ * Item in filtering menu → optional text items
+ *
+ */
+export interface FilteringMenuDocumentDataOptionalTextItemsItem {
+  /**
+   * text item field in *filtering menu → optional text items*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: filtering_menu.optional_text_items[].text_item
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  text_item: prismicT.RichTextField
+}
+/**
+ * filtering menu document from Prismic
+ *
+ * - **API ID**: `filtering_menu`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type FilteringMenuDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<Simplify<FilteringMenuDocumentData>, 'filtering_menu', Lang>
+/** Content for footer links documents */
+interface FooterDocumentData {
+  /**
+   * name field in *footer links*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: footer.name
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  name: prismicT.KeyTextField
+  /**
+   * column 1 field in *footer links*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: footer.column_1[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  column_1: prismicT.GroupField<Simplify<FooterDocumentDataColumn1Item>>
+  /**
+   * column 2 field in *footer links*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: footer.column_2[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  column_2: prismicT.GroupField<Simplify<FooterDocumentDataColumn2Item>>
+  /**
+   * column 3 field in *footer links*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: footer.column_3[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  column_3: prismicT.GroupField<Simplify<FooterDocumentDataColumn3Item>>
+}
+/**
+ * Item in footer links → column 1
+ *
+ */
+export interface FooterDocumentDataColumn1Item {
+  /**
+   * link text field in *footer links → column 1*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: footer.column_1[].link_text
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  link_text: prismicT.RichTextField
+  /**
+   * link url field in *footer links → column 1*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: footer.column_1[].link_url
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  link_url: prismicT.KeyTextField
+  /**
+   * Open in New Tab field in *footer links → column 1*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: footer.column_1[].open_in_new_tab
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  open_in_new_tab: prismicT.BooleanField
+}
+/**
+ * Item in footer links → column 2
+ *
+ */
+export interface FooterDocumentDataColumn2Item {
+  /**
+   * link text field in *footer links → column 2*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: footer.column_2[].link_text
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  link_text: prismicT.RichTextField
+  /**
+   * link url field in *footer links → column 2*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: footer.column_2[].link_url
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  link_url: prismicT.KeyTextField
+  /**
+   * Open in New Tab field in *footer links → column 2*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: footer.column_2[].open_in_new_tab
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  open_in_new_tab: prismicT.BooleanField
+}
+/**
+ * Item in footer links → column 3
+ *
+ */
+export interface FooterDocumentDataColumn3Item {
+  /**
+   * link text field in *footer links → column 3*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: footer.column_3[].link_text
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  link_text: prismicT.RichTextField
+  /**
+   * link url field in *footer links → column 3*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: footer.column_3[].link_url
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  link_url: prismicT.KeyTextField
+  /**
+   * Open in New Tab field in *footer links → column 3*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: footer.column_3[].open_in_new_tab
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  open_in_new_tab: prismicT.BooleanField
+}
+/**
+ * footer links document from Prismic
+ *
+ * - **API ID**: `footer`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type FooterDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithUID<Simplify<FooterDocumentData>, 'footer', Lang>
+/** Content for footer_text documents */
+interface FooterTextDocumentData {
+  /**
+   * newsletter text field in *footer_text*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Newsletter text
+   * - **API ID Path**: footer_text.newsletter_text
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  newsletter_text: prismicT.KeyTextField
+  /**
+   * newsletter success field in *footer_text*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Newsletter success text
+   * - **API ID Path**: footer_text.newsletter_success
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  newsletter_success: prismicT.KeyTextField
+  /**
+   * newsletter fail field in *footer_text*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Newsletter fail message
+   * - **API ID Path**: footer_text.newsletter_fail
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  newsletter_fail: prismicT.KeyTextField
+}
+/**
+ * footer_text document from Prismic
+ *
+ * - **API ID**: `footer_text`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type FooterTextDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithUID<Simplify<FooterTextDocumentData>, 'footer_text', Lang>
+/** Content for footer-address documents */
+interface FooterAddressDocumentData {
+  /**
+   * corp-address field in *footer-address*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: footer-address."corp-address"
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  'corp-address': prismicT.RichTextField
+}
+/**
+ * footer-address document from Prismic
+ *
+ * - **API ID**: `footer-address`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type FooterAddressDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<Simplify<FooterAddressDocumentData>, 'footer-address', Lang>
+/** Content for grower-details documents */
+interface GrowerDetailsDocumentData {
+  /**
+   * URL field in *grower-details*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: grower-details.url
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  url: prismicT.RichTextField
+  /**
+   * Background-Header-Image field in *grower-details*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: grower-details."background-header-image"
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  'background-header-image': prismicT.ImageField<never>
+  /**
+   * Region Map field in *grower-details*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: grower-details.region_map
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  region_map: prismicT.ImageField<never>
+  /**
+   * Grower-Title field in *grower-details*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: grower-details."grower-title"
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  'grower-title': prismicT.TitleField
+  /**
+   * Grower-Name field in *grower-details*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: grower-details."grower-name"
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  'grower-name': prismicT.RichTextField
+  /**
+   * Grower-Images field in *grower-details*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: grower-details."grower-images"[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  'grower-images': prismicT.GroupField<Simplify<GrowerDetailsDocumentDataGrowerImagesItem>>
+  /**
+   * Grower Description First field in *grower-details*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: grower-details."grower-description"
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  'grower-description': prismicT.RichTextField
+  /**
+   * Grower Description First Secondary field in *grower-details*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: grower-details.grower_description_first_secondary
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  grower_description_first_secondary: prismicT.RichTextField
+  /**
+   * Grower-Description-Highlight field in *grower-details*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: grower-details."grower-description-highlight"
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  'grower-description-highlight': prismicT.RichTextField
+  /**
+   * Grower Description Second field in *grower-details*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: grower-details.grower_description_second
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  grower_description_second: prismicT.RichTextField
+  /**
+   * Grower Description Second Secondary field in *grower-details*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: grower-details.grower_description_second_secondary
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  grower_description_second_secondary: prismicT.RichTextField
+  /**
+   * Grower-Terroir field in *grower-details*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: grower-details."grower-highlight"
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  'grower-highlight': prismicT.RichTextField
+  /**
+   * Grower Terroir Secondary field in *grower-details*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: grower-details.grower_terroir_secondary
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  grower_terroir_secondary: prismicT.RichTextField
+  /**
+   * Terroir-Header field in *grower-details*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: grower-details."terroir-header"
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  'terroir-header': prismicT.TitleField
+  /**
+   * Grower-Terroir-Highlight field in *grower-details*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: grower-details."grower-terroir-highlight"
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  'grower-terroir-highlight': prismicT.RichTextField
+  /**
+   * Grower-Products field in *grower-details*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: grower-details."grower-products"[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  'grower-products': prismicT.GroupField<Simplify<GrowerDetailsDocumentDataGrowerProductsItem>>
+  /**
+   * Footer Image field in *grower-details*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: grower-details.footer_image
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  footer_image: prismicT.ImageField<never>
+}
+/**
+ * Item in grower-details → Grower-Images
+ *
+ */
+export interface GrowerDetailsDocumentDataGrowerImagesItem {
+  /**
+   * Grower-Image field in *grower-details → Grower-Images*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: grower-details."grower-images"[]."grower-image"
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  'grower-image': prismicT.ImageField<never>
+  /**
+   * Grower-Image-Alt-Text field in *grower-details → Grower-Images*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: grower-details."grower-images"[]."grower-image-alt-text"
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  'grower-image-alt-text': prismicT.RichTextField
+}
+/**
+ * Item in grower-details → Grower-Products
+ *
+ */
+export interface GrowerDetailsDocumentDataGrowerProductsItem {
+  /**
+   * Product field in *grower-details → Grower-Products*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: grower-details."grower-products"[].product
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  product: prismicT.LinkField
+}
+/**
+ * grower-details document from Prismic
+ *
+ * - **API ID**: `grower-details`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type GrowerDetailsDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithUID<Simplify<GrowerDetailsDocumentData>, 'grower-details', Lang>
+/** Content for grower-template documents */
+interface GrowerTemplateDocumentData {
+  /**
+   * URL field in *grower-template*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: grower-template.url
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  url: prismicT.RichTextField
+  /**
+   * Background-Image field in *grower-template*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: grower-template."background-image"
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  'background-image': prismicT.ImageField<never>
+  /**
+   * Image-Alt-Text field in *grower-template*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: grower-template."image-alt-text"
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  'image-alt-text': prismicT.RichTextField
+  /**
+   * Title field in *grower-template*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: grower-template.title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.TitleField
+  /**
+   * Subtitle field in *grower-template*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: grower-template."sub-title"
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  'sub-title': prismicT.RichTextField
+  /**
+   * Growers field in *grower-template*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: grower-template.growers[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  growers: prismicT.GroupField<Simplify<GrowerTemplateDocumentDataGrowersItem>>
+}
+/**
+ * Item in grower-template → Growers
+ *
+ */
+export interface GrowerTemplateDocumentDataGrowersItem {
+  /**
+   * Grower-Image field in *grower-template → Growers*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: grower-template.growers[]."grower-image"
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  'grower-image': prismicT.ImageField<never>
+  /**
+   * Grower field in *grower-template → Growers*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: grower-template.growers[].grower
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  grower: prismicT.RelationField<'grower-details'>
+  /**
+   * Grower-Region field in *grower-template → Growers*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: grower-template.growers[]."grower-region"
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  'grower-region': prismicT.RichTextField
+  /**
+   * Grower-Name field in *grower-template → Growers*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: grower-template.growers[]."grower-name"
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  'grower-name': prismicT.RichTextField
+  /**
+   * Image-Alt-Text field in *grower-template → Growers*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: grower-template.growers[]."image-alt-text1"
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  'image-alt-text1': prismicT.RichTextField
+}
+/**
+ * grower-template document from Prismic
+ *
+ * - **API ID**: `grower-template`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type GrowerTemplateDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithUID<Simplify<GrowerTemplateDocumentData>, 'grower-template', Lang>
+/** Content for header_text documents */
+interface HeaderTextDocumentData {
+  /**
+   * Shipping to field in *header_text*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Shipping to text
+   * - **API ID Path**: header_text.shipping_to
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  shipping_to: prismicT.KeyTextField
+  /**
+   * feature bar field in *header_text*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: header_text.feature_bar
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  feature_bar: prismicT.RichTextField
+  /**
+   * Sign in field in *header_text*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Sign in text
+   * - **API ID Path**: header_text.sign_in
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  sign_in: prismicT.KeyTextField
+  /**
+   * Sign out field in *header_text*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Sign out text
+   * - **API ID Path**: header_text.sign_out
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  sign_out: prismicT.KeyTextField
+  /**
+   * My Circle field in *header_text*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Mycircle
+   * - **API ID Path**: header_text.my_circle
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  my_circle: prismicT.KeyTextField
+  /**
+   * Customer portal field in *header_text*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Customer portal text
+   * - **API ID Path**: header_text.customer_portal
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  customer_portal: prismicT.KeyTextField
+  /**
+   * Join wine club field in *header_text*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Join wine club button text
+   * - **API ID Path**: header_text.join_wine_club
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  join_wine_club: prismicT.KeyTextField
+  /**
+   * Shopping with field in *header_text*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Shopping with text
+   * - **API ID Path**: header_text.shopping_with
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  shopping_with: prismicT.KeyTextField
+  /**
+   * Shopping with a consultant field in *header_text*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Shopping with a consultant
+   * - **API ID Path**: header_text.shopping_with_a_consultant
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  shopping_with_a_consultant: prismicT.KeyTextField
+}
+/**
+ * header_text document from Prismic
+ *
+ * - **API ID**: `header_text`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type HeaderTextDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithUID<Simplify<HeaderTextDocumentData>, 'header_text', Lang>
+/** Content for Carousel documents */
+interface HeroCarouselDocumentData {
+  /**
+   * Slides field in *Carousel*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero_carousel.slides[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  slides: prismicT.GroupField<Simplify<HeroCarouselDocumentDataSlidesItem>>
+}
+/**
+ * Item in Carousel → Slides
+ *
+ */
+export interface HeroCarouselDocumentDataSlidesItem {
+  /**
+   * Image field in *Carousel → Slides*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero_carousel.slides[].image
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  image: prismicT.ImageField<never>
+  /**
+   * Title field in *Carousel → Slides*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero_carousel.slides[].title
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.TitleField
+  /**
+   * Subtitle field in *Carousel → Slides*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero_carousel.slides[].subtitle
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  subtitle: prismicT.RichTextField
+  /**
+   * Button Text field in *Carousel → Slides*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero_carousel.slides[].button_text
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  button_text: prismicT.RichTextField
+  /**
+   * Button Link field in *Carousel → Slides*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero_carousel.slides[].button_link
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  button_link: prismicT.RichTextField
+}
+/**
+ * Carousel document from Prismic
+ *
+ * - **API ID**: `hero_carousel`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type HeroCarouselDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<Simplify<HeroCarouselDocumentData>, 'hero_carousel', Lang>
+/** Content for Home Arc Banner documents */
+interface HomeArcBannerDocumentData {
+  /**
+   * Title field in *Home Arc Banner*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: Title
+   * - **API ID Path**: home_arc_banner.title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.TitleField
+  /**
+   * Subtitle field in *Home Arc Banner*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: Subtitle
+   * - **API ID Path**: home_arc_banner.subtitle
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  subtitle: prismicT.TitleField
+  /**
+   * Desc field in *Home Arc Banner*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Description
+   * - **API ID Path**: home_arc_banner.desc
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  desc: prismicT.RichTextField
+  /**
+   * Button field in *Home Arc Banner*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: Button
+   * - **API ID Path**: home_arc_banner.button
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  button: prismicT.RelationField<'but'>
+  /**
+   * Image field in *Home Arc Banner*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: Image
+   * - **API ID Path**: home_arc_banner.image
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  image: prismicT.RelationField<'image'>
+}
+/**
+ * Home Arc Banner document from Prismic
+ *
+ * - **API ID**: `home_arc_banner`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type HomeArcBannerDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<Simplify<HomeArcBannerDocumentData>, 'home_arc_banner', Lang>
+/** Content for Home Collection Banner documents */
+interface HomeCollectionBanneDocumentData {
+  /**
+   * Title field in *Home Collection Banner*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: Title
+   * - **API ID Path**: home_collection_banne.title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.TitleField
+  /**
+   * Home Collection Block Group field in *Home Collection Banner*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_collection_banne.home_collection_block_group[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  home_collection_block_group: prismicT.GroupField<
+    Simplify<HomeCollectionBanneDocumentDataHomeCollectionBlockGroupItem>
+  >
+}
+/**
+ * Item in Home Collection Banner → Home Collection Block Group
+ *
+ */
+export interface HomeCollectionBanneDocumentDataHomeCollectionBlockGroupItem {
+  /**
+   * Home Collection Bock field in *Home Collection Banner → Home Collection Block Group*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: Home Collection Block
+   * - **API ID Path**: home_collection_banne.home_collection_block_group[].home_collection_bock
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  home_collection_bock: prismicT.RelationField<'home_collection_block'>
+}
+/**
+ * Home Collection Banner document from Prismic
+ *
+ * - **API ID**: `home_collection_banne`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type HomeCollectionBanneDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<
+    Simplify<HomeCollectionBanneDocumentData>,
+    'home_collection_banne',
+    Lang
+  >
+/** Content for Home Collection Block documents */
+interface HomeCollectionBlockDocumentData {
+  /**
+   * Image field in *Home Collection Block*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: Image
+   * - **API ID Path**: home_collection_block.image
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  image: prismicT.RelationField<'image'>
+  /**
+   * Title field in *Home Collection Block*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: Title
+   * - **API ID Path**: home_collection_block.title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.TitleField
+}
+/**
+ * Home Collection Block document from Prismic
+ *
+ * - **API ID**: `home_collection_block`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type HomeCollectionBlockDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithUID<
+    Simplify<HomeCollectionBlockDocumentData>,
+    'home_collection_block',
+    Lang
+  >
+/** Content for Multi-part Marketing Content documents */
+interface HomePageDocumentData {
+  /**
+   * Slice zone field in *Multi-part Marketing Content*
+   *
+   * - **Field Type**: Slice Zone
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/slices
+   *
+   */
+  body: prismicT.SliceZone<HomePageDocumentDataBodySlice>
+}
+/**
+ * Primary content in Multi-part Marketing Content → Slice zone → `carousel` → Primary
+ *
+ */
+interface HomePageDocumentDataBodyCarouselSlicePrimary {
+  /**
+   * Login Status field in *Multi-part Marketing Content → Slice zone → `carousel` → Primary*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: home_page.body[].carousel.primary.login_status
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  login_status: prismicT.BooleanField
+}
+/**
+ * Item in Multi-part Marketing Content → Slice zone → `carousel` → Items
+ *
+ */
+export interface HomePageDocumentDataBodyCarouselSliceItem {
+  /**
+   * Image field in *Multi-part Marketing Content → Slice zone → `carousel` → Items*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].carousel.items[].image
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  image: prismicT.ImageField<never>
+  /**
+   * Login Status field in *Multi-part Marketing Content → Slice zone → `carousel` → Items*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: home_page.body[].carousel.items[].login_status
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  login_status: prismicT.BooleanField
+  /**
+   * Title field in *Multi-part Marketing Content → Slice zone → `carousel` → Items*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].carousel.items[].title
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.TitleField
+  /**
+   * Subtitle field in *Multi-part Marketing Content → Slice zone → `carousel` → Items*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].carousel.items[].subtitle
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  subtitle: prismicT.RichTextField
+  /**
+   * Button Text field in *Multi-part Marketing Content → Slice zone → `carousel` → Items*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].carousel.items[].button_text
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  button_text: prismicT.RichTextField
+  /**
+   * Button Link field in *Multi-part Marketing Content → Slice zone → `carousel` → Items*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].carousel.items[].button_link
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  button_link: prismicT.RichTextField
+}
+export type HomePageDocumentDataBodyCarouselSlice = prismicT.Slice<
+  'carousel',
+  Simplify<HomePageDocumentDataBodyCarouselSlicePrimary>,
+  Simplify<HomePageDocumentDataBodyCarouselSliceItem>
+>
+/**
+ * Primary content in Multi-part Marketing Content → Slice zone → `text_with_button` → Primary
+ *
+ */
+interface HomePageDocumentDataBodyTextWithButtonSlicePrimary {
+  /**
+   * Login Status field in *Multi-part Marketing Content → Slice zone → `text_with_button` → Primary*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: home_page.body[].text_with_button.primary.login_status
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  login_status: prismicT.BooleanField
+  /**
+   * Title field in *Multi-part Marketing Content → Slice zone → `text_with_button` → Primary*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].text_with_button.primary.title
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.TitleField
+  /**
+   * Subtitle field in *Multi-part Marketing Content → Slice zone → `text_with_button` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].text_with_button.primary.subtitle
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  subtitle: prismicT.RichTextField
+  /**
+   * Invert Text and Background Colors field in *Multi-part Marketing Content → Slice zone → `text_with_button` → Primary*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: home_page.body[].text_with_button.primary.invert_text_and_background_colors
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  invert_text_and_background_colors: prismicT.BooleanField
+  /**
+   * Button Text field in *Multi-part Marketing Content → Slice zone → `text_with_button` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].text_with_button.primary.button_text
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  button_text: prismicT.RichTextField
+  /**
+   * Button Link field in *Multi-part Marketing Content → Slice zone → `text_with_button` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].text_with_button.primary.button_link
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  button_link: prismicT.RichTextField
+  /**
+   * Open Link in New Tab field in *Multi-part Marketing Content → Slice zone → `text_with_button` → Primary*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: home_page.body[].text_with_button.primary.open_link_in_new_tab
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  open_link_in_new_tab: prismicT.BooleanField
+}
+export type HomePageDocumentDataBodyTextWithButtonSlice = prismicT.Slice<
+  'text_with_button',
+  Simplify<HomePageDocumentDataBodyTextWithButtonSlicePrimary>,
+  never
+>
+/**
+ * Primary content in Multi-part Marketing Content → Slice zone → `product_showcase` → Primary
+ *
+ */
+interface HomePageDocumentDataBodyProductShowcaseSlicePrimary {
+  /**
+   * Login Status field in *Multi-part Marketing Content → Slice zone → `product_showcase` → Primary*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: home_page.body[].product_showcase.primary.login_status
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  login_status: prismicT.BooleanField
+  /**
+   * Title field in *Multi-part Marketing Content → Slice zone → `product_showcase` → Primary*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].product_showcase.primary.title
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.TitleField
+  /**
+   * Title Highlight Color field in *Multi-part Marketing Content → Slice zone → `product_showcase` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].product_showcase.primary.title_highlight_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  title_highlight_color: prismicT.ColorField
+  /**
+   * Background Color field in *Multi-part Marketing Content → Slice zone → `product_showcase` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].product_showcase.primary.background_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  background_color: prismicT.ColorField
+  /**
+   * Accent Color field in *Multi-part Marketing Content → Slice zone → `product_showcase` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].product_showcase.primary.accent_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  accent_color: prismicT.ColorField
+}
+/**
+ * Item in Multi-part Marketing Content → Slice zone → `product_showcase` → Items
+ *
+ */
+export interface HomePageDocumentDataBodyProductShowcaseSliceItem {
+  /**
+   * Product field in *Multi-part Marketing Content → Slice zone → `product_showcase` → Items*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].product_showcase.items[].product
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  product: prismicT.RelationField<'product'>
+}
+export type HomePageDocumentDataBodyProductShowcaseSlice = prismicT.Slice<
+  'product_showcase',
+  Simplify<HomePageDocumentDataBodyProductShowcaseSlicePrimary>,
+  Simplify<HomePageDocumentDataBodyProductShowcaseSliceItem>
+>
+/**
+ * Primary content in Multi-part Marketing Content → Slice zone → `duo_marketing_message` → Primary
+ *
+ */
+interface HomePageDocumentDataBodyDuoMarketingMessageSlicePrimary {
+  /**
+   * Login Status field in *Multi-part Marketing Content → Slice zone → `duo_marketing_message` → Primary*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: home_page.body[].duo_marketing_message.primary.login_status
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  login_status: prismicT.BooleanField
+  /**
+   * Left Image field in *Multi-part Marketing Content → Slice zone → `duo_marketing_message` → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].duo_marketing_message.primary.left_image
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  left_image: prismicT.ImageField<never>
+  /**
+   * Left Title field in *Multi-part Marketing Content → Slice zone → `duo_marketing_message` → Primary*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].duo_marketing_message.primary.left_title
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  left_title: prismicT.TitleField
+  /**
+   * Left Title Highlight Color field in *Multi-part Marketing Content → Slice zone → `duo_marketing_message` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].duo_marketing_message.primary.left_title_highlight_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  left_title_highlight_color: prismicT.ColorField
+  /**
+   * Left Subtitle field in *Multi-part Marketing Content → Slice zone → `duo_marketing_message` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].duo_marketing_message.primary.left_subtitle
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  left_subtitle: prismicT.RichTextField
+  /**
+   * Left Subtitle Text Color field in *Multi-part Marketing Content → Slice zone → `duo_marketing_message` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].duo_marketing_message.primary.left_subtitle_text_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  left_subtitle_text_color: prismicT.ColorField
+  /**
+   * Left Button Text field in *Multi-part Marketing Content → Slice zone → `duo_marketing_message` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].duo_marketing_message.primary.left_button_text
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  left_button_text: prismicT.RichTextField
+  /**
+   * Left Button Link field in *Multi-part Marketing Content → Slice zone → `duo_marketing_message` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].duo_marketing_message.primary.left_button_link
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  left_button_link: prismicT.RichTextField
+  /**
+   * Open Left Link in New Tab field in *Multi-part Marketing Content → Slice zone → `duo_marketing_message` → Primary*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: home_page.body[].duo_marketing_message.primary.open_left_link_in_new_tab
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  open_left_link_in_new_tab: prismicT.BooleanField
+  /**
+   * Left Button Text Color field in *Multi-part Marketing Content → Slice zone → `duo_marketing_message` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].duo_marketing_message.primary.left_button_text_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  left_button_text_color: prismicT.ColorField
+  /**
+   * Left Button Background Color field in *Multi-part Marketing Content → Slice zone → `duo_marketing_message` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].duo_marketing_message.primary.left_button_background_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  left_button_background_color: prismicT.ColorField
+  /**
+   * Right Image field in *Multi-part Marketing Content → Slice zone → `duo_marketing_message` → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].duo_marketing_message.primary.right_image
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  right_image: prismicT.ImageField<never>
+  /**
+   * Right Title field in *Multi-part Marketing Content → Slice zone → `duo_marketing_message` → Primary*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].duo_marketing_message.primary.right_title
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  right_title: prismicT.TitleField
+  /**
+   * Right Title Highlight Color field in *Multi-part Marketing Content → Slice zone → `duo_marketing_message` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].duo_marketing_message.primary.right_title_highlight_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  right_title_highlight_color: prismicT.ColorField
+  /**
+   * Right Subtitle field in *Multi-part Marketing Content → Slice zone → `duo_marketing_message` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].duo_marketing_message.primary.right_subtitle
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  right_subtitle: prismicT.RichTextField
+  /**
+   * Right Subtitle Text Color field in *Multi-part Marketing Content → Slice zone → `duo_marketing_message` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].duo_marketing_message.primary.right_subtitle_text_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  right_subtitle_text_color: prismicT.ColorField
+  /**
+   * Right Button Text field in *Multi-part Marketing Content → Slice zone → `duo_marketing_message` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].duo_marketing_message.primary.right_button_text
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  right_button_text: prismicT.RichTextField
+  /**
+   * Right Button Link field in *Multi-part Marketing Content → Slice zone → `duo_marketing_message` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].duo_marketing_message.primary.right_button_link
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  right_button_link: prismicT.RichTextField
+  /**
+   * Open Right Link in New Tab field in *Multi-part Marketing Content → Slice zone → `duo_marketing_message` → Primary*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: home_page.body[].duo_marketing_message.primary.open_right_link_in_new_tab
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  open_right_link_in_new_tab: prismicT.BooleanField
+  /**
+   * Right Button Text Color field in *Multi-part Marketing Content → Slice zone → `duo_marketing_message` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].duo_marketing_message.primary.right_button_text_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  right_button_text_color: prismicT.ColorField
+  /**
+   * Right Button Background Color field in *Multi-part Marketing Content → Slice zone → `duo_marketing_message` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].duo_marketing_message.primary.right_button_background_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  right_button_background_color: prismicT.ColorField
+}
+export type HomePageDocumentDataBodyDuoMarketingMessageSlice = prismicT.Slice<
+  'duo_marketing_message',
+  Simplify<HomePageDocumentDataBodyDuoMarketingMessageSlicePrimary>,
+  never
+>
+/**
+ * Primary content in Multi-part Marketing Content → Slice zone → `editorial` → Primary
+ *
+ */
+interface HomePageDocumentDataBodyEditorialSlicePrimary {
+  /**
+   * Login Status field in *Multi-part Marketing Content → Slice zone → `editorial` → Primary*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: home_page.body[].editorial.primary.login_status
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  login_status: prismicT.BooleanField
+  /**
+   * Spotlight Image field in *Multi-part Marketing Content → Slice zone → `editorial` → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].editorial.primary.spotlight_image
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  spotlight_image: prismicT.ImageField<never>
+  /**
+   * Author Image field in *Multi-part Marketing Content → Slice zone → `editorial` → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].editorial.primary.author_image
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  author_image: prismicT.ImageField<never>
+  /**
+   * Author Name field in *Multi-part Marketing Content → Slice zone → `editorial` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].editorial.primary.author_name
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  author_name: prismicT.RichTextField
+  /**
+   * Author Title field in *Multi-part Marketing Content → Slice zone → `editorial` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].editorial.primary.author_title
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  author_title: prismicT.RichTextField
+  /**
+   * Headline Title field in *Multi-part Marketing Content → Slice zone → `editorial` → Primary*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].editorial.primary.headline_title
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  headline_title: prismicT.TitleField
+  /**
+   * Highlight Color field in *Multi-part Marketing Content → Slice zone → `editorial` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].editorial.primary.highlight_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  highlight_color: prismicT.ColorField
+  /**
+   * Title field in *Multi-part Marketing Content → Slice zone → `editorial` → Primary*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].editorial.primary.title
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.TitleField
+  /**
+   * Description field in *Multi-part Marketing Content → Slice zone → `editorial` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].editorial.primary.description
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  description: prismicT.RichTextField
+  /**
+   * Product field in *Multi-part Marketing Content → Slice zone → `editorial` → Primary*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].editorial.primary.product
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  product: prismicT.RelationField<'product'>
+}
+export type HomePageDocumentDataBodyEditorialSlice = prismicT.Slice<
+  'editorial',
+  Simplify<HomePageDocumentDataBodyEditorialSlicePrimary>,
+  never
+>
+/**
+ * Primary content in Multi-part Marketing Content → Slice zone → `brand_gallery` → Primary
+ *
+ */
+interface HomePageDocumentDataBodyBrandGallerySlicePrimary {
+  /**
+   * Login Status field in *Multi-part Marketing Content → Slice zone → `brand_gallery` → Primary*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: home_page.body[].brand_gallery.primary.login_status
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  login_status: prismicT.BooleanField
+  /**
+   * Title field in *Multi-part Marketing Content → Slice zone → `brand_gallery` → Primary*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].brand_gallery.primary.title
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.TitleField
+  /**
+   * Highlight Color field in *Multi-part Marketing Content → Slice zone → `brand_gallery` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].brand_gallery.primary.highlight_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  highlight_color: prismicT.ColorField
+}
+/**
+ * Item in Multi-part Marketing Content → Slice zone → `brand_gallery` → Items
+ *
+ */
+export interface HomePageDocumentDataBodyBrandGallerySliceItem {
+  /**
+   * Brand Image field in *Multi-part Marketing Content → Slice zone → `brand_gallery` → Items*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].brand_gallery.items[].brand_image
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  brand_image: prismicT.ImageField<never>
+  /**
+   * Brand Name field in *Multi-part Marketing Content → Slice zone → `brand_gallery` → Items*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].brand_gallery.items[].brand_name
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  brand_name: prismicT.TitleField
+  /**
+   * Brand field in *Multi-part Marketing Content → Slice zone → `brand_gallery` → Items*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].brand_gallery.items[].brand
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  brand: prismicT.RelationField<'brand-details'>
+}
+export type HomePageDocumentDataBodyBrandGallerySlice = prismicT.Slice<
+  'brand_gallery',
+  Simplify<HomePageDocumentDataBodyBrandGallerySlicePrimary>,
+  Simplify<HomePageDocumentDataBodyBrandGallerySliceItem>
+>
+/**
+ * Primary content in Multi-part Marketing Content → Slice zone → `video_showcase` → Primary
+ *
+ */
+interface HomePageDocumentDataBodyVideoShowcaseSlicePrimary {
+  /**
+   * Login Status field in *Multi-part Marketing Content → Slice zone → `video_showcase` → Primary*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: home_page.body[].video_showcase.primary.login_status
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  login_status: prismicT.BooleanField
+  /**
+   * Video field in *Multi-part Marketing Content → Slice zone → `video_showcase` → Primary*
+   *
+   * - **Field Type**: Embed
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].video_showcase.primary.video
+   * - **Documentation**: https://prismic.io/docs/core-concepts/embed
+   *
+   */
+  video: prismicT.EmbedField
+  /**
+   * Title field in *Multi-part Marketing Content → Slice zone → `video_showcase` → Primary*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].video_showcase.primary.title
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.TitleField
+  /**
+   * Highlight Color field in *Multi-part Marketing Content → Slice zone → `video_showcase` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].video_showcase.primary.highlight_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  highlight_color: prismicT.ColorField
+  /**
+   * Subtitle field in *Multi-part Marketing Content → Slice zone → `video_showcase` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].video_showcase.primary.subtitle
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  subtitle: prismicT.RichTextField
+}
+export type HomePageDocumentDataBodyVideoShowcaseSlice = prismicT.Slice<
+  'video_showcase',
+  Simplify<HomePageDocumentDataBodyVideoShowcaseSlicePrimary>,
+  never
+>
+/**
+ * Primary content in Multi-part Marketing Content → Slice zone → `text_with_image` → Primary
+ *
+ */
+interface HomePageDocumentDataBodyTextWithImageSlicePrimary {
+  /**
+   * Login Status field in *Multi-part Marketing Content → Slice zone → `text_with_image` → Primary*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: home_page.body[].text_with_image.primary.login_status
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  login_status: prismicT.BooleanField
+  /**
+   * Title field in *Multi-part Marketing Content → Slice zone → `text_with_image` → Primary*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].text_with_image.primary.title
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.TitleField
+  /**
+   * Highlight Color field in *Multi-part Marketing Content → Slice zone → `text_with_image` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].text_with_image.primary.highlight_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  highlight_color: prismicT.ColorField
+  /**
+   * Image field in *Multi-part Marketing Content → Slice zone → `text_with_image` → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].text_with_image.primary.image
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  image: prismicT.ImageField<never>
+  /**
+   * Text field in *Multi-part Marketing Content → Slice zone → `text_with_image` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].text_with_image.primary.text
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  text: prismicT.RichTextField
+  /**
+   * Button Text field in *Multi-part Marketing Content → Slice zone → `text_with_image` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].text_with_image.primary.button_text
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  button_text: prismicT.RichTextField
+  /**
+   * Button Link field in *Multi-part Marketing Content → Slice zone → `text_with_image` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: home_page.body[].text_with_image.primary.button_link
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  button_link: prismicT.RichTextField
+  /**
+   * Open Link in New Tab field in *Multi-part Marketing Content → Slice zone → `text_with_image` → Primary*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: home_page.body[].text_with_image.primary.open_link_in_new_tab
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  open_link_in_new_tab: prismicT.BooleanField
+}
+export type HomePageDocumentDataBodyTextWithImageSlice = prismicT.Slice<
+  'text_with_image',
+  Simplify<HomePageDocumentDataBodyTextWithImageSlicePrimary>,
+  never
+>
+/**
+ * Slice for *Multi-part Marketing Content → Slice zone*
+ *
+ */
+type HomePageDocumentDataBodySlice =
+  | HomePageDocumentDataBodyCarouselSlice
+  | HomePageDocumentDataBodyTextWithButtonSlice
+  | HomePageDocumentDataBodyProductShowcaseSlice
+  | HomePageDocumentDataBodyDuoMarketingMessageSlice
+  | HomePageDocumentDataBodyEditorialSlice
+  | HomePageDocumentDataBodyBrandGallerySlice
+  | HomePageDocumentDataBodyVideoShowcaseSlice
+  | HomePageDocumentDataBodyTextWithImageSlice
+/**
+ * Multi-part Marketing Content document from Prismic
+ *
+ * - **API ID**: `home_page`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type HomePageDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithUID<Simplify<HomePageDocumentData>, 'home_page', Lang>
+/** Content for image documents */
+interface ImageDocumentData {
+  /**
+   * name field in *image*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Key of image
+   * - **API ID Path**: image.name
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  name: prismicT.KeyTextField
+  /**
+   * Image Title field in *image*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: This is optional
+   * - **API ID Path**: image.image_title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  image_title: prismicT.TitleField
+  /**
+   * image field in *image*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: image.image1
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  image1: prismicT.ImageField<never>
+}
+/**
+ * image document from Prismic
+ *
+ * - **API ID**: `image`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type ImageDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<Simplify<ImageDocumentData>, 'image', Lang>
+/** Content for home_page documents */
+interface LandingPageDocumentData {
+  /**
+   * hero_group field in *home_page*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: landing_page.hero_group[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  hero_group: prismicT.GroupField<Simplify<LandingPageDocumentDataHeroGroupItem>>
+  /**
+   * clean_crafted_wine field in *home_page*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: landing_page.clean_crafted_wine[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  clean_crafted_wine: prismicT.GroupField<Simplify<LandingPageDocumentDataCleanCraftedWineItem>>
+  /**
+   * slick_panel field in *home_page*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: landing_page.slick_panel[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  slick_panel: prismicT.GroupField<Simplify<LandingPageDocumentDataSlickPanelItem>>
+  /**
+   * fearless_founder field in *home_page*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: landing_page.fearless_founder[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  fearless_founder: prismicT.GroupField<Simplify<LandingPageDocumentDataFearlessFounderItem>>
+}
+/**
+ * Item in home_page → hero_group
+ *
+ */
+export interface LandingPageDocumentDataHeroGroupItem {
+  /**
+   * image field in *home_page → hero_group*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: landing_page.hero_group[].image
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  image: prismicT.ImageField<never>
+  /**
+   * title field in *home_page → hero_group*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: SIT BACK & RELAX
+   * - **API ID Path**: landing_page.hero_group[].title
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.TitleField
+  /**
+   * Rich Title field in *home_page → hero_group*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: <h2>SIT BACK & RELAX</h2>
+   * - **API ID Path**: landing_page.hero_group[].rich_title
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  rich_title: prismicT.RichTextField
+  /**
+   * button_text field in *home_page → hero_group*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: join the wine clubs
+   * - **API ID Path**: landing_page.hero_group[].button_text
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  button_text: prismicT.RichTextField
+  /**
+   * anchor_text field in *home_page → hero_group*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: shop à la carte wines
+   * - **API ID Path**: landing_page.hero_group[].anchor_text
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  anchor_text: prismicT.RichTextField
+  /**
+   * button_link field in *home_page → hero_group*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: wine-club
+   * - **API ID Path**: landing_page.hero_group[].button_link
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  button_link: prismicT.RichTextField
+  /**
+   * anchor_link field in *home_page → hero_group*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: wine
+   * - **API ID Path**: landing_page.hero_group[].anchor_link
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  anchor_link: prismicT.RichTextField
+}
+/**
+ * Item in home_page → clean_crafted_wine
+ *
+ */
+export interface LandingPageDocumentDataCleanCraftedWineItem {
+  /**
+   * image field in *home_page → clean_crafted_wine*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: landing_page.clean_crafted_wine[].image
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  image: prismicT.ImageField<never>
+  /**
+   * title field in *home_page → clean_crafted_wine*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: SAY HELLO TO CLEAN-CRAFTED™WINE
+   * - **API ID Path**: landing_page.clean_crafted_wine[].title
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.TitleField
+  /**
+   * subtitle field in *home_page → clean_crafted_wine*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: CLEAN-CRAFTED™ wine 101
+   * - **API ID Path**: landing_page.clean_crafted_wine[].subtitle
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  subtitle: prismicT.TitleField
+  /**
+   * description field in *home_page → clean_crafted_wine*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Lorem ipsum dolor amet palo santo vexillologist pok pok tbh activated charcoal. Kickstarter tote bag umami waistcoat man braid hella vinyl try-hard venmo.
+   * - **API ID Path**: landing_page.clean_crafted_wine[].description
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  description: prismicT.RichTextField
+  /**
+   * button_text field in *home_page → clean_crafted_wine*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: learn more
+   * - **API ID Path**: landing_page.clean_crafted_wine[].button_text
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  button_text: prismicT.RichTextField
+  /**
+   * button_link field in *home_page → clean_crafted_wine*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: learn-more
+   * - **API ID Path**: landing_page.clean_crafted_wine[].button_link
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  button_link: prismicT.RichTextField
+}
+/**
+ * Item in home_page → slick_panel
+ *
+ */
+export interface LandingPageDocumentDataSlickPanelItem {
+  /**
+   * image field in *home_page → slick_panel*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: landing_page.slick_panel[].image
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  image: prismicT.ImageField<never>
+  /**
+   * title field in *home_page → slick_panel*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: landing_page.slick_panel[].title
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.TitleField
+  /**
+   * url field in *home_page → slick_panel*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: landing_page.slick_panel[].url
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  url: prismicT.TitleField
+}
+/**
+ * Item in home_page → fearless_founder
+ *
+ */
+export interface LandingPageDocumentDataFearlessFounderItem {
+  /**
+   * image field in *home_page → fearless_founder*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: landing_page.fearless_founder[].image
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  image: prismicT.ImageField<never>
+  /**
+   * title field in *home_page → fearless_founder*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: MEET OUR FEARLESS FOUNDER
+   * - **API ID Path**: landing_page.fearless_founder[].title
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.TitleField
+  /**
+   * decription field in *home_page → fearless_founder*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: SARAH SHADONIX WAS TIRED OF WINE HEADACHES. SO SHE DECIDED TO DO SOMETHING ABOUT IT
+   * - **API ID Path**: landing_page.fearless_founder[].decription
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  decription: prismicT.RichTextField
+  /**
+   * button_text field in *home_page → fearless_founder*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: learn more
+   * - **API ID Path**: landing_page.fearless_founder[].button_text
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  button_text: prismicT.RichTextField
+  /**
+   * button_link field in *home_page → fearless_founder*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: learn_more
+   * - **API ID Path**: landing_page.fearless_founder[].button_link
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  button_link: prismicT.RichTextField
+}
+/**
+ * home_page document from Prismic
+ *
+ * - **API ID**: `landing_page`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type LandingPageDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithUID<Simplify<LandingPageDocumentData>, 'landing_page', Lang>
+/** Content for login_page documents */
+interface LoginPageDocumentData {
+  /**
+   * title field in *login_page*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: login_page.title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.TitleField
+  /**
+   * get started field in *login_page*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: get started
+   * - **API ID Path**: login_page.get_started
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  get_started: prismicT.RichTextField
+  /**
+   * email field in *login_page*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: email
+   * - **API ID Path**: login_page.email
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  email: prismicT.RichTextField
+  /**
+   * email placeholder field in *login_page*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: email placeholder
+   * - **API ID Path**: login_page.email_placeholder
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  email_placeholder: prismicT.KeyTextField
+  /**
+   * invalid email error field in *login_page*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: is not a valid email address
+   * - **API ID Path**: login_page.invalid_email_error
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  invalid_email_error: prismicT.KeyTextField
+  /**
+   * are you a consultant field in *login_page*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: login_page.are_you_a_consultant
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  are_you_a_consultant: prismicT.RichTextField
+  /**
+   * password field in *login_page*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: login_page.password
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  password: prismicT.RichTextField
+  /**
+   * password placeholder field in *login_page*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: login_page.password_placeholder
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  password_placeholder: prismicT.KeyTextField
+  /**
+   * remember me checkbox field in *login_page*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: login_page.remember_me_checkbox
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  remember_me_checkbox: prismicT.KeyTextField
+  /**
+   * create password field in *login_page*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: login_page.create_password
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  create_password: prismicT.RichTextField
+  /**
+   * create password placeholder field in *login_page*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: login_page.create_password_placeholder
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  create_password_placeholder: prismicT.KeyTextField
+  /**
+   * error password field in *login_page*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: login_page.error_password
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  error_password: prismicT.RichTextField
+  /**
+   * Forgot password field in *login_page*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: login_page.forgot_password
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  forgot_password: prismicT.RichTextField
+  /**
+   * Find a consultant field in *login_page*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: login_page.find_a_consultant
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  find_a_consultant: prismicT.RichTextField
+  /**
+   * Have a consultant field in *login_page*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: login_page.have_a_consultant
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  have_a_consultant: prismicT.RichTextField
+  /**
+   * Embark on journey field in *login_page*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: login_page.embark_on_journey
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  embark_on_journey: prismicT.RichTextField
+}
+/**
+ * login_page document from Prismic
+ *
+ * - **API ID**: `login_page`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type LoginPageDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithUID<Simplify<LoginPageDocumentData>, 'login_page', Lang>
+/** Content for Marketing Page documents */
+interface MarketingPageDocumentData {
+  /**
+   * title field in *Marketing Page*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: marketing_page.title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.TitleField
+  /**
+   * Url field in *Marketing Page*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: marketing_page.url
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  url: prismicT.KeyTextField
+  /**
+   * description field in *Marketing Page*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: marketing_page.description
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  description: prismicT.RichTextField
+  /**
+   * first section field in *Marketing Page*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: marketing_page.first_section
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  first_section: prismicT.RelationField<'marketing_section'>
+  /**
+   * second section field in *Marketing Page*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: marketing_page.second_section
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  second_section: prismicT.RelationField<'marketing_section'>
+  /**
+   * carousel field in *Marketing Page*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: marketing_page.carousel[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  carousel: prismicT.GroupField<Simplify<MarketingPageDocumentDataCarouselItem>>
+  /**
+   * features title field in *Marketing Page*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: marketing_page.features_title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  features_title: prismicT.TitleField
+  /**
+   * Feature 1 Image field in *Marketing Page*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: marketing_page.feature_1_image
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  feature_1_image: prismicT.ImageField<never>
+  /**
+   * Feature 1 Title field in *Marketing Page*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: marketing_page.feature_1_title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  feature_1_title: prismicT.TitleField
+  /**
+   * Feature 1 Description field in *Marketing Page*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: marketing_page.feature_1_description
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  feature_1_description: prismicT.RichTextField
+  /**
+   * Feature 2 Image field in *Marketing Page*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: marketing_page.feature_2_image
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  feature_2_image: prismicT.ImageField<never>
+  /**
+   * Feature 2 Title field in *Marketing Page*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: marketing_page.feature_2_title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  feature_2_title: prismicT.TitleField
+  /**
+   * Feature 2 Description field in *Marketing Page*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: marketing_page.feature_2_description
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  feature_2_description: prismicT.RichTextField
+  /**
+   * Feature 3 Image field in *Marketing Page*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: marketing_page.feature_3_image
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  feature_3_image: prismicT.ImageField<never>
+  /**
+   * Feature 3 Title field in *Marketing Page*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: marketing_page.feature_3_title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  feature_3_title: prismicT.TitleField
+  /**
+   * Feature 3 Description field in *Marketing Page*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: marketing_page.feature_3_description
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  feature_3_description: prismicT.RichTextField
+  /**
+   * bottle collection field in *Marketing Page*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: marketing_page.bottle_collection
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  bottle_collection: prismicT.RelationField<'bottle_collections'>
+}
+/**
+ * Item in Marketing Page → carousel
+ *
+ */
+export interface MarketingPageDocumentDataCarouselItem {
+  /**
+   * carousel item field in *Marketing Page → carousel*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: marketing_page.carousel[].carousel_item
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  carousel_item: prismicT.RelationField<'marketing_section'>
+}
+/**
+ * Marketing Page document from Prismic
+ *
+ * - **API ID**: `marketing_page`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type MarketingPageDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithUID<Simplify<MarketingPageDocumentData>, 'marketing_page', Lang>
+/** Content for marketing page feature documents */
+interface MarketingPageFeatureDocumentData {
+  /**
+   * title field in *marketing page feature*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: marketing_page_feature.title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.TitleField
+  /**
+   * description field in *marketing page feature*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: marketing_page_feature.description
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  description: prismicT.RichTextField
+  /**
+   * image field in *marketing page feature*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: marketing_page_feature.image
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  image: prismicT.ImageField<never>
+}
+/**
+ * marketing page feature document from Prismic
+ *
+ * - **API ID**: `marketing_page_feature`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type MarketingPageFeatureDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithUID<
+    Simplify<MarketingPageFeatureDocumentData>,
+    'marketing_page_feature',
+    Lang
+  >
+/** Content for marketing section documents */
+interface MarketingSectionDocumentData {
+  /**
+   * section title field in *marketing section*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: marketing_section.section_title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  section_title: prismicT.RichTextField
+  /**
+   * section secondary title field in *marketing section*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: marketing_section.section_secondary_title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  section_secondary_title: prismicT.TitleField
+  /**
+   * section description field in *marketing section*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: marketing_section.section_description
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  section_description: prismicT.RichTextField
+  /**
+   * section CTA text field in *marketing section*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: marketing_section.section_cta_text
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  section_cta_text: prismicT.KeyTextField
+  /**
+   * section CTA url field in *marketing section*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: marketing_section.section_cta_url
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  section_cta_url: prismicT.KeyTextField
+  /**
+   * Section CTA Party Url field in *marketing section*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: marketing_section.section_cta_party_url
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  section_cta_party_url: prismicT.KeyTextField
+  /**
+   * Slice zone field in *marketing section*
+   *
+   * - **Field Type**: Slice Zone
+   * - **Placeholder**: *None*
+   * - **API ID Path**: marketing_section.body[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/slices
+   *
+   */
+  body: prismicT.SliceZone<MarketingSectionDocumentDataBodySlice>
+}
+/**
+ * Primary content in marketing section → Slice zone → `media` → Primary
+ *
+ */
+interface MarketingSectionDocumentDataBodyMediaSlicePrimary {
+  /**
+   * hero cover image field in *marketing section → Slice zone → `media` → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: marketing_section.body[].media.primary.hero_cover_image
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  hero_cover_image: prismicT.ImageField<never>
+  /**
+   * hero media field in *marketing section → Slice zone → `media` → Primary*
+   *
+   * - **Field Type**: Embed
+   * - **Placeholder**: *None*
+   * - **API ID Path**: marketing_section.body[].media.primary.hero_media
+   * - **Documentation**: https://prismic.io/docs/core-concepts/embed
+   *
+   */
+  hero_media: prismicT.EmbedField
+  /**
+   * video autoplay field in *marketing section → Slice zone → `media` → Primary*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **Default Value**: enable
+   * - **API ID Path**: marketing_section.body[].media.primary.video_autoplay
+   * - **Documentation**: https://prismic.io/docs/core-concepts/select
+   *
+   */
+  video_autoplay: prismicT.SelectField<'enable' | 'disable', 'filled'>
+}
+export type MarketingSectionDocumentDataBodyMediaSlice = prismicT.Slice<
+  'media',
+  Simplify<MarketingSectionDocumentDataBodyMediaSlicePrimary>,
+  never
+>
+/**
+ * Primary content in marketing section → Slice zone → `image` → Primary
+ *
+ */
+interface MarketingSectionDocumentDataBodyImageSlicePrimary {
+  /**
+   * hero image field in *marketing section → Slice zone → `image` → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: marketing_section.body[].image.primary.hero_image
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  hero_image: prismicT.ImageField<never>
+}
+export type MarketingSectionDocumentDataBodyImageSlice = prismicT.Slice<
+  'image',
+  Simplify<MarketingSectionDocumentDataBodyImageSlicePrimary>,
+  never
+>
+/**
+ * Primary content in marketing section → Slice zone → `video` → Primary
+ *
+ */
+interface MarketingSectionDocumentDataBodyVideoSlicePrimary {
+  /**
+   * hero cover image field in *marketing section → Slice zone → `video` → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: marketing_section.body[].video.primary.hero_cover_image
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  hero_cover_image: prismicT.ImageField<never>
+  /**
+   * hero video url field in *marketing section → Slice zone → `video` → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: marketing_section.body[].video.primary.hero_video_url
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  hero_video_url: prismicT.KeyTextField
+  /**
+   * Video autoplay field in *marketing section → Slice zone → `video` → Primary*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **Default Value**: disable
+   * - **API ID Path**: marketing_section.body[].video.primary.video_autoplay
+   * - **Documentation**: https://prismic.io/docs/core-concepts/select
+   *
+   */
+  video_autoplay: prismicT.SelectField<'disable' | 'enable', 'filled'>
+}
+export type MarketingSectionDocumentDataBodyVideoSlice = prismicT.Slice<
+  'video',
+  Simplify<MarketingSectionDocumentDataBodyVideoSlicePrimary>,
+  never
+>
+/**
+ * Slice for *marketing section → Slice zone*
+ *
+ */
+type MarketingSectionDocumentDataBodySlice =
+  | MarketingSectionDocumentDataBodyMediaSlice
+  | MarketingSectionDocumentDataBodyImageSlice
+  | MarketingSectionDocumentDataBodyVideoSlice
+/**
+ * marketing section document from Prismic
+ *
+ * - **API ID**: `marketing_section`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type MarketingSectionDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithUID<Simplify<MarketingSectionDocumentData>, 'marketing_section', Lang>
+/** Content for Merch plp top banner documents */
+type MerchPlpTopBannerDocumentData = Record<string, never>
+/**
+ * Merch plp top banner document from Prismic
+ *
+ * - **API ID**: `merch_plp_top_banner`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type MerchPlpTopBannerDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<
+    Simplify<MerchPlpTopBannerDocumentData>,
+    'merch_plp_top_banner',
+    Lang
+  >
+/** Content for Nav Menu documents */
+interface NavMenuDocumentData {
+  /**
+   * menu-name field in *Nav Menu*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: nav-menu."menu-name"
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  'menu-name': prismicT.RichTextField
+  /**
+   * menu-url field in *Nav Menu*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: nav-menu."menu-url"
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  'menu-url': prismicT.RichTextField
+  /**
+   * sub-menu field in *Nav Menu*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: nav-menu."main-menu"[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  'main-menu': prismicT.GroupField<Simplify<NavMenuDocumentDataMainMenuItem>>
+}
+/**
+ * Item in Nav Menu → sub-menu
+ *
+ */
+export interface NavMenuDocumentDataMainMenuItem {
+  /**
+   * sub-menu-name field in *Nav Menu → sub-menu*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: nav-menu."main-menu"[]."sub-menu-name"
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  'sub-menu-name': prismicT.RichTextField
+  /**
+   * sub-menu-url field in *Nav Menu → sub-menu*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: nav-menu."main-menu"[]."sub-menu-url"
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  'sub-menu-url': prismicT.RichTextField
+  /**
+   * sub-menu-link field in *Nav Menu → sub-menu*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: nav-menu."main-menu"[]."sub-menu-link"
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  'sub-menu-link': prismicT.LinkField
+}
+/**
+ * Nav Menu document from Prismic
+ *
+ * - **API ID**: `nav-menu`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type NavMenuDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithUID<Simplify<NavMenuDocumentData>, 'nav-menu', Lang>
+/** Content for New Home Test documents */
+interface NewHomeTestDocumentData {
+  /**
+   * Slice zone field in *New Home Test*
+   *
+   * - **Field Type**: Slice Zone
+   * - **Placeholder**: *None*
+   * - **API ID Path**: new_home_test.body[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/slices
+   *
+   */
+  body: prismicT.SliceZone<NewHomeTestDocumentDataBodySlice>
+}
+/**
+ * Primary content in New Home Test → Slice zone → `call_to_action` → Primary
+ *
+ */
+interface NewHomeTestDocumentDataBodyCallToActionSlicePrimary {
+  /**
+   * Icon Image field in *New Home Test → Slice zone → `call_to_action` → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: new_home_test.body[].call_to_action.primary.icon_image
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  icon_image: prismicT.ImageField<never>
+  /**
+   * Title field in *New Home Test → Slice zone → `call_to_action` → Primary*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: new_home_test.body[].call_to_action.primary.title
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.TitleField
+  /**
+   * Paragraph field in *New Home Test → Slice zone → `call_to_action` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: new_home_test.body[].call_to_action.primary.paragraph
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  paragraph: prismicT.RichTextField
+  /**
+   * Button Link field in *New Home Test → Slice zone → `call_to_action` → Primary*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: new_home_test.body[].call_to_action.primary.button_link
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  button_link: prismicT.LinkField
+  /**
+   * Button Label field in *New Home Test → Slice zone → `call_to_action` → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Text for button
+   * - **API ID Path**: new_home_test.body[].call_to_action.primary.button_label
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  button_label: prismicT.KeyTextField
+}
+export type NewHomeTestDocumentDataBodyCallToActionSlice = prismicT.Slice<
+  'call_to_action',
+  Simplify<NewHomeTestDocumentDataBodyCallToActionSlicePrimary>,
+  never
+>
+/**
+ * Primary content in New Home Test → Slice zone → `feature_testimonials` → Primary
+ *
+ */
+interface NewHomeTestDocumentDataBodyFeatureTestimonialsSlicePrimary {
+  /**
+   * Eyebrow headline field in *New Home Test → Slice zone → `feature_testimonials` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Reinforce your copy with a key-worded text, to be displayed before title
+   * - **API ID Path**: new_home_test.body[].feature_testimonials.primary.eyebrow_headline
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  eyebrow_headline: prismicT.RichTextField
+  /**
+   * Title field in *New Home Test → Slice zone → `feature_testimonials` → Primary*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: Our testimonial
+   * - **API ID Path**: new_home_test.body[].feature_testimonials.primary.title
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.TitleField
+  /**
+   * Description field in *New Home Test → Slice zone → `feature_testimonials` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: These are some awesome tutorials from our awesome clients ...
+   * - **API ID Path**: new_home_test.body[].feature_testimonials.primary.description
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  description: prismicT.RichTextField
+  /**
+   * Feature Illustration field in *New Home Test → Slice zone → `feature_testimonials` → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: new_home_test.body[].feature_testimonials.primary.feature_illustration
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  feature_illustration: prismicT.ImageField<never>
+}
+/**
+ * Item in New Home Test → Slice zone → `feature_testimonials` → Items
+ *
+ */
+export interface NewHomeTestDocumentDataBodyFeatureTestimonialsSliceItem {
+  /**
+   * Client logo field in *New Home Test → Slice zone → `feature_testimonials` → Items*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: new_home_test.body[].feature_testimonials.items[].client_logo
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  client_logo: prismicT.ImageField<never>
+  /**
+   * Profile Pic field in *New Home Test → Slice zone → `feature_testimonials` → Items*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: new_home_test.body[].feature_testimonials.items[].profile_pic
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  profile_pic: prismicT.ImageField<never>
+  /**
+   * Quote field in *New Home Test → Slice zone → `feature_testimonials` → Items*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Lorem ipsum dolor sit amet, ....
+   * - **API ID Path**: new_home_test.body[].feature_testimonials.items[].quote
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  quote: prismicT.RichTextField
+  /**
+   * Name field in *New Home Test → Slice zone → `feature_testimonials` → Items*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: John McJohn
+   * - **API ID Path**: new_home_test.body[].feature_testimonials.items[].name
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  name: prismicT.RichTextField
+  /**
+   * Role position field in *New Home Test → Slice zone → `feature_testimonials` → Items*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Creative Director
+   * - **API ID Path**: new_home_test.body[].feature_testimonials.items[].role_position
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  role_position: prismicT.RichTextField
+}
+export type NewHomeTestDocumentDataBodyFeatureTestimonialsSlice = prismicT.Slice<
+  'feature_testimonials',
+  Simplify<NewHomeTestDocumentDataBodyFeatureTestimonialsSlicePrimary>,
+  Simplify<NewHomeTestDocumentDataBodyFeatureTestimonialsSliceItem>
+>
+/**
+ * Primary content in New Home Test → Slice zone → `customer_logos` → Primary
+ *
+ */
+interface NewHomeTestDocumentDataBodyCustomerLogosSlicePrimary {
+  /**
+   * Eyebrow Headline field in *New Home Test → Slice zone → `customer_logos` → Primary*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: Trusted by
+   * - **API ID Path**: new_home_test.body[].customer_logos.primary.eyebrow_headline
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  eyebrow_headline: prismicT.TitleField
+  /**
+   * Call To Action field in *New Home Test → Slice zone → `customer_logos` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: View customer stories
+   * - **API ID Path**: new_home_test.body[].customer_logos.primary.call_to_action
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  call_to_action: prismicT.RichTextField
+  /**
+   * Call to Action Link field in *New Home Test → Slice zone → `customer_logos` → Primary*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: Could be a signup link, or a link to customer stories
+   * - **API ID Path**: new_home_test.body[].customer_logos.primary.call_to_action_link
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  call_to_action_link: prismicT.LinkField
+}
+/**
+ * Item in New Home Test → Slice zone → `customer_logos` → Items
+ *
+ */
+export interface NewHomeTestDocumentDataBodyCustomerLogosSliceItem {
+  /**
+   * Logo field in *New Home Test → Slice zone → `customer_logos` → Items*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: new_home_test.body[].customer_logos.items[].logo
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  logo: prismicT.ImageField<never>
+  /**
+   * link field in *New Home Test → Slice zone → `customer_logos` → Items*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: Could be a link to use case, press article, signup...
+   * - **API ID Path**: new_home_test.body[].customer_logos.items[].link
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  link: prismicT.LinkField
+}
+export type NewHomeTestDocumentDataBodyCustomerLogosSlice = prismicT.Slice<
+  'customer_logos',
+  Simplify<NewHomeTestDocumentDataBodyCustomerLogosSlicePrimary>,
+  Simplify<NewHomeTestDocumentDataBodyCustomerLogosSliceItem>
+>
+/**
+ * Primary content in New Home Test → Slice zone → `video_highlights` → Primary
+ *
+ */
+interface NewHomeTestDocumentDataBodyVideoHighlightsSlicePrimary {
+  /**
+   * Eyebrow headline field in *New Home Test → Slice zone → `video_highlights` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Reinforce your copy with a key-worded text, to be displayed before title
+   * - **API ID Path**: new_home_test.body[].video_highlights.primary.eyebrow_headline
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  eyebrow_headline: prismicT.RichTextField
+  /**
+   * Title field in *New Home Test → Slice zone → `video_highlights` → Primary*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: Video Highlights
+   * - **API ID Path**: new_home_test.body[].video_highlights.primary.title
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.TitleField
+  /**
+   * Description field in *New Home Test → Slice zone → `video_highlights` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: These are some awesome videos ...
+   * - **API ID Path**: new_home_test.body[].video_highlights.primary.description
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  description: prismicT.RichTextField
+}
+/**
+ * Item in New Home Test → Slice zone → `video_highlights` → Items
+ *
+ */
+export interface NewHomeTestDocumentDataBodyVideoHighlightsSliceItem {
+  /**
+   * Video title field in *New Home Test → Slice zone → `video_highlights` → Items*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: My awesome video
+   * - **API ID Path**: new_home_test.body[].video_highlights.items[].video_title
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  video_title: prismicT.RichTextField
+  /**
+   * Video src field in *New Home Test → Slice zone → `video_highlights` → Items*
+   *
+   * - **Field Type**: Embed
+   * - **Placeholder**: *None*
+   * - **API ID Path**: new_home_test.body[].video_highlights.items[].video_src
+   * - **Documentation**: https://prismic.io/docs/core-concepts/embed
+   *
+   */
+  video_src: prismicT.EmbedField
+}
+export type NewHomeTestDocumentDataBodyVideoHighlightsSlice = prismicT.Slice<
+  'video_highlights',
+  Simplify<NewHomeTestDocumentDataBodyVideoHighlightsSlicePrimary>,
+  Simplify<NewHomeTestDocumentDataBodyVideoHighlightsSliceItem>
+>
+/**
+ * Slice for *New Home Test → Slice zone*
+ *
+ */
+type NewHomeTestDocumentDataBodySlice =
+  | NewHomeTestDocumentDataBodyCallToActionSlice
+  | NewHomeTestDocumentDataBodyFeatureTestimonialsSlice
+  | NewHomeTestDocumentDataBodyCustomerLogosSlice
+  | NewHomeTestDocumentDataBodyVideoHighlightsSlice
+/**
+ * New Home Test document from Prismic
+ *
+ * - **API ID**: `new_home_test`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type NewHomeTestDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<Simplify<NewHomeTestDocumentData>, 'new_home_test', Lang>
+/** Content for new_products_page_v2 documents */
+interface NewProductsPageV2DocumentData {
+  /**
+   * url field in *new_products_page_v2*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: new_products_page_v2.url
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  url: prismicT.KeyTextField
+  /**
+   * new_product_heading field in *new_products_page_v2*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: new_products_page_v2.new_product_heading
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  new_product_heading: prismicT.RichTextField
+  /**
+   * new_product_subheading field in *new_products_page_v2*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: new_products_page_v2.new_product_subheading
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  new_product_subheading: prismicT.RichTextField
+  /**
+   * reds_section_title field in *new_products_page_v2*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Reds
+   * - **API ID Path**: new_products_page_v2.reds_section_title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  reds_section_title: prismicT.RichTextField
+  /**
+   * reds_products_section field in *new_products_page_v2*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: new_products_page_v2.reds_products_section[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  reds_products_section: prismicT.GroupField<
+    Simplify<NewProductsPageV2DocumentDataRedsProductsSectionItem>
+  >
+  /**
+   * whites_section_title field in *new_products_page_v2*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Whites
+   * - **API ID Path**: new_products_page_v2.whites_section_title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  whites_section_title: prismicT.RichTextField
+  /**
+   * whites_products_section field in *new_products_page_v2*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: new_products_page_v2.whites_products_section[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  whites_products_section: prismicT.GroupField<
+    Simplify<NewProductsPageV2DocumentDataWhitesProductsSectionItem>
+  >
+  /**
+   * roses_section_title field in *new_products_page_v2*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Rosés
+   * - **API ID Path**: new_products_page_v2.roses_section_title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  roses_section_title: prismicT.RichTextField
+  /**
+   * roses_products_section field in *new_products_page_v2*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: new_products_page_v2.roses_products_section[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  roses_products_section: prismicT.GroupField<
+    Simplify<NewProductsPageV2DocumentDataRosesProductsSectionItem>
+  >
+  /**
+   * sparklings_section_title field in *new_products_page_v2*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Sparklings
+   * - **API ID Path**: new_products_page_v2.sparklings_section_title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  sparklings_section_title: prismicT.RichTextField
+  /**
+   * sparklings_products_section field in *new_products_page_v2*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: new_products_page_v2.sparklings_products_section[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  sparklings_products_section: prismicT.GroupField<
+    Simplify<NewProductsPageV2DocumentDataSparklingsProductsSectionItem>
+  >
+  /**
+   * cans_section_title field in *new_products_page_v2*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Cans
+   * - **API ID Path**: new_products_page_v2.cans_section_title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  cans_section_title: prismicT.RichTextField
+  /**
+   * cans_products_section field in *new_products_page_v2*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: new_products_page_v2.cans_products_section[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  cans_products_section: prismicT.GroupField<
+    Simplify<NewProductsPageV2DocumentDataCansProductsSectionItem>
+  >
+  /**
+   * seth_section_title field in *new_products_page_v2*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Sets
+   * - **API ID Path**: new_products_page_v2.seth_section_title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  seth_section_title: prismicT.RichTextField
+  /**
+   * sets_product_section field in *new_products_page_v2*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: new_products_page_v2.sets_product_section[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  sets_product_section: prismicT.GroupField<
+    Simplify<NewProductsPageV2DocumentDataSetsProductSectionItem>
+  >
+  /**
+   * other_product_title field in *new_products_page_v2*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Other
+   * - **API ID Path**: new_products_page_v2.other_product_title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  other_product_title: prismicT.RichTextField
+  /**
+   * other_product_section field in *new_products_page_v2*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: new_products_page_v2.other_product_section[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  other_product_section: prismicT.GroupField<
+    Simplify<NewProductsPageV2DocumentDataOtherProductSectionItem>
+  >
+}
+/**
+ * Item in new_products_page_v2 → reds_products_section
+ *
+ */
+export interface NewProductsPageV2DocumentDataRedsProductsSectionItem {
+  /**
+   * reds_product field in *new_products_page_v2 → reds_products_section*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: new_products_page_v2.reds_products_section[].reds_product
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  reds_product: prismicT.LinkField
+}
+/**
+ * Item in new_products_page_v2 → whites_products_section
+ *
+ */
+export interface NewProductsPageV2DocumentDataWhitesProductsSectionItem {
+  /**
+   * whites_product field in *new_products_page_v2 → whites_products_section*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: new_products_page_v2.whites_products_section[].whites_product
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  whites_product: prismicT.LinkField
+}
+/**
+ * Item in new_products_page_v2 → roses_products_section
+ *
+ */
+export interface NewProductsPageV2DocumentDataRosesProductsSectionItem {
+  /**
+   * roses_product field in *new_products_page_v2 → roses_products_section*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: new_products_page_v2.roses_products_section[].roses_product
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  roses_product: prismicT.LinkField
+}
+/**
+ * Item in new_products_page_v2 → sparklings_products_section
+ *
+ */
+export interface NewProductsPageV2DocumentDataSparklingsProductsSectionItem {
+  /**
+   * sparklings_product field in *new_products_page_v2 → sparklings_products_section*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: new_products_page_v2.sparklings_products_section[].sparklings_product
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  sparklings_product: prismicT.LinkField
+}
+/**
+ * Item in new_products_page_v2 → cans_products_section
+ *
+ */
+export interface NewProductsPageV2DocumentDataCansProductsSectionItem {
+  /**
+   * cans_product field in *new_products_page_v2 → cans_products_section*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: new_products_page_v2.cans_products_section[].cans_product
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  cans_product: prismicT.LinkField
+}
+/**
+ * Item in new_products_page_v2 → sets_product_section
+ *
+ */
+export interface NewProductsPageV2DocumentDataSetsProductSectionItem {
+  /**
+   * sets_product field in *new_products_page_v2 → sets_product_section*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: new_products_page_v2.sets_product_section[].sets_product
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  sets_product: prismicT.LinkField
+}
+/**
+ * Item in new_products_page_v2 → other_product_section
+ *
+ */
+export interface NewProductsPageV2DocumentDataOtherProductSectionItem {
+  /**
+   * other_product field in *new_products_page_v2 → other_product_section*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: new_products_page_v2.other_product_section[].other_product
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  other_product: prismicT.LinkField
+}
+/**
+ * new_products_page_v2 document from Prismic
+ *
+ * - **API ID**: `new_products_page_v2`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type NewProductsPageV2Document<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithUID<
+    Simplify<NewProductsPageV2DocumentData>,
+    'new_products_page_v2',
+    Lang
+  >
+/** Content for New Products Page documents */
+interface NewProductsPageDocumentData {
+  /**
+   * url field in *New Products Page*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: new-products-page.url
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  url: prismicT.KeyTextField
+  /**
+   * new_product_heading field in *New Products Page*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: new-products-page.new_product_heading
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  new_product_heading: prismicT.RichTextField
+  /**
+   * new_product_subheading field in *New Products Page*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: new-products-page.new_product_subheading
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  new_product_subheading: prismicT.RichTextField
+  /**
+   * reds_section_title field in *New Products Page*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Reds
+   * - **API ID Path**: new-products-page.reds_section_title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  reds_section_title: prismicT.RichTextField
+  /**
+   * reds_products_section field in *New Products Page*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: new-products-page.reds_products_section[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  reds_products_section: prismicT.GroupField<
+    Simplify<NewProductsPageDocumentDataRedsProductsSectionItem>
+  >
+  /**
+   * whites_section_title field in *New Products Page*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Whites
+   * - **API ID Path**: new-products-page.whites_section_title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  whites_section_title: prismicT.RichTextField
+  /**
+   * whites_products_section field in *New Products Page*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: new-products-page.whites_products_section[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  whites_products_section: prismicT.GroupField<
+    Simplify<NewProductsPageDocumentDataWhitesProductsSectionItem>
+  >
+  /**
+   * roses_section_title field in *New Products Page*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Rosés
+   * - **API ID Path**: new-products-page.roses_section_title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  roses_section_title: prismicT.RichTextField
+  /**
+   * roses_products_section field in *New Products Page*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: new-products-page.roses_products_section[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  roses_products_section: prismicT.GroupField<
+    Simplify<NewProductsPageDocumentDataRosesProductsSectionItem>
+  >
+  /**
+   * sparklings_section_title field in *New Products Page*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Sparklings
+   * - **API ID Path**: new-products-page.sparklings_section_title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  sparklings_section_title: prismicT.RichTextField
+  /**
+   * sparklings_products_section field in *New Products Page*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: new-products-page.sparklings_products_section[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  sparklings_products_section: prismicT.GroupField<
+    Simplify<NewProductsPageDocumentDataSparklingsProductsSectionItem>
+  >
+  /**
+   * cans_section_title field in *New Products Page*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Cans
+   * - **API ID Path**: new-products-page.cans_section_title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  cans_section_title: prismicT.RichTextField
+  /**
+   * cans_products_section field in *New Products Page*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: new-products-page.cans_products_section[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  cans_products_section: prismicT.GroupField<
+    Simplify<NewProductsPageDocumentDataCansProductsSectionItem>
+  >
+  /**
+   * Sets Section Title field in *New Products Page*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: new-products-page.sets_section_title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  sets_section_title: prismicT.RichTextField
+  /**
+   * Sets Products Section field in *New Products Page*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: new-products-page.sets_products_section[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  sets_products_section: prismicT.GroupField<
+    Simplify<NewProductsPageDocumentDataSetsProductsSectionItem>
+  >
+  /**
+   * Other Section Title field in *New Products Page*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: new-products-page.other_section_title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  other_section_title: prismicT.RichTextField
+  /**
+   * Other Products Section field in *New Products Page*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: new-products-page.other_products_section[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  other_products_section: prismicT.GroupField<
+    Simplify<NewProductsPageDocumentDataOtherProductsSectionItem>
+  >
+  /**
+   * Body field in *New Products Page*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: new-products-page.body
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  body: prismicT.RichTextField
+}
+/**
+ * Item in New Products Page → reds_products_section
+ *
+ */
+export interface NewProductsPageDocumentDataRedsProductsSectionItem {
+  /**
+   * reds_product field in *New Products Page → reds_products_section*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: new-products-page.reds_products_section[].reds_product
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  reds_product: prismicT.LinkField
+}
+/**
+ * Item in New Products Page → whites_products_section
+ *
+ */
+export interface NewProductsPageDocumentDataWhitesProductsSectionItem {
+  /**
+   * whites_product field in *New Products Page → whites_products_section*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: new-products-page.whites_products_section[].whites_product
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  whites_product: prismicT.LinkField
+}
+/**
+ * Item in New Products Page → roses_products_section
+ *
+ */
+export interface NewProductsPageDocumentDataRosesProductsSectionItem {
+  /**
+   * roses_product field in *New Products Page → roses_products_section*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: new-products-page.roses_products_section[].roses_product
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  roses_product: prismicT.LinkField
+}
+/**
+ * Item in New Products Page → sparklings_products_section
+ *
+ */
+export interface NewProductsPageDocumentDataSparklingsProductsSectionItem {
+  /**
+   * sparklings_product field in *New Products Page → sparklings_products_section*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: new-products-page.sparklings_products_section[].sparklings_product
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  sparklings_product: prismicT.LinkField
+}
+/**
+ * Item in New Products Page → cans_products_section
+ *
+ */
+export interface NewProductsPageDocumentDataCansProductsSectionItem {
+  /**
+   * cans_product field in *New Products Page → cans_products_section*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: new-products-page.cans_products_section[].cans_product
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  cans_product: prismicT.LinkField
+}
+/**
+ * Item in New Products Page → Sets Products Section
+ *
+ */
+export interface NewProductsPageDocumentDataSetsProductsSectionItem {
+  /**
+   * Sets Product field in *New Products Page → Sets Products Section*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: new-products-page.sets_products_section[].sets_product
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  sets_product: prismicT.LinkField
+}
+/**
+ * Item in New Products Page → Other Products Section
+ *
+ */
+export interface NewProductsPageDocumentDataOtherProductsSectionItem {
+  /**
+   * Other Product field in *New Products Page → Other Products Section*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: new-products-page.other_products_section[].other_product
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  other_product: prismicT.LinkField
+}
+/**
+ * New Products Page document from Prismic
+ *
+ * - **API ID**: `new-products-page`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type NewProductsPageDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithUID<Simplify<NewProductsPageDocumentData>, 'new-products-page', Lang>
+/** Content for Not Found Message documents */
+interface NotFoundMessageDocumentData {
+  /**
+   * Title field in *Not Found Message*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: not_found_message.title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.RichTextField
+  /**
+   * Subtitle field in *Not Found Message*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: not_found_message.subtitle
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  subtitle: prismicT.RichTextField
+  /**
+   * Footer Title field in *Not Found Message*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: not_found_message.footer_title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  footer_title: prismicT.RichTextField
+  /**
+   * Image One field in *Not Found Message*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: not_found_message.image_one
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  image_one: prismicT.ImageField<never>
+  /**
+   * Image Two field in *Not Found Message*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: not_found_message.image_two
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  image_two: prismicT.ImageField<never>
+  /**
+   * Image Three field in *Not Found Message*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: not_found_message.image_three
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  image_three: prismicT.ImageField<never>
+  /**
+   * Footer Text field in *Not Found Message*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: not_found_message.footer_text
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  footer_text: prismicT.RichTextField
+  /**
+   * Button Text field in *Not Found Message*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: not_found_message.button_text
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  button_text: prismicT.RichTextField
+  /**
+   * Button Link field in *Not Found Message*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: not_found_message.button_link
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  button_link: prismicT.RichTextField
+  /**
+   * Slice zone field in *Not Found Message*
+   *
+   * - **Field Type**: Slice Zone
+   * - **Placeholder**: *None*
+   * - **API ID Path**: not_found_message.body[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/slices
+   *
+   */
+  body: prismicT.SliceZone<NotFoundMessageDocumentDataBodySlice>
+}
+/**
+ * Primary content in Not Found Message → Slice zone → `product_showcase` → Primary
+ *
+ */
+interface NotFoundMessageDocumentDataBodyProductShowcaseSlicePrimary {
+  /**
+   * Login Status field in *Not Found Message → Slice zone → `product_showcase` → Primary*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: not_found_message.body[].product_showcase.primary.login_status
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  login_status: prismicT.BooleanField
+  /**
+   * Title field in *Not Found Message → Slice zone → `product_showcase` → Primary*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: not_found_message.body[].product_showcase.primary.title
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.TitleField
+  /**
+   * Title Highlight Color field in *Not Found Message → Slice zone → `product_showcase` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: not_found_message.body[].product_showcase.primary.title_highlight_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  title_highlight_color: prismicT.ColorField
+  /**
+   * Background Color field in *Not Found Message → Slice zone → `product_showcase` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: not_found_message.body[].product_showcase.primary.background_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  background_color: prismicT.ColorField
+  /**
+   * Accent Color field in *Not Found Message → Slice zone → `product_showcase` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: not_found_message.body[].product_showcase.primary.accent_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  accent_color: prismicT.ColorField
+}
+/**
+ * Item in Not Found Message → Slice zone → `product_showcase` → Items
+ *
+ */
+export interface NotFoundMessageDocumentDataBodyProductShowcaseSliceItem {
+  /**
+   * Product field in *Not Found Message → Slice zone → `product_showcase` → Items*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: not_found_message.body[].product_showcase.items[].product
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  product: prismicT.RelationField<'product'>
+}
+export type NotFoundMessageDocumentDataBodyProductShowcaseSlice = prismicT.Slice<
+  'product_showcase',
+  Simplify<NotFoundMessageDocumentDataBodyProductShowcaseSlicePrimary>,
+  Simplify<NotFoundMessageDocumentDataBodyProductShowcaseSliceItem>
+>
+/**
+ * Primary content in Not Found Message → Slice zone → `brand_gallery` → Primary
+ *
+ */
+interface NotFoundMessageDocumentDataBodyBrandGallerySlicePrimary {
+  /**
+   * Login Status field in *Not Found Message → Slice zone → `brand_gallery` → Primary*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: not_found_message.body[].brand_gallery.primary.login_status
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  login_status: prismicT.BooleanField
+  /**
+   * Title field in *Not Found Message → Slice zone → `brand_gallery` → Primary*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: not_found_message.body[].brand_gallery.primary.title
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.TitleField
+  /**
+   * Highlight Color field in *Not Found Message → Slice zone → `brand_gallery` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: not_found_message.body[].brand_gallery.primary.highlight_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  highlight_color: prismicT.ColorField
+}
+/**
+ * Item in Not Found Message → Slice zone → `brand_gallery` → Items
+ *
+ */
+export interface NotFoundMessageDocumentDataBodyBrandGallerySliceItem {
+  /**
+   * Brand Image field in *Not Found Message → Slice zone → `brand_gallery` → Items*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: not_found_message.body[].brand_gallery.items[].brand_image
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  brand_image: prismicT.ImageField<never>
+  /**
+   * Brand Name field in *Not Found Message → Slice zone → `brand_gallery` → Items*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: not_found_message.body[].brand_gallery.items[].brand_name
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  brand_name: prismicT.TitleField
+  /**
+   * Brand field in *Not Found Message → Slice zone → `brand_gallery` → Items*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: not_found_message.body[].brand_gallery.items[].brand
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  brand: prismicT.RelationField<'brand-details'>
+}
+export type NotFoundMessageDocumentDataBodyBrandGallerySlice = prismicT.Slice<
+  'brand_gallery',
+  Simplify<NotFoundMessageDocumentDataBodyBrandGallerySlicePrimary>,
+  Simplify<NotFoundMessageDocumentDataBodyBrandGallerySliceItem>
+>
+/**
+ * Slice for *Not Found Message → Slice zone*
+ *
+ */
+type NotFoundMessageDocumentDataBodySlice =
+  | NotFoundMessageDocumentDataBodyProductShowcaseSlice
+  | NotFoundMessageDocumentDataBodyBrandGallerySlice
+/**
+ * Not Found Message document from Prismic
+ *
+ * - **API ID**: `not_found_message`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type NotFoundMessageDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<
+    Simplify<NotFoundMessageDocumentData>,
+    'not_found_message',
+    Lang
+  >
+/** Content for pairing icon documents */
+interface PairingIconDocumentData {
+  /**
+   * caption field in *pairing icon*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pairing_icon.caption
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  caption: prismicT.KeyTextField
+  /**
+   * icon field in *pairing icon*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pairing_icon.icon
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  icon: prismicT.ImageField<never>
+}
+/**
+ * pairing icon document from Prismic
+ *
+ * - **API ID**: `pairing_icon`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type PairingIconDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithUID<Simplify<PairingIconDocumentData>, 'pairing_icon', Lang>
+/** Content for PDP V1 documents */
+interface PdpDocumentData {
+  /**
+   * URL field in *PDP V1*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Enter the Cart URL from Flight (must be exact for previews)
+   * - **API ID Path**: pdp.url
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  url: prismicT.RichTextField
+  /**
+   * Highlight Color field in *PDP V1*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pdp.highlight_color
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  highlight_color: prismicT.ColorField
+  /**
+   * Images field in *PDP V1*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pdp.images[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  images: prismicT.GroupField<Simplify<PdpDocumentDataImagesItem>>
+  /**
+   * Tasting Video field in *PDP V1*
+   *
+   * - **Field Type**: Embed
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pdp.tasting_video
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/embed
+   *
+   */
+  tasting_video: prismicT.EmbedField
+  /**
+   * Videos field in *PDP V1*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pdp.videos[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  videos: prismicT.GroupField<Simplify<PdpDocumentDataVideosItem>>
+  /**
+   * Summary field in *PDP V1*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Enter the product summary
+   * - **API ID Path**: pdp.summary
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  summary: prismicT.RichTextField
+  /**
+   * Slice zone field in *PDP V1*
+   *
+   * - **Field Type**: Slice Zone
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pdp.body[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/slices
+   *
+   */
+  body: prismicT.SliceZone<PdpDocumentDataBodySlice>
+}
+/**
+ * Item in PDP V1 → Images
+ *
+ */
+export interface PdpDocumentDataImagesItem {
+  /**
+   * Image field in *PDP V1 → Images*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pdp.images[].image
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  image: prismicT.ImageField<never>
+}
+/**
+ * Item in PDP V1 → Videos
+ *
+ */
+export interface PdpDocumentDataVideosItem {
+  /**
+   * Video field in *PDP V1 → Videos*
+   *
+   * - **Field Type**: Embed
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pdp.videos[].video
+   * - **Documentation**: https://prismic.io/docs/core-concepts/embed
+   *
+   */
+  video: prismicT.EmbedField
+}
+/**
+ * Primary content in PDP V1 → Slice zone → `accordion` → Primary
+ *
+ */
+interface PdpDocumentDataBodyAccordionSlicePrimary {
+  /**
+   * Title field in *PDP V1 → Slice zone → `accordion` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Enter title of accordion
+   * - **API ID Path**: pdp.body[].accordion.primary.title
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.RichTextField
+  /**
+   * Content field in *PDP V1 → Slice zone → `accordion` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pdp.body[].accordion.primary.content
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  content: prismicT.RichTextField
+  /**
+   * Video field in *PDP V1 → Slice zone → `accordion` → Primary*
+   *
+   * - **Field Type**: Embed
+   * - **Placeholder**: Enter video URL
+   * - **API ID Path**: pdp.body[].accordion.primary.video
+   * - **Documentation**: https://prismic.io/docs/core-concepts/embed
+   *
+   */
+  video: prismicT.EmbedField
+}
+export type PdpDocumentDataBodyAccordionSlice = prismicT.Slice<
+  'accordion',
+  Simplify<PdpDocumentDataBodyAccordionSlicePrimary>,
+  never
+>
+/**
+ * Slice for *PDP V1 → Slice zone*
+ *
+ */
+type PdpDocumentDataBodySlice = PdpDocumentDataBodyAccordionSlice
+/**
+ * PDP V1 document from Prismic
+ *
+ * - **API ID**: `pdp`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type PdpDocument<Lang extends string = 'en-us' | 'en-bz'> = prismicT.PrismicDocumentWithUID<
+  Simplify<PdpDocumentData>,
+  'pdp',
+  Lang
+>
+/** Content for Plp Bottom Banner documents */
+interface PlpBottomBannerDocumentData {
+  /**
+   * Title field in *Plp Bottom Banner*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: Title
+   * - **API ID Path**: plp_bottom_banner.title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.TitleField
+  /**
+   * Subtitle field in *Plp Bottom Banner*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Subtitle
+   * - **API ID Path**: plp_bottom_banner.subtitle
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  subtitle: prismicT.RichTextField
+  /**
+   * Button field in *Plp Bottom Banner*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: Button
+   * - **API ID Path**: plp_bottom_banner.button
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  button: prismicT.RelationField<'but'>
+  /**
+   * Image field in *Plp Bottom Banner*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: Background Image
+   * - **API ID Path**: plp_bottom_banner.image
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  image: prismicT.RelationField<'image'>
+}
+/**
+ * Plp Bottom Banner document from Prismic
+ *
+ * - **API ID**: `plp_bottom_banner`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type PlpBottomBannerDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<
+    Simplify<PlpBottomBannerDocumentData>,
+    'plp_bottom_banner',
+    Lang
+  >
+/** Content for Plp Top Banner documents */
+interface PlpTopBannerDocumentData {
+  /**
+   * Title field in *Plp Top Banner*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: Title
+   * - **API ID Path**: plp_top_banner.title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.TitleField
+  /**
+   * Button field in *Plp Top Banner*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: Button
+   * - **API ID Path**: plp_top_banner.button
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  button: prismicT.RelationField<'but'>
+  /**
+   * Image field in *Plp Top Banner*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: Image
+   * - **API ID Path**: plp_top_banner.image
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  image: prismicT.RelationField<'image'>
+  /**
+   * merch field in *Plp Top Banner*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: plp_top_banner.merch
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  merch: prismicT.BooleanField
+  /**
+   * auto-ship field in *Plp Top Banner*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: plp_top_banner."auto-ship"
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  'auto-ship': prismicT.BooleanField
+}
+/**
+ * Plp Top Banner document from Prismic
+ *
+ * - **API ID**: `plp_top_banner`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type PlpTopBannerDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<Simplify<PlpTopBannerDocumentData>, 'plp_top_banner', Lang>
+/** Content for popular products (bottle only) documents */
+type PopularProductsDocumentData = Record<string, never>
+/**
+ * popular products (bottle only) document from Prismic
+ *
+ * - **API ID**: `popular_products`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type PopularProductsDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<
+    Simplify<PopularProductsDocumentData>,
+    'popular_products',
+    Lang
+  >
+/** Content for product documents */
+interface ProductDocumentData {
+  /**
+   * SKU field in *product*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: product.sku
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  sku: prismicT.KeyTextField
+  /**
+   * productUrl field in *product*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: wine
+   * - **API ID Path**: product.producturl
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  producturl: prismicT.KeyTextField
+  /**
+   * display name field in *product*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: product.display_name
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  display_name: prismicT.KeyTextField
+  /**
+   * varietal-selections field in *product*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: product."varietal-selections"[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  'varietal-selections': prismicT.GroupField<Simplify<ProductDocumentDataVarietalSelectionsItem>>
+  /**
+   * Brand field in *product*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: product.brand
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  brand: prismicT.KeyTextField
+  /**
+   * label field in *product*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **API ID Path**: product.label
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/select
+   *
+   */
+  label: prismicT.SelectField<
+    | '14K'
+    | 'Adamas'
+    | 'Adelante'
+    | 'Bernhard'
+    | 'Bookbinder'
+    | "Bookbinder's Apprentice"
+    | 'Cattin Sauvage'
+    | 'Che Fico'
+    | 'Conte de la Terre'
+    | 'Dove Hunt Dog'
+    | 'Epic Pursuit'
+    | 'Etnico'
+    | 'Fiddleneck'
+    | 'Fieldhouse'
+    | 'Fieldhouse 301'
+    | 'Gallivant'
+    | 'The Greeter'
+    | 'Hushkeeper'
+    | 'Ligado'
+    | "L'Original"
+    | 'Middle Jane'
+    | 'Mixtrack'
+    | 'Nest'
+    | 'Oso Pardo'
+    | 'Pip, the Greeter'
+    | 'The Resident'
+    | 'Rivamonte'
+    | 'Scouting Grounds'
+    | 'Solar del Alma'
+    | 'Soleil. Vent. Âme.'
+    | 'Tangotango'
+    | 'Ticklebumps'
+    | 'Veinte'
+    | 'Wilderness Road'
+    | 'Cruz Andina'
+    | 'Chateau La Dournie'
+    | 'Vitrail Sur L’Abbaye'
+  >
+  /**
+   * flavor field in *product*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **API ID Path**: product.flavor
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/select
+   *
+   */
+  flavor: prismicT.SelectField<'Earthy' | 'Fruity' | 'Oaky' | 'Sweet'>
+  /**
+   * structure field in *product*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **API ID Path**: product.structure
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/select
+   *
+   */
+  structure: prismicT.SelectField<'Crisp' | 'Creamy' | 'Light' | 'Bold' | 'Smooth'>
+  /**
+   * vintage field in *product*
+   *
+   * - **Field Type**: Number
+   * - **Placeholder**: Year of the wine
+   * - **API ID Path**: product.vintage
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/number
+   *
+   */
+  vintage: prismicT.NumberField
+  /**
+   * Auto-Ship field in *product*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: product."auto-ship"
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  'auto-ship': prismicT.BooleanField
+  /**
+   * Circle Exclusive field in *product*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: product.circle_exclusive
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  circle_exclusive: prismicT.BooleanField
+  /**
+   * CE to GenPop field in *product*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: product."ce-to-genpop"
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  'ce-to-genpop': prismicT.BooleanField
+  /**
+   * Cellar Sweep field in *product*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: product."cellar-sweep"
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  'cellar-sweep': prismicT.BooleanField
+  /**
+   * New Release field in *product*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: product."new-release"
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  'new-release': prismicT.BooleanField
+  /**
+   * Gift Set field in *product*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: product.gift_set
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  gift_set: prismicT.BooleanField
+  /**
+   * Can field in *product*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: product.can
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  can: prismicT.BooleanField
+  /**
+   * Shop by Collection field in *product*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: product.shop_by_collection1[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  shop_by_collection1: prismicT.GroupField<Simplify<ProductDocumentDataShopByCollection1Item>>
+  /**
+   * region field in *product*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: product.region
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  region: prismicT.KeyTextField
+  /**
+   * region coords field in *product*
+   *
+   * - **Field Type**: GeoPoint
+   * - **Placeholder**: *None*
+   * - **API ID Path**: product.region_coords
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/geopoint
+   *
+   */
+  region_coords: prismicT.GeoPointField
+  /**
+   * price without discount field in *product*
+   *
+   * - **Field Type**: Number
+   * - **Placeholder**: *None*
+   * - **API ID Path**: product.compareprice
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/number
+   *
+   */
+  compareprice: prismicT.NumberField
+  /**
+   * price field in *product*
+   *
+   * - **Field Type**: Number
+   * - **Placeholder**: *None*
+   * - **API ID Path**: product.price
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/number
+   *
+   */
+  price: prismicT.NumberField
+  /**
+   * recommendations field in *product*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: product.recommendations
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  recommendations: prismicT.RelationField<'bottle_collections'>
+  /**
+   * main img field in *product*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: product.main_img
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  main_img: prismicT.ImageField<never>
+  /**
+   * product images field in *product*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: product.product_images[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  product_images: prismicT.GroupField<Simplify<ProductDocumentDataProductImagesItem>>
+  /**
+   * intro field in *product*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: product.intro
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  intro: prismicT.RichTextField
+  /**
+   * description field in *product*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: product.description
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  description: prismicT.RichTextField
+  /**
+   * journey field in *product*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: product.journey
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  journey: prismicT.RichTextField
+  /**
+   * tasting notes field in *product*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: product.tasting_notes[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  tasting_notes: prismicT.GroupField<Simplify<ProductDocumentDataTastingNotesItem>>
+  /**
+   * pairings field in *product*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: product.pairings[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  pairings: prismicT.GroupField<Simplify<ProductDocumentDataPairingsItem>>
+}
+/**
+ * Item in product → varietal-selections
+ *
+ */
+export interface ProductDocumentDataVarietalSelectionsItem {
+  /**
+   * varietals field in *product → varietal-selections*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: Pick at least one varietal
+   * - **API ID Path**: product."varietal-selections"[].varietals
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  varietals: prismicT.RelationField<'product_section'>
+}
+/**
+ * Item in product → Shop by Collection
+ *
+ */
+export interface ProductDocumentDataShopByCollection1Item {
+  /**
+   * Collection field in *product → Shop by Collection*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: product.shop_by_collection1[].collection
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  collection: prismicT.RelationField<'shop_by_collection'>
+}
+/**
+ * Item in product → product images
+ *
+ */
+export interface ProductDocumentDataProductImagesItem {
+  /**
+   * img field in *product → product images*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: product.product_images[].img
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  img: prismicT.ImageField<never>
+  /**
+   * caption field in *product → product images*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: product.product_images[].caption
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  caption: prismicT.KeyTextField
+}
+/**
+ * Item in product → tasting notes
+ *
+ */
+export interface ProductDocumentDataTastingNotesItem {
+  /**
+   * tasting note field in *product → tasting notes*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: product.tasting_notes[].tasting_note
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  tasting_note: prismicT.RelationField<'tasting_note_icon'>
+}
+/**
+ * Item in product → pairings
+ *
+ */
+export interface ProductDocumentDataPairingsItem {
+  /**
+   * pairing field in *product → pairings*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: product.pairings[].pairing
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  pairing: prismicT.RelationField<'pairing_icon'>
+}
+/**
+ * product document from Prismic
+ *
+ * - **API ID**: `product`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type ProductDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithUID<Simplify<ProductDocumentData>, 'product', Lang>
+/** Content for product_img documents */
+type ProductImgDocumentData = Record<string, never>
+/**
+ * product_img document from Prismic
+ *
+ * - **API ID**: `product_img`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type ProductImgDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<Simplify<ProductImgDocumentData>, 'product_img', Lang>
+/** Content for product_section documents */
+interface ProductSectionDocumentData {
+  /**
+   * active field in *product_section*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: true
+   * - **API ID Path**: product_section.active
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  active: prismicT.BooleanField
+  /**
+   * section name field in *product_section*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: product_section.section_name
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  section_name: prismicT.KeyTextField
+  /**
+   * description field in *product_section*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: product_section.description
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  description: prismicT.RichTextField
+  /**
+   * section rank field in *product_section*
+   *
+   * - **Field Type**: Number
+   * - **Placeholder**: *None*
+   * - **API ID Path**: product_section.section_rank
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/number
+   *
+   */
+  section_rank: prismicT.NumberField
+  /**
+   * section level field in *product_section*
+   *
+   * - **Field Type**: Number
+   * - **Placeholder**: *None*
+   * - **API ID Path**: product_section.section_level
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/number
+   *
+   */
+  section_level: prismicT.NumberField
+  /**
+   * section category field in *product_section*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **Default Value**: varietal
+   * - **API ID Path**: product_section.section_category
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/select
+   *
+   */
+  section_category: prismicT.SelectField<'varietal', 'filled'>
+}
+/**
+ * product_section document from Prismic
+ *
+ * - **API ID**: `product_section`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type ProductSectionDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithUID<Simplify<ProductSectionDocumentData>, 'product_section', Lang>
+/** Content for Product Showcase documents */
+interface ProductShowDocumentData {
+  /**
+   * Title field in *Product Showcase*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: product_show.title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.TitleField
+  /**
+   * Title Highlight Color field in *Product Showcase*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: product_show.title_highlight_color
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  title_highlight_color: prismicT.ColorField
+  /**
+   * Products field in *Product Showcase*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: product_show.products[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  products: prismicT.GroupField<Simplify<ProductShowDocumentDataProductsItem>>
+}
+/**
+ * Item in Product Showcase → Products
+ *
+ */
+export interface ProductShowDocumentDataProductsItem {
+  /**
+   * Product field in *Product Showcase → Products*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: product_show.products[].product
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  product: prismicT.RelationField<'product'>
+}
+/**
+ * Product Showcase document from Prismic
+ *
+ * - **API ID**: `product_show`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type ProductShowDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<Simplify<ProductShowDocumentData>, 'product_show', Lang>
+/** Content for quote documents */
+type QuoteDocumentData = Record<string, never>
+/**
+ * quote document from Prismic
+ *
+ * - **API ID**: `quote`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type QuoteDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<Simplify<QuoteDocumentData>, 'quote', Lang>
+/** Content for quotes section documents */
+interface QuotesDocumentData {
+  /**
+   * section title field in *quotes section*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: quotes.section_title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  section_title: prismicT.TitleField
+  /**
+   * quotes field in *quotes section*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: quotes.quotes[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  quotes: prismicT.GroupField<Simplify<QuotesDocumentDataQuotesItem>>
+}
+/**
+ * Item in quotes section → quotes
+ *
+ */
+export interface QuotesDocumentDataQuotesItem {
+  /**
+   * profile image field in *quotes section → quotes*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: quotes.quotes[].profile_image
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  profile_image: prismicT.ImageField<never>
+  /**
+   * quote field in *quotes section → quotes*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: quotes.quotes[].quote
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  quote: prismicT.RichTextField
+  /**
+   * source field in *quotes section → quotes*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: quotes.quotes[].source
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  source: prismicT.KeyTextField
+}
+/**
+ * quotes section document from Prismic
+ *
+ * - **API ID**: `quotes`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type QuotesDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithUID<Simplify<QuotesDocumentData>, 'quotes', Lang>
+/** Content for redirect_page documents */
+interface RedirectPageDocumentData {
+  /**
+   * title field in *redirect_page*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: redirect_page.title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.TitleField
+  /**
+   * message field in *redirect_page*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: redirect_page.message
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  message: prismicT.RichTextField
+  /**
+   * site url field in *redirect_page*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: redirect_page.site_url
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  site_url: prismicT.KeyTextField
+  /**
+   * external url field in *redirect_page*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: redirect_page.external_url
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  external_url: prismicT.KeyTextField
+}
+/**
+ * redirect_page document from Prismic
+ *
+ * - **API ID**: `redirect_page`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type RedirectPageDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<Simplify<RedirectPageDocumentData>, 'redirect_page', Lang>
+/** Content for Rich Content Page documents */
+interface RichContentPageDocumentData {
+  /**
+   * Page Title field in *Rich Content Page*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.page_title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  page_title: prismicT.RichTextField
+  /**
+   * Page Type field in *Rich Content Page*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **Default Value**: Default
+   * - **API ID Path**: rich_content_page.page_type
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/select
+   *
+   */
+  page_type: prismicT.SelectField<'Default' | 'Brand Detail' | 'About', 'filled'>
+  /**
+   * Slice zone field in *Rich Content Page*
+   *
+   * - **Field Type**: Slice Zone
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/slices
+   *
+   */
+  body: prismicT.SliceZone<RichContentPageDocumentDataBodySlice>
+}
+/**
+ * Primary content in Rich Content Page → Slice zone → `hero_banner` → Primary
+ *
+ */
+interface RichContentPageDocumentDataBodyHeroBannerSlicePrimary {
+  /**
+   * Background Image field in *Rich Content Page → Slice zone → `hero_banner` → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].hero_banner.primary.background_image
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  background_image: prismicT.ImageField<never>
+  /**
+   * Background Color field in *Rich Content Page → Slice zone → `hero_banner` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].hero_banner.primary.background_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  background_color: prismicT.ColorField
+  /**
+   * Logo field in *Rich Content Page → Slice zone → `hero_banner` → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].hero_banner.primary.logo
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  logo: prismicT.ImageField<never>
+  /**
+   * Content field in *Rich Content Page → Slice zone → `hero_banner` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].hero_banner.primary.content
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  content: prismicT.RichTextField
+  /**
+   * Highlight Color field in *Rich Content Page → Slice zone → `hero_banner` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].hero_banner.primary.highlight_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  highlight_color: prismicT.ColorField
+}
+export type RichContentPageDocumentDataBodyHeroBannerSlice = prismicT.Slice<
+  'hero_banner',
+  Simplify<RichContentPageDocumentDataBodyHeroBannerSlicePrimary>,
+  never
+>
+/**
+ * Primary content in Rich Content Page → Slice zone → `brand_profile` → Primary
+ *
+ */
+interface RichContentPageDocumentDataBodyBrandProfileSlicePrimary {
+  /**
+   * Title field in *Rich Content Page → Slice zone → `brand_profile` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].brand_profile.primary.title
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.RichTextField
+  /**
+   * Background Color field in *Rich Content Page → Slice zone → `brand_profile` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].brand_profile.primary.background_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  background_color: prismicT.ColorField
+}
+/**
+ * Item in Rich Content Page → Slice zone → `brand_profile` → Items
+ *
+ */
+export interface RichContentPageDocumentDataBodyBrandProfileSliceItem {
+  /**
+   * Attribute field in *Rich Content Page → Slice zone → `brand_profile` → Items*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].brand_profile.items[].attribute
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  attribute: prismicT.RichTextField
+}
+export type RichContentPageDocumentDataBodyBrandProfileSlice = prismicT.Slice<
+  'brand_profile',
+  Simplify<RichContentPageDocumentDataBodyBrandProfileSlicePrimary>,
+  Simplify<RichContentPageDocumentDataBodyBrandProfileSliceItem>
+>
+/**
+ * Primary content in Rich Content Page → Slice zone → `video_showcase` → Primary
+ *
+ */
+interface RichContentPageDocumentDataBodyVideoShowcaseSlicePrimary {
+  /**
+   * Video field in *Rich Content Page → Slice zone → `video_showcase` → Primary*
+   *
+   * - **Field Type**: Embed
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].video_showcase.primary.video
+   * - **Documentation**: https://prismic.io/docs/core-concepts/embed
+   *
+   */
+  video: prismicT.EmbedField
+  /**
+   * Title field in *Rich Content Page → Slice zone → `video_showcase` → Primary*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].video_showcase.primary.title
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.TitleField
+  /**
+   * Highlight Color field in *Rich Content Page → Slice zone → `video_showcase` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].video_showcase.primary.highlight_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  highlight_color: prismicT.ColorField
+  /**
+   * Subtitle field in *Rich Content Page → Slice zone → `video_showcase` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].video_showcase.primary.subtitle
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  subtitle: prismicT.RichTextField
+}
+export type RichContentPageDocumentDataBodyVideoShowcaseSlice = prismicT.Slice<
+  'video_showcase',
+  Simplify<RichContentPageDocumentDataBodyVideoShowcaseSlicePrimary>,
+  never
+>
+/**
+ * Primary content in Rich Content Page → Slice zone → `text_with_button` → Primary
+ *
+ */
+interface RichContentPageDocumentDataBodyTextWithButtonSlicePrimary {
+  /**
+   * Background Color field in *Rich Content Page → Slice zone → `text_with_button` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].text_with_button.primary.background_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  background_color: prismicT.ColorField
+  /**
+   * Title field in *Rich Content Page → Slice zone → `text_with_button` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].text_with_button.primary.title
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.RichTextField
+  /**
+   * Subtitle field in *Rich Content Page → Slice zone → `text_with_button` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].text_with_button.primary.subtitle
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  subtitle: prismicT.RichTextField
+  /**
+   * Button Text field in *Rich Content Page → Slice zone → `text_with_button` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].text_with_button.primary.button_text
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  button_text: prismicT.RichTextField
+  /**
+   * Button Link field in *Rich Content Page → Slice zone → `text_with_button` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].text_with_button.primary.button_link
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  button_link: prismicT.RichTextField
+  /**
+   * Button Background Color field in *Rich Content Page → Slice zone → `text_with_button` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].text_with_button.primary.button_background_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  button_background_color: prismicT.ColorField
+  /**
+   * Button Text Color field in *Rich Content Page → Slice zone → `text_with_button` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].text_with_button.primary.button_text_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  button_text_color: prismicT.ColorField
+  /**
+   * Open Link in New Tab field in *Rich Content Page → Slice zone → `text_with_button` → Primary*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: rich_content_page.body[].text_with_button.primary.open_link_in_new_tab
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  open_link_in_new_tab: prismicT.BooleanField
+}
+export type RichContentPageDocumentDataBodyTextWithButtonSlice = prismicT.Slice<
+  'text_with_button',
+  Simplify<RichContentPageDocumentDataBodyTextWithButtonSlicePrimary>,
+  never
+>
+/**
+ * Primary content in Rich Content Page → Slice zone → `image_and_text` → Primary
+ *
+ */
+interface RichContentPageDocumentDataBodyImageAndTextSlicePrimary {
+  /**
+   * Text on Left field in *Rich Content Page → Slice zone → `image_and_text` → Primary*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: rich_content_page.body[].image_and_text.primary.text_on_left
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  text_on_left: prismicT.BooleanField
+  /**
+   * Background Color field in *Rich Content Page → Slice zone → `image_and_text` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].image_and_text.primary.background_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  background_color: prismicT.ColorField
+  /**
+   * Background Image field in *Rich Content Page → Slice zone → `image_and_text` → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].image_and_text.primary.background_image
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  background_image: prismicT.ImageField<never>
+  /**
+   * Highlight Color field in *Rich Content Page → Slice zone → `image_and_text` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].image_and_text.primary.highlight_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  highlight_color: prismicT.ColorField
+  /**
+   * Headline field in *Rich Content Page → Slice zone → `image_and_text` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Enter the headline to display above content
+   * - **API ID Path**: rich_content_page.body[].image_and_text.primary.headline
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  headline: prismicT.RichTextField
+  /**
+   * Content field in *Rich Content Page → Slice zone → `image_and_text` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Enter the content text/copy
+   * - **API ID Path**: rich_content_page.body[].image_and_text.primary.content
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  content: prismicT.RichTextField
+  /**
+   * CTA Text field in *Rich Content Page → Slice zone → `image_and_text` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].image_and_text.primary.cta_text
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  cta_text: prismicT.RichTextField
+  /**
+   * CTA Link field in *Rich Content Page → Slice zone → `image_and_text` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Prefix link with "/" for internal links
+   * - **API ID Path**: rich_content_page.body[].image_and_text.primary.cta_link
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  cta_link: prismicT.RichTextField
+  /**
+   * CTA Background Color field in *Rich Content Page → Slice zone → `image_and_text` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].image_and_text.primary.cta_background_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  cta_background_color: prismicT.ColorField
+  /**
+   * CTA Text Color field in *Rich Content Page → Slice zone → `image_and_text` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].image_and_text.primary.cta_text_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  cta_text_color: prismicT.ColorField
+  /**
+   * Image field in *Rich Content Page → Slice zone → `image_and_text` → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].image_and_text.primary.image
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  image: prismicT.ImageField<never>
+}
+export type RichContentPageDocumentDataBodyImageAndTextSlice = prismicT.Slice<
+  'image_and_text',
+  Simplify<RichContentPageDocumentDataBodyImageAndTextSlicePrimary>,
+  never
+>
+/**
+ * Primary content in Rich Content Page → Slice zone → `columned_content` → Primary
+ *
+ */
+interface RichContentPageDocumentDataBodyColumnedContentSlicePrimary {
+  /**
+   * Background Color field in *Rich Content Page → Slice zone → `columned_content` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].columned_content.primary.background_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  background_color: prismicT.ColorField
+  /**
+   * Text Color field in *Rich Content Page → Slice zone → `columned_content` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].columned_content.primary.text_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  text_color: prismicT.ColorField
+  /**
+   * Background Image field in *Rich Content Page → Slice zone → `columned_content` → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].columned_content.primary.background_image
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  background_image: prismicT.ImageField<never>
+  /**
+   * Highlight Color field in *Rich Content Page → Slice zone → `columned_content` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].columned_content.primary.highlight_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  highlight_color: prismicT.ColorField
+  /**
+   * Headline field in *Rich Content Page → Slice zone → `columned_content` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].columned_content.primary.headline
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  headline: prismicT.RichTextField
+  /**
+   * Content field in *Rich Content Page → Slice zone → `columned_content` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].columned_content.primary.content
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  content: prismicT.RichTextField
+  /**
+   * CTA Text field in *Rich Content Page → Slice zone → `columned_content` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].columned_content.primary.cta_text
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  cta_text: prismicT.RichTextField
+  /**
+   * CTA Link field in *Rich Content Page → Slice zone → `columned_content` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Prefix with "/" for internal links
+   * - **API ID Path**: rich_content_page.body[].columned_content.primary.cta_link
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  cta_link: prismicT.RichTextField
+  /**
+   * CTA Background Color field in *Rich Content Page → Slice zone → `columned_content` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].columned_content.primary.cta_background_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  cta_background_color: prismicT.ColorField
+  /**
+   * CTA Text Color field in *Rich Content Page → Slice zone → `columned_content` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].columned_content.primary.cta_text_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  cta_text_color: prismicT.ColorField
+}
+/**
+ * Item in Rich Content Page → Slice zone → `columned_content` → Items
+ *
+ */
+export interface RichContentPageDocumentDataBodyColumnedContentSliceItem {
+  /**
+   * Image field in *Rich Content Page → Slice zone → `columned_content` → Items*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].columned_content.items[].image
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  image: prismicT.ImageField<never>
+  /**
+   * Highlight Color field in *Rich Content Page → Slice zone → `columned_content` → Items*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].columned_content.items[].highlight_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  highlight_color: prismicT.ColorField
+  /**
+   * Content field in *Rich Content Page → Slice zone → `columned_content` → Items*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].columned_content.items[].content
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  content: prismicT.RichTextField
+}
+export type RichContentPageDocumentDataBodyColumnedContentSlice = prismicT.Slice<
+  'columned_content',
+  Simplify<RichContentPageDocumentDataBodyColumnedContentSlicePrimary>,
+  Simplify<RichContentPageDocumentDataBodyColumnedContentSliceItem>
+>
+/**
+ * Primary content in Rich Content Page → Slice zone → `product_showcase` → Primary
+ *
+ */
+interface RichContentPageDocumentDataBodyProductShowcaseSlicePrimary {
+  /**
+   * Heading field in *Rich Content Page → Slice zone → `product_showcase` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].product_showcase.primary.heading
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  heading: prismicT.RichTextField
+  /**
+   * Highlight Color field in *Rich Content Page → Slice zone → `product_showcase` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].product_showcase.primary.highlight_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  highlight_color: prismicT.ColorField
+}
+/**
+ * Item in Rich Content Page → Slice zone → `product_showcase` → Items
+ *
+ */
+export interface RichContentPageDocumentDataBodyProductShowcaseSliceItem {
+  /**
+   * Image field in *Rich Content Page → Slice zone → `product_showcase` → Items*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].product_showcase.items[].image
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  image: prismicT.ImageField<never>
+  /**
+   * Title field in *Rich Content Page → Slice zone → `product_showcase` → Items*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].product_showcase.items[].title
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.RichTextField
+  /**
+   * Price field in *Rich Content Page → Slice zone → `product_showcase` → Items*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].product_showcase.items[].price
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  price: prismicT.RichTextField
+  /**
+   * CTA Text field in *Rich Content Page → Slice zone → `product_showcase` → Items*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].product_showcase.items[].cta_text
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  cta_text: prismicT.RichTextField
+  /**
+   * CTA Link field in *Rich Content Page → Slice zone → `product_showcase` → Items*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Prefix with "/" for internal links
+   * - **API ID Path**: rich_content_page.body[].product_showcase.items[].cta_link
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  cta_link: prismicT.RichTextField
+  /**
+   * Open Link in New Tab field in *Rich Content Page → Slice zone → `product_showcase` → Items*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: rich_content_page.body[].product_showcase.items[].open_link_in_new_tab
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  open_link_in_new_tab: prismicT.BooleanField
+}
+export type RichContentPageDocumentDataBodyProductShowcaseSlice = prismicT.Slice<
+  'product_showcase',
+  Simplify<RichContentPageDocumentDataBodyProductShowcaseSlicePrimary>,
+  Simplify<RichContentPageDocumentDataBodyProductShowcaseSliceItem>
+>
+/**
+ * Primary content in Rich Content Page → Slice zone → `dynamic_product_showcase` → Primary
+ *
+ */
+interface RichContentPageDocumentDataBodyDynamicProductShowcaseSlicePrimary {
+  /**
+   * Brand field in *Rich Content Page → Slice zone → `dynamic_product_showcase` → Primary*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: Select the brand
+   * - **API ID Path**: rich_content_page.body[].dynamic_product_showcase.primary.brand
+   * - **Documentation**: https://prismic.io/docs/core-concepts/select
+   *
+   */
+  brand: prismicT.SelectField<
+    | '14K'
+    | 'Bernhard'
+    | "Bookbinder's Apprentice"
+    | 'Bookbinder'
+    | 'Che Fico'
+    | 'Conte de la Terre'
+    | 'Dove Hunt Dog'
+    | 'Epic Pursuit'
+    | 'Fieldhouse 301'
+    | 'Gallivant'
+    | 'Hushkeeper'
+    | 'Ligado'
+    | 'Middle Jane'
+    | 'Mixtrack'
+    | 'Nest'
+    | 'Oso Pardo'
+    | 'Pip, The Greeter'
+    | 'The Resident'
+    | 'Scouting Grounds'
+    | 'Soleil. Vent. Âme.'
+    | 'Tangotango'
+    | 'Ticklebumps'
+    | 'Veinte'
+    | 'Wilderness Road'
+  >
+  /**
+   * Heading field in *Rich Content Page → Slice zone → `dynamic_product_showcase` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].dynamic_product_showcase.primary.heading
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  heading: prismicT.RichTextField
+  /**
+   * Highlight Color field in *Rich Content Page → Slice zone → `dynamic_product_showcase` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].dynamic_product_showcase.primary.highlight_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  highlight_color: prismicT.ColorField
+}
+/**
+ * Item in Rich Content Page → Slice zone → `dynamic_product_showcase` → Items
+ *
+ */
+export interface RichContentPageDocumentDataBodyDynamicProductShowcaseSliceItem {
+  /**
+   * Display Order field in *Rich Content Page → Slice zone → `dynamic_product_showcase` → Items*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: Sort products to desired order
+   * - **API ID Path**: rich_content_page.body[].dynamic_product_showcase.items[].display_order
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  display_order: prismicT.RelationField<'pdp'>
+}
+export type RichContentPageDocumentDataBodyDynamicProductShowcaseSlice = prismicT.Slice<
+  'dynamic_product_showcase',
+  Simplify<RichContentPageDocumentDataBodyDynamicProductShowcaseSlicePrimary>,
+  Simplify<RichContentPageDocumentDataBodyDynamicProductShowcaseSliceItem>
+>
+export type RichContentPageDocumentDataBodyWineQuizSlice = prismicT.Slice<
+  'wine_quiz',
+  Record<string, never>,
+  never
+>
+/**
+ * Slice for *Rich Content Page → Slice zone*
+ *
+ */
+type RichContentPageDocumentDataBodySlice =
+  | RichContentPageDocumentDataBodyHeroBannerSlice
+  | RichContentPageDocumentDataBodyBrandProfileSlice
+  | RichContentPageDocumentDataBodyVideoShowcaseSlice
+  | RichContentPageDocumentDataBodyTextWithButtonSlice
+  | RichContentPageDocumentDataBodyImageAndTextSlice
+  | RichContentPageDocumentDataBodyColumnedContentSlice
+  | RichContentPageDocumentDataBodyProductShowcaseSlice
+  | RichContentPageDocumentDataBodyDynamicProductShowcaseSlice
+  | RichContentPageDocumentDataBodyWineQuizSlice
+/**
+ * Rich Content Page document from Prismic
+ *
+ * - **API ID**: `rich_content_page`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type RichContentPageDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithUID<Simplify<RichContentPageDocumentData>, 'rich_content_page', Lang>
+/** Content for scout_circle_page documents */
+interface ScoutCirclePageDocumentData {
+  /**
+   * Page Title field in *scout_circle_page*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: scout_circle_page.page_title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  page_title: prismicT.TitleField
+  /**
+   * Header Background field in *scout_circle_page*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: scout_circle_page.header
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  header: prismicT.ImageField<never>
+  /**
+   * Header logo field in *scout_circle_page*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: scout_circle_page.header_logo
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  header_logo: prismicT.ImageField<never>
+  /**
+   * First section field in *scout_circle_page*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: scout_circle_page.first_section
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  first_section: prismicT.RelationField<'marketing_section'>
+  /**
+   * Carousel of features field in *scout_circle_page*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: scout_circle_page.carousel_of_features[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  carousel_of_features: prismicT.GroupField<
+    Simplify<ScoutCirclePageDocumentDataCarouselOfFeaturesItem>
+  >
+  /**
+   * Video field in *scout_circle_page*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: scout_circle_page.video
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  video: prismicT.RelationField<'marketing_section'>
+  /**
+   * Steps background field in *scout_circle_page*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: scout_circle_page.steps_image
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  steps_image: prismicT.ImageField<never>
+  /**
+   * Steps field in *scout_circle_page*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: scout_circle_page.steps[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  steps: prismicT.GroupField<Simplify<ScoutCirclePageDocumentDataStepsItem>>
+  /**
+   * Second section field in *scout_circle_page*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: scout_circle_page.second_section
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  second_section: prismicT.RelationField<'marketing_section'>
+  /**
+   * Cta Background field in *scout_circle_page*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: scout_circle_page.cta_background
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  cta_background: prismicT.ImageField<never>
+  /**
+   * CTA Text field in *scout_circle_page*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: scout_circle_page.cta_text
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  cta_text: prismicT.KeyTextField
+  /**
+   * CTA Url field in *scout_circle_page*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: scout_circle_page.cta_url
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  cta_url: prismicT.KeyTextField
+  /**
+   * cta party url field in *scout_circle_page*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: scout_circle_page.cta_party_url
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  cta_party_url: prismicT.KeyTextField
+}
+/**
+ * Item in scout_circle_page → Carousel of features
+ *
+ */
+export interface ScoutCirclePageDocumentDataCarouselOfFeaturesItem {
+  /**
+   * Feature icon field in *scout_circle_page → Carousel of features*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: scout_circle_page.carousel_of_features[].feature_icon
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  feature_icon: prismicT.ImageField<never>
+  /**
+   * Feature title field in *scout_circle_page → Carousel of features*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: scout_circle_page.carousel_of_features[].feature_title
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  feature_title: prismicT.TitleField
+  /**
+   * Feature description field in *scout_circle_page → Carousel of features*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: scout_circle_page.carousel_of_features[].feature_description
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  feature_description: prismicT.RichTextField
+}
+/**
+ * Item in scout_circle_page → Steps
+ *
+ */
+export interface ScoutCirclePageDocumentDataStepsItem {
+  /**
+   * Icon field in *scout_circle_page → Steps*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: scout_circle_page.steps[].icon
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  icon: prismicT.ImageField<never>
+  /**
+   * Title field in *scout_circle_page → Steps*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: scout_circle_page.steps[].title
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.TitleField
+  /**
+   * Description field in *scout_circle_page → Steps*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: scout_circle_page.steps[].description
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  description: prismicT.RichTextField
+}
+/**
+ * scout_circle_page document from Prismic
+ *
+ * - **API ID**: `scout_circle_page`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type ScoutCirclePageDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithUID<Simplify<ScoutCirclePageDocumentData>, 'scout_circle_page', Lang>
+/** Content for Shop by Collection documents */
+interface ShopByCollectionDocumentData {
+  /**
+   * Collection Name field in *Shop by Collection*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: i.e. Cans
+   * - **API ID Path**: shop_by_collection.collection_name
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  collection_name: prismicT.RichTextField
+}
+/**
+ * Shop by Collection document from Prismic
+ *
+ * - **API ID**: `shop_by_collection`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type ShopByCollectionDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<
+    Simplify<ShopByCollectionDocumentData>,
+    'shop_by_collection',
+    Lang
+  >
+/** Content for state warning documents */
+interface StateWarningDocumentData {
+  /**
+   * name field in *state warning*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: state_warning.name
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  name: prismicT.KeyTextField
+  /**
+   * states field in *state warning*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: state_warning.states[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  states: prismicT.GroupField<Simplify<StateWarningDocumentDataStatesItem>>
+}
+/**
+ * Item in state warning → states
+ *
+ */
+export interface StateWarningDocumentDataStatesItem {
+  /**
+   * state abbreviation field in *state warning → states*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: state_warning.states[].state
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  state: prismicT.KeyTextField
+  /**
+   * modal name field in *state warning → states*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: state_warning.states[].modal_name
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  modal_name: prismicT.KeyTextField
+  /**
+   * warning field in *state warning → states*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: state_warning.states[].warning
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  warning: prismicT.RichTextField
+}
+/**
+ * state warning document from Prismic
+ *
+ * - **API ID**: `state_warning`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type StateWarningDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithUID<Simplify<StateWarningDocumentData>, 'state_warning', Lang>
+/** Content for SW Header documents */
+interface SwHeaderDocumentData {
+  /**
+   * Menu Links field in *SW Header*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_header.menu_links[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  menu_links: prismicT.GroupField<Simplify<SwHeaderDocumentDataMenuLinksItem>>
+}
+/**
+ * Item in SW Header → Menu Links
+ *
+ */
+export interface SwHeaderDocumentDataMenuLinksItem {
+  /**
+   * Display Name field in *SW Header → Menu Links*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Enter how you'd like the link to be displayed
+   * - **API ID Path**: sw_header.menu_links[].display_name
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  display_name: prismicT.RichTextField
+  /**
+   * Location field in *SW Header → Menu Links*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Enter the location the link will take you
+   * - **API ID Path**: sw_header.menu_links[].location
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  location: prismicT.RichTextField
+  /**
+   * Open in New Tab field in *SW Header → Menu Links*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: sw_header.menu_links[].open_in_new_tab
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  open_in_new_tab: prismicT.BooleanField
+}
+/**
+ * SW Header document from Prismic
+ *
+ * - **API ID**: `sw_header`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type SwHeaderDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<Simplify<SwHeaderDocumentData>, 'sw_header', Lang>
+/** Content for SW Home Page documents */
+interface SwHomePageDocumentData {
+  /**
+   * SEO Title field in *SW Home Page*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: This will appear in the browser tab on the page
+   * - **API ID Path**: sw_home_page.seo_title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  seo_title: prismicT.RichTextField
+  /**
+   * SEO Description field in *SW Home Page*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Enter the description of the page for SEO
+   * - **API ID Path**: sw_home_page.seo_description
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  seo_description: prismicT.RichTextField
+  /**
+   * Slice zone field in *SW Home Page*
+   *
+   * - **Field Type**: Slice Zone
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_home_page.body[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/slices
+   *
+   */
+  body: prismicT.SliceZone<SwHomePageDocumentDataBodySlice>
+}
+/**
+ * Primary content in SW Home Page → Slice zone → `hero_banner` → Primary
+ *
+ */
+interface SwHomePageDocumentDataBodyHeroBannerSlicePrimary {
+  /**
+   * Background Video field in *SW Home Page → Slice zone → `hero_banner` → Primary*
+   *
+   * - **Field Type**: Embed
+   * - **Placeholder**: Enter URL for background video
+   * - **API ID Path**: sw_home_page.body[].hero_banner.primary.background_video
+   * - **Documentation**: https://prismic.io/docs/core-concepts/embed
+   *
+   */
+  background_video: prismicT.EmbedField
+  /**
+   * Background Image field in *SW Home Page → Slice zone → `hero_banner` → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_home_page.body[].hero_banner.primary.background_image
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  background_image: prismicT.ImageField<never>
+  /**
+   * Background Color field in *SW Home Page → Slice zone → `hero_banner` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_home_page.body[].hero_banner.primary.background_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  background_color: prismicT.ColorField
+  /**
+   * Logo field in *SW Home Page → Slice zone → `hero_banner` → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_home_page.body[].hero_banner.primary.logo
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  logo: prismicT.ImageField<never>
+  /**
+   * Content field in *SW Home Page → Slice zone → `hero_banner` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_home_page.body[].hero_banner.primary.content
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  content: prismicT.RichTextField
+  /**
+   * Highlight Color field in *SW Home Page → Slice zone → `hero_banner` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_home_page.body[].hero_banner.primary.highlight_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  highlight_color: prismicT.ColorField
+}
+export type SwHomePageDocumentDataBodyHeroBannerSlice = prismicT.Slice<
+  'hero_banner',
+  Simplify<SwHomePageDocumentDataBodyHeroBannerSlicePrimary>,
+  never
+>
+/**
+ * Primary content in SW Home Page → Slice zone → `brand_profile` → Primary
+ *
+ */
+interface SwHomePageDocumentDataBodyBrandProfileSlicePrimary {
+  /**
+   * Title field in *SW Home Page → Slice zone → `brand_profile` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_home_page.body[].brand_profile.primary.title
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.RichTextField
+  /**
+   * Background Color field in *SW Home Page → Slice zone → `brand_profile` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_home_page.body[].brand_profile.primary.background_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  background_color: prismicT.ColorField
+}
+/**
+ * Item in SW Home Page → Slice zone → `brand_profile` → Items
+ *
+ */
+export interface SwHomePageDocumentDataBodyBrandProfileSliceItem {
+  /**
+   * Attribute field in *SW Home Page → Slice zone → `brand_profile` → Items*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_home_page.body[].brand_profile.items[].attribute
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  attribute: prismicT.RichTextField
+}
+export type SwHomePageDocumentDataBodyBrandProfileSlice = prismicT.Slice<
+  'brand_profile',
+  Simplify<SwHomePageDocumentDataBodyBrandProfileSlicePrimary>,
+  Simplify<SwHomePageDocumentDataBodyBrandProfileSliceItem>
+>
+/**
+ * Primary content in SW Home Page → Slice zone → `video_showcase` → Primary
+ *
+ */
+interface SwHomePageDocumentDataBodyVideoShowcaseSlicePrimary {
+  /**
+   * Video field in *SW Home Page → Slice zone → `video_showcase` → Primary*
+   *
+   * - **Field Type**: Embed
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_home_page.body[].video_showcase.primary.video
+   * - **Documentation**: https://prismic.io/docs/core-concepts/embed
+   *
+   */
+  video: prismicT.EmbedField
+  /**
+   * Title field in *SW Home Page → Slice zone → `video_showcase` → Primary*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_home_page.body[].video_showcase.primary.title
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.TitleField
+  /**
+   * Highlight Color field in *SW Home Page → Slice zone → `video_showcase` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_home_page.body[].video_showcase.primary.highlight_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  highlight_color: prismicT.ColorField
+  /**
+   * Subtitle field in *SW Home Page → Slice zone → `video_showcase` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_home_page.body[].video_showcase.primary.subtitle
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  subtitle: prismicT.RichTextField
+}
+export type SwHomePageDocumentDataBodyVideoShowcaseSlice = prismicT.Slice<
+  'video_showcase',
+  Simplify<SwHomePageDocumentDataBodyVideoShowcaseSlicePrimary>,
+  never
+>
+/**
+ * Primary content in SW Home Page → Slice zone → `text_with_button` → Primary
+ *
+ */
+interface SwHomePageDocumentDataBodyTextWithButtonSlicePrimary {
+  /**
+   * Background Color field in *SW Home Page → Slice zone → `text_with_button` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_home_page.body[].text_with_button.primary.background_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  background_color: prismicT.ColorField
+  /**
+   * Title field in *SW Home Page → Slice zone → `text_with_button` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_home_page.body[].text_with_button.primary.title
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.RichTextField
+  /**
+   * Subtitle field in *SW Home Page → Slice zone → `text_with_button` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_home_page.body[].text_with_button.primary.subtitle
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  subtitle: prismicT.RichTextField
+  /**
+   * Button Text field in *SW Home Page → Slice zone → `text_with_button` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_home_page.body[].text_with_button.primary.button_text
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  button_text: prismicT.RichTextField
+  /**
+   * Button Link field in *SW Home Page → Slice zone → `text_with_button` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_home_page.body[].text_with_button.primary.button_link
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  button_link: prismicT.RichTextField
+  /**
+   * Button Background Color field in *SW Home Page → Slice zone → `text_with_button` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_home_page.body[].text_with_button.primary.button_background_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  button_background_color: prismicT.ColorField
+  /**
+   * Button Text Color field in *SW Home Page → Slice zone → `text_with_button` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_home_page.body[].text_with_button.primary.button_text_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  button_text_color: prismicT.ColorField
+  /**
+   * Open Link in New Tab field in *SW Home Page → Slice zone → `text_with_button` → Primary*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: sw_home_page.body[].text_with_button.primary.open_link_in_new_tab
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  open_link_in_new_tab: prismicT.BooleanField
+}
+export type SwHomePageDocumentDataBodyTextWithButtonSlice = prismicT.Slice<
+  'text_with_button',
+  Simplify<SwHomePageDocumentDataBodyTextWithButtonSlicePrimary>,
+  never
+>
+/**
+ * Primary content in SW Home Page → Slice zone → `image_and_text` → Primary
+ *
+ */
+interface SwHomePageDocumentDataBodyImageAndTextSlicePrimary {
+  /**
+   * Text on Left field in *SW Home Page → Slice zone → `image_and_text` → Primary*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: sw_home_page.body[].image_and_text.primary.text_on_left
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  text_on_left: prismicT.BooleanField
+  /**
+   * Background Color field in *SW Home Page → Slice zone → `image_and_text` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_home_page.body[].image_and_text.primary.background_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  background_color: prismicT.ColorField
+  /**
+   * Background Image field in *SW Home Page → Slice zone → `image_and_text` → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_home_page.body[].image_and_text.primary.background_image
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  background_image: prismicT.ImageField<never>
+  /**
+   * Highlight Color field in *SW Home Page → Slice zone → `image_and_text` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_home_page.body[].image_and_text.primary.highlight_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  highlight_color: prismicT.ColorField
+  /**
+   * Headline field in *SW Home Page → Slice zone → `image_and_text` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Enter the headline to display above content
+   * - **API ID Path**: sw_home_page.body[].image_and_text.primary.headline
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  headline: prismicT.RichTextField
+  /**
+   * Content field in *SW Home Page → Slice zone → `image_and_text` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Enter the content text/copy
+   * - **API ID Path**: sw_home_page.body[].image_and_text.primary.content
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  content: prismicT.RichTextField
+  /**
+   * CTA Text field in *SW Home Page → Slice zone → `image_and_text` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_home_page.body[].image_and_text.primary.cta_text
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  cta_text: prismicT.RichTextField
+  /**
+   * CTA Link field in *SW Home Page → Slice zone → `image_and_text` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Prefix link with "/" for internal links
+   * - **API ID Path**: sw_home_page.body[].image_and_text.primary.cta_link
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  cta_link: prismicT.RichTextField
+  /**
+   * CTA Background Color field in *SW Home Page → Slice zone → `image_and_text` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_home_page.body[].image_and_text.primary.cta_background_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  cta_background_color: prismicT.ColorField
+  /**
+   * CTA Text Color field in *SW Home Page → Slice zone → `image_and_text` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_home_page.body[].image_and_text.primary.cta_text_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  cta_text_color: prismicT.ColorField
+  /**
+   * Image field in *SW Home Page → Slice zone → `image_and_text` → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_home_page.body[].image_and_text.primary.image
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  image: prismicT.ImageField<never>
+}
+export type SwHomePageDocumentDataBodyImageAndTextSlice = prismicT.Slice<
+  'image_and_text',
+  Simplify<SwHomePageDocumentDataBodyImageAndTextSlicePrimary>,
+  never
+>
+/**
+ * Primary content in SW Home Page → Slice zone → `columned_content` → Primary
+ *
+ */
+interface SwHomePageDocumentDataBodyColumnedContentSlicePrimary {
+  /**
+   * Background Color field in *SW Home Page → Slice zone → `columned_content` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_home_page.body[].columned_content.primary.background_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  background_color: prismicT.ColorField
+  /**
+   * Text Color field in *SW Home Page → Slice zone → `columned_content` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_home_page.body[].columned_content.primary.text_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  text_color: prismicT.ColorField
+  /**
+   * Background Image field in *SW Home Page → Slice zone → `columned_content` → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_home_page.body[].columned_content.primary.background_image
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  background_image: prismicT.ImageField<never>
+  /**
+   * Highlight Color field in *SW Home Page → Slice zone → `columned_content` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_home_page.body[].columned_content.primary.highlight_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  highlight_color: prismicT.ColorField
+  /**
+   * Headline field in *SW Home Page → Slice zone → `columned_content` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_home_page.body[].columned_content.primary.headline
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  headline: prismicT.RichTextField
+  /**
+   * Content field in *SW Home Page → Slice zone → `columned_content` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_home_page.body[].columned_content.primary.content
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  content: prismicT.RichTextField
+  /**
+   * CTA Text field in *SW Home Page → Slice zone → `columned_content` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_home_page.body[].columned_content.primary.cta_text
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  cta_text: prismicT.RichTextField
+  /**
+   * CTA Link field in *SW Home Page → Slice zone → `columned_content` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Prefix with "/" for internal links
+   * - **API ID Path**: sw_home_page.body[].columned_content.primary.cta_link
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  cta_link: prismicT.RichTextField
+  /**
+   * CTA Background Color field in *SW Home Page → Slice zone → `columned_content` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_home_page.body[].columned_content.primary.cta_background_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  cta_background_color: prismicT.ColorField
+  /**
+   * CTA Text Color field in *SW Home Page → Slice zone → `columned_content` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_home_page.body[].columned_content.primary.cta_text_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  cta_text_color: prismicT.ColorField
+}
+/**
+ * Item in SW Home Page → Slice zone → `columned_content` → Items
+ *
+ */
+export interface SwHomePageDocumentDataBodyColumnedContentSliceItem {
+  /**
+   * Image field in *SW Home Page → Slice zone → `columned_content` → Items*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_home_page.body[].columned_content.items[].image
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  image: prismicT.ImageField<never>
+  /**
+   * Highlight Color field in *SW Home Page → Slice zone → `columned_content` → Items*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_home_page.body[].columned_content.items[].highlight_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  highlight_color: prismicT.ColorField
+  /**
+   * Content field in *SW Home Page → Slice zone → `columned_content` → Items*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_home_page.body[].columned_content.items[].content
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  content: prismicT.RichTextField
+}
+export type SwHomePageDocumentDataBodyColumnedContentSlice = prismicT.Slice<
+  'columned_content',
+  Simplify<SwHomePageDocumentDataBodyColumnedContentSlicePrimary>,
+  Simplify<SwHomePageDocumentDataBodyColumnedContentSliceItem>
+>
+/**
+ * Primary content in SW Home Page → Slice zone → `product_showcase` → Primary
+ *
+ */
+interface SwHomePageDocumentDataBodyProductShowcaseSlicePrimary {
+  /**
+   * Heading field in *SW Home Page → Slice zone → `product_showcase` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_home_page.body[].product_showcase.primary.heading
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  heading: prismicT.RichTextField
+  /**
+   * Highlight Color field in *SW Home Page → Slice zone → `product_showcase` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_home_page.body[].product_showcase.primary.highlight_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  highlight_color: prismicT.ColorField
+}
+/**
+ * Item in SW Home Page → Slice zone → `product_showcase` → Items
+ *
+ */
+export interface SwHomePageDocumentDataBodyProductShowcaseSliceItem {
+  /**
+   * Image field in *SW Home Page → Slice zone → `product_showcase` → Items*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_home_page.body[].product_showcase.items[].image
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  image: prismicT.ImageField<never>
+  /**
+   * Title field in *SW Home Page → Slice zone → `product_showcase` → Items*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_home_page.body[].product_showcase.items[].title
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.RichTextField
+  /**
+   * Price field in *SW Home Page → Slice zone → `product_showcase` → Items*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_home_page.body[].product_showcase.items[].price
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  price: prismicT.RichTextField
+  /**
+   * CTA Text field in *SW Home Page → Slice zone → `product_showcase` → Items*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_home_page.body[].product_showcase.items[].cta_text
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  cta_text: prismicT.RichTextField
+  /**
+   * CTA Link field in *SW Home Page → Slice zone → `product_showcase` → Items*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Prefix with "/" for internal links
+   * - **API ID Path**: sw_home_page.body[].product_showcase.items[].cta_link
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  cta_link: prismicT.RichTextField
+  /**
+   * Open Link in New Tab field in *SW Home Page → Slice zone → `product_showcase` → Items*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: sw_home_page.body[].product_showcase.items[].open_link_in_new_tab
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  open_link_in_new_tab: prismicT.BooleanField
+}
+export type SwHomePageDocumentDataBodyProductShowcaseSlice = prismicT.Slice<
+  'product_showcase',
+  Simplify<SwHomePageDocumentDataBodyProductShowcaseSlicePrimary>,
+  Simplify<SwHomePageDocumentDataBodyProductShowcaseSliceItem>
+>
+/**
+ * Slice for *SW Home Page → Slice zone*
+ *
+ */
+type SwHomePageDocumentDataBodySlice =
+  | SwHomePageDocumentDataBodyHeroBannerSlice
+  | SwHomePageDocumentDataBodyBrandProfileSlice
+  | SwHomePageDocumentDataBodyVideoShowcaseSlice
+  | SwHomePageDocumentDataBodyTextWithButtonSlice
+  | SwHomePageDocumentDataBodyImageAndTextSlice
+  | SwHomePageDocumentDataBodyColumnedContentSlice
+  | SwHomePageDocumentDataBodyProductShowcaseSlice
+/**
+ * SW Home Page document from Prismic
+ *
+ * - **API ID**: `sw_home_page`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type SwHomePageDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<Simplify<SwHomePageDocumentData>, 'sw_home_page', Lang>
+/** Content for SW Layout documents */
+interface SwLayoutDocumentData {
+  /**
+   * Header Links field in *SW Layout*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_layout.header_links[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  header_links: prismicT.GroupField<Simplify<SwLayoutDocumentDataHeaderLinksItem>>
+  /**
+   * Footer Links field in *SW Layout*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_layout.footer_links[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  footer_links: prismicT.GroupField<Simplify<SwLayoutDocumentDataFooterLinksItem>>
+}
+/**
+ * Item in SW Layout → Header Links
+ *
+ */
+export interface SwLayoutDocumentDataHeaderLinksItem {
+  /**
+   * Display Name field in *SW Layout → Header Links*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Enter the link's display name
+   * - **API ID Path**: sw_layout.header_links[].display_name
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  display_name: prismicT.RichTextField
+  /**
+   * Location field in *SW Layout → Header Links*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Enter link location
+   * - **API ID Path**: sw_layout.header_links[].location
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  location: prismicT.RichTextField
+  /**
+   * Open in New Tab field in *SW Layout → Header Links*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: sw_layout.header_links[].open_in_new_tab
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  open_in_new_tab: prismicT.BooleanField
+}
+/**
+ * Item in SW Layout → Footer Links
+ *
+ */
+export interface SwLayoutDocumentDataFooterLinksItem {
+  /**
+   * Display Name field in *SW Layout → Footer Links*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Enter the link's display name
+   * - **API ID Path**: sw_layout.footer_links[].display_name
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  display_name: prismicT.RichTextField
+  /**
+   * Location field in *SW Layout → Footer Links*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Enter link location
+   * - **API ID Path**: sw_layout.footer_links[].location
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  location: prismicT.RichTextField
+  /**
+   * Open in New Tab field in *SW Layout → Footer Links*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: sw_layout.footer_links[].open_in_new_tab
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  open_in_new_tab: prismicT.BooleanField
+}
+/**
+ * SW Layout document from Prismic
+ *
+ * - **API ID**: `sw_layout`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type SwLayoutDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<Simplify<SwLayoutDocumentData>, 'sw_layout', Lang>
+/** Content for SW Verbose Content Page documents */
+interface SwVerboseContentPageDocumentData {
+  /**
+   * SEO Title field in *SW Verbose Content Page*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: This will appear in the browser tab on the page
+   * - **API ID Path**: sw_verbose_content_page.seo_title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  seo_title: prismicT.RichTextField
+  /**
+   * SEO Description field in *SW Verbose Content Page*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Enter the description of the page for SEO
+   * - **API ID Path**: sw_verbose_content_page.seo_description
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  seo_description: prismicT.RichTextField
+  /**
+   * Banner Image field in *SW Verbose Content Page*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_verbose_content_page.banner_image
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  banner_image: prismicT.ImageField<never>
+  /**
+   * Banner Background Color field in *SW Verbose Content Page*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_verbose_content_page.banner_background_color
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  banner_background_color: prismicT.ColorField
+  /**
+   * Banner Text Color field in *SW Verbose Content Page*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_verbose_content_page.banner_text_color
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  banner_text_color: prismicT.ColorField
+  /**
+   * Banner Text field in *SW Verbose Content Page*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_verbose_content_page.banner_text
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  banner_text: prismicT.RichTextField
+  /**
+   * Body field in *SW Verbose Content Page*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sw_verbose_content_page.body
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  body: prismicT.RichTextField
+}
+/**
+ * SW Verbose Content Page document from Prismic
+ *
+ * - **API ID**: `sw_verbose_content_page`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type SwVerboseContentPageDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithUID<
+    Simplify<SwVerboseContentPageDocumentData>,
+    'sw_verbose_content_page',
+    Lang
+  >
+/** Content for tasting note icon documents */
+interface TastingNoteIconDocumentData {
+  /**
+   * caption field in *tasting note icon*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: tasting_note_icon.caption
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  caption: prismicT.KeyTextField
+  /**
+   * icon field in *tasting note icon*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: tasting_note_icon.icon
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  icon: prismicT.ImageField<never>
+}
+/**
+ * tasting note icon document from Prismic
+ *
+ * - **API ID**: `tasting_note_icon`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type TastingNoteIconDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithUID<Simplify<TastingNoteIconDocumentData>, 'tasting_note_icon', Lang>
+/** Content for team_page documents */
+interface TeamPageDocumentData {
+  /**
+   * Page title field in *team_page*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: team_page.page_title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  page_title: prismicT.TitleField
+  /**
+   * Page subheading field in *team_page*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: team_page.page_subheading
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  page_subheading: prismicT.RichTextField
+  /**
+   * Members field in *team_page*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: team_page.members[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  members: prismicT.GroupField<Simplify<TeamPageDocumentDataMembersItem>>
+  /**
+   * Team title field in *team_page*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: team_page.team_title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  team_title: prismicT.TitleField
+  /**
+   * Team image field in *team_page*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: team_page.team_image
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  team_image: prismicT.ImageField<never>
+  /**
+   * Team content field in *team_page*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: team_page.team_content
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  team_content: prismicT.RichTextField
+  /**
+   * Left column title field in *team_page*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: team_page.left_column_title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  left_column_title: prismicT.TitleField
+  /**
+   * Left column content field in *team_page*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: team_page.left_column_content
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  left_column_content: prismicT.RichTextField
+  /**
+   * Left column button field in *team_page*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: team_page.left_column_button
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  left_column_button: prismicT.KeyTextField
+  /**
+   * Left column url field in *team_page*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: team_page.left_column_url
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  left_column_url: prismicT.KeyTextField
+  /**
+   * Right column title field in *team_page*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: team_page.right_column_title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  right_column_title: prismicT.TitleField
+  /**
+   * Right column content field in *team_page*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: team_page.right_column_content
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  right_column_content: prismicT.RichTextField
+  /**
+   * Right column button field in *team_page*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: team_page.right_column_button
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  right_column_button: prismicT.KeyTextField
+  /**
+   * Right column url field in *team_page*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: team_page.right_column_url
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  right_column_url: prismicT.KeyTextField
+}
+/**
+ * Item in team_page → Members
+ *
+ */
+export interface TeamPageDocumentDataMembersItem {
+  /**
+   * Picture field in *team_page → Members*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: team_page.members[].picture
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  picture: prismicT.ImageField<never>
+  /**
+   * Name field in *team_page → Members*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: team_page.members[].name
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  name: prismicT.KeyTextField
+  /**
+   * Position field in *team_page → Members*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: team_page.members[].position
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  position: prismicT.KeyTextField
+  /**
+   * Bio field in *team_page → Members*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: team_page.members[].bio
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  bio: prismicT.RichTextField
+}
+/**
+ * team_page document from Prismic
+ *
+ * - **API ID**: `team_page`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type TeamPageDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithUID<Simplify<TeamPageDocumentData>, 'team_page', Lang>
+/** Content for test_slice documents */
+type TestSliceDocumentData = Record<string, never>
+/**
+ * test_slice document from Prismic
+ *
+ * - **API ID**: `test_slice`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type TestSliceDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<Simplify<TestSliceDocumentData>, 'test_slice', Lang>
+/** Content for test1 documents */
+type Test1DocumentData = Record<string, never>
+/**
+ * test1 document from Prismic
+ *
+ * - **API ID**: `test1`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type Test1Document<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<Simplify<Test1DocumentData>, 'test1', Lang>
+/** Content for testing-type documents */
+type TestingTypeDocumentData = Record<string, never>
+/**
+ * testing-type document from Prismic
+ *
+ * - **API ID**: `testing-type`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type TestingTypeDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<Simplify<TestingTypeDocumentData>, 'testing-type', Lang>
+/** Content for Text with Button documents */
+interface TextWithButtonDocumentData {
+  /**
+   * Title field in *Text with Button*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: text_with_button.title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.TitleField
+  /**
+   * Subtitle field in *Text with Button*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: text_with_button.subtitle
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  subtitle: prismicT.RichTextField
+  /**
+   * Button Text field in *Text with Button*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: text_with_button.button_text
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  button_text: prismicT.RichTextField
+  /**
+   * Button Link field in *Text with Button*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: text_with_button.button_link
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  button_link: prismicT.RichTextField
+}
+/**
+ * Text with Button document from Prismic
+ *
+ * - **API ID**: `text_with_button`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type TextWithButtonDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<Simplify<TextWithButtonDocumentData>, 'text_with_button', Lang>
+/** Content for Video-Page-Content documents */
+interface VideoPageContentDocumentData {
+  /**
+   * description field in *Video-Page-Content*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: video-page-content.description
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  description: prismicT.RichTextField
+  /**
+   * URL to the Video field in *Video-Page-Content*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: video-page-content.url_to_the_video
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  url_to_the_video: prismicT.LinkField
+}
+/**
+ * Video-Page-Content document from Prismic
+ *
+ * - **API ID**: `video-page-content`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type VideoPageContentDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<
+    Simplify<VideoPageContentDocumentData>,
+    'video-page-content',
+    Lang
+  >
+/** Content for Welcome Block documents */
+interface WelcomeBlockDocumentData {
+  /**
+   * Title field in *Welcome Block*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: welcome_block.title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  title: prismicT.KeyTextField
+  /**
+   * Text1 field in *Welcome Block*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: welcome_block.text1
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  text1: prismicT.KeyTextField
+  /**
+   * Text2 field in *Welcome Block*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: welcome_block.text2
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  text2: prismicT.KeyTextField
+  /**
+   * Button Link field in *Welcome Block*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: welcome_block.button_link
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  button_link: prismicT.KeyTextField
+  /**
+   * Button Text field in *Welcome Block*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: welcome_block.button_text
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  button_text: prismicT.KeyTextField
+}
+/**
+ * Welcome Block document from Prismic
+ *
+ * - **API ID**: `welcome_block`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type WelcomeBlockDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<Simplify<WelcomeBlockDocumentData>, 'welcome_block', Lang>
+/** Content for Welcome Section documents */
+interface WelcomeSectionDocumentData {
+  /**
+   * Sections field in *Welcome Section*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: welcome_section.sections[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  sections: prismicT.GroupField<Simplify<WelcomeSectionDocumentDataSectionsItem>>
+}
+/**
+ * Item in Welcome Section → Sections
+ *
+ */
+export interface WelcomeSectionDocumentDataSectionsItem {
+  /**
+   * Section field in *Welcome Section → Sections*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: welcome_section.sections[].section
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  section: prismicT.RelationField<'ep_cards_dashboard' | 'welcome_block'>
+}
+/**
+ * Welcome Section document from Prismic
+ *
+ * - **API ID**: `welcome_section`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type WelcomeSectionDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<Simplify<WelcomeSectionDocumentData>, 'welcome_section', Lang>
+/** Content for Categories Filter documents */
+type WhiteWinesDocumentData = Record<string, never>
+/**
+ * Categories Filter document from Prismic
+ *
+ * - **API ID**: `white_wines`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type WhiteWinesDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithoutUID<Simplify<WhiteWinesDocumentData>, 'white_wines', Lang>
+/** Content for wineclub_by_state documents */
+interface WineclubByStateDocumentData {
+  /**
+   * Internal name (for prismic only) field in *wineclub_by_state*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: wineclub_by_state.internal_name
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  internal_name: prismicT.TitleField
+  /**
+   * region field in *wineclub_by_state*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: wineclub_by_state.region
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  region: prismicT.KeyTextField
+  /**
+   * Wineclubs field in *wineclub_by_state*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: wineclub_by_state.wineclubs[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  wineclubs: prismicT.GroupField<Simplify<WineclubByStateDocumentDataWineclubsItem>>
+}
+/**
+ * Item in wineclub_by_state → Wineclubs
+ *
+ */
+export interface WineclubByStateDocumentDataWineclubsItem {
+  /**
+   * wineclub field in *wineclub_by_state → Wineclubs*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: wineclub_by_state.wineclubs[].wineclub
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  wineclub: prismicT.RelationField<'wineclub_product'>
+  /**
+   * SKU field in *wineclub_by_state → Wineclubs*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: wineclub_by_state.wineclubs[].sku
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  sku: prismicT.KeyTextField
+}
+/**
+ * wineclub_by_state document from Prismic
+ *
+ * - **API ID**: `wineclub_by_state`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type WineclubByStateDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithUID<Simplify<WineclubByStateDocumentData>, 'wineclub_by_state', Lang>
+/** Content for wineclub_product documents */
+interface WineclubProductDocumentData {
+  /**
+   * name field in *wineclub_product*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: wineclub_product.name
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  name: prismicT.KeyTextField
+  /**
+   * wine type field in *wineclub_product*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **API ID Path**: wineclub_product.wine_type
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/select
+   *
+   */
+  wine_type: prismicT.SelectField<'white' | 'rosé' | 'mix' | 'red'>
+  /**
+   * quantity field in *wineclub_product*
+   *
+   * - **Field Type**: Number
+   * - **Placeholder**: *None*
+   * - **API ID Path**: wineclub_product.quantity
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/number
+   *
+   */
+  quantity: prismicT.NumberField
+  /**
+   * price range field in *wineclub_product*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: wineclub_product.price_range
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  price_range: prismicT.KeyTextField
+  /**
+   * img field in *wineclub_product*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: wineclub_product.img
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  img: prismicT.ImageField<never>
+  /**
+   * regions field in *wineclub_product*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: wineclub_product.regions[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  regions: prismicT.GroupField<Simplify<WineclubProductDocumentDataRegionsItem>>
+}
+/**
+ * Item in wineclub_product → regions
+ *
+ */
+export interface WineclubProductDocumentDataRegionsItem {
+  /**
+   * region field in *wineclub_product → regions*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: wineclub_product.regions[].region
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  region: prismicT.KeyTextField
+  /**
+   * SKU field in *wineclub_product → regions*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: wineclub_product.regions[].sku
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  sku: prismicT.KeyTextField
+}
+/**
+ * wineclub_product document from Prismic
+ *
+ * - **API ID**: `wineclub_product`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type WineclubProductDocument<Lang extends string = 'en-us' | 'en-bz'> =
+  prismicT.PrismicDocumentWithUID<Simplify<WineclubProductDocumentData>, 'wineclub_product', Lang>
+export type AllDocumentTypes =
+  | _404PageDocument
+  | AgePopupDocument
+  | AparnaTestDocument
+  | BecomeConsultantAgreementDocument
+  | BecomeConsultantDocument
+  | BottleCollectionsDocument
+  | BrandDocument
+  | BrandDetailsDocument
+  | BrandLandingTempDocument
+  | ButDocument
+  | CarouselDocument
+  | CartPromoMsgsDocument
+  | CategoriesDocument
+  | CheckoutPopupDocument
+  | CleanCraftedPageDocument
+  | ConsultantSearchPageDocument
+  | ConsultantPortalAnnouncemenDocument
+  | ConsultantPortalHeaderImageDocument
+  | ContentHeroDocument
+  | ContentPageDocument
+  | CtaDocument
+  | CustomNavDocument
+  | CustomerPortalHeaderImageDocument
+  | DownloadLinkDocument
+  | DummyWineCategoriesDocument
+  | DuoProductLandingDocument
+  | EpAboutPageDocument
+  | EpArticleCardDocument
+  | EpBannerCardDocument
+  | EpButtonDocument
+  | EpCardsDocument
+  | EpCardsDashboardDocument
+  | EpDashboardPageDocument
+  | EpFullBannerDocument
+  | EpHeroDocument
+  | EpLandingPageDocument
+  | EpNavDocument
+  | EpSeperatorDocument
+  | EpSplitBannersDocument
+  | EpTitleDocument
+  | EpVideoBlockDocument
+  | EpWelcomDocument
+  | EpWelcomeHeaderDocument
+  | EpWineTypeSelectorDocument
+  | FaqsDocument
+  | FilteringMenuDocument
+  | FooterDocument
+  | FooterTextDocument
+  | FooterAddressDocument
+  | GrowerDetailsDocument
+  | GrowerTemplateDocument
+  | HeaderTextDocument
+  | HeroCarouselDocument
+  | HomeArcBannerDocument
+  | HomeCollectionBanneDocument
+  | HomeCollectionBlockDocument
+  | HomePageDocument
+  | ImageDocument
+  | LandingPageDocument
+  | LoginPageDocument
+  | MarketingPageDocument
+  | MarketingPageFeatureDocument
+  | MarketingSectionDocument
+  | MerchPlpTopBannerDocument
+  | NavMenuDocument
+  | NewHomeTestDocument
+  | NewProductsPageV2Document
+  | NewProductsPageDocument
+  | NotFoundMessageDocument
+  | PairingIconDocument
+  | PdpDocument
+  | PlpBottomBannerDocument
+  | PlpTopBannerDocument
+  | PopularProductsDocument
+  | ProductDocument
+  | ProductImgDocument
+  | ProductSectionDocument
+  | ProductShowDocument
+  | QuoteDocument
+  | QuotesDocument
+  | RedirectPageDocument
+  | RichContentPageDocument
+  | ScoutCirclePageDocument
+  | ShopByCollectionDocument
+  | StateWarningDocument
+  | SwHeaderDocument
+  | SwHomePageDocument
+  | SwLayoutDocument
+  | SwVerboseContentPageDocument
+  | TastingNoteIconDocument
+  | TeamPageDocument
+  | TestSliceDocument
+  | Test1Document
+  | TestingTypeDocument
+  | TextWithButtonDocument
+  | VideoPageContentDocument
+  | WelcomeBlockDocument
+  | WelcomeSectionDocument
+  | WhiteWinesDocument
+  | WineclubByStateDocument
+  | WineclubProductDocument
 declare module '@prismicio/client' {
+  interface CreateClient {
+    (
+      repositoryNameOrEndpoint: string,
+      options?: prismic.ClientConfig
+    ): prismic.Client<AllDocumentTypes>
+  }
   namespace Content {
-    export type {}
+    export type {
+      _404PageDocumentData,
+      _404PageDocument,
+      AgePopupDocumentData,
+      AgePopupDocument,
+      AparnaTestDocumentData,
+      AparnaTestDocument,
+      BecomeConsultantAgreementDocumentData,
+      BecomeConsultantAgreementDocumentDataBodyAgreementSlicePrimary,
+      BecomeConsultantAgreementDocumentDataBodyAgreementSlice,
+      BecomeConsultantAgreementDocumentDataBodyListSliceItem,
+      BecomeConsultantAgreementDocumentDataBodyListSlice,
+      BecomeConsultantAgreementDocumentDataBodySlice,
+      BecomeConsultantAgreementDocument,
+      BecomeConsultantDocumentData,
+      BecomeConsultantDocument,
+      BottleCollectionsDocumentData,
+      BottleCollectionsDocumentDataProductsItem,
+      BottleCollectionsDocument,
+      BrandDocumentData,
+      BrandDocument,
+      BrandDetailsDocumentData,
+      BrandDetailsDocumentDataFlavorProfilesItem,
+      BrandDetailsDocumentDataBrandProductsItem,
+      BrandDetailsDocumentDataBrandMediaGroupItem,
+      BrandDetailsDocumentDataBrandContentImagesItem,
+      BrandDetailsDocumentDataBrandSocialItem,
+      BrandDetailsDocument,
+      BrandLandingTempDocumentData,
+      BrandLandingTempDocumentDataBrandsItem,
+      BrandLandingTempDocument,
+      ButDocumentData,
+      ButDocument,
+      CarouselDocumentData,
+      CarouselDocumentDataSlidesItem,
+      CarouselDocument,
+      CartPromoMsgsDocumentData,
+      CartPromoMsgsDocumentDataPromosItem,
+      CartPromoMsgsDocument,
+      CategoriesDocumentData,
+      CategoriesDocumentDataProductItem,
+      CategoriesDocument,
+      CheckoutPopupDocumentData,
+      CheckoutPopupDocument,
+      CleanCraftedPageDocumentData,
+      CleanCraftedPageDocument,
+      ConsultantSearchPageDocumentData,
+      ConsultantSearchPageDocument,
+      ConsultantPortalAnnouncemenDocumentData,
+      ConsultantPortalAnnouncemenDocument,
+      ConsultantPortalHeaderImageDocumentData,
+      ConsultantPortalHeaderImageDocument,
+      ContentHeroDocumentData,
+      ContentHeroDocument,
+      ContentPageDocumentData,
+      ContentPageDocument,
+      CtaDocumentData,
+      CtaDocumentDataDataItem,
+      CtaDocument,
+      CustomNavDocumentData,
+      CustomNavDocumentDataNavsItem,
+      CustomNavDocument,
+      CustomerPortalHeaderImageDocumentData,
+      CustomerPortalHeaderImageDocument,
+      DownloadLinkDocumentData,
+      DownloadLinkDocument,
+      DummyWineCategoriesDocumentData,
+      DummyWineCategoriesDocumentDataGroupItemsItem,
+      DummyWineCategoriesDocumentDataOptionalTextItemsItem,
+      DummyWineCategoriesDocument,
+      DuoProductLandingDocumentData,
+      DuoProductLandingDocument,
+      EpAboutPageDocumentData,
+      EpAboutPageDocumentDataSectionsItem,
+      EpAboutPageDocument,
+      EpArticleCardDocumentData,
+      EpArticleCardDocumentDataArticleCardItem,
+      EpArticleCardDocument,
+      EpBannerCardDocumentData,
+      EpBannerCardDocumentDataSectionDataItem,
+      EpBannerCardDocument,
+      EpButtonDocumentData,
+      EpButtonDocument,
+      EpCardsDocumentData,
+      EpCardsDocumentDataSectionDataItem,
+      EpCardsDocument,
+      EpCardsDashboardDocumentData,
+      EpCardsDashboardDocumentDataSectionDataItem,
+      EpCardsDashboardDocument,
+      EpDashboardPageDocumentData,
+      EpDashboardPageDocumentDataSectionsItem,
+      EpDashboardPageDocument,
+      EpFullBannerDocumentData,
+      EpFullBannerDocumentDataSectionDataItem,
+      EpFullBannerDocument,
+      EpHeroDocumentData,
+      EpHeroDocumentDataLinksItem,
+      EpHeroDocument,
+      EpLandingPageDocumentData,
+      EpLandingPageDocumentDataSectionsItem,
+      EpLandingPageDocument,
+      EpNavDocumentData,
+      EpNavDocumentDataLinksItem,
+      EpNavDocument,
+      EpSeperatorDocumentData,
+      EpSeperatorDocument,
+      EpSplitBannersDocumentData,
+      EpSplitBannersDocumentDataSectionDataItem,
+      EpSplitBannersDocument,
+      EpTitleDocumentData,
+      EpTitleDocumentDataSectionDataItem,
+      EpTitleDocument,
+      EpVideoBlockDocumentData,
+      EpVideoBlockDocument,
+      EpWelcomDocumentData,
+      EpWelcomDocumentDataSectionsItem,
+      EpWelcomDocument,
+      EpWelcomeHeaderDocumentData,
+      EpWelcomeHeaderDocument,
+      EpWineTypeSelectorDocumentData,
+      EpWineTypeSelectorDocument,
+      FaqsDocumentData,
+      FaqsDocument,
+      FilteringMenuDocumentData,
+      FilteringMenuDocumentDataGroupItemsItem,
+      FilteringMenuDocumentDataOptionalTextItemsItem,
+      FilteringMenuDocument,
+      FooterDocumentData,
+      FooterDocumentDataColumn1Item,
+      FooterDocumentDataColumn2Item,
+      FooterDocumentDataColumn3Item,
+      FooterDocument,
+      FooterTextDocumentData,
+      FooterTextDocument,
+      FooterAddressDocumentData,
+      FooterAddressDocument,
+      GrowerDetailsDocumentData,
+      GrowerDetailsDocumentDataGrowerImagesItem,
+      GrowerDetailsDocumentDataGrowerProductsItem,
+      GrowerDetailsDocument,
+      GrowerTemplateDocumentData,
+      GrowerTemplateDocumentDataGrowersItem,
+      GrowerTemplateDocument,
+      HeaderTextDocumentData,
+      HeaderTextDocument,
+      HeroCarouselDocumentData,
+      HeroCarouselDocumentDataSlidesItem,
+      HeroCarouselDocument,
+      HomeArcBannerDocumentData,
+      HomeArcBannerDocument,
+      HomeCollectionBanneDocumentData,
+      HomeCollectionBanneDocumentDataHomeCollectionBlockGroupItem,
+      HomeCollectionBanneDocument,
+      HomeCollectionBlockDocumentData,
+      HomeCollectionBlockDocument,
+      HomePageDocumentData,
+      HomePageDocumentDataBodyCarouselSlicePrimary,
+      HomePageDocumentDataBodyCarouselSliceItem,
+      HomePageDocumentDataBodyCarouselSlice,
+      HomePageDocumentDataBodyTextWithButtonSlicePrimary,
+      HomePageDocumentDataBodyTextWithButtonSlice,
+      HomePageDocumentDataBodyProductShowcaseSlicePrimary,
+      HomePageDocumentDataBodyProductShowcaseSliceItem,
+      HomePageDocumentDataBodyProductShowcaseSlice,
+      HomePageDocumentDataBodyDuoMarketingMessageSlicePrimary,
+      HomePageDocumentDataBodyDuoMarketingMessageSlice,
+      HomePageDocumentDataBodyEditorialSlicePrimary,
+      HomePageDocumentDataBodyEditorialSlice,
+      HomePageDocumentDataBodyBrandGallerySlicePrimary,
+      HomePageDocumentDataBodyBrandGallerySliceItem,
+      HomePageDocumentDataBodyBrandGallerySlice,
+      HomePageDocumentDataBodyVideoShowcaseSlicePrimary,
+      HomePageDocumentDataBodyVideoShowcaseSlice,
+      HomePageDocumentDataBodyTextWithImageSlicePrimary,
+      HomePageDocumentDataBodyTextWithImageSlice,
+      HomePageDocumentDataBodySlice,
+      HomePageDocument,
+      ImageDocumentData,
+      ImageDocument,
+      LandingPageDocumentData,
+      LandingPageDocumentDataHeroGroupItem,
+      LandingPageDocumentDataCleanCraftedWineItem,
+      LandingPageDocumentDataSlickPanelItem,
+      LandingPageDocumentDataFearlessFounderItem,
+      LandingPageDocument,
+      LoginPageDocumentData,
+      LoginPageDocument,
+      MarketingPageDocumentData,
+      MarketingPageDocumentDataCarouselItem,
+      MarketingPageDocument,
+      MarketingPageFeatureDocumentData,
+      MarketingPageFeatureDocument,
+      MarketingSectionDocumentData,
+      MarketingSectionDocumentDataBodyMediaSlicePrimary,
+      MarketingSectionDocumentDataBodyMediaSlice,
+      MarketingSectionDocumentDataBodyImageSlicePrimary,
+      MarketingSectionDocumentDataBodyImageSlice,
+      MarketingSectionDocumentDataBodyVideoSlicePrimary,
+      MarketingSectionDocumentDataBodyVideoSlice,
+      MarketingSectionDocumentDataBodySlice,
+      MarketingSectionDocument,
+      MerchPlpTopBannerDocumentData,
+      MerchPlpTopBannerDocument,
+      NavMenuDocumentData,
+      NavMenuDocumentDataMainMenuItem,
+      NavMenuDocument,
+      NewHomeTestDocumentData,
+      NewHomeTestDocumentDataBodyCallToActionSlicePrimary,
+      NewHomeTestDocumentDataBodyCallToActionSlice,
+      NewHomeTestDocumentDataBodyFeatureTestimonialsSlicePrimary,
+      NewHomeTestDocumentDataBodyFeatureTestimonialsSliceItem,
+      NewHomeTestDocumentDataBodyFeatureTestimonialsSlice,
+      NewHomeTestDocumentDataBodyCustomerLogosSlicePrimary,
+      NewHomeTestDocumentDataBodyCustomerLogosSliceItem,
+      NewHomeTestDocumentDataBodyCustomerLogosSlice,
+      NewHomeTestDocumentDataBodyVideoHighlightsSlicePrimary,
+      NewHomeTestDocumentDataBodyVideoHighlightsSliceItem,
+      NewHomeTestDocumentDataBodyVideoHighlightsSlice,
+      NewHomeTestDocumentDataBodySlice,
+      NewHomeTestDocument,
+      NewProductsPageV2DocumentData,
+      NewProductsPageV2DocumentDataRedsProductsSectionItem,
+      NewProductsPageV2DocumentDataWhitesProductsSectionItem,
+      NewProductsPageV2DocumentDataRosesProductsSectionItem,
+      NewProductsPageV2DocumentDataSparklingsProductsSectionItem,
+      NewProductsPageV2DocumentDataCansProductsSectionItem,
+      NewProductsPageV2DocumentDataSetsProductSectionItem,
+      NewProductsPageV2DocumentDataOtherProductSectionItem,
+      NewProductsPageV2Document,
+      NewProductsPageDocumentData,
+      NewProductsPageDocumentDataRedsProductsSectionItem,
+      NewProductsPageDocumentDataWhitesProductsSectionItem,
+      NewProductsPageDocumentDataRosesProductsSectionItem,
+      NewProductsPageDocumentDataSparklingsProductsSectionItem,
+      NewProductsPageDocumentDataCansProductsSectionItem,
+      NewProductsPageDocumentDataSetsProductsSectionItem,
+      NewProductsPageDocumentDataOtherProductsSectionItem,
+      NewProductsPageDocument,
+      NotFoundMessageDocumentData,
+      NotFoundMessageDocumentDataBodyProductShowcaseSlicePrimary,
+      NotFoundMessageDocumentDataBodyProductShowcaseSliceItem,
+      NotFoundMessageDocumentDataBodyProductShowcaseSlice,
+      NotFoundMessageDocumentDataBodyBrandGallerySlicePrimary,
+      NotFoundMessageDocumentDataBodyBrandGallerySliceItem,
+      NotFoundMessageDocumentDataBodyBrandGallerySlice,
+      NotFoundMessageDocumentDataBodySlice,
+      NotFoundMessageDocument,
+      PairingIconDocumentData,
+      PairingIconDocument,
+      PdpDocumentData,
+      PdpDocumentDataImagesItem,
+      PdpDocumentDataVideosItem,
+      PdpDocumentDataBodyAccordionSlicePrimary,
+      PdpDocumentDataBodyAccordionSlice,
+      PdpDocumentDataBodySlice,
+      PdpDocument,
+      PlpBottomBannerDocumentData,
+      PlpBottomBannerDocument,
+      PlpTopBannerDocumentData,
+      PlpTopBannerDocument,
+      PopularProductsDocumentData,
+      PopularProductsDocument,
+      ProductDocumentData,
+      ProductDocumentDataVarietalSelectionsItem,
+      ProductDocumentDataShopByCollection1Item,
+      ProductDocumentDataProductImagesItem,
+      ProductDocumentDataTastingNotesItem,
+      ProductDocumentDataPairingsItem,
+      ProductDocument,
+      ProductImgDocumentData,
+      ProductImgDocument,
+      ProductSectionDocumentData,
+      ProductSectionDocument,
+      ProductShowDocumentData,
+      ProductShowDocumentDataProductsItem,
+      ProductShowDocument,
+      QuoteDocumentData,
+      QuoteDocument,
+      QuotesDocumentData,
+      QuotesDocumentDataQuotesItem,
+      QuotesDocument,
+      RedirectPageDocumentData,
+      RedirectPageDocument,
+      RichContentPageDocumentData,
+      RichContentPageDocumentDataBodyHeroBannerSlicePrimary,
+      RichContentPageDocumentDataBodyHeroBannerSlice,
+      RichContentPageDocumentDataBodyBrandProfileSlicePrimary,
+      RichContentPageDocumentDataBodyBrandProfileSliceItem,
+      RichContentPageDocumentDataBodyBrandProfileSlice,
+      RichContentPageDocumentDataBodyVideoShowcaseSlicePrimary,
+      RichContentPageDocumentDataBodyVideoShowcaseSlice,
+      RichContentPageDocumentDataBodyTextWithButtonSlicePrimary,
+      RichContentPageDocumentDataBodyTextWithButtonSlice,
+      RichContentPageDocumentDataBodyImageAndTextSlicePrimary,
+      RichContentPageDocumentDataBodyImageAndTextSlice,
+      RichContentPageDocumentDataBodyColumnedContentSlicePrimary,
+      RichContentPageDocumentDataBodyColumnedContentSliceItem,
+      RichContentPageDocumentDataBodyColumnedContentSlice,
+      RichContentPageDocumentDataBodyProductShowcaseSlicePrimary,
+      RichContentPageDocumentDataBodyProductShowcaseSliceItem,
+      RichContentPageDocumentDataBodyProductShowcaseSlice,
+      RichContentPageDocumentDataBodyDynamicProductShowcaseSlicePrimary,
+      RichContentPageDocumentDataBodyDynamicProductShowcaseSliceItem,
+      RichContentPageDocumentDataBodyDynamicProductShowcaseSlice,
+      RichContentPageDocumentDataBodyWineQuizSlice,
+      RichContentPageDocumentDataBodySlice,
+      RichContentPageDocument,
+      ScoutCirclePageDocumentData,
+      ScoutCirclePageDocumentDataCarouselOfFeaturesItem,
+      ScoutCirclePageDocumentDataStepsItem,
+      ScoutCirclePageDocument,
+      ShopByCollectionDocumentData,
+      ShopByCollectionDocument,
+      StateWarningDocumentData,
+      StateWarningDocumentDataStatesItem,
+      StateWarningDocument,
+      SwHeaderDocumentData,
+      SwHeaderDocumentDataMenuLinksItem,
+      SwHeaderDocument,
+      SwHomePageDocumentData,
+      SwHomePageDocumentDataBodyHeroBannerSlicePrimary,
+      SwHomePageDocumentDataBodyHeroBannerSlice,
+      SwHomePageDocumentDataBodyBrandProfileSlicePrimary,
+      SwHomePageDocumentDataBodyBrandProfileSliceItem,
+      SwHomePageDocumentDataBodyBrandProfileSlice,
+      SwHomePageDocumentDataBodyVideoShowcaseSlicePrimary,
+      SwHomePageDocumentDataBodyVideoShowcaseSlice,
+      SwHomePageDocumentDataBodyTextWithButtonSlicePrimary,
+      SwHomePageDocumentDataBodyTextWithButtonSlice,
+      SwHomePageDocumentDataBodyImageAndTextSlicePrimary,
+      SwHomePageDocumentDataBodyImageAndTextSlice,
+      SwHomePageDocumentDataBodyColumnedContentSlicePrimary,
+      SwHomePageDocumentDataBodyColumnedContentSliceItem,
+      SwHomePageDocumentDataBodyColumnedContentSlice,
+      SwHomePageDocumentDataBodyProductShowcaseSlicePrimary,
+      SwHomePageDocumentDataBodyProductShowcaseSliceItem,
+      SwHomePageDocumentDataBodyProductShowcaseSlice,
+      SwHomePageDocumentDataBodySlice,
+      SwHomePageDocument,
+      SwLayoutDocumentData,
+      SwLayoutDocumentDataHeaderLinksItem,
+      SwLayoutDocumentDataFooterLinksItem,
+      SwLayoutDocument,
+      SwVerboseContentPageDocumentData,
+      SwVerboseContentPageDocument,
+      TastingNoteIconDocumentData,
+      TastingNoteIconDocument,
+      TeamPageDocumentData,
+      TeamPageDocumentDataMembersItem,
+      TeamPageDocument,
+      TestSliceDocumentData,
+      TestSliceDocument,
+      Test1DocumentData,
+      Test1Document,
+      TestingTypeDocumentData,
+      TestingTypeDocument,
+      TextWithButtonDocumentData,
+      TextWithButtonDocument,
+      VideoPageContentDocumentData,
+      VideoPageContentDocument,
+      WelcomeBlockDocumentData,
+      WelcomeBlockDocument,
+      WelcomeSectionDocumentData,
+      WelcomeSectionDocumentDataSectionsItem,
+      WelcomeSectionDocument,
+      WhiteWinesDocumentData,
+      WhiteWinesDocument,
+      WineclubByStateDocumentData,
+      WineclubByStateDocumentDataWineclubsItem,
+      WineclubByStateDocument,
+      WineclubProductDocumentData,
+      WineclubProductDocumentDataRegionsItem,
+      WineclubProductDocument,
+      AllDocumentTypes,
+    }
   }
 }

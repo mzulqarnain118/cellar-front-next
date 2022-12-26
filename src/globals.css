@@ -1,14 +1,11 @@
 @tailwind base;
 
 @layer base {
-  * {
-    @apply font-body;
-  }
-
   body {
     @apply bg-neutral-50;
     @apply h-full;
     @apply text-neutral-400;
+    @apply font-body;
   }
 
   h1,
@@ -33,7 +30,8 @@
   }
 
   h1 {
-    @apply text-h1;
+    @apply text-4xl;
+    @apply lg:text-h1;
   }
 
   h2 {

@@ -1,0 +1,15 @@
+{
+  "recommendations": [
+    "aaron-bond.better-comments",
+    "formulahendry.auto-rename-tag",
+    "naumovs.color-highlight",
+    "EditorConfig.EditorConfig",
+    "IronGeek.vscode-env",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "bradlc.vscode-tailwindcss",
+    "wix.vscode-import-cost",
+    "eamodio.gitlens",
+    "ms-vsliveshare.vsliveshare"
+  ]
+}
