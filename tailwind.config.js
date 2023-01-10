@@ -7,7 +7,11 @@ module.exports = {
     './src/components/**/*.{ts,tsx}',
     './src/core/components/**/*.{ts,tsx}',
   ],
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/forms')({
+      strategy: 'class',
+    }),
+  ],
   theme: {
     colors: {
       error: '#B52831',
@@ -57,6 +61,7 @@ module.exports = {
         800: '#251C16',
         900: '#120E0B',
       },
+      transparent: 'transparent',
     },
     container: {
       padding: {
@@ -64,6 +69,9 @@ module.exports = {
       },
     },
     extend: {
+      animation: {
+        'fade-in': 'fadeIn 300ms',
+      },
       fontSize: {
         base: '1rem',
         h1: '3.5rem',
@@ -75,6 +83,19 @@ module.exports = {
         lg: '1.25rem',
         sm: '0.75rem',
         xs: '0.625rem',
+      },
+      gridTemplateRows: {
+        'product-card': '300px 1fr',
+      },
+      keyframes: {
+        fadeIn: {
+          from: {
+            opacity: '0%',
+          },
+          to: {
+            opacity: '100%',
+          },
+        },
       },
       transitionDuration: {
         DEFAULT: '300ms',

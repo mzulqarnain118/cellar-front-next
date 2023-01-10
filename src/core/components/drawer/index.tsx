@@ -8,21 +8,45 @@ interface DrawerProps {
   as?: ElementType
   className?: string
   children: ReactNode
+  direction?: 'left' | 'right'
   id: string
+  open: boolean
+  setOpen: (open: boolean) => void
+  title?: string
   trigger: JSX.Element
 }
 
-export const Drawer = ({ as = 'div', children, className, id, trigger }: DrawerProps) => {
-  const [isOpen, setIsOpen] = useState(false)
+export const Drawer = ({
+  as = 'div',
+  children,
+  className,
+  direction = 'left',
+  id,
+  open,
+  setOpen,
+  title,
+  trigger,
+}: DrawerProps) => {
   const [isMounted, setIsMounted] = useState(false)
   const Component = as
 
+  const createDrawerElement = () => {
+    const newDrawer = document.createElement('div')
+    newDrawer.setAttribute('id', id)
+    document.body.appendChild(newDrawer)
+    return newDrawer
+  }
+
   const handleBackdropClick = () => {
-    setIsOpen(false)
+    if (setOpen) {
+      setOpen(false)
+    }
     document.querySelector('body')?.classList.remove('overflow-hidden')
   }
   const handleDrawerOpen = () => {
-    setIsOpen(true)
+    if (setOpen) {
+      setOpen(true)
+    }
     document.querySelector('body')?.classList.add('overflow-hidden')
   }
   const keyDownHandler = (event: KeyboardEvent) => {
@@ -43,12 +67,21 @@ export const Drawer = ({ as = 'div', children, className, id, trigger }: DrawerP
 
   useEffect(() => {
     document.addEventListener('keydown', keyDownHandler)
+
+    if (open) {
+      document.querySelector('body')?.classList.add('overflow-hidden')
+    }
+
     setIsMounted(true)
 
     return () => {
       document.removeEventListener('keydown', keyDownHandler)
       setIsMounted(false)
+      if (setOpen) {
+        setOpen(false)
+      }
       document.querySelector('body')?.classList.remove('overflow-hidden')
+      document.querySelector(`div#${id}`)?.remove()
     }
   }, [])
 
@@ -70,10 +103,10 @@ export const Drawer = ({ as = 'div', children, className, id, trigger }: DrawerP
                 aria-label="Close menu"
                 className={clsx(
                   `
-                    absolute top-0 left-0 h-screen w-full -translate-x-full bg-neutral-900
-                    opacity-0 transition-opacity
+                    fixed top-0 left-0 bottom-0 right-0 z-10 h-full w-full -translate-x-full
+                    bg-neutral-900 opacity-0 transition-opacity
                   `,
-                  isOpen && 'translate-x-0 !opacity-70'
+                  open && 'translate-x-0 !opacity-70'
                 )}
                 role="button"
                 tabIndex={0}
@@ -83,15 +116,32 @@ export const Drawer = ({ as = 'div', children, className, id, trigger }: DrawerP
               <div
                 className={clsx(
                   `
-                    absolute top-0 left-0 z-10 h-screen -translate-x-full bg-neutral-50
+                    fixed top-0 left-0 z-10 h-screen -translate-x-full bg-neutral-50
                     transition-transform
                   `,
-                  isOpen && 'translate-x-0'
+                  direction === 'right' && 'right-0 left-auto translate-x-full',
+                  open && (direction === 'left' ? 'translate-x-0' : '-translate-x-0')
                 )}
               >
-                <Component className="flex h-screen flex-col p-4">
-                  <div className="inline-flex justify-end">
-                    <button aria-label="Close menu" type="button" onClick={() => setIsOpen(false)}>
+                <Component className="flex h-screen flex-col">
+                  <div
+                    className={clsx(
+                      `mr-4 mt-4 inline-flex`,
+                      title !== undefined &&
+                        'items-center border-b-2 border-b-neutral-100 pl-4 pb-4'
+                    )}
+                  >
+                    {title !== undefined && (
+                      <span className="w-full justify-self-center text-center font-heading text-2xl font-bold">
+                        {title}
+                      </span>
+                    )}
+                    <button
+                      aria-label="Close menu"
+                      className="justify-self-end"
+                      type="button"
+                      onClick={() => setOpen(false)}
+                    >
                       <XMarkIcon
                         className={`
                           h-6 w-6 stroke-1 text-neutral-500 transition-colors hover:text-error
@@ -103,7 +153,7 @@ export const Drawer = ({ as = 'div', children, className, id, trigger }: DrawerP
                 </Component>
               </div>
             </>,
-            document.querySelector(`#${id}`) as HTMLElement
+            document.querySelector(`#${id}`) || createDrawerElement()
           )
         : undefined}
     </div>

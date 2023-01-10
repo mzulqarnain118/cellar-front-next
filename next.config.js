@@ -8,6 +8,11 @@ const nextConfig = {
         pathname: '**',
         protocol: 'https',
       },
+      {
+        hostname: 'scoutandcellar.blob.core.windows.net',
+        pathname: '**',
+        protocol: 'https',
+      },
     ],
   },
   reactStrictMode: true,

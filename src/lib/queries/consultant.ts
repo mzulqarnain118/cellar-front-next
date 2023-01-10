@@ -1,18 +1,22 @@
-import { QueryFunction } from '@tanstack/react-query'
+import { QueryFunction, useQuery } from '@tanstack/react-query'
+import { useRouter } from 'next/router'
 
-import { DEFAULT_CONSULTANT_STATE } from '../stores/consultant'
+import { api } from '../api'
+import { DEFAULT_CONSULTANT_STATE, useConsultantStore } from '../stores/consultant'
 import { Consultant } from '../types'
 
-export const CONSULTANT_QUERY_KEY = ['consultant']
+export const CONSULTANT_QUERY_KEY = 'consultant'
 export const getConsultantData: QueryFunction<Consultant> = async ({ queryKey }) => {
   const [_, repUrl] = queryKey
   if (!repUrl) {
     return DEFAULT_CONSULTANT_STATE
   }
 
-  const response = await (
-    await fetch(`${process.env.NEXT_PUBLIC_TOWER_API_URL}info/rep/${repUrl}`)
-  ).json()
+  const response = await api(`info/rep/${repUrl}`).json<{
+    DisplayID: string
+    DisplayName: string
+    Url: string
+  }>()
 
   if (!response.DisplayID) {
     return DEFAULT_CONSULTANT_STATE
@@ -25,4 +29,21 @@ export const getConsultantData: QueryFunction<Consultant> = async ({ queryKey })
   }
 
   return consultant
+}
+
+export const useConsultantQuery = () => {
+  const { consultant, setConsultant } = useConsultantStore()
+  const { query } = useRouter()
+  const repUrl = query.u?.toString() || consultant.url
+
+  return useQuery({
+    initialData: DEFAULT_CONSULTANT_STATE,
+    onError: () => setConsultant(DEFAULT_CONSULTANT_STATE),
+    onSuccess: data => {
+      setConsultant(data)
+    },
+    queryFn: getConsultantData,
+    queryKey: [CONSULTANT_QUERY_KEY, repUrl],
+    refetchOnWindowFocus: false,
+  })
 }

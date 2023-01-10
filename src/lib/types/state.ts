@@ -5,9 +5,3 @@ export interface State {
   name: string
   provinceID: number
 }
-
-export interface Consultant {
-  displayId: string
-  url: string
-  displayName: string
-}

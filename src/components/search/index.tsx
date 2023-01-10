@@ -15,7 +15,7 @@ export const Search = ({ className, id }: SearchProps) => (
       className={`
         w-full rounded-bl-lg rounded-tl-lg bg-input px-3 py-2 text-neutral-500
         shadow-inner transition-[outline] placeholder:text-neutral-300 focus:border-none
-        focus:outline-primary-400 focus:transition-[outline]
+        focus:transition-[outline]
       `}
       id={id}
       placeholder="Search"

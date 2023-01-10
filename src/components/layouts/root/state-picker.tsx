@@ -1,24 +1,18 @@
 import { ChangeEvent, useMemo } from 'react'
 
-import { useQuery } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 
-import { fetchFlightStates, STATES_QUERY_KEY } from '@/lib/queries/state'
+import { CART_QUERY_KEY } from '@/lib/queries/cart'
+import { useStatesQuery } from '@/lib/queries/state'
 import { useShippingStateStore } from '@/lib/stores/shipping-state'
-import { State } from '@/lib/types'
+import { State } from '@/lib/types/index'
 
 /**
  * Renders a select menu with available shipping states listed.
  */
 export const StatePicker = () => {
-  const {
-    data: states,
-    isFetching,
-    isLoading,
-  } = useQuery(STATES_QUERY_KEY, fetchFlightStates, {
-    // * NOTE: This data changes VERY RARELY.
-    cacheTime: Infinity,
-    staleTime: Infinity,
-  })
+  const queryClient = useQueryClient()
+  const { data: states, isFetching, isLoading } = useStatesQuery()
   const { setShippingState, shippingState } = useShippingStateStore()
 
   const stateOptions = useMemo(
@@ -35,6 +29,7 @@ export const StatePicker = () => {
     const newProvinceId = parseInt(event.target.value)
     const newShippingState = states?.find(state => state.provinceID === newProvinceId)
     setShippingState(newShippingState)
+    queryClient.invalidateQueries(CART_QUERY_KEY)
   }
 
   if (isFetching || isLoading) {

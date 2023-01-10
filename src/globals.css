@@ -8,6 +8,22 @@
     @apply font-body;
   }
 
+  * {
+    @apply focus:outline-1 focus:outline-primary-300;
+  }
+
+  input {
+    @apply focus:!border-primary-300 focus:!ring-1 focus:!ring-primary-300;
+  }
+
+  input[type='number']::-webkit-outer-spin-button,
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number'] {
+    -webkit-appearance: none;
+    margin: 0;
+    -moz-appearance: textfield !important;
+  }
+
   h1,
   h2,
   h3,

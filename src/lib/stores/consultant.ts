@@ -1,6 +1,7 @@
 import create from 'zustand'
 import { persist } from 'zustand/middleware'
 
+import { CORPORATE_CONSULTANT_ID } from '../constants'
 import { Consultant } from '../types'
 
 interface ConsultantStore {
@@ -9,7 +10,7 @@ interface ConsultantStore {
 }
 
 export const DEFAULT_CONSULTANT_STATE: Consultant = {
-  displayId: '1001',
+  displayId: CORPORATE_CONSULTANT_ID,
   displayName: '',
   url: '',
 }
@@ -20,8 +21,6 @@ export const useConsultantStore = create<ConsultantStore>()(
       consultant: DEFAULT_CONSULTANT_STATE,
       setConsultant: (consultant: Consultant) => set({ consultant }),
     }),
-    {
-      name: 'consultant',
-    }
+    { name: 'consultant' }
   )
 )

@@ -3,8 +3,8 @@ import { GetStaticPropsContext, InferGetStaticPropsType, NextPage } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
 
+import { camelizeSnakeKeys } from '@/core/utils'
 import { WINE_PAGE_PATH } from '@/lib/paths'
-import { camelizeKeys } from '@/lib/utils'
 import { createClient } from 'prismic-io'
 import { HomePageDocument } from 'types.generated'
 
@@ -16,7 +16,7 @@ export const getStaticProps = async ({ previewData }: GetStaticPropsContext) => 
 
   return {
     props: {
-      page: camelizeKeys<HomePageDocument>(page),
+      page: camelizeSnakeKeys<HomePageDocument>(page),
     },
   }
 }
@@ -37,15 +37,8 @@ const HomePage: NextPage<PageProps> = () => (
               <div>
                 <h1 className="lg:mb-8">Live Clean-Crafted.</h1>
                 <h2 className="text-4xl font-semibold leading-tight">
-                  <span className="block">
-                    No <span className="">toxic</span> pesticides.
-                  </span>
-                  <span className="block">
-                    No <span className="">artificial</span> processing aids or ingredients.
-                  </span>
-                  <span className="block">
-                    Sulfites <span className="">fewer</span> than 100ppm.
-                  </span>
+                  <span className="block">Better for you.</span>
+                  <span className="block">Better for the planet.</span>
                 </h2>
               </div>
               <div className="flex flex-col gap-4">
@@ -79,17 +72,8 @@ const HomePage: NextPage<PageProps> = () => (
               </div>
             </div>
           </div>
-          {/* <div className="absolute top-0 left-0 h-full w-full bg-neutral-900 opacity-50" /> */}
         </div>
       </div>
-      {/* <Image
-          fill
-          priority
-          alt="Vineyard Background"
-          className="absolute w-full object-cover brightness-75"
-          sizes="100vw"
-          src="/vineyard-bg.jpg"
-        /> */}
     </main>
   </>
 )

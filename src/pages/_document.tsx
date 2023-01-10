@@ -7,6 +7,7 @@ export default function Document() {
       <body>
         <Main />
         <NextScript />
+        <div id="cart-drawer" />
         <div id="mobile-menu-drawer" />
       </body>
     </Html>

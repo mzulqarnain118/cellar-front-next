@@ -1,6 +1,6 @@
 /** User-related paths. */
 export const HOME_PAGE_PATH = '/'
-export const LOGIN_PAGE_PATH = '/login'
+export const SIGN_IN_PAGE_PATH = '/login'
 export const SIGNUP_PAGE_PATH = '/signup'
 export const CHECKOUT_PAGE_PATH = '/checkout'
 

@@ -28,6 +28,8 @@ export const Carousel = ({ slice }: CarouselProps) => {
   //   )
   // )
 
+  console.log('slice', slice)
+
   const responsive = {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
