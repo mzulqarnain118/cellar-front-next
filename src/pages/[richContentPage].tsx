@@ -47,7 +47,9 @@ export const getStaticProps = async ({
 export const getStaticPaths: GetStaticPaths = async () => {
   const client = createClient()
   const pages = await client.getAllByType('rich_content_page')
-  const paths = pages.filter(page => page.data.page_type === 'Default').map(page => `/${page.uid}`)
+  const paths = pages
+    .filter(page => page.data.page_type === 'Default' && page.uid !== 'home')
+    .map(page => `/${page.uid}`)
 
   return {
     fallback: true,
