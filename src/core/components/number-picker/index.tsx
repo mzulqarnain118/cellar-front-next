@@ -59,7 +59,6 @@ export const NumberPicker = ({
   }
 
   const onRemove: MouseEventHandler<HTMLButtonElement> = event => {
-    console.log(value)
     if (value === 1 && handleRemove) {
       handleRemove(event)
     } else if (value > 1 && handleChange) {

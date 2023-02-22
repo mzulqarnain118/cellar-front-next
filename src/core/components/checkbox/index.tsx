@@ -28,10 +28,10 @@ export const Checkbox = ({
         className={clsx(
           `
             form-checkbox h-4 w-4 cursor-pointer rounded border border-neutral-300
-            bg-neutral-50 transition duration-200 checked:border-primary-500
-            checked:text-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400
-            disabled:cursor-not-allowed disabled:border-neutral-200 disabled:bg-neutral-100
-            group-hover:bg-primary-100 group-hover:checked:bg-primary-500
+            bg-neutral-50 transition duration-200 checked:border-brand-500
+            checked:text-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500
+            disabled:cursor-not-allowed disabled:!border-neutral-200 disabled:!bg-neutral-300
+            group-hover:bg-brand-200 group-hover:checked:bg-brand-500
           `,
           className
         )}
@@ -43,8 +43,8 @@ export const Checkbox = ({
       />
       <label
         className={clsx(
-          'cursor-pointer text-neutral-400',
-          disabled && 'cursor-not-allowed text-neutral-300'
+          'cursor-pointer text-neutral-600',
+          disabled && 'cursor-not-allowed text-neutral-400'
         )}
         htmlFor={checkboxId}
       >

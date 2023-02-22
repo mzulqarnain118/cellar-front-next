@@ -6,10 +6,10 @@ import type * as prismic from '@prismicio/client'
 type Simplify<T> = {
   [KeyType in keyof T]: T[KeyType]
 }
-/** Content for 404_page documents */
+/** Content for 404 Page documents */
 interface _404PageDocumentData {
   /**
-   * Title field in *404_page*
+   * Title field in *404 Page*
    *
    * - **Field Type**: Title
    * - **Placeholder**: *None*
@@ -20,7 +20,7 @@ interface _404PageDocumentData {
    */
   title: prismicT.TitleField
   /**
-   * Message field in *404_page*
+   * Message field in *404 Page*
    *
    * - **Field Type**: Rich Text
    * - **Placeholder**: *None*
@@ -32,7 +32,7 @@ interface _404PageDocumentData {
   message: prismicT.RichTextField
 }
 /**
- * 404_page document from Prismic
+ * 404 Page document from Prismic
  *
  * - **API ID**: `404_page`
  * - **Repeatable**: `false`
@@ -40,12 +40,12 @@ interface _404PageDocumentData {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type _404PageDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type _404PageDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithUID<Simplify<_404PageDocumentData>, '404_page', Lang>
-/** Content for age_popup documents */
+/** Content for Age Popup documents */
 interface AgePopupDocumentData {
   /**
-   * title field in *age_popup*
+   * title field in *Age Popup*
    *
    * - **Field Type**: Title
    * - **Placeholder**: *None*
@@ -56,7 +56,7 @@ interface AgePopupDocumentData {
    */
   title: prismicT.TitleField
   /**
-   * description field in *age_popup*
+   * description field in *Age Popup*
    *
    * - **Field Type**: Rich Text
    * - **Placeholder**: *None*
@@ -67,7 +67,7 @@ interface AgePopupDocumentData {
    */
   description: prismicT.RichTextField
   /**
-   * option text field in *age_popup*
+   * option text field in *Age Popup*
    *
    * - **Field Type**: Rich Text
    * - **Placeholder**: *None*
@@ -78,7 +78,7 @@ interface AgePopupDocumentData {
    */
   option_text: prismicT.RichTextField
   /**
-   * state select text field in *age_popup*
+   * state select text field in *Age Popup*
    *
    * - **Field Type**: Rich Text
    * - **Placeholder**: *None*
@@ -89,7 +89,7 @@ interface AgePopupDocumentData {
    */
   state_select_text: prismicT.RichTextField
   /**
-   * button text field in *age_popup*
+   * button text field in *Age Popup*
    *
    * - **Field Type**: Text
    * - **Placeholder**: *None*
@@ -100,7 +100,7 @@ interface AgePopupDocumentData {
    */
   button_text: prismicT.KeyTextField
   /**
-   * cookies description field in *age_popup*
+   * cookies description field in *Age Popup*
    *
    * - **Field Type**: Rich Text
    * - **Placeholder**: *None*
@@ -112,7 +112,7 @@ interface AgePopupDocumentData {
   cookies_description: prismicT.RichTextField
 }
 /**
- * age_popup document from Prismic
+ * Age Popup document from Prismic
  *
  * - **API ID**: `age_popup`
  * - **Repeatable**: `false`
@@ -120,7 +120,7 @@ interface AgePopupDocumentData {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type AgePopupDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type AgePopupDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithUID<Simplify<AgePopupDocumentData>, 'age_popup', Lang>
 /** Content for Aparna Test documents */
 type AparnaTestDocumentData = Record<string, never>
@@ -133,7 +133,7 @@ type AparnaTestDocumentData = Record<string, never>
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type AparnaTestDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type AparnaTestDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithoutUID<Simplify<AparnaTestDocumentData>, 'aparna_test', Lang>
 /** Content for become_consultant_agreement documents */
 interface BecomeConsultantAgreementDocumentData {
@@ -229,12 +229,13 @@ type BecomeConsultantAgreementDocumentDataBodySlice =
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type BecomeConsultantAgreementDocument<Lang extends string = 'en-us' | 'en-bz'> =
-  prismicT.PrismicDocumentWithoutUID<
-    Simplify<BecomeConsultantAgreementDocumentData>,
-    'become_consultant_agreement',
-    Lang
-  >
+export type BecomeConsultantAgreementDocument<
+  Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'
+> = prismicT.PrismicDocumentWithoutUID<
+  Simplify<BecomeConsultantAgreementDocumentData>,
+  'become_consultant_agreement',
+  Lang
+>
 /** Content for become consultant page documents */
 interface BecomeConsultantDocumentData {
   /**
@@ -291,7 +292,7 @@ interface BecomeConsultantDocumentData {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type BecomeConsultantDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type BecomeConsultantDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithUID<Simplify<BecomeConsultantDocumentData>, 'become-consultant', Lang>
 /** Content for bottle_collections documents */
 interface BottleCollectionsDocumentData {
@@ -354,7 +355,7 @@ export interface BottleCollectionsDocumentDataProductsItem {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type BottleCollectionsDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type BottleCollectionsDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithUID<
     Simplify<BottleCollectionsDocumentData>,
     'bottle_collections',
@@ -383,7 +384,7 @@ interface BrandDocumentData {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type BrandDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type BrandDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithUID<Simplify<BrandDocumentData>, 'brand', Lang>
 /** Content for brand_details documents */
 interface BrandDetailsDocumentData {
@@ -795,7 +796,7 @@ export interface BrandDetailsDocumentDataBrandSocialItem {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type BrandDetailsDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type BrandDetailsDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithUID<Simplify<BrandDetailsDocumentData>, 'brand-details', Lang>
 /** Content for brand_landing_template documents */
 interface BrandLandingTempDocumentData {
@@ -931,7 +932,7 @@ export interface BrandLandingTempDocumentDataBrandsItem {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type BrandLandingTempDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type BrandLandingTempDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithUID<
     Simplify<BrandLandingTempDocumentData>,
     'brand-landing-temp',
@@ -982,11 +983,8 @@ interface ButDocumentData {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type ButDocument<Lang extends string = 'en-us' | 'en-bz'> = prismicT.PrismicDocumentWithUID<
-  Simplify<ButDocumentData>,
-  'but',
-  Lang
->
+export type ButDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
+  prismicT.PrismicDocumentWithUID<Simplify<ButDocumentData>, 'but', Lang>
 /** Content for Carousel documents */
 interface CarouselDocumentData {
   /**
@@ -1066,7 +1064,7 @@ export interface CarouselDocumentDataSlidesItem {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type CarouselDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type CarouselDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithoutUID<Simplify<CarouselDocumentData>, 'carousel', Lang>
 /** Content for cart_promo_msgs documents */
 interface CartPromoMsgsDocumentData {
@@ -1128,7 +1126,7 @@ export interface CartPromoMsgsDocumentDataPromosItem {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type CartPromoMsgsDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type CartPromoMsgsDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithUID<Simplify<CartPromoMsgsDocumentData>, 'cart_promo_msgs', Lang>
 /** Content for Categories documents */
 interface CategoriesDocumentData {
@@ -1180,7 +1178,7 @@ export interface CategoriesDocumentDataProductItem {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type CategoriesDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type CategoriesDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithoutUID<Simplify<CategoriesDocumentData>, 'categories', Lang>
 /** Content for checkout_popup documents */
 interface CheckoutPopupDocumentData {
@@ -1228,7 +1226,7 @@ interface CheckoutPopupDocumentData {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type CheckoutPopupDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type CheckoutPopupDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithoutUID<Simplify<CheckoutPopupDocumentData>, 'checkout_popup', Lang>
 /** Content for clean_crafted_page documents */
 interface CleanCraftedPageDocumentData {
@@ -1297,7 +1295,7 @@ interface CleanCraftedPageDocumentData {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type CleanCraftedPageDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type CleanCraftedPageDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithUID<
     Simplify<CleanCraftedPageDocumentData>,
     'clean_crafted_page',
@@ -1359,12 +1357,13 @@ interface ConsultantSearchPageDocumentData {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type ConsultantSearchPageDocument<Lang extends string = 'en-us' | 'en-bz'> =
-  prismicT.PrismicDocumentWithUID<
-    Simplify<ConsultantSearchPageDocumentData>,
-    'consultant_search_page',
-    Lang
-  >
+export type ConsultantSearchPageDocument<
+  Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'
+> = prismicT.PrismicDocumentWithUID<
+  Simplify<ConsultantSearchPageDocumentData>,
+  'consultant_search_page',
+  Lang
+>
 /** Content for consultant-portal-announcement documents */
 interface ConsultantPortalAnnouncemenDocumentData {
   /**
@@ -1466,12 +1465,13 @@ interface ConsultantPortalAnnouncemenDocumentData {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type ConsultantPortalAnnouncemenDocument<Lang extends string = 'en-us' | 'en-bz'> =
-  prismicT.PrismicDocumentWithoutUID<
-    Simplify<ConsultantPortalAnnouncemenDocumentData>,
-    'consultant-portal-announcemen',
-    Lang
-  >
+export type ConsultantPortalAnnouncemenDocument<
+  Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'
+> = prismicT.PrismicDocumentWithoutUID<
+  Simplify<ConsultantPortalAnnouncemenDocumentData>,
+  'consultant-portal-announcemen',
+  Lang
+>
 /** Content for consultant-portal-header-image documents */
 interface ConsultantPortalHeaderImageDocumentData {
   /**
@@ -1529,12 +1529,13 @@ interface ConsultantPortalHeaderImageDocumentData {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type ConsultantPortalHeaderImageDocument<Lang extends string = 'en-us' | 'en-bz'> =
-  prismicT.PrismicDocumentWithoutUID<
-    Simplify<ConsultantPortalHeaderImageDocumentData>,
-    'consultant-portal-header-image',
-    Lang
-  >
+export type ConsultantPortalHeaderImageDocument<
+  Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'
+> = prismicT.PrismicDocumentWithoutUID<
+  Simplify<ConsultantPortalHeaderImageDocumentData>,
+  'consultant-portal-header-image',
+  Lang
+>
 /** Content for Content Hero documents */
 interface ContentHeroDocumentData {
   /**
@@ -1602,7 +1603,7 @@ interface ContentHeroDocumentData {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type ContentHeroDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type ContentHeroDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithoutUID<Simplify<ContentHeroDocumentData>, 'content_hero', Lang>
 /** Content for Content Page documents */
 interface ContentPageDocumentData {
@@ -1671,7 +1672,7 @@ interface ContentPageDocumentData {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type ContentPageDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type ContentPageDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithUID<Simplify<ContentPageDocumentData>, 'content_page', Lang>
 /** Content for CTA documents */
 interface CtaDocumentData {
@@ -1732,7 +1733,7 @@ export interface CtaDocumentDataDataItem {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type CtaDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type CtaDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithoutUID<Simplify<CtaDocumentData>, 'cta', Lang>
 /** Content for custom nav documents */
 interface CustomNavDocumentData {
@@ -1793,7 +1794,7 @@ export interface CustomNavDocumentDataNavsItem {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type CustomNavDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type CustomNavDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithUID<Simplify<CustomNavDocumentData>, 'custom_nav', Lang>
 /** Content for customer-portal-header-image documents */
 interface CustomerPortalHeaderImageDocumentData {
@@ -1852,12 +1853,13 @@ interface CustomerPortalHeaderImageDocumentData {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type CustomerPortalHeaderImageDocument<Lang extends string = 'en-us' | 'en-bz'> =
-  prismicT.PrismicDocumentWithoutUID<
-    Simplify<CustomerPortalHeaderImageDocumentData>,
-    'customer-portal-header-image',
-    Lang
-  >
+export type CustomerPortalHeaderImageDocument<
+  Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'
+> = prismicT.PrismicDocumentWithoutUID<
+  Simplify<CustomerPortalHeaderImageDocumentData>,
+  'customer-portal-header-image',
+  Lang
+>
 /** Content for download Link documents */
 interface DownloadLinkDocumentData {
   /**
@@ -1892,7 +1894,7 @@ interface DownloadLinkDocumentData {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type DownloadLinkDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type DownloadLinkDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithUID<Simplify<DownloadLinkDocumentData>, 'download_link', Lang>
 /** Content for filtering_menu documents */
 interface DummyWineCategoriesDocumentData {
@@ -2006,12 +2008,13 @@ export interface DummyWineCategoriesDocumentDataOptionalTextItemsItem {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type DummyWineCategoriesDocument<Lang extends string = 'en-us' | 'en-bz'> =
-  prismicT.PrismicDocumentWithoutUID<
-    Simplify<DummyWineCategoriesDocumentData>,
-    'dummy_wine_categories',
-    Lang
-  >
+export type DummyWineCategoriesDocument<
+  Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'
+> = prismicT.PrismicDocumentWithoutUID<
+  Simplify<DummyWineCategoriesDocumentData>,
+  'dummy_wine_categories',
+  Lang
+>
 /** Content for duo_product_landing documents */
 interface DuoProductLandingDocumentData {
   /**
@@ -2189,7 +2192,7 @@ interface DuoProductLandingDocumentData {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type DuoProductLandingDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type DuoProductLandingDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithUID<
     Simplify<DuoProductLandingDocumentData>,
     'duo_product_landing',
@@ -2236,7 +2239,7 @@ export interface EpAboutPageDocumentDataSectionsItem {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type EpAboutPageDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type EpAboutPageDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithoutUID<Simplify<EpAboutPageDocumentData>, 'ep_about_page', Lang>
 /** Content for EP Article Cards documents */
 interface EpArticleCardDocumentData {
@@ -2327,7 +2330,7 @@ export interface EpArticleCardDocumentDataArticleCardItem {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type EpArticleCardDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type EpArticleCardDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithoutUID<Simplify<EpArticleCardDocumentData>, 'ep_article_card', Lang>
 /** Content for EP Split Banner documents */
 interface EpBannerCardDocumentData {
@@ -2430,7 +2433,7 @@ export interface EpBannerCardDocumentDataSectionDataItem {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type EpBannerCardDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type EpBannerCardDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithoutUID<Simplify<EpBannerCardDocumentData>, 'ep_banner_card', Lang>
 /** Content for EP Button documents */
 interface EpButtonDocumentData {
@@ -2488,7 +2491,7 @@ interface EpButtonDocumentData {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type EpButtonDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type EpButtonDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithUID<Simplify<EpButtonDocumentData>, 'ep_button', Lang>
 /** Content for EP Cards documents */
 interface EpCardsDocumentData {
@@ -2549,7 +2552,7 @@ export interface EpCardsDocumentDataSectionDataItem {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type EpCardsDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type EpCardsDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithoutUID<Simplify<EpCardsDocumentData>, 'ep_cards', Lang>
 /** Content for Ep cards dashboard documents */
 interface EpCardsDashboardDocumentData {
@@ -2630,7 +2633,7 @@ export interface EpCardsDashboardDocumentDataSectionDataItem {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type EpCardsDashboardDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type EpCardsDashboardDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithoutUID<
     Simplify<EpCardsDashboardDocumentData>,
     'ep_cards_dashboard',
@@ -2677,7 +2680,7 @@ export interface EpDashboardPageDocumentDataSectionsItem {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type EpDashboardPageDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type EpDashboardPageDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithUID<Simplify<EpDashboardPageDocumentData>, 'ep_dashboard_page', Lang>
 /** Content for EP full banner documents */
 interface EpFullBannerDocumentData {
@@ -2738,7 +2741,7 @@ export interface EpFullBannerDocumentDataSectionDataItem {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type EpFullBannerDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type EpFullBannerDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithoutUID<Simplify<EpFullBannerDocumentData>, 'ep_full_banner', Lang>
 /** Content for EP Hero documents */
 interface EpHeroDocumentData {
@@ -2812,7 +2815,7 @@ export interface EpHeroDocumentDataLinksItem {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type EpHeroDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type EpHeroDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithoutUID<Simplify<EpHeroDocumentData>, 'ep_hero', Lang>
 /** Content for EP Landing Page documents */
 interface EpLandingPageDocumentData {
@@ -2877,7 +2880,7 @@ export interface EpLandingPageDocumentDataSectionsItem {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type EpLandingPageDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type EpLandingPageDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithUID<Simplify<EpLandingPageDocumentData>, 'ep_landing_page', Lang>
 /** Content for EP Nav documents */
 interface EpNavDocumentData {
@@ -2969,7 +2972,7 @@ export interface EpNavDocumentDataLinksItem {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type EpNavDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type EpNavDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithoutUID<Simplify<EpNavDocumentData>, 'ep_nav', Lang>
 /** Content for EP Separator documents */
 interface EpSeperatorDocumentData {
@@ -3016,7 +3019,7 @@ interface EpSeperatorDocumentData {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type EpSeperatorDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type EpSeperatorDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithoutUID<Simplify<EpSeperatorDocumentData>, 'ep_seperator', Lang>
 /** Content for EP Split Banners documents */
 interface EpSplitBannersDocumentData {
@@ -3119,7 +3122,7 @@ export interface EpSplitBannersDocumentDataSectionDataItem {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type EpSplitBannersDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type EpSplitBannersDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithoutUID<Simplify<EpSplitBannersDocumentData>, 'ep_split_banners', Lang>
 /** Content for EP Title documents */
 interface EpTitleDocumentData {
@@ -3160,7 +3163,7 @@ export interface EpTitleDocumentDataSectionDataItem {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type EpTitleDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type EpTitleDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithoutUID<Simplify<EpTitleDocumentData>, 'ep_title', Lang>
 /** Content for EP Video Block documents */
 interface EpVideoBlockDocumentData {
@@ -3229,7 +3232,7 @@ interface EpVideoBlockDocumentData {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type EpVideoBlockDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type EpVideoBlockDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithoutUID<Simplify<EpVideoBlockDocumentData>, 'ep_video_block', Lang>
 /** Content for EP Welcome documents */
 interface EpWelcomDocumentData {
@@ -3270,7 +3273,7 @@ export interface EpWelcomDocumentDataSectionsItem {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type EpWelcomDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type EpWelcomDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithoutUID<Simplify<EpWelcomDocumentData>, 'ep_welcom', Lang>
 /** Content for Welcome Header documents */
 interface EpWelcomeHeaderDocumentData {
@@ -3317,7 +3320,7 @@ interface EpWelcomeHeaderDocumentData {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type EpWelcomeHeaderDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type EpWelcomeHeaderDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithUID<Simplify<EpWelcomeHeaderDocumentData>, 'ep_welcome_header', Lang>
 /** Content for EP Wine type selector documents */
 interface EpWineTypeSelectorDocumentData {
@@ -3375,12 +3378,13 @@ interface EpWineTypeSelectorDocumentData {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type EpWineTypeSelectorDocument<Lang extends string = 'en-us' | 'en-bz'> =
-  prismicT.PrismicDocumentWithUID<
-    Simplify<EpWineTypeSelectorDocumentData>,
-    'ep_wine_type_selector',
-    Lang
-  >
+export type EpWineTypeSelectorDocument<
+  Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'
+> = prismicT.PrismicDocumentWithUID<
+  Simplify<EpWineTypeSelectorDocumentData>,
+  'ep_wine_type_selector',
+  Lang
+>
 /** Content for FAQs documents */
 interface FaqsDocumentData {
   /**
@@ -3426,7 +3430,7 @@ interface FaqsDocumentData {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type FaqsDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type FaqsDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithoutUID<Simplify<FaqsDocumentData>, 'faqs', Lang>
 /** Content for filtering menu documents */
 interface FilteringMenuDocumentData {
@@ -3538,7 +3542,7 @@ export interface FilteringMenuDocumentDataOptionalTextItemsItem {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type FilteringMenuDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type FilteringMenuDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithoutUID<Simplify<FilteringMenuDocumentData>, 'filtering_menu', Lang>
 /** Content for footer links documents */
 interface FooterDocumentData {
@@ -3707,7 +3711,7 @@ export interface FooterDocumentDataColumn3Item {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type FooterDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type FooterDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithUID<Simplify<FooterDocumentData>, 'footer', Lang>
 /** Content for footer_text documents */
 interface FooterTextDocumentData {
@@ -3754,7 +3758,7 @@ interface FooterTextDocumentData {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type FooterTextDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type FooterTextDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithUID<Simplify<FooterTextDocumentData>, 'footer_text', Lang>
 /** Content for footer-address documents */
 interface FooterAddressDocumentData {
@@ -3779,7 +3783,7 @@ interface FooterAddressDocumentData {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type FooterAddressDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type FooterAddressDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithoutUID<Simplify<FooterAddressDocumentData>, 'footer-address', Lang>
 /** Content for grower-details documents */
 interface GrowerDetailsDocumentData {
@@ -4022,7 +4026,7 @@ export interface GrowerDetailsDocumentDataGrowerProductsItem {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type GrowerDetailsDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type GrowerDetailsDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithUID<Simplify<GrowerDetailsDocumentData>, 'grower-details', Lang>
 /** Content for grower-template documents */
 interface GrowerTemplateDocumentData {
@@ -4158,8 +4162,26 @@ export interface GrowerTemplateDocumentDataGrowersItem {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type GrowerTemplateDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type GrowerTemplateDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithUID<Simplify<GrowerTemplateDocumentData>, 'grower-template', Lang>
+/** Content for Header Navigation Menu documents */
+type HeaderNavigationMenuDocumentData = Record<string, never>
+/**
+ * Header Navigation Menu document from Prismic
+ *
+ * - **API ID**: `header_navigation_menu`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type HeaderNavigationMenuDocument<
+  Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'
+> = prismicT.PrismicDocumentWithoutUID<
+  Simplify<HeaderNavigationMenuDocumentData>,
+  'header_navigation_menu',
+  Lang
+>
 /** Content for header_text documents */
 interface HeaderTextDocumentData {
   /**
@@ -4271,7 +4293,7 @@ interface HeaderTextDocumentData {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type HeaderTextDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type HeaderTextDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithUID<Simplify<HeaderTextDocumentData>, 'header_text', Lang>
 /** Content for Carousel documents */
 interface HeroCarouselDocumentData {
@@ -4352,7 +4374,7 @@ export interface HeroCarouselDocumentDataSlidesItem {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type HeroCarouselDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type HeroCarouselDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithoutUID<Simplify<HeroCarouselDocumentData>, 'hero_carousel', Lang>
 /** Content for Home Arc Banner documents */
 interface HomeArcBannerDocumentData {
@@ -4421,7 +4443,7 @@ interface HomeArcBannerDocumentData {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type HomeArcBannerDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type HomeArcBannerDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithoutUID<Simplify<HomeArcBannerDocumentData>, 'home_arc_banner', Lang>
 /** Content for Home Collection Banner documents */
 interface HomeCollectionBanneDocumentData {
@@ -4475,12 +4497,13 @@ export interface HomeCollectionBanneDocumentDataHomeCollectionBlockGroupItem {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type HomeCollectionBanneDocument<Lang extends string = 'en-us' | 'en-bz'> =
-  prismicT.PrismicDocumentWithoutUID<
-    Simplify<HomeCollectionBanneDocumentData>,
-    'home_collection_banne',
-    Lang
-  >
+export type HomeCollectionBanneDocument<
+  Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'
+> = prismicT.PrismicDocumentWithoutUID<
+  Simplify<HomeCollectionBanneDocumentData>,
+  'home_collection_banne',
+  Lang
+>
 /** Content for Home Collection Block documents */
 interface HomeCollectionBlockDocumentData {
   /**
@@ -4515,12 +4538,13 @@ interface HomeCollectionBlockDocumentData {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type HomeCollectionBlockDocument<Lang extends string = 'en-us' | 'en-bz'> =
-  prismicT.PrismicDocumentWithUID<
-    Simplify<HomeCollectionBlockDocumentData>,
-    'home_collection_block',
-    Lang
-  >
+export type HomeCollectionBlockDocument<
+  Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'
+> = prismicT.PrismicDocumentWithUID<
+  Simplify<HomeCollectionBlockDocumentData>,
+  'home_collection_block',
+  Lang
+>
 /** Content for Multi-part Marketing Content documents */
 interface HomePageDocumentData {
   /**
@@ -5193,7 +5217,7 @@ export interface HomePageDocumentDataBodyBrandGallerySliceItem {
    * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
    *
    */
-  brand: prismicT.RelationField<'brand-details'>
+  brand: prismicT.RelationField<'rich_content_page'>
 }
 export type HomePageDocumentDataBodyBrandGallerySlice = prismicT.Slice<
   'brand_gallery',
@@ -5377,7 +5401,7 @@ type HomePageDocumentDataBodySlice =
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type HomePageDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type HomePageDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithUID<Simplify<HomePageDocumentData>, 'home_page', Lang>
 /** Content for image documents */
 interface ImageDocumentData {
@@ -5424,7 +5448,7 @@ interface ImageDocumentData {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type ImageDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type ImageDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithoutUID<Simplify<ImageDocumentData>, 'image', Lang>
 /** Content for home_page documents */
 interface LandingPageDocumentData {
@@ -5716,7 +5740,7 @@ export interface LandingPageDocumentDataFearlessFounderItem {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type LandingPageDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type LandingPageDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithUID<Simplify<LandingPageDocumentData>, 'landing_page', Lang>
 /** Content for login_page documents */
 interface LoginPageDocumentData {
@@ -5906,7 +5930,7 @@ interface LoginPageDocumentData {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type LoginPageDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type LoginPageDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithUID<Simplify<LoginPageDocumentData>, 'login_page', Lang>
 /** Content for Marketing Page documents */
 interface MarketingPageDocumentData {
@@ -6123,7 +6147,7 @@ export interface MarketingPageDocumentDataCarouselItem {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type MarketingPageDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type MarketingPageDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithUID<Simplify<MarketingPageDocumentData>, 'marketing_page', Lang>
 /** Content for marketing page feature documents */
 interface MarketingPageFeatureDocumentData {
@@ -6170,12 +6194,13 @@ interface MarketingPageFeatureDocumentData {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type MarketingPageFeatureDocument<Lang extends string = 'en-us' | 'en-bz'> =
-  prismicT.PrismicDocumentWithUID<
-    Simplify<MarketingPageFeatureDocumentData>,
-    'marketing_page_feature',
-    Lang
-  >
+export type MarketingPageFeatureDocument<
+  Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'
+> = prismicT.PrismicDocumentWithUID<
+  Simplify<MarketingPageFeatureDocumentData>,
+  'marketing_page_feature',
+  Lang
+>
 /** Content for marketing section documents */
 interface MarketingSectionDocumentData {
   /**
@@ -6378,7 +6403,7 @@ type MarketingSectionDocumentDataBodySlice =
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type MarketingSectionDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type MarketingSectionDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithUID<Simplify<MarketingSectionDocumentData>, 'marketing_section', Lang>
 /** Content for Merch plp top banner documents */
 type MerchPlpTopBannerDocumentData = Record<string, never>
@@ -6391,7 +6416,7 @@ type MerchPlpTopBannerDocumentData = Record<string, never>
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type MerchPlpTopBannerDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type MerchPlpTopBannerDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithoutUID<
     Simplify<MerchPlpTopBannerDocumentData>,
     'merch_plp_top_banner',
@@ -6478,8 +6503,95 @@ export interface NavMenuDocumentDataMainMenuItem {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type NavMenuDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type NavMenuDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithUID<Simplify<NavMenuDocumentData>, 'nav-menu', Lang>
+/** Content for Navigation Menu documents */
+interface NavigationMenuDocumentData {
+  /**
+   * Slice zone field in *Navigation Menu*
+   *
+   * - **Field Type**: Slice Zone
+   * - **Placeholder**: *None*
+   * - **API ID Path**: navigation_menu.body[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/slices
+   *
+   */
+  body: prismicT.SliceZone<NavigationMenuDocumentDataBodySlice>
+}
+/**
+ * Primary content in Navigation Menu → Slice zone → `navigation_link` → Primary
+ *
+ */
+interface NavigationMenuDocumentDataBodyNavigationLinkSlicePrimary {
+  /**
+   * Name field in *Navigation Menu → Slice zone → `navigation_link` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Name of the link.
+   * - **API ID Path**: navigation_menu.body[].navigation_link.primary.name
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  name: prismicT.RichTextField
+  /**
+   * Link field in *Navigation Menu → Slice zone → `navigation_link` → Primary*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: The location in which the link will navigate.
+   * - **API ID Path**: navigation_menu.body[].navigation_link.primary.link
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  link: prismicT.LinkField
+}
+/**
+ * Item in Navigation Menu → Slice zone → `navigation_link` → Items
+ *
+ */
+export interface NavigationMenuDocumentDataBodyNavigationLinkSliceItem {
+  /**
+   * Child Name field in *Navigation Menu → Slice zone → `navigation_link` → Items*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: navigation_menu.body[].navigation_link.items[].child_name
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  child_name: prismicT.RichTextField
+  /**
+   * Child Link field in *Navigation Menu → Slice zone → `navigation_link` → Items*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: Link to child item.
+   * - **API ID Path**: navigation_menu.body[].navigation_link.items[].child_link
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  child_link: prismicT.LinkField
+}
+export type NavigationMenuDocumentDataBodyNavigationLinkSlice = prismicT.Slice<
+  'navigation_link',
+  Simplify<NavigationMenuDocumentDataBodyNavigationLinkSlicePrimary>,
+  Simplify<NavigationMenuDocumentDataBodyNavigationLinkSliceItem>
+>
+/**
+ * Slice for *Navigation Menu → Slice zone*
+ *
+ */
+type NavigationMenuDocumentDataBodySlice = NavigationMenuDocumentDataBodyNavigationLinkSlice
+/**
+ * Navigation Menu document from Prismic
+ *
+ * - **API ID**: `navigation_menu`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type NavigationMenuDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
+  prismicT.PrismicDocumentWithUID<Simplify<NavigationMenuDocumentData>, 'navigation_menu', Lang>
 /** Content for New Home Test documents */
 interface NewHomeTestDocumentData {
   /**
@@ -6814,7 +6926,7 @@ type NewHomeTestDocumentDataBodySlice =
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type NewHomeTestDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type NewHomeTestDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithoutUID<Simplify<NewHomeTestDocumentData>, 'new_home_test', Lang>
 /** Content for new_products_page_v2 documents */
 interface NewProductsPageV2DocumentData {
@@ -7141,7 +7253,7 @@ export interface NewProductsPageV2DocumentDataOtherProductSectionItem {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type NewProductsPageV2Document<Lang extends string = 'en-us' | 'en-bz'> =
+export type NewProductsPageV2Document<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithUID<
     Simplify<NewProductsPageV2DocumentData>,
     'new_products_page_v2',
@@ -7483,7 +7595,7 @@ export interface NewProductsPageDocumentDataOtherProductsSectionItem {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type NewProductsPageDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type NewProductsPageDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithUID<Simplify<NewProductsPageDocumentData>, 'new-products-page', Lang>
 /** Content for Not Found Message documents */
 interface NotFoundMessageDocumentData {
@@ -7770,7 +7882,7 @@ type NotFoundMessageDocumentDataBodySlice =
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type NotFoundMessageDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type NotFoundMessageDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithoutUID<
     Simplify<NotFoundMessageDocumentData>,
     'not_found_message',
@@ -7810,7 +7922,7 @@ interface PairingIconDocumentData {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type PairingIconDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type PairingIconDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithUID<Simplify<PairingIconDocumentData>, 'pairing_icon', Lang>
 /** Content for PDP V1 documents */
 interface PdpDocumentData {
@@ -7979,11 +8091,21 @@ type PdpDocumentDataBodySlice = PdpDocumentDataBodyAccordionSlice
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type PdpDocument<Lang extends string = 'en-us' | 'en-bz'> = prismicT.PrismicDocumentWithUID<
-  Simplify<PdpDocumentData>,
-  'pdp',
-  Lang
->
+export type PdpDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
+  prismicT.PrismicDocumentWithUID<Simplify<PdpDocumentData>, 'pdp', Lang>
+/** Content for PLP documents */
+type PlpDocumentData = Record<string, never>
+/**
+ * PLP document from Prismic
+ *
+ * - **API ID**: `plp`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type PlpDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
+  prismicT.PrismicDocumentWithUID<Simplify<PlpDocumentData>, 'plp', Lang>
 /** Content for Plp Bottom Banner documents */
 interface PlpBottomBannerDocumentData {
   /**
@@ -8040,7 +8162,7 @@ interface PlpBottomBannerDocumentData {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type PlpBottomBannerDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type PlpBottomBannerDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithoutUID<
     Simplify<PlpBottomBannerDocumentData>,
     'plp_bottom_banner',
@@ -8094,17 +8216,17 @@ interface PlpTopBannerDocumentData {
    */
   merch: prismicT.BooleanField
   /**
-   * auto-ship field in *Plp Top Banner*
+   * auto-sip™ field in *Plp Top Banner*
    *
    * - **Field Type**: Boolean
    * - **Placeholder**: *None*
    * - **Default Value**: false
-   * - **API ID Path**: plp_top_banner."auto-ship"
+   * - **API ID Path**: plp_top_banner.auto_ship
    * - **Tab**: Main
    * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
    *
    */
-  'auto-ship': prismicT.BooleanField
+  auto_ship: prismicT.BooleanField
 }
 /**
  * Plp Top Banner document from Prismic
@@ -8115,7 +8237,7 @@ interface PlpTopBannerDocumentData {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type PlpTopBannerDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type PlpTopBannerDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithoutUID<Simplify<PlpTopBannerDocumentData>, 'plp_top_banner', Lang>
 /** Content for popular products (bottle only) documents */
 type PopularProductsDocumentData = Record<string, never>
@@ -8128,7 +8250,7 @@ type PopularProductsDocumentData = Record<string, never>
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type PopularProductsDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type PopularProductsDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithoutUID<
     Simplify<PopularProductsDocumentData>,
     'popular_products',
@@ -8600,7 +8722,7 @@ export interface ProductDocumentDataPairingsItem {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type ProductDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type ProductDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithUID<Simplify<ProductDocumentData>, 'product', Lang>
 /** Content for product_img documents */
 type ProductImgDocumentData = Record<string, never>
@@ -8613,7 +8735,7 @@ type ProductImgDocumentData = Record<string, never>
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type ProductImgDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type ProductImgDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithoutUID<Simplify<ProductImgDocumentData>, 'product_img', Lang>
 /** Content for product_section documents */
 interface ProductSectionDocumentData {
@@ -8695,7 +8817,7 @@ interface ProductSectionDocumentData {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type ProductSectionDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type ProductSectionDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithUID<Simplify<ProductSectionDocumentData>, 'product_section', Lang>
 /** Content for Product Showcase documents */
 interface ProductShowDocumentData {
@@ -8758,7 +8880,7 @@ export interface ProductShowDocumentDataProductsItem {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type ProductShowDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type ProductShowDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithoutUID<Simplify<ProductShowDocumentData>, 'product_show', Lang>
 /** Content for quote documents */
 type QuoteDocumentData = Record<string, never>
@@ -8771,7 +8893,7 @@ type QuoteDocumentData = Record<string, never>
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type QuoteDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type QuoteDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithoutUID<Simplify<QuoteDocumentData>, 'quote', Lang>
 /** Content for quotes section documents */
 interface QuotesDocumentData {
@@ -8843,7 +8965,7 @@ export interface QuotesDocumentDataQuotesItem {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type QuotesDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type QuotesDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithUID<Simplify<QuotesDocumentData>, 'quotes', Lang>
 /** Content for redirect_page documents */
 interface RedirectPageDocumentData {
@@ -8901,7 +9023,7 @@ interface RedirectPageDocumentData {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type RedirectPageDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type RedirectPageDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithoutUID<Simplify<RedirectPageDocumentData>, 'redirect_page', Lang>
 /** Content for Rich Content Page documents */
 interface RichContentPageDocumentData {
@@ -8939,12 +9061,45 @@ interface RichContentPageDocumentData {
    *
    */
   body: prismicT.SliceZone<RichContentPageDocumentDataBodySlice>
+  /**
+   * Meta Title field in *Rich Content Page*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.meta_title
+   * - **Tab**: SEO
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  meta_title: prismicT.RichTextField
+  /**
+   * Meta Description field in *Rich Content Page*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.meta_description
+   * - **Tab**: SEO
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  meta_description: prismicT.RichTextField
 }
 /**
  * Primary content in Rich Content Page → Slice zone → `hero_banner` → Primary
  *
  */
 interface RichContentPageDocumentDataBodyHeroBannerSlicePrimary {
+  /**
+   * Center Content field in *Rich Content Page → Slice zone → `hero_banner` → Primary*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: rich_content_page.body[].hero_banner.primary.center_content
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  center_content: prismicT.BooleanField
   /**
    * Background Image field in *Rich Content Page → Slice zone → `hero_banner` → Primary*
    *
@@ -8995,6 +9150,46 @@ interface RichContentPageDocumentDataBodyHeroBannerSlicePrimary {
    *
    */
   highlight_color: prismicT.ColorField
+  /**
+   * CTA Text field in *Rich Content Page → Slice zone → `hero_banner` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].hero_banner.primary.cta_text
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  cta_text: prismicT.RichTextField
+  /**
+   * CTA Link field in *Rich Content Page → Slice zone → `hero_banner` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].hero_banner.primary.cta_link
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  cta_link: prismicT.RichTextField
+  /**
+   * CTA Background Color field in *Rich Content Page → Slice zone → `hero_banner` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].hero_banner.primary.cta_background_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  cta_background_color: prismicT.ColorField
+  /**
+   * CTA Text Color field in *Rich Content Page → Slice zone → `hero_banner` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].hero_banner.primary.cta_text_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  cta_text_color: prismicT.ColorField
 }
 export type RichContentPageDocumentDataBodyHeroBannerSlice = prismicT.Slice<
   'hero_banner',
@@ -9026,6 +9221,26 @@ interface RichContentPageDocumentDataBodyBrandProfileSlicePrimary {
    *
    */
   background_color: prismicT.ColorField
+  /**
+   * Text Color field in *Rich Content Page → Slice zone → `brand_profile` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].brand_profile.primary.text_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  text_color: prismicT.ColorField
+  /**
+   * Highlight Color field in *Rich Content Page → Slice zone → `brand_profile` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].brand_profile.primary.highlight_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  highlight_color: prismicT.ColorField
 }
 /**
  * Item in Rich Content Page → Slice zone → `brand_profile` → Items
@@ -9237,6 +9452,17 @@ interface RichContentPageDocumentDataBodyImageAndTextSlicePrimary {
    *
    */
   highlight_color: prismicT.ColorField
+  /**
+   * Center Content field in *Rich Content Page → Slice zone → `image_and_text` → Primary*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: rich_content_page.body[].image_and_text.primary.center_content
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  center_content: prismicT.BooleanField
   /**
    * Headline field in *Rich Content Page → Slice zone → `image_and_text` → Primary*
    *
@@ -9668,7 +9894,7 @@ type RichContentPageDocumentDataBodySlice =
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type RichContentPageDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type RichContentPageDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithUID<Simplify<RichContentPageDocumentData>, 'rich_content_page', Lang>
 /** Content for scout_circle_page documents */
 interface ScoutCirclePageDocumentData {
@@ -9899,7 +10125,7 @@ export interface ScoutCirclePageDocumentDataStepsItem {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type ScoutCirclePageDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type ScoutCirclePageDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithUID<Simplify<ScoutCirclePageDocumentData>, 'scout_circle_page', Lang>
 /** Content for Shop by Collection documents */
 interface ShopByCollectionDocumentData {
@@ -9924,7 +10150,7 @@ interface ShopByCollectionDocumentData {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type ShopByCollectionDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type ShopByCollectionDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithoutUID<
     Simplify<ShopByCollectionDocumentData>,
     'shop_by_collection',
@@ -10000,8 +10226,61 @@ export interface StateWarningDocumentDataStatesItem {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type StateWarningDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type StateWarningDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithUID<Simplify<StateWarningDocumentData>, 'state_warning', Lang>
+/** Content for Subscription Terms and Conditions documents */
+interface SubscriptionTermsAndConditionsDocumentData {
+  /**
+   * Subscription Type field in *Subscription Terms and Conditions*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: subscription_terms_and_conditions.subscription_type
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  subscription_type: prismicT.BooleanField
+  /**
+   * Title field in *Subscription Terms and Conditions*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: subscription_terms_and_conditions.title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.TitleField
+  /**
+   * Terms and Conditions field in *Subscription Terms and Conditions*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Enter the terms and conditions copy.
+   * - **API ID Path**: subscription_terms_and_conditions.terms_and_conditions
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  terms_and_conditions: prismicT.RichTextField
+}
+/**
+ * Subscription Terms and Conditions document from Prismic
+ *
+ * - **API ID**: `subscription_terms_and_conditions`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type SubscriptionTermsAndConditionsDocument<
+  Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'
+> = prismicT.PrismicDocumentWithoutUID<
+  Simplify<SubscriptionTermsAndConditionsDocumentData>,
+  'subscription_terms_and_conditions',
+  Lang
+>
 /** Content for SW Header documents */
 interface SwHeaderDocumentData {
   /**
@@ -10062,7 +10341,7 @@ export interface SwHeaderDocumentDataMenuLinksItem {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type SwHeaderDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type SwHeaderDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithoutUID<Simplify<SwHeaderDocumentData>, 'sw_header', Lang>
 /** Content for SW Home Page documents */
 interface SwHomePageDocumentData {
@@ -10749,7 +11028,7 @@ type SwHomePageDocumentDataBodySlice =
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type SwHomePageDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type SwHomePageDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithoutUID<Simplify<SwHomePageDocumentData>, 'sw_home_page', Lang>
 /** Content for SW Layout documents */
 interface SwLayoutDocumentData {
@@ -10859,7 +11138,7 @@ export interface SwLayoutDocumentDataFooterLinksItem {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type SwLayoutDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type SwLayoutDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithoutUID<Simplify<SwLayoutDocumentData>, 'sw_layout', Lang>
 /** Content for SW Verbose Content Page documents */
 interface SwVerboseContentPageDocumentData {
@@ -10950,12 +11229,13 @@ interface SwVerboseContentPageDocumentData {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type SwVerboseContentPageDocument<Lang extends string = 'en-us' | 'en-bz'> =
-  prismicT.PrismicDocumentWithUID<
-    Simplify<SwVerboseContentPageDocumentData>,
-    'sw_verbose_content_page',
-    Lang
-  >
+export type SwVerboseContentPageDocument<
+  Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'
+> = prismicT.PrismicDocumentWithUID<
+  Simplify<SwVerboseContentPageDocumentData>,
+  'sw_verbose_content_page',
+  Lang
+>
 /** Content for tasting note icon documents */
 interface TastingNoteIconDocumentData {
   /**
@@ -10990,7 +11270,7 @@ interface TastingNoteIconDocumentData {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type TastingNoteIconDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type TastingNoteIconDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithUID<Simplify<TastingNoteIconDocumentData>, 'tasting_note_icon', Lang>
 /** Content for team_page documents */
 interface TeamPageDocumentData {
@@ -11204,7 +11484,7 @@ export interface TeamPageDocumentDataMembersItem {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type TeamPageDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type TeamPageDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithUID<Simplify<TeamPageDocumentData>, 'team_page', Lang>
 /** Content for test_slice documents */
 type TestSliceDocumentData = Record<string, never>
@@ -11217,7 +11497,7 @@ type TestSliceDocumentData = Record<string, never>
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type TestSliceDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type TestSliceDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithoutUID<Simplify<TestSliceDocumentData>, 'test_slice', Lang>
 /** Content for test1 documents */
 type Test1DocumentData = Record<string, never>
@@ -11230,7 +11510,7 @@ type Test1DocumentData = Record<string, never>
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type Test1Document<Lang extends string = 'en-us' | 'en-bz'> =
+export type Test1Document<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithoutUID<Simplify<Test1DocumentData>, 'test1', Lang>
 /** Content for testing-type documents */
 type TestingTypeDocumentData = Record<string, never>
@@ -11243,7 +11523,7 @@ type TestingTypeDocumentData = Record<string, never>
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type TestingTypeDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type TestingTypeDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithoutUID<Simplify<TestingTypeDocumentData>, 'testing-type', Lang>
 /** Content for Text with Button documents */
 interface TextWithButtonDocumentData {
@@ -11301,7 +11581,7 @@ interface TextWithButtonDocumentData {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type TextWithButtonDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type TextWithButtonDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithoutUID<Simplify<TextWithButtonDocumentData>, 'text_with_button', Lang>
 /** Content for Video-Page-Content documents */
 interface VideoPageContentDocumentData {
@@ -11337,7 +11617,7 @@ interface VideoPageContentDocumentData {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type VideoPageContentDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type VideoPageContentDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithoutUID<
     Simplify<VideoPageContentDocumentData>,
     'video-page-content',
@@ -11410,7 +11690,7 @@ interface WelcomeBlockDocumentData {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type WelcomeBlockDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type WelcomeBlockDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithoutUID<Simplify<WelcomeBlockDocumentData>, 'welcome_block', Lang>
 /** Content for Welcome Section documents */
 interface WelcomeSectionDocumentData {
@@ -11451,7 +11731,7 @@ export interface WelcomeSectionDocumentDataSectionsItem {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type WelcomeSectionDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type WelcomeSectionDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithoutUID<Simplify<WelcomeSectionDocumentData>, 'welcome_section', Lang>
 /** Content for Categories Filter documents */
 type WhiteWinesDocumentData = Record<string, never>
@@ -11464,7 +11744,7 @@ type WhiteWinesDocumentData = Record<string, never>
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type WhiteWinesDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type WhiteWinesDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithoutUID<Simplify<WhiteWinesDocumentData>, 'white_wines', Lang>
 /** Content for wineclub_by_state documents */
 interface WineclubByStateDocumentData {
@@ -11537,7 +11817,7 @@ export interface WineclubByStateDocumentDataWineclubsItem {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type WineclubByStateDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type WineclubByStateDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithUID<Simplify<WineclubByStateDocumentData>, 'wineclub_by_state', Lang>
 /** Content for wineclub_product documents */
 interface WineclubProductDocumentData {
@@ -11643,7 +11923,7 @@ export interface WineclubProductDocumentDataRegionsItem {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type WineclubProductDocument<Lang extends string = 'en-us' | 'en-bz'> =
+export type WineclubProductDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithUID<Simplify<WineclubProductDocumentData>, 'wineclub_product', Lang>
 export type AllDocumentTypes =
   | _404PageDocument
@@ -11697,6 +11977,7 @@ export type AllDocumentTypes =
   | FooterAddressDocument
   | GrowerDetailsDocument
   | GrowerTemplateDocument
+  | HeaderNavigationMenuDocument
   | HeaderTextDocument
   | HeroCarouselDocument
   | HomeArcBannerDocument
@@ -11711,12 +11992,14 @@ export type AllDocumentTypes =
   | MarketingSectionDocument
   | MerchPlpTopBannerDocument
   | NavMenuDocument
+  | NavigationMenuDocument
   | NewHomeTestDocument
   | NewProductsPageV2Document
   | NewProductsPageDocument
   | NotFoundMessageDocument
   | PairingIconDocument
   | PdpDocument
+  | PlpDocument
   | PlpBottomBannerDocument
   | PlpTopBannerDocument
   | PopularProductsDocument
@@ -11731,6 +12014,7 @@ export type AllDocumentTypes =
   | ScoutCirclePageDocument
   | ShopByCollectionDocument
   | StateWarningDocument
+  | SubscriptionTermsAndConditionsDocument
   | SwHeaderDocument
   | SwHomePageDocument
   | SwLayoutDocument
@@ -11747,6 +12031,88 @@ export type AllDocumentTypes =
   | WhiteWinesDocument
   | WineclubByStateDocument
   | WineclubProductDocument
+/**
+ * Primary content in NavigationItem → Primary
+ *
+ */
+interface NavigationItemSliceDefaultPrimary {
+  /**
+   * Name field in *NavigationItem → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Name of the link.
+   * - **API ID Path**: navigation_item.primary.name
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  name: prismicT.RichTextField
+  /**
+   * Link field in *NavigationItem → Primary*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: Link for the item.
+   * - **API ID Path**: navigation_item.primary.link
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  link: prismicT.LinkField
+}
+/**
+ * Item in NavigationItem → Items
+ *
+ */
+export interface NavigationItemSliceDefaultItem {
+  /**
+   * Child Name field in *NavigationItem → Items*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Name of the child link
+   * - **API ID Path**: navigation_item.items[].child_name
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  child_name: prismicT.RichTextField
+  /**
+   * Child Link field in *NavigationItem → Items*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: Link for the child item
+   * - **API ID Path**: navigation_item.items[].child_link
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  child_link: prismicT.LinkField
+}
+/**
+ * Default variation for NavigationItem Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: `NavigationItem`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/reusing-slices
+ *
+ */
+export type NavigationItemSliceDefault = prismicT.SharedSliceVariation<
+  'default',
+  Simplify<NavigationItemSliceDefaultPrimary>,
+  Simplify<NavigationItemSliceDefaultItem>
+>
+/**
+ * Slice variation for *NavigationItem*
+ *
+ */
+type NavigationItemSliceVariation = NavigationItemSliceDefault
+/**
+ * NavigationItem Shared Slice
+ *
+ * - **API ID**: `navigation_item`
+ * - **Description**: `NavigationItem`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/reusing-slices
+ *
+ */
+export type NavigationItemSlice = prismicT.SharedSlice<
+  'navigation_item',
+  NavigationItemSliceVariation
+>
 declare module '@prismicio/client' {
   interface CreateClient {
     (
@@ -11898,6 +12264,8 @@ declare module '@prismicio/client' {
       GrowerTemplateDocumentData,
       GrowerTemplateDocumentDataGrowersItem,
       GrowerTemplateDocument,
+      HeaderNavigationMenuDocumentData,
+      HeaderNavigationMenuDocument,
       HeaderTextDocumentData,
       HeaderTextDocument,
       HeroCarouselDocumentData,
@@ -11961,6 +12329,12 @@ declare module '@prismicio/client' {
       NavMenuDocumentData,
       NavMenuDocumentDataMainMenuItem,
       NavMenuDocument,
+      NavigationMenuDocumentData,
+      NavigationMenuDocumentDataBodyNavigationLinkSlicePrimary,
+      NavigationMenuDocumentDataBodyNavigationLinkSliceItem,
+      NavigationMenuDocumentDataBodyNavigationLinkSlice,
+      NavigationMenuDocumentDataBodySlice,
+      NavigationMenuDocument,
       NewHomeTestDocumentData,
       NewHomeTestDocumentDataBodyCallToActionSlicePrimary,
       NewHomeTestDocumentDataBodyCallToActionSlice,
@@ -12011,6 +12385,8 @@ declare module '@prismicio/client' {
       PdpDocumentDataBodyAccordionSlice,
       PdpDocumentDataBodySlice,
       PdpDocument,
+      PlpDocumentData,
+      PlpDocument,
       PlpBottomBannerDocumentData,
       PlpBottomBannerDocument,
       PlpTopBannerDocumentData,
@@ -12071,6 +12447,8 @@ declare module '@prismicio/client' {
       StateWarningDocumentData,
       StateWarningDocumentDataStatesItem,
       StateWarningDocument,
+      SubscriptionTermsAndConditionsDocumentData,
+      SubscriptionTermsAndConditionsDocument,
       SwHeaderDocumentData,
       SwHeaderDocumentDataMenuLinksItem,
       SwHeaderDocument,
@@ -12129,6 +12507,11 @@ declare module '@prismicio/client' {
       WineclubProductDocumentDataRegionsItem,
       WineclubProductDocument,
       AllDocumentTypes,
+      NavigationItemSliceDefaultPrimary,
+      NavigationItemSliceDefaultItem,
+      NavigationItemSliceDefault,
+      NavigationItemSliceVariation,
+      NavigationItemSlice,
     }
   }
 }

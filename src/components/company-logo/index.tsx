@@ -5,7 +5,7 @@ interface CompanyLogoProps {
 }
 
 export const CompanyLogo = ({ white = false }: CompanyLogoProps) => (
-  <div className="relative h-12 w-44 lg:h-14 lg:w-60">
+  <div className="relative h-12 w-44 lg:h-14 lg:w-60 xl:h-16 xl:w-64">
     <Image
       fill
       priority

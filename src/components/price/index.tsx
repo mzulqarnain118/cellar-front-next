@@ -10,7 +10,7 @@ export const Price = ({ className, onSalePrice, price }: PriceProps) => {
   const onSale = !!onSalePrice && onSalePrice < price
 
   return (
-    <span className={clsx('text-lg font-bold', onSale && 'text-primary-400', className)}>
+    <span className={clsx('text-lg font-bold', onSale && 'text-brand-400', className)}>
       $
       {new Intl.NumberFormat('en-US', {
         maximumFractionDigits: 2,

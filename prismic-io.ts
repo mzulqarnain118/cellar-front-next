@@ -1,5 +1,8 @@
 import { ClientConfig, createClient, getRepositoryName } from '@prismicio/client'
+import { LinkResolverFunction } from '@prismicio/helpers'
 import { CreateClientConfig, enableAutoPreviews } from '@prismicio/next'
+
+import { HOME_PAGE_PATH } from '@/lib/paths'
 
 import sm from './sm.json'
 
@@ -15,6 +18,20 @@ const routes: ClientConfig['routes'] = [
     type: 'home_page',
   },
 ]
+
+/**
+ * Tells Prismic how to navigate the site from PrismicLink and PrismicRichText components.
+ */
+export const linkResolver: LinkResolverFunction = document => {
+  if (document.type === 'plp') {
+    const url = document.uid
+      ?.split('--')
+      .reduce((accumulator, current) => `${accumulator}/${current}`, '')
+    return url || HOME_PAGE_PATH
+  }
+
+  return HOME_PAGE_PATH
+}
 
 /**
  * Creates a Prismic client for the project's repository. The client is used to

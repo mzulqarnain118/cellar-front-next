@@ -1,8 +1,9 @@
 import { useEffect, useId, useRef } from 'react'
 
-import { ShoppingCartIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
 import Link from 'next/link'
+
+import { ShoppingCartIcon } from '@heroicons/react/24/outline'
 
 import { Price } from '@/components/price'
 import { formatCurrency } from '@/core/utils'
@@ -146,16 +147,16 @@ export const CartDrawer = () => {
           <span className="sr-only">Notifications</span>
           <div
             className={`
-            absolute top-0 right-0.5 h-4 min-w-[1rem] max-w-[2rem] rounded-full bg-primary-500
-            px-1 text-center text-xs font-bold leading-4 text-neutral-100
-          `}
+              absolute top-0 right-0.5 h-4 min-w-[1rem] max-w-[2rem] rounded-full bg-brand-500
+              px-1 text-center text-xs font-bold leading-4 text-neutral-100
+            `}
           >
             1
           </div>
         </button>
       }
     >
-      <div className="mt-2 grid h-full w-[40vw]">
+      <div className="mt-2 grid h-full w-[40vw] grid-rows-[auto_1fr_auto]">
         {cartItems !== undefined && (
           <div
             className={`
@@ -176,7 +177,7 @@ export const CartDrawer = () => {
 
               <div className="mb-4 h-5 w-full rounded-full bg-neutral-200">
                 <div
-                  className="h-5 rounded-full bg-primary-500"
+                  className="h-5 rounded-full bg-brand-500"
                   style={{ maxWidth: '100%', width: `${percentage}%` }}
                 ></div>
               </div>
@@ -186,15 +187,13 @@ export const CartDrawer = () => {
         {cartItems !== undefined ? (
           <div
             className={`
-              h-[calc(100vh-228px)] divide-y-2 divide-neutral-100 overflow-y-scroll px-4
+              divide-y-2 divide-neutral-100 overflow-y-scroll px-4
             `}
           >
             {cartItems}
           </div>
         ) : (
-          <div className={`grid h-[calc(100vh-228px)] items-center justify-items-center px-4`}>
-            Your cart is empty.
-          </div>
+          <div className={`grid items-center justify-items-center px-4`}>Your cart is empty.</div>
         )}
         <div
           className={`
@@ -208,8 +207,8 @@ export const CartDrawer = () => {
           </div>
           <Link
             className={`
-              w-full rounded bg-primary-500 px-4 py-2 text-center text-neutral-50
-              transition-colors hover:bg-primary-400
+              w-full rounded bg-[#337250] px-4 py-2 text-center text-[#F2F2F2]
+              transition-colors hover:bg-[#26563C] active:bg-[#152F21]
             `}
             href="/checkout"
           >

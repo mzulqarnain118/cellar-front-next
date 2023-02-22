@@ -33,8 +33,8 @@ export const Chip = ({ className, name, onClick }: ChipProps) => {
     >
       <span
         className={`
-          align-center ease flex w-max cursor-pointer rounded-full bg-neutral-100 px-4
-          py-2 text-sm font-semibold text-neutral-400 active:bg-neutral-200
+          align-center ease group flex w-max cursor-pointer rounded-full bg-neutral-200
+          px-4 py-2 text-sm font-semibold text-neutral-600 transition-colors hover:bg-neutral-300 hover:text-neutral-700 active:bg-neutral-300
         `}
       >
         {name}
@@ -42,8 +42,6 @@ export const Chip = ({ className, name, onClick }: ChipProps) => {
           <svg
             aria-hidden="true"
             className="ml-3 w-3"
-            data-icon="times"
-            data-prefix="fas"
             focusable="false"
             role="img"
             viewBox="0 0 352 512"

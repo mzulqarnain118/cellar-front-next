@@ -1,14 +1,14 @@
-import { EyeIcon } from '@heroicons/react/20/solid'
 import Image from 'next/image'
 import Link from 'next/link'
 
 import { useAddToCartMutation } from '@/lib/mutations/add-to-cart'
 import { Product } from '@/lib/types'
-import { convertProductToCartItem } from '@/lib/utils'
+import { convertProductToCartItem } from '@/lib/utils/index'
 
 import { Price } from '../price'
 
 interface ProductCardProps {
+  /** Indicates if the product image should load eagarly. Defaults to false. */
   priority?: boolean
   product: Product
 }
@@ -18,7 +18,6 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
 
   return (
     <div
-      key={product.sku}
       className={`
         group relative grid w-full grid-rows-product-card items-center
         justify-items-center rounded-lg border-2 border-neutral-100 p-4
@@ -38,19 +37,6 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
           />
         </Link>
       )}
-      <button
-        aria-label="Quick View"
-        className={`
-          relative bottom-8 flex items-center gap-1 rounded-lg border border-primary-500
-          bg-primary-500 py-1 px-2 text-sm text-neutral-50 opacity-0 transition
-          hover:bg-primary-400 group-hover:opacity-80
-        `}
-        title="Quick View"
-        type="button"
-      >
-        <EyeIcon height={16} width={16} />
-        Quick View
-      </button>
       <div className="flex h-full w-full flex-col justify-between gap-6 self-end">
         <Link className="group/link flex flex-col" href="/">
           <span className="text-sm font-semibold">
@@ -64,8 +50,8 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
           )}
           <button
             className={`
-              h-10 w-full rounded bg-primary-500 py-1 text-neutral-50
-              transition-colors hover:bg-primary-400
+              h-10 w-full rounded bg-[#337250] py-1 text-[#F2F2F2] transition-colors
+              hover:bg-[#26563C] active:bg-[#152F21] active:underline disabled:bg-brand-300
             `}
             type="button"
             onClick={() =>

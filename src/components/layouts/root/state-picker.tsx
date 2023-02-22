@@ -35,8 +35,7 @@ export const StatePicker = () => {
   if (isFetching || isLoading) {
     return (
       <div className="flex animate-pulse flex-col space-y-2">
-        <div className="h-2 w-20 rounded bg-primary-300" />
-        <div className="h-2 w-28 rounded bg-primary-300" />
+        <div className="h-6 w-28 rounded bg-neutral-200" />
       </div>
     )
   }
@@ -46,8 +45,9 @@ export const StatePicker = () => {
       aria-label="Shipping State"
       aria-labelledby="shipping-state-label"
       className={`
-        cursor-pointer appearance-none rounded bg-primary-500 hover:underline
-        focus:outline-dashed focus:outline-1 focus:outline-offset-1 focus:outline-neutral-50
+        form-select cursor-pointer appearance-none rounded border-none bg-[#DAD9D9] p-0 text-sm
+        focus:rounded-none focus:outline-dashed focus:outline-1 focus:outline-offset-1
+        focus:!outline-neutral-500
       `}
       title="Change my shipping state"
       value={shippingState?.provinceID || 48} // * NOTE: Default to Texas if it's falsy.

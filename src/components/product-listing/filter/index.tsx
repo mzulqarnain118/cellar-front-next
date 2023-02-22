@@ -21,28 +21,28 @@ export const Filter = ({ name }: FilterProps) => {
     return (
       <div className="flex animate-pulse flex-col space-y-2">
         <div className="flex w-full items-center gap-2">
-          <div className="h-8 w-full rounded bg-primary-300" />
-          <div className="h-4 w-4 bg-primary-300" />
+          <div className="h-8 w-full rounded bg-neutral-300" />
+          <div className="h-4 w-4 bg-neutral-300" />
         </div>
         <div className="flex items-center gap-2">
-          <div className="h-4 w-4 rounded bg-primary-300" />
-          <div className="h-4 w-48 rounded bg-primary-300" />
+          <div className="h-4 w-4 rounded bg-neutral-300" />
+          <div className="h-4 w-48 rounded bg-neutral-300" />
         </div>
         <div className="flex items-center gap-2">
-          <div className="h-4 w-4 rounded bg-primary-300" />
-          <div className="h-4 w-48 rounded bg-primary-300" />
+          <div className="h-4 w-4 rounded bg-neutral-300" />
+          <div className="h-4 w-48 rounded bg-neutral-300" />
         </div>
         <div className="flex items-center gap-2">
-          <div className="h-4 w-4 rounded bg-primary-300" />
-          <div className="h-4 w-48 rounded bg-primary-300" />
+          <div className="h-4 w-4 rounded bg-neutral-300" />
+          <div className="h-4 w-48 rounded bg-neutral-300" />
         </div>
         <div className="flex items-center gap-2">
-          <div className="h-4 w-4 rounded bg-primary-300" />
-          <div className="h-4 w-48 rounded bg-primary-300" />
+          <div className="h-4 w-4 rounded bg-neutral-300" />
+          <div className="h-4 w-48 rounded bg-neutral-300" />
         </div>
         <div className="flex items-center gap-2">
-          <div className="h-4 w-4 rounded bg-primary-300" />
-          <div className="h-4 w-48 rounded bg-primary-300" />
+          <div className="h-4 w-4 rounded bg-neutral-300" />
+          <div className="h-4 w-48 rounded bg-neutral-300" />
         </div>
       </div>
     )
@@ -50,7 +50,7 @@ export const Filter = ({ name }: FilterProps) => {
 
   return (
     <Accordion openByDefault header={name}>
-      <div className="space-y-1">
+      <div className="space-y-1 pt-4">
         {data.map(filter => (
           <Checkbox
             key={filter}
@@ -62,7 +62,7 @@ export const Filter = ({ name }: FilterProps) => {
         ))}
       </div>
       <button
-        className="mt-3 font-medium text-primary-500 hover:text-primary-400 hover:underline"
+        className="mt-3 font-medium text-brand-500 transition-all hover:text-brand-600 hover:underline"
         type="button"
         onClick={handleSeeAllToggle}
       >

@@ -4,16 +4,16 @@
   body {
     @apply bg-neutral-50;
     @apply h-full;
-    @apply text-neutral-400;
+    @apply text-neutral-900;
     @apply font-body;
   }
 
   * {
-    @apply focus:outline-1 focus:outline-primary-300;
+    @apply focus-visible:outline-dashed focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-neutral-400;
   }
 
-  input {
-    @apply focus:!border-primary-300 focus:!ring-1 focus:!ring-primary-300;
+  select {
+    @apply focus-visible:rounded-lg focus-visible:!outline-dashed focus-visible:!outline-1 focus-visible:!outline-offset-4 focus-visible:!outline-neutral-400 focus-visible:!ring-0;
   }
 
   input[type='number']::-webkit-outer-spin-button,
@@ -72,4 +72,15 @@
 }
 
 @tailwind components;
+
+@layer components {
+  :root {
+    --highlight: 'inherit';
+  }
+
+  .highlight {
+    color: var(--highlight);
+  }
+}
+
 @tailwind utilities;

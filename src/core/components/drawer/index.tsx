@@ -43,22 +43,26 @@ export const Drawer = ({
     }
     document.querySelector('body')?.classList.remove('overflow-hidden')
   }
+
   const handleDrawerOpen = () => {
     if (setOpen) {
       setOpen(true)
     }
     document.querySelector('body')?.classList.add('overflow-hidden')
   }
+
   const keyDownHandler = (event: KeyboardEvent) => {
     if (event.key === 'Escape') {
       handleBackdropClick()
     }
   }
+
   const handleEnterKey: KeyboardEventHandler<HTMLDivElement> = event => {
     if (event.key === 'Enter') {
       handleDrawerOpen()
     }
   }
+
   const handleBackdropEnterKey: KeyboardEventHandler<HTMLDivElement> = event => {
     if (event.key === 'Enter') {
       handleBackdropClick()
@@ -103,7 +107,7 @@ export const Drawer = ({
                 aria-label="Close menu"
                 className={clsx(
                   `
-                    fixed top-0 left-0 bottom-0 right-0 z-10 h-full w-full -translate-x-full
+                    fixed top-0 left-0 bottom-0 right-0 z-20 h-full w-full -translate-x-full
                     bg-neutral-900 opacity-0 transition-opacity
                   `,
                   open && 'translate-x-0 !opacity-70'
@@ -116,17 +120,17 @@ export const Drawer = ({
               <div
                 className={clsx(
                   `
-                    fixed top-0 left-0 z-10 h-screen -translate-x-full bg-neutral-50
+                    fixed top-0 left-0 z-20 h-screen -translate-x-full bg-neutral-50
                     transition-transform
                   `,
                   direction === 'right' && 'right-0 left-auto translate-x-full',
                   open && (direction === 'left' ? 'translate-x-0' : '-translate-x-0')
                 )}
               >
-                <Component className="flex h-screen flex-col">
+                <Component aria-label="Drawer content" className="flex h-screen flex-col">
                   <div
                     className={clsx(
-                      `mr-4 mt-4 inline-flex`,
+                      'mt-4 flex',
                       title !== undefined &&
                         'items-center border-b-2 border-b-neutral-100 pl-4 pb-4'
                     )}
@@ -138,15 +142,11 @@ export const Drawer = ({
                     )}
                     <button
                       aria-label="Close menu"
-                      className="justify-self-end"
+                      className="group mr-4 justify-self-end rounded-lg p-1 transition-colors hover:bg-neutral-200"
                       type="button"
                       onClick={() => setOpen(false)}
                     >
-                      <XMarkIcon
-                        className={`
-                          h-6 w-6 stroke-1 text-neutral-500 transition-colors hover:text-error
-                        `}
-                      />
+                      <XMarkIcon className="hover:text-error h-6 w-6 stroke-1 text-neutral-500 transition-colors group-hover:text-neutral-800" />
                     </button>
                   </div>
                   {children}

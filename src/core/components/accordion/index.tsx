@@ -8,6 +8,7 @@ interface AccordionProps {
   className?: string
   disabled?: boolean
   header: string
+  headerClassName?: string
   openByDefault?: boolean
 }
 
@@ -16,6 +17,7 @@ export const Accordion = ({
   className,
   disabled = false,
   header,
+  headerClassName,
   openByDefault = false,
 }: AccordionProps) => {
   const [open, setOpen] = useState(openByDefault)
@@ -41,10 +43,11 @@ export const Accordion = ({
         aria-expanded={open}
         className={clsx(
           `
-            flex cursor-pointer items-center justify-between border-b-2
-            border-neutral-100 py-3 font-semibold capitalize
+            flex cursor-pointer items-center justify-between border-b
+            border-neutral-300 py-3 font-semibold capitalize
           `,
-          disabled && 'cursor-not-allowed text-neutral-300'
+          disabled && 'cursor-not-allowed text-neutral-300',
+          headerClassName
         )}
         id={headerId}
         role="button"
@@ -61,10 +64,7 @@ export const Accordion = ({
       </div>
       <div
         aria-labelledby={headerId}
-        className={clsx(
-          'h-0 overflow-hidden transition-all',
-          open && '!h-max overflow-visible py-3'
-        )}
+        className={clsx('h-0 overflow-hidden transition-all', open && '!h-max overflow-visible')}
         id={bodyId}
         role="region"
       >

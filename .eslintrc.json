@@ -50,14 +50,14 @@
     "import/order": [
       "error",
       {
-        "alphabetize": { "order": "asc" },
+        "alphabetize": { "order": "asc", "orderImportKind": "asc" },
         "groups": ["builtin", "external", "internal", "parent", "sibling", "index"],
         "newlines-between": "always",
         "pathGroups": [
-          { "group": "internal", "pattern": "_/**" },
-          { "group": "internal", "pattern": "-/**" },
-          { "group": "internal", "pattern": "~/**" },
-          { "group": "external", "pattern": "react", "position": "before" }
+          { "group": "internal", "pattern": "@/**", "position": "before" },
+          { "group": "external", "pattern": "react", "position": "before" },
+          { "group": "external", "pattern": "next**", "position": "before" },
+          { "group": "external", "pattern": "next/**/*", "position": "before" }
         ],
         "pathGroupsExcludedImportTypes": ["react"]
       }
@@ -101,10 +101,7 @@
         "shorthandFirst": true
       }
     ],
-    "react/no-array-index-key": "error",
-    "react/prop-types": "off", // * NOTE: Enable after validation added.
-    "react-hooks/exhaustive-deps": "off",
-    "react-hooks/rules-of-hooks": "error"
+    "react/no-array-index-key": "error"
   },
   "settings": {
     "import/parsers": {

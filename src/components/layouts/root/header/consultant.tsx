@@ -13,8 +13,8 @@ export const Consultant = () => {
   if (isFetching || isLoading) {
     return (
       <div className="flex animate-pulse flex-col items-end space-y-2">
-        <div className="h-2 w-20 rounded bg-primary-300" />
-        <div className="h-2 w-28 rounded bg-primary-300" />
+        <div className="h-2 w-20 rounded bg-neutral-400" />
+        <div className="h-2 w-28 rounded bg-neutral-400" />
       </div>
     )
   }

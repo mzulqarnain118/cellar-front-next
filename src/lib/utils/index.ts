@@ -1,4 +1,4 @@
-import { CartItem, Product } from './types'
+import { CartItem, Product } from '../types'
 
 export const convertProductToCartItem = (product: Product): CartItem => ({
   attributes: product.attributes || [],
