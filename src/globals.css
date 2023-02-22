@@ -1,4 +1,49 @@
 @tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  :root {
+    --highlight: 'inherit';
+  }
+
+  .highlight {
+    color: var(--highlight);
+  }
+
+  .h1,
+  .h2,
+  .h3,
+  .h4,
+  .h5,
+  .h6 {
+    @apply !font-heading !font-normal !tracking-wide;
+  }
+
+  .h1 {
+    @apply !text-5xl lg:!text-6xl;
+  }
+
+  .h2 {
+    @apply !text-3xl lg:!text-5xl;
+  }
+
+  .h3 {
+    @apply !text-3xl lg:!text-4xl;
+  }
+
+  .h4 {
+    @apply !text-[1.75em] lg:!text-3xl;
+  }
+
+  .h5 {
+    @apply !text-2xl lg:!text-2xl;
+  }
+
+  .h6 {
+    @apply !text-[1.25em] lg:!text-xl;
+  }
+}
 
 @layer base {
   @import url('https://use.typekit.net/imq8fau.css');
@@ -117,50 +162,3 @@
     @apply text-h6;
   } */
 }
-
-@tailwind components;
-
-@layer components {
-  :root {
-    --highlight: 'inherit';
-  }
-
-  .highlight {
-    color: var(--highlight);
-  }
-
-  .h1,
-  .h2,
-  .h3,
-  .h4,
-  .h5,
-  .h6 {
-    @apply !font-heading !font-normal !tracking-wide;
-  }
-
-  .h1 {
-    @apply !text-5xl lg:!text-6xl;
-  }
-
-  .h2 {
-    @apply !text-3xl lg:!text-5xl;
-  }
-
-  .h3 {
-    @apply !text-3xl lg:!text-4xl;
-  }
-
-  .h4 {
-    @apply !text-[1.75em] lg:!text-3xl;
-  }
-
-  .h5 {
-    @apply !text-2xl lg:!text-2xl;
-  }
-
-  .h6 {
-    @apply !text-[1.25em] lg:!text-xl;
-  }
-}
-
-@tailwind utilities;
