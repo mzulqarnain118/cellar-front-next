@@ -28,10 +28,13 @@ export const ImageAndText = ({ slice }: ImageAndTextProps) => (
       }`}
     >
       <div
-        className={clsx('py-5 md:py-0 md:px-5', !!slice.primary.center_content && 'text-center')}
+        className={clsx('py-5 md:py-0 md:px-5', !!slice.primary.center_content && '!text-center')}
       >
         <div
-          className="block pb-3 text-center md:text-left lg:pb-5"
+          className={clsx(
+            'block pb-3 text-center md:text-left lg:pb-5',
+            !!slice.primary.center_content && '!text-center'
+          )}
           style={{ '--highlight': slice.primary.highlight_color || 'inherit' } as CSSProperties}
         >
           <PrismicRichText field={slice.primary.headline} />
@@ -51,9 +54,8 @@ export const ImageAndText = ({ slice }: ImageAndTextProps) => (
           </div>
         )} */}
       </div>
-      <div className={`md:py-14${!slice.primary.text_on_left ? '' : ' !ml-0'}`}>
+      <div className={clsx('md:py-14', slice.primary.text_on_left && '!ml-0')}>
         <PrismicNextImage field={slice.primary.image} />
-        {/* <GatsbyImage alt={slice.primary.image?.alt || 'Column Image'} image={image} /> */}
       </div>
     </div>
   </div>

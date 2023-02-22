@@ -105,7 +105,8 @@ module.exports = {
       },
     },
     fontFamily: {
-      body: ['var(--font-inter)', ...fontFamily.sans],
+      // body: ['var(--font-inter)', ...fontFamily.sans],
+      body: ['proxima-nova', 'sans-serif'],
       heading: ['var(--font-merriweather)', ...fontFamily.sans],
     },
   },
