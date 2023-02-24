@@ -3,6 +3,7 @@ import { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType, NextPag
 import { asLink } from '@prismicio/helpers'
 import { dehydrate } from '@tanstack/react-query'
 
+import { WINE_PAGE_PATH } from '@/lib/paths'
 import { getStaticNavigation } from '@/lib/queries/header'
 
 import { createClient, linkResolver } from 'prismic-io'
@@ -27,13 +28,18 @@ export const getStaticProps = async ({ params, previewData }: GetStaticPropsCont
   if (page === undefined) {
     return {
       permanent: false,
-      redirect: '/wine',
+      redirect: WINE_PAGE_PATH,
     }
   }
 
   const queryClient = await getStaticNavigation(client)
 
-  return { props: { dehydratedState: dehydrate(queryClient), page } }
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+      page,
+    },
+  }
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
