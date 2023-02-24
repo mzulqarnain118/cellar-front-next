@@ -1,7 +1,7 @@
 import type { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType } from 'next'
 import { NextSeo } from 'next-seo'
 
-import { asText } from '@prismicio/helpers'
+import { asLink, asText } from '@prismicio/helpers'
 import { SliceZone } from '@prismicio/react'
 import { dehydrate } from '@tanstack/react-query'
 
@@ -16,10 +16,19 @@ type PageProps = InferGetStaticPropsType<typeof getStaticProps>
 export const getStaticProps = async ({
   params,
   previewData,
-}: GetStaticPropsContext<{ richContentPage: string }>) => {
+}: GetStaticPropsContext<{ uid: string }>) => {
   const client = createClient({ previewData })
-  const uid = params?.richContentPage?.toString()
+  const uid = params?.uid?.toString()
   let page
+
+  if (uid === undefined) {
+    return {
+      redirect: {
+        destination: HOME_PAGE_PATH,
+        permanent: false,
+      },
+    }
+  }
 
   if (uid !== undefined) {
     page = await client.getByUID('rich_content_page', uid)
@@ -49,7 +58,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const pages = await client.getAllByType('rich_content_page')
   const paths = pages
     .filter(page => page.data.page_type === 'Default' && page.uid !== 'home')
-    .map(page => `/${page.uid}`)
+    .map(page => asLink(page) as string)
 
   return {
     fallback: true,

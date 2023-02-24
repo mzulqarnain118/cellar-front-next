@@ -15,8 +15,20 @@ export const repositoryName = getRepositoryName(sm.apiEndpoint)
 const routes: ClientConfig['routes'] = [
   {
     path: '/',
-    type: 'home_page',
+    type: 'rich_content_page',
+    uid: 'home',
   },
+  {
+    path: '/:uid',
+    type: 'rich_content_page',
+  },
+  // {
+  //   path: '/product/:url',
+  //   resolvers: {
+  //     url: 'url',
+  //   },
+  //   type: 'pdp',
+  // },
 ]
 
 /**

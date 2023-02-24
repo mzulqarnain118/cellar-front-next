@@ -12,7 +12,7 @@ import { createClient } from 'prismic-io'
 
 export const getServerSideProps: GetServerSideProps = async ({ params, previewData }) => {
   const client = createClient({ previewData })
-  const cartUrl = params?.cartUrl?.toString()
+  const cartUrl = params?.url?.toString()
 
   if (!cartUrl) {
     return {
