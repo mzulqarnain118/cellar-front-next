@@ -18,20 +18,9 @@ const routes: ClientConfig['routes'] = [
     type: 'rich_content_page',
     uid: 'home',
   },
-  {
-    path: '/:uid',
-    type: 'rich_content_page',
-  },
-  {
-    path: '/brands/:uid',
-    type: 'rich_content_page',
-  },
   // {
-  //   path: '/product/:url',
-  //   resolvers: {
-  //     url: 'url',
-  //   },
-  //   type: 'pdp',
+  //   path: '/:uid',
+  //   type: 'rich_content_page',
   // },
 ]
 

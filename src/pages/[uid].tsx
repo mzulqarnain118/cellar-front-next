@@ -1,7 +1,7 @@
 import type { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType } from 'next'
 import { NextSeo } from 'next-seo'
 
-import { asLink, asText } from '@prismicio/helpers'
+import { asText } from '@prismicio/helpers'
 import { SliceZone } from '@prismicio/react'
 import { dehydrate } from '@tanstack/react-query'
 
@@ -58,7 +58,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const pages = await client.getAllByType('rich_content_page')
   const paths = pages
     .filter(page => page.data.page_type === 'Default' && page.uid !== 'home')
-    .map(page => asLink(page) as string)
+    // .map(page => asLink(page) as string)
+    .map(page => `/${page.uid}`)
 
   return {
     fallback: true,
