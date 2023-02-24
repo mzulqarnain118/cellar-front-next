@@ -386,6 +386,854 @@ interface BrandDocumentData {
  */
 export type BrandDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithUID<Simplify<BrandDocumentData>, 'brand', Lang>
+/** Content for Brand Page documents */
+interface BrandPageDocumentData {
+  /**
+   * Slice zone field in *Brand Page*
+   *
+   * - **Field Type**: Slice Zone
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/slices
+   *
+   */
+  body: prismicT.SliceZone<BrandPageDocumentDataBodySlice>
+  /**
+   * Meta Title field in *Brand Page*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.meta_title
+   * - **Tab**: SEO
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  meta_title: prismicT.RichTextField
+  /**
+   * Meta Description field in *Brand Page*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.meta_description
+   * - **Tab**: SEO
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  meta_description: prismicT.RichTextField
+}
+/**
+ * Primary content in Brand Page → Slice zone → `hero_banner` → Primary
+ *
+ */
+interface BrandPageDocumentDataBodyHeroBannerSlicePrimary {
+  /**
+   * Center Content field in *Brand Page → Slice zone → `hero_banner` → Primary*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: brand_page.body[].hero_banner.primary.center_content
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  center_content: prismicT.BooleanField
+  /**
+   * Background Image field in *Brand Page → Slice zone → `hero_banner` → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].hero_banner.primary.background_image
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  background_image: prismicT.ImageField<never>
+  /**
+   * Background Color field in *Brand Page → Slice zone → `hero_banner` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].hero_banner.primary.background_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  background_color: prismicT.ColorField
+  /**
+   * Logo field in *Brand Page → Slice zone → `hero_banner` → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].hero_banner.primary.logo
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  logo: prismicT.ImageField<never>
+  /**
+   * Content field in *Brand Page → Slice zone → `hero_banner` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].hero_banner.primary.content
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  content: prismicT.RichTextField
+  /**
+   * Highlight Color field in *Brand Page → Slice zone → `hero_banner` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].hero_banner.primary.highlight_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  highlight_color: prismicT.ColorField
+  /**
+   * CTA Text field in *Brand Page → Slice zone → `hero_banner` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].hero_banner.primary.cta_text
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  cta_text: prismicT.RichTextField
+  /**
+   * CTA Link field in *Brand Page → Slice zone → `hero_banner` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].hero_banner.primary.cta_link
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  cta_link: prismicT.RichTextField
+  /**
+   * CTA Background Color field in *Brand Page → Slice zone → `hero_banner` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].hero_banner.primary.cta_background_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  cta_background_color: prismicT.ColorField
+  /**
+   * CTA Text Color field in *Brand Page → Slice zone → `hero_banner` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].hero_banner.primary.cta_text_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  cta_text_color: prismicT.ColorField
+}
+export type BrandPageDocumentDataBodyHeroBannerSlice = prismicT.Slice<
+  'hero_banner',
+  Simplify<BrandPageDocumentDataBodyHeroBannerSlicePrimary>,
+  never
+>
+/**
+ * Primary content in Brand Page → Slice zone → `brand_profile` → Primary
+ *
+ */
+interface BrandPageDocumentDataBodyBrandProfileSlicePrimary {
+  /**
+   * Title field in *Brand Page → Slice zone → `brand_profile` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].brand_profile.primary.title
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.RichTextField
+  /**
+   * Background Color field in *Brand Page → Slice zone → `brand_profile` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].brand_profile.primary.background_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  background_color: prismicT.ColorField
+  /**
+   * Text Color field in *Brand Page → Slice zone → `brand_profile` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].brand_profile.primary.text_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  text_color: prismicT.ColorField
+  /**
+   * Highlight Color field in *Brand Page → Slice zone → `brand_profile` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].brand_profile.primary.highlight_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  highlight_color: prismicT.ColorField
+}
+/**
+ * Item in Brand Page → Slice zone → `brand_profile` → Items
+ *
+ */
+export interface BrandPageDocumentDataBodyBrandProfileSliceItem {
+  /**
+   * Attribute field in *Brand Page → Slice zone → `brand_profile` → Items*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].brand_profile.items[].attribute
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  attribute: prismicT.RichTextField
+}
+export type BrandPageDocumentDataBodyBrandProfileSlice = prismicT.Slice<
+  'brand_profile',
+  Simplify<BrandPageDocumentDataBodyBrandProfileSlicePrimary>,
+  Simplify<BrandPageDocumentDataBodyBrandProfileSliceItem>
+>
+/**
+ * Primary content in Brand Page → Slice zone → `video_showcase` → Primary
+ *
+ */
+interface BrandPageDocumentDataBodyVideoShowcaseSlicePrimary {
+  /**
+   * Video field in *Brand Page → Slice zone → `video_showcase` → Primary*
+   *
+   * - **Field Type**: Embed
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].video_showcase.primary.video
+   * - **Documentation**: https://prismic.io/docs/core-concepts/embed
+   *
+   */
+  video: prismicT.EmbedField
+  /**
+   * Title field in *Brand Page → Slice zone → `video_showcase` → Primary*
+   *
+   * - **Field Type**: Title
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].video_showcase.primary.title
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.TitleField
+  /**
+   * Highlight Color field in *Brand Page → Slice zone → `video_showcase` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].video_showcase.primary.highlight_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  highlight_color: prismicT.ColorField
+  /**
+   * Subtitle field in *Brand Page → Slice zone → `video_showcase` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].video_showcase.primary.subtitle
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  subtitle: prismicT.RichTextField
+}
+export type BrandPageDocumentDataBodyVideoShowcaseSlice = prismicT.Slice<
+  'video_showcase',
+  Simplify<BrandPageDocumentDataBodyVideoShowcaseSlicePrimary>,
+  never
+>
+/**
+ * Primary content in Brand Page → Slice zone → `text_with_button` → Primary
+ *
+ */
+interface BrandPageDocumentDataBodyTextWithButtonSlicePrimary {
+  /**
+   * Background Color field in *Brand Page → Slice zone → `text_with_button` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].text_with_button.primary.background_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  background_color: prismicT.ColorField
+  /**
+   * Title field in *Brand Page → Slice zone → `text_with_button` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].text_with_button.primary.title
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.RichTextField
+  /**
+   * Subtitle field in *Brand Page → Slice zone → `text_with_button` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].text_with_button.primary.subtitle
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  subtitle: prismicT.RichTextField
+  /**
+   * Button Text field in *Brand Page → Slice zone → `text_with_button` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].text_with_button.primary.button_text
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  button_text: prismicT.RichTextField
+  /**
+   * Button Link field in *Brand Page → Slice zone → `text_with_button` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].text_with_button.primary.button_link
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  button_link: prismicT.RichTextField
+  /**
+   * Button Background Color field in *Brand Page → Slice zone → `text_with_button` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].text_with_button.primary.button_background_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  button_background_color: prismicT.ColorField
+  /**
+   * Button Text Color field in *Brand Page → Slice zone → `text_with_button` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].text_with_button.primary.button_text_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  button_text_color: prismicT.ColorField
+  /**
+   * Open Link in New Tab field in *Brand Page → Slice zone → `text_with_button` → Primary*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: brand_page.body[].text_with_button.primary.open_link_in_new_tab
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  open_link_in_new_tab: prismicT.BooleanField
+}
+export type BrandPageDocumentDataBodyTextWithButtonSlice = prismicT.Slice<
+  'text_with_button',
+  Simplify<BrandPageDocumentDataBodyTextWithButtonSlicePrimary>,
+  never
+>
+/**
+ * Primary content in Brand Page → Slice zone → `image_and_text` → Primary
+ *
+ */
+interface BrandPageDocumentDataBodyImageAndTextSlicePrimary {
+  /**
+   * Text on Left field in *Brand Page → Slice zone → `image_and_text` → Primary*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: brand_page.body[].image_and_text.primary.text_on_left
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  text_on_left: prismicT.BooleanField
+  /**
+   * Background Color field in *Brand Page → Slice zone → `image_and_text` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].image_and_text.primary.background_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  background_color: prismicT.ColorField
+  /**
+   * Background Image field in *Brand Page → Slice zone → `image_and_text` → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].image_and_text.primary.background_image
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  background_image: prismicT.ImageField<never>
+  /**
+   * Highlight Color field in *Brand Page → Slice zone → `image_and_text` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].image_and_text.primary.highlight_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  highlight_color: prismicT.ColorField
+  /**
+   * Center Content field in *Brand Page → Slice zone → `image_and_text` → Primary*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: brand_page.body[].image_and_text.primary.center_content
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  center_content: prismicT.BooleanField
+  /**
+   * Headline field in *Brand Page → Slice zone → `image_and_text` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Enter the headline to display above content
+   * - **API ID Path**: brand_page.body[].image_and_text.primary.headline
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  headline: prismicT.RichTextField
+  /**
+   * Content field in *Brand Page → Slice zone → `image_and_text` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Enter the content text/copy
+   * - **API ID Path**: brand_page.body[].image_and_text.primary.content
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  content: prismicT.RichTextField
+  /**
+   * CTA Text field in *Brand Page → Slice zone → `image_and_text` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].image_and_text.primary.cta_text
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  cta_text: prismicT.RichTextField
+  /**
+   * CTA Link field in *Brand Page → Slice zone → `image_and_text` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Prefix link with "/" for internal links
+   * - **API ID Path**: brand_page.body[].image_and_text.primary.cta_link
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  cta_link: prismicT.RichTextField
+  /**
+   * CTA Background Color field in *Brand Page → Slice zone → `image_and_text` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].image_and_text.primary.cta_background_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  cta_background_color: prismicT.ColorField
+  /**
+   * CTA Text Color field in *Brand Page → Slice zone → `image_and_text` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].image_and_text.primary.cta_text_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  cta_text_color: prismicT.ColorField
+  /**
+   * Image field in *Brand Page → Slice zone → `image_and_text` → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].image_and_text.primary.image
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  image: prismicT.ImageField<never>
+}
+export type BrandPageDocumentDataBodyImageAndTextSlice = prismicT.Slice<
+  'image_and_text',
+  Simplify<BrandPageDocumentDataBodyImageAndTextSlicePrimary>,
+  never
+>
+/**
+ * Primary content in Brand Page → Slice zone → `columned_content` → Primary
+ *
+ */
+interface BrandPageDocumentDataBodyColumnedContentSlicePrimary {
+  /**
+   * Background Color field in *Brand Page → Slice zone → `columned_content` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].columned_content.primary.background_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  background_color: prismicT.ColorField
+  /**
+   * Text Color field in *Brand Page → Slice zone → `columned_content` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].columned_content.primary.text_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  text_color: prismicT.ColorField
+  /**
+   * Background Image field in *Brand Page → Slice zone → `columned_content` → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].columned_content.primary.background_image
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  background_image: prismicT.ImageField<never>
+  /**
+   * Highlight Color field in *Brand Page → Slice zone → `columned_content` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].columned_content.primary.highlight_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  highlight_color: prismicT.ColorField
+  /**
+   * Headline field in *Brand Page → Slice zone → `columned_content` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].columned_content.primary.headline
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  headline: prismicT.RichTextField
+  /**
+   * Content field in *Brand Page → Slice zone → `columned_content` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].columned_content.primary.content
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  content: prismicT.RichTextField
+  /**
+   * CTA Text field in *Brand Page → Slice zone → `columned_content` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].columned_content.primary.cta_text
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  cta_text: prismicT.RichTextField
+  /**
+   * CTA Link field in *Brand Page → Slice zone → `columned_content` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Prefix with "/" for internal links
+   * - **API ID Path**: brand_page.body[].columned_content.primary.cta_link
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  cta_link: prismicT.RichTextField
+  /**
+   * CTA Background Color field in *Brand Page → Slice zone → `columned_content` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].columned_content.primary.cta_background_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  cta_background_color: prismicT.ColorField
+  /**
+   * CTA Text Color field in *Brand Page → Slice zone → `columned_content` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].columned_content.primary.cta_text_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  cta_text_color: prismicT.ColorField
+}
+/**
+ * Item in Brand Page → Slice zone → `columned_content` → Items
+ *
+ */
+export interface BrandPageDocumentDataBodyColumnedContentSliceItem {
+  /**
+   * Image field in *Brand Page → Slice zone → `columned_content` → Items*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].columned_content.items[].image
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  image: prismicT.ImageField<never>
+  /**
+   * Highlight Color field in *Brand Page → Slice zone → `columned_content` → Items*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].columned_content.items[].highlight_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  highlight_color: prismicT.ColorField
+  /**
+   * Content field in *Brand Page → Slice zone → `columned_content` → Items*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].columned_content.items[].content
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  content: prismicT.RichTextField
+}
+export type BrandPageDocumentDataBodyColumnedContentSlice = prismicT.Slice<
+  'columned_content',
+  Simplify<BrandPageDocumentDataBodyColumnedContentSlicePrimary>,
+  Simplify<BrandPageDocumentDataBodyColumnedContentSliceItem>
+>
+/**
+ * Primary content in Brand Page → Slice zone → `dynamic_product_showcase` → Primary
+ *
+ */
+interface BrandPageDocumentDataBodyDynamicProductShowcaseSlicePrimary {
+  /**
+   * Brand field in *Brand Page → Slice zone → `dynamic_product_showcase` → Primary*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: Select the brand
+   * - **API ID Path**: brand_page.body[].dynamic_product_showcase.primary.brand
+   * - **Documentation**: https://prismic.io/docs/core-concepts/select
+   *
+   */
+  brand: prismicT.SelectField<
+    | '14K'
+    | 'Bernhard'
+    | "Bookbinder's Apprentice"
+    | 'Bookbinder'
+    | 'Che Fico'
+    | 'Conte de la Terre'
+    | 'Dove Hunt Dog'
+    | 'Epic Pursuit'
+    | 'Fieldhouse 301'
+    | 'Gallivant'
+    | 'Hushkeeper'
+    | 'Ligado'
+    | 'Middle Jane'
+    | 'Mixtrack'
+    | 'Nest'
+    | 'Oso Pardo'
+    | 'Pip, The Greeter'
+    | 'The Resident'
+    | 'Scouting Grounds'
+    | 'Soleil. Vent. Âme.'
+    | 'Tangotango'
+    | 'Ticklebumps'
+    | 'Veinte'
+    | 'Wilderness Road'
+  >
+  /**
+   * Heading field in *Brand Page → Slice zone → `dynamic_product_showcase` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].dynamic_product_showcase.primary.heading
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  heading: prismicT.RichTextField
+  /**
+   * Highlight Color field in *Brand Page → Slice zone → `dynamic_product_showcase` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].dynamic_product_showcase.primary.highlight_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  highlight_color: prismicT.ColorField
+}
+/**
+ * Item in Brand Page → Slice zone → `dynamic_product_showcase` → Items
+ *
+ */
+export interface BrandPageDocumentDataBodyDynamicProductShowcaseSliceItem {
+  /**
+   * Display Order field in *Brand Page → Slice zone → `dynamic_product_showcase` → Items*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: Sort products to desired order
+   * - **API ID Path**: brand_page.body[].dynamic_product_showcase.items[].display_order
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  display_order: prismicT.RelationField<'pdp'>
+}
+export type BrandPageDocumentDataBodyDynamicProductShowcaseSlice = prismicT.Slice<
+  'dynamic_product_showcase',
+  Simplify<BrandPageDocumentDataBodyDynamicProductShowcaseSlicePrimary>,
+  Simplify<BrandPageDocumentDataBodyDynamicProductShowcaseSliceItem>
+>
+/**
+ * Primary content in Brand Page → Slice zone → `product_showcase` → Primary
+ *
+ */
+interface BrandPageDocumentDataBodyProductShowcaseSlicePrimary {
+  /**
+   * Heading field in *Brand Page → Slice zone → `product_showcase` → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].product_showcase.primary.heading
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  heading: prismicT.RichTextField
+  /**
+   * Highlight Color field in *Brand Page → Slice zone → `product_showcase` → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].product_showcase.primary.highlight_color
+   * - **Documentation**: https://prismic.io/docs/core-concepts/color
+   *
+   */
+  highlight_color: prismicT.ColorField
+}
+/**
+ * Item in Brand Page → Slice zone → `product_showcase` → Items
+ *
+ */
+export interface BrandPageDocumentDataBodyProductShowcaseSliceItem {
+  /**
+   * Image field in *Brand Page → Slice zone → `product_showcase` → Items*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].product_showcase.items[].image
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  image: prismicT.ImageField<never>
+  /**
+   * Title field in *Brand Page → Slice zone → `product_showcase` → Items*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].product_showcase.items[].title
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  title: prismicT.RichTextField
+  /**
+   * Price field in *Brand Page → Slice zone → `product_showcase` → Items*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].product_showcase.items[].price
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  price: prismicT.RichTextField
+  /**
+   * CTA Text field in *Brand Page → Slice zone → `product_showcase` → Items*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: brand_page.body[].product_showcase.items[].cta_text
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  cta_text: prismicT.RichTextField
+  /**
+   * CTA Link field in *Brand Page → Slice zone → `product_showcase` → Items*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Prefix with "/" for internal links
+   * - **API ID Path**: brand_page.body[].product_showcase.items[].cta_link
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  cta_link: prismicT.RichTextField
+  /**
+   * Open Link in New Tab field in *Brand Page → Slice zone → `product_showcase` → Items*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: brand_page.body[].product_showcase.items[].open_link_in_new_tab
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  open_link_in_new_tab: prismicT.BooleanField
+}
+export type BrandPageDocumentDataBodyProductShowcaseSlice = prismicT.Slice<
+  'product_showcase',
+  Simplify<BrandPageDocumentDataBodyProductShowcaseSlicePrimary>,
+  Simplify<BrandPageDocumentDataBodyProductShowcaseSliceItem>
+>
+export type BrandPageDocumentDataBodyWineQuizSlice = prismicT.Slice<
+  'wine_quiz',
+  Record<string, never>,
+  never
+>
+/**
+ * Slice for *Brand Page → Slice zone*
+ *
+ */
+type BrandPageDocumentDataBodySlice =
+  | BrandPageDocumentDataBodyHeroBannerSlice
+  | BrandPageDocumentDataBodyBrandProfileSlice
+  | BrandPageDocumentDataBodyVideoShowcaseSlice
+  | BrandPageDocumentDataBodyTextWithButtonSlice
+  | BrandPageDocumentDataBodyImageAndTextSlice
+  | BrandPageDocumentDataBodyColumnedContentSlice
+  | BrandPageDocumentDataBodyDynamicProductShowcaseSlice
+  | BrandPageDocumentDataBodyProductShowcaseSlice
+  | BrandPageDocumentDataBodyWineQuizSlice
+/**
+ * Brand Page document from Prismic
+ *
+ * - **API ID**: `brand_page`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type BrandPageDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
+  prismicT.PrismicDocumentWithUID<Simplify<BrandPageDocumentData>, 'brand_page', Lang>
 /** Content for brand_details documents */
 interface BrandDetailsDocumentData {
   /**
@@ -11933,6 +12781,7 @@ export type AllDocumentTypes =
   | BecomeConsultantDocument
   | BottleCollectionsDocument
   | BrandDocument
+  | BrandPageDocument
   | BrandDetailsDocument
   | BrandLandingTempDocument
   | ButDocument
@@ -12142,6 +12991,30 @@ declare module '@prismicio/client' {
       BottleCollectionsDocument,
       BrandDocumentData,
       BrandDocument,
+      BrandPageDocumentData,
+      BrandPageDocumentDataBodyHeroBannerSlicePrimary,
+      BrandPageDocumentDataBodyHeroBannerSlice,
+      BrandPageDocumentDataBodyBrandProfileSlicePrimary,
+      BrandPageDocumentDataBodyBrandProfileSliceItem,
+      BrandPageDocumentDataBodyBrandProfileSlice,
+      BrandPageDocumentDataBodyVideoShowcaseSlicePrimary,
+      BrandPageDocumentDataBodyVideoShowcaseSlice,
+      BrandPageDocumentDataBodyTextWithButtonSlicePrimary,
+      BrandPageDocumentDataBodyTextWithButtonSlice,
+      BrandPageDocumentDataBodyImageAndTextSlicePrimary,
+      BrandPageDocumentDataBodyImageAndTextSlice,
+      BrandPageDocumentDataBodyColumnedContentSlicePrimary,
+      BrandPageDocumentDataBodyColumnedContentSliceItem,
+      BrandPageDocumentDataBodyColumnedContentSlice,
+      BrandPageDocumentDataBodyDynamicProductShowcaseSlicePrimary,
+      BrandPageDocumentDataBodyDynamicProductShowcaseSliceItem,
+      BrandPageDocumentDataBodyDynamicProductShowcaseSlice,
+      BrandPageDocumentDataBodyProductShowcaseSlicePrimary,
+      BrandPageDocumentDataBodyProductShowcaseSliceItem,
+      BrandPageDocumentDataBodyProductShowcaseSlice,
+      BrandPageDocumentDataBodyWineQuizSlice,
+      BrandPageDocumentDataBodySlice,
+      BrandPageDocument,
       BrandDetailsDocumentData,
       BrandDetailsDocumentDataFlavorProfilesItem,
       BrandDetailsDocumentDataBrandProductsItem,

@@ -18,26 +18,33 @@ const routes: ClientConfig['routes'] = [
     type: 'rich_content_page',
     uid: 'home',
   },
-  // {
-  //   path: '/:uid',
-  //   type: 'rich_content_page',
-  // },
+  {
+    path: '/:uid',
+    type: 'rich_content_page',
+  },
+  {
+    path: '/wine',
+    type: 'plp',
+    uid: 'wine',
+  },
+  {
+    path: '/brands/:uid',
+    type: 'brand_page',
+  },
 ]
 
 /**
  * Tells Prismic how to navigate the site from PrismicLink and PrismicRichText components.
  */
 export const linkResolver: LinkResolverFunction = document => {
-  if (document.type === 'rich_content_page') {
-    return document.url || HOME_PAGE_PATH
-  } else if (document.type === 'plp') {
+  if (document.type === 'plp') {
     const url = document.uid
       ?.split('--')
       .reduce((accumulator, current) => `${accumulator}/${current}`, '')
     return url || HOME_PAGE_PATH
   }
 
-  return HOME_PAGE_PATH
+  return document.url || HOME_PAGE_PATH
 }
 
 /**
