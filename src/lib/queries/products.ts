@@ -3,9 +3,7 @@ import { QueryFunction, useQuery } from '@tanstack/react-query'
 export const PRODUCTS_QUERY_KEY = ['products']
 
 export const getProducts = async () => {
-  const response = await fetch(
-    `${process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : ''}/api/products`
-  )
+  const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/products`)
   if (response.ok) {
     return await response.json()
   }
@@ -13,9 +11,7 @@ export const getProducts = async () => {
 
 export const getProductByCartUrl: QueryFunction = async ({ queryKey }) => {
   const response = await fetch(
-    `${
-      process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : ''
-    }/api/products?cartUrl=${queryKey[1]}`
+    `${process.env.NEXT_PUBLIC_APP_URL}/api/products?cartUrl=${queryKey[1]}`
   )
   if (response.ok) {
     return await response.json()
