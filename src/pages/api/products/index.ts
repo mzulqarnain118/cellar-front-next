@@ -61,10 +61,10 @@ const handler = async (req: NextRequest) => {
       const data = productsResponse.data.map(product => ({
         attributes:
           (!!product.attributes &&
-            product.attributes?.map(attribute => ({
-              name: attribute.Name,
-              value: attribute.Value,
-            }))) ||
+            product.attributes?.reduce<{ [name: string]: string }>((map, attribute) => {
+              map[attribute.Name] = attribute.Value
+              return map
+            }, {})) ||
           undefined,
         availability:
           (!!product.Availability &&
