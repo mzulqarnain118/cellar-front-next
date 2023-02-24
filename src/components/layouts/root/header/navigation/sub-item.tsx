@@ -38,8 +38,7 @@ const isCompleteNavigationItemLink = (
 ): childLink is CompleteNavigationItemLink =>
   childLink.link_type === 'Document' && 'type' in childLink && childLink.type === 'navigation_menu'
 
-export const SubNavigationItem = ({ data, link }: SubItemProps) => {
-  console.log('data', data.child_link)
+export const SubNavigationItem = ({ data, link: _link }: SubItemProps) => {
   const childLink = data.child_link
 
   const navigationItems = useMemo(() => {
@@ -79,7 +78,7 @@ export const SubNavigationItem = ({ data, link }: SubItemProps) => {
         className="flex cursor-pointer items-center justify-between py-3 px-4"
         field={childLink}
       >
-        <PrismicText field={childLink.data?.name} />
+        {/* <PrismicText field={childLink.data?.name} /> */}
         <ArrowRightIcon className="h-4 w-4 stroke-2" />
       </PrismicLink>
       {navigationItems !== undefined && (

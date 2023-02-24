@@ -1,43 +1,36 @@
-import { useState } from 'react'
-
-import { ArrowRightIcon } from '@heroicons/react/24/outline'
 import type { Content } from '@prismicio/client'
 import { PrismicLink, PrismicText } from '@prismicio/react'
-import type { FilledContentRelationshipField } from '@prismicio/types'
-
-import { isTruthyJSXElement } from '@/core/utils/predicates'
-
-import { SubNavigationItem } from './sub-item'
+// import type { FilledContentRelationshipField } from '@prismicio/types'
 
 interface NavigationItemProps {
   item: Content.NavigationMenuDocumentDataBodyNavigationLinkSlice
 }
 
 // ! TODO: Make this a helper.
-const isValidNavigationItem = (
-  item: unknown
-): item is FilledContentRelationshipField<
-  'navigation_item',
-  string,
-  Content.NavigationMenuDocumentData
-> => typeof item === 'object' && !!item && 'id' in item
+// const isValidNavigationItem = (
+//   item: unknown
+// ): item is FilledContentRelationshipField<
+//   'navigation_item',
+//   string,
+//   Content.NavigationMenuDocumentData
+// > => typeof item === 'object' && !!item && 'id' in item
 
 export const NavigationItem = ({ item }: NavigationItemProps) => {
-  const [showSubNav, setShowSubNav] = useState(false)
+  // const [showSubNav, setShowSubNav] = useState(false)
 
-  const subItems = item.items
-    .map(navItem => {
-      if (isValidNavigationItem(navItem.child_link)) {
-        return <SubNavigationItem key={navItem.child_link.id} data={navItem} />
-      }
-    })
-    .filter(isTruthyJSXElement)
+  // const subItems = item.items
+  //   .map(navItem => {
+  //     if (isValidNavigationItem(navItem.child_link)) {
+  //       return <SubNavigationItem key={navItem.child_link.id} data={navItem} />
+  //     }
+  //   })
+  //   .filter(isTruthyJSXElement)
 
   const link = !!item.primary.link && (
     <PrismicLink
       className="group flex h-12 items-center font-semibold"
       field={item.primary.link}
-      onMouseEnter={() => setShowSubNav(true)}
+      // onMouseEnter={() => setShowSubNav(true)}
     >
       <div className="grid">
         <PrismicText field={item.primary.name} />
@@ -48,9 +41,12 @@ export const NavigationItem = ({ item }: NavigationItemProps) => {
 
   // ! TODO: Responsive design.
   return (
-    <div className="group" onMouseLeave={() => setShowSubNav(false)}>
+    <div
+      className="group"
+      // onMouseLeave={() => setShowSubNav(false)}
+    >
       {link}
-      {showSubNav && subItems.length > 0 && (
+      {/* {showSubNav && subItems.length > 0 && (
         <div className="absolute left-0 right-0 top-12 hidden min-h-[23.5rem] w-[1536px] rounded-b-lg bg-[#f0efed] text-neutral-900 shadow-lg group-hover:flex">
           <nav className="flex flex-col gap-2">
             <PrismicLink
@@ -63,7 +59,7 @@ export const NavigationItem = ({ item }: NavigationItemProps) => {
             <ul>{subItems}</ul>
           </nav>
         </div>
-      )}
+      )} */}
     </div>
   )
 }

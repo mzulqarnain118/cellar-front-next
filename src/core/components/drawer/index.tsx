@@ -1,8 +1,4 @@
-import { ElementType, KeyboardEventHandler, ReactNode, useEffect, useState } from 'react'
-
-import { XMarkIcon } from '@heroicons/react/24/solid'
-import { clsx } from 'clsx'
-import { createPortal } from 'react-dom'
+import { ElementType, KeyboardEventHandler, ReactNode } from 'react'
 
 interface DrawerProps {
   as?: ElementType
@@ -17,32 +13,32 @@ interface DrawerProps {
 }
 
 export const Drawer = ({
-  as = 'div',
-  children,
+  // as = 'div',
+  // children,
   className,
-  direction = 'left',
-  id,
-  open,
+  // direction = 'left',
+  // id,
+  // open,
   setOpen,
-  title,
+  // title,
   trigger,
 }: DrawerProps) => {
-  const [isMounted, setIsMounted] = useState(false)
-  const Component = as
+  // const [isMounted, setIsMounted] = useState(false)
+  // const Component = as
 
-  const createDrawerElement = () => {
-    const newDrawer = document.createElement('div')
-    newDrawer.setAttribute('id', id)
-    document.body.appendChild(newDrawer)
-    return newDrawer
-  }
+  // const createDrawerElement = () => {
+  //   const newDrawer = document.createElement('div')
+  //   newDrawer.setAttribute('id', id)
+  //   document.body.appendChild(newDrawer)
+  //   return newDrawer
+  // }
 
-  const handleBackdropClick = () => {
-    if (setOpen) {
-      setOpen(false)
-    }
-    document.querySelector('body')?.classList.remove('overflow-hidden')
-  }
+  // const handleBackdropClick = () => {
+  //   if (setOpen) {
+  //     setOpen(false)
+  //   }
+  //   document.querySelector('body')?.classList.remove('overflow-hidden')
+  // }
 
   const handleDrawerOpen = () => {
     if (setOpen) {
@@ -51,11 +47,11 @@ export const Drawer = ({
     document.querySelector('body')?.classList.add('overflow-hidden')
   }
 
-  const keyDownHandler = (event: KeyboardEvent) => {
-    if (event.key === 'Escape') {
-      handleBackdropClick()
-    }
-  }
+  // const keyDownHandler = (event: KeyboardEvent) => {
+  //   if (event.key === 'Escape') {
+  //     handleBackdropClick()
+  //   }
+  // }
 
   const handleEnterKey: KeyboardEventHandler<HTMLDivElement> = event => {
     if (event.key === 'Enter') {
@@ -63,31 +59,31 @@ export const Drawer = ({
     }
   }
 
-  const handleBackdropEnterKey: KeyboardEventHandler<HTMLDivElement> = event => {
-    if (event.key === 'Enter') {
-      handleBackdropClick()
-    }
-  }
+  // const handleBackdropEnterKey: KeyboardEventHandler<HTMLDivElement> = event => {
+  //   if (event.key === 'Enter') {
+  //     handleBackdropClick()
+  //   }
+  // }
 
-  useEffect(() => {
-    document.addEventListener('keydown', keyDownHandler)
+  // useEffect(() => {
+  //   document.addEventListener('keydown', keyDownHandler)
 
-    if (open) {
-      document.querySelector('body')?.classList.add('overflow-hidden')
-    }
+  //   if (open) {
+  //     document.querySelector('body')?.classList.add('overflow-hidden')
+  //   }
 
-    setIsMounted(true)
+  //   setIsMounted(true)
 
-    return () => {
-      document.removeEventListener('keydown', keyDownHandler)
-      setIsMounted(false)
-      if (setOpen) {
-        setOpen(false)
-      }
-      document.querySelector('body')?.classList.remove('overflow-hidden')
-      document.querySelector(`div#${id}`)?.remove()
-    }
-  }, [])
+  //   return () => {
+  //     document.removeEventListener('keydown', keyDownHandler)
+  //     setIsMounted(false)
+  //     if (setOpen) {
+  //       setOpen(false)
+  //     }
+  //     document.querySelector('body')?.classList.remove('overflow-hidden')
+  //     document.querySelector(`div#${id}`)?.remove()
+  //   }
+  // }, [])
 
   return (
     <div className={className}>
@@ -100,7 +96,7 @@ export const Drawer = ({
       >
         {trigger}
       </div>
-      {isMounted
+      {/* {isMounted
         ? createPortal(
             <>
               <div
@@ -155,7 +151,7 @@ export const Drawer = ({
             </>,
             document.querySelector(`#${id}`) || createDrawerElement()
           )
-        : undefined}
+        : undefined} */}
     </div>
   )
 }

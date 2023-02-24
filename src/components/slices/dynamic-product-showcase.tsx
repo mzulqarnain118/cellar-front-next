@@ -4,7 +4,4 @@ import type { SliceComponentProps } from '@prismicio/react'
 type DynamicProductShowcaseProps =
   SliceComponentProps<Content.RichContentPageDocumentDataBodyColumnedContentSlice>
 
-export const DynamicProductShowcase = ({ slice }: DynamicProductShowcaseProps) => {
-  console.log('slice', slice)
-  return <>Hi</>
-}
+export const DynamicProductShowcase = ({ slice: _slice }: DynamicProductShowcaseProps) => <>Hi</>
