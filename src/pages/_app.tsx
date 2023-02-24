@@ -5,7 +5,7 @@ import defaultSEOConfig from 'next-seo.config'
 
 import type { AppProps } from 'next/app'
 
-import { Inter, Merriweather } from '@next/font/google'
+import { Merriweather } from '@next/font/google'
 import { PrismicPreview } from '@prismicio/next'
 import { PrismicProvider } from '@prismicio/react'
 import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister'
@@ -25,7 +25,6 @@ import { richTextComponents } from 'prismic/rich-text-components'
 import { linkResolver, repositoryName } from 'prismic-io'
 import '../globals.css'
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const merriweather = Merriweather({
   subsets: ['latin'],
   variable: '--font-merriweather',
@@ -68,7 +67,6 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
                 <style global jsx>
                   {`
                     :root {
-                      --font-inter: ${inter.style.fontFamily};
                       --font-merriweather: ${merriweather.style.fontFamily};
                     }
                   `}
