@@ -4,7 +4,6 @@ import { DefaultSeo } from 'next-seo'
 import defaultSEOConfig from 'next-seo.config'
 
 import type { AppProps } from 'next/app'
-import Link from 'next/link'
 
 import { Inter, Merriweather } from '@next/font/google'
 import { PrismicPreview } from '@prismicio/next'
@@ -12,15 +11,18 @@ import { PrismicProvider } from '@prismicio/react'
 import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister'
 import { Hydrate, QueryClient } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client'
+import {
+  PersistQueryClientOptions,
+  PersistQueryClientProvider,
+} from '@tanstack/react-query-persist-client'
 import { SessionProvider } from 'next-auth/react'
 
 import { RootLayout } from '@/components/layouts/root'
-import { Typography } from '@/core/components/typogrpahy'
-import { parsePrismicRichText } from '@/lib/utils/prismic'
+
+import { InternalLink } from 'prismic/internal-link'
+import { richTextComponents } from 'prismic/rich-text-components'
 
 import { linkResolver, repositoryName } from 'prismic-io'
-
 import '../globals.css'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
@@ -34,6 +36,13 @@ const persister = createSyncStoragePersister({
   storage: typeof window !== 'undefined' ? window.localStorage : undefined,
 })
 
+const persistOptions: Omit<PersistQueryClientOptions, 'queryClient'> = {
+  dehydrateOptions: {
+    shouldDehydrateQuery: query => Boolean(query.meta?.persist) ?? false,
+  },
+  persister,
+}
+
 const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
   const [queryClient] = useState(
     () =>
@@ -46,84 +55,12 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
 
   return (
     <SessionProvider session={session}>
-      <PersistQueryClientProvider
-        client={queryClient}
-        persistOptions={{
-          dehydrateOptions: {
-            shouldDehydrateQuery: query => Boolean(query.meta?.persist) ?? false,
-          },
-          persister,
-        }}
-      >
+      <PersistQueryClientProvider client={queryClient} persistOptions={persistOptions}>
         <Hydrate state={pageProps.dehydratedState}>
           <PrismicProvider
-            internalLinkComponent={props => <Link {...props} />}
+            internalLinkComponent={InternalLink}
             linkResolver={linkResolver}
-            richTextComponents={{
-              heading1: ({ children, key, text = '', node: { spans } }) => {
-                const content = parsePrismicRichText(text, spans)
-
-                return (
-                  <Typography key={key} as="h1">
-                    {content ? content : children}
-                  </Typography>
-                )
-              },
-              heading2: ({ children, key, text = '', node: { spans } }) => {
-                const content = parsePrismicRichText(text, spans)
-
-                return (
-                  <Typography key={key} as="h2">
-                    {content ? content : children}
-                  </Typography>
-                )
-              },
-              heading3: ({ children, key, text = '', node: { spans } }) => {
-                const content = parsePrismicRichText(text, spans)
-
-                return (
-                  <Typography key={key} as="h3">
-                    {content ? content : children}
-                  </Typography>
-                )
-              },
-              heading4: ({ children, key, text = '', node: { spans } }) => {
-                const content = parsePrismicRichText(text, spans)
-
-                return (
-                  <Typography key={key} as="h4">
-                    {content ? content : children}
-                  </Typography>
-                )
-              },
-              heading5: ({ children, key, text = '', node: { spans } }) => {
-                const content = parsePrismicRichText(text, spans)
-
-                return (
-                  <Typography key={key} as="h5">
-                    {content ? content : children}
-                  </Typography>
-                )
-              },
-              heading6: ({ children, key, text = '', node: { spans } }) => {
-                const content = parsePrismicRichText(text, spans)
-
-                return (
-                  <Typography key={key} as="h6">
-                    {content ? content : children}
-                  </Typography>
-                )
-              },
-              paragraph: ({ children, key, text = '', node: { spans } }) => {
-                const content = parsePrismicRichText(text, spans)
-
-                return (
-                  <Typography key={key} as="p">
-                    {content ? content : children}
-                  </Typography>
-                )
-              },
-            }}
+            richTextComponents={richTextComponents}
           >
             <PrismicPreview repositoryName={repositoryName}>
               <DefaultSeo {...defaultSEOConfig} />

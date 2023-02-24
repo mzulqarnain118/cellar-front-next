@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 
 import Image from 'next/image'
 import Link from 'next/link'
@@ -23,6 +23,24 @@ interface MobileMenuProps {
 export const MobileMenu = ({ className }: MobileMenuProps) => {
   const [open, setOpen] = useState(false)
 
+  const drawerTrigger = useMemo(
+    () => (
+      <button
+        aria-label="Open menu"
+        className="group rounded-lg p-1 transition-colors hover:bg-neutral-200"
+        type="button"
+      >
+        <Bars3Icon
+          className={`
+            h-6 w-6 fill-neutral-50 stroke-neutral-900 transition-colors
+            group-hover:fill-neutral-200
+          `}
+        />
+      </button>
+    ),
+    []
+  )
+
   return (
     <div className={clsx('container mx-auto lg:hidden', className)}>
       <div className="flex items-center justify-between py-3">
@@ -31,15 +49,7 @@ export const MobileMenu = ({ className }: MobileMenuProps) => {
           id="mobile-menu-drawer"
           open={open}
           setOpen={setOpen}
-          trigger={
-            <button
-              aria-label="Open menu"
-              className="group rounded-lg p-1 transition-colors hover:bg-neutral-200"
-              type="button"
-            >
-              <Bars3Icon className="h-6 w-6 fill-neutral-50 stroke-neutral-900 transition-colors group-hover:fill-neutral-200" />
-            </button>
-          }
+          trigger={drawerTrigger}
         >
           <div className="flex flex-col">
             <Search className="my-3 px-4" id="mobile-menu-search-top" />

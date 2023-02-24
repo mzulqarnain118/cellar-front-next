@@ -20,8 +20,9 @@
       "parser": "@typescript-eslint/parser"
     }
   ],
-  "plugins": ["eslint-plugin-import"],
+  "plugins": ["eslint-plugin-import", "@arthurgeron/react-usememo"],
   "rules": {
+    "@arthurgeron/react-usememo/require-usememo": [2],
     "@typescript-eslint/ban-ts-comment": [
       "error",
       {
@@ -55,6 +56,7 @@
         "newlines-between": "always",
         "pathGroups": [
           { "group": "internal", "pattern": "@/**", "position": "before" },
+          { "group": "internal", "pattern": "prismic-io", "position": "after" },
           { "group": "external", "pattern": "react", "position": "before" },
           { "group": "external", "pattern": "next**", "position": "before" },
           { "group": "external", "pattern": "next/**/*", "position": "before" }

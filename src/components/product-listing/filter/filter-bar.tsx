@@ -1,3 +1,5 @@
+import { useCallback } from 'react'
+
 import { clsx } from 'clsx'
 
 import { useFiltersStore } from '@/lib/stores/filters'
@@ -5,6 +7,7 @@ import { Chip } from '@/ui/chip'
 
 export const FilterBar = () => {
   const { activeFilters, clearAll, removeFilter } = useFiltersStore()
+  const onChipClick = useCallback((name: string) => removeFilter(name), [removeFilter])
 
   return (
     <div
@@ -18,7 +21,7 @@ export const FilterBar = () => {
           key={filter}
           className="animate-fade-in transition-all"
           name={filter}
-          onClick={name => removeFilter(name)}
+          onClick={onChipClick}
         />
       ))}
       {activeFilters.length > 0 && (
