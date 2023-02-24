@@ -1,0 +1,3 @@
+{
+  "extends": ["@commitlink/config-conventional"]
+}
