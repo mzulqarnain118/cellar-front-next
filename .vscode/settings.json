@@ -15,5 +15,8 @@
     "*.env.production.local": "env",
     "*.env.template": "env",
     ".env.local": "env"
+  },
+  "[env]": {
+    "editor.defaultFormatter": "IronGeek.vscode-env"
   }
 }
