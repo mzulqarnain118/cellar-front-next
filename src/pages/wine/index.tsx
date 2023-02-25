@@ -33,7 +33,9 @@ type PageProps = InferGetStaticPropsType<typeof getStaticProps>
 
 const PLP: NextPage<PageProps> = () => {
   const { data } = usePaginatedProducts({ categories: [1], page: 1 })
-  const products = data?.products.map(product => <>{product.displayName}</>)
+  const products = data?.products.map(product => (
+    <span key={product.sku}>{product.displayName}</span>
+  ))
 
   return <p>{products}</p>
 }
