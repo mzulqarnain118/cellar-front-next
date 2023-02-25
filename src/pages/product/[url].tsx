@@ -10,9 +10,9 @@ import { getProductByCartUrl, PRODUCTS_QUERY_KEY, useProductQuery } from '@/lib/
 
 import { createClient } from 'prismic-io'
 
-export const getServerSideProps: GetServerSideProps = async ({ params, previewData }) => {
+export const getServerSideProps: GetServerSideProps = async ({ previewData, query }) => {
   const client = createClient({ previewData })
-  const cartUrl = params?.url?.toString()
+  const cartUrl = query.url
 
   if (!cartUrl) {
     return {
@@ -25,14 +25,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params, previewDa
     getStaticNavigation(client),
     client.getAllByType('pdp'),
   ])
-  const page = pdps.find(pdp => asText(pdp.data.url) === cartUrl)
-
-  if (!page) {
-    return {
-      notFound: true,
-    }
-  }
-
+  const page = pdps.find(pdp => asText(pdp.data.url) === cartUrl.toString())
   await queryClient.prefetchQuery([...PRODUCTS_QUERY_KEY, cartUrl], getProductByCartUrl)
 
   return {
@@ -46,10 +39,9 @@ export const getServerSideProps: GetServerSideProps = async ({ params, previewDa
 type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
 const PDP: NextPage<PageProps> = ({ page: _page }) => {
-  const {
-    query: { cartUrl },
-  } = useRouter()
-  const { data: _data } = useProductQuery(cartUrl?.toString() || '')
+  const router = useRouter()
+  const { url } = router.query
+  const { data: _data } = useProductQuery(url?.toString() || '')
 
   return <>PDP hi</>
 }
