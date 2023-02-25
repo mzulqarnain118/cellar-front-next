@@ -22,14 +22,15 @@ export const schema = z.object({
     .optional(),
   cartUrl: z.string().min(1, 'There must be a cartUrl.'),
   catalogId: z.number(),
-  displayCategories: z
-    .array(
-      z.object({
-        id: z.number(),
-        order: z.number(),
-      })
-    )
-    .optional(),
+  // displayCategories: z
+  //   .array(
+  //     z.object({
+  //       id: z.number(),
+  //       order: z.number(),
+  //     })
+  //   )
+  //   .optional(),
+  displayCategories: z.array(z.number()),
   displayName: z.string(),
   onSalePrice: z.number().optional(),
   pictureUrl: z.string().optional(),

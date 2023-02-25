@@ -41,7 +41,7 @@ const handler = async (req: NextRequest) => {
       )
     }
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/products`)
+    const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/products/all`)
 
     if (response.ok) {
       const data = (await response.json()) as ProductsResponse

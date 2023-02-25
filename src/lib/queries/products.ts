@@ -5,7 +5,7 @@ import { ProductResponse, ProductsResponse } from '../types/schemas/product'
 export const PRODUCTS_QUERY_KEY = ['products']
 
 export const getProducts: QueryFunction<ProductsResponse> = async () => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/products`)
+  const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/products/all`)
   return await response.json()
 }
 
