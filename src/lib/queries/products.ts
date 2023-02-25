@@ -1,23 +1,55 @@
 import { QueryFunction, useQuery } from '@tanstack/react-query'
 
-import { ProductResponse, ProductsResponse } from '../types/schemas/product'
+import {
+  PaginatedProductsResponse,
+  PaginatedProductsSchema,
+  ProductsResponse,
+  ProductsSchema,
+} from '../types/schemas/product'
 
 export const PRODUCTS_QUERY_KEY = ['products']
 
-export const getProducts: QueryFunction<ProductsResponse> = async () => {
+export const getAllProducts: QueryFunction<ProductsSchema[] | undefined> = async () => {
   const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/products/all`)
-  return await response.json()
+  const result = (await response.json()) as ProductsResponse
+
+  if (result.success) {
+    return result.data
+  }
 }
 
-export const getProductByCartUrl: QueryFunction<ProductResponse> = async ({ queryKey }) => {
+export const getProductByCartUrl: QueryFunction<ProductsSchema | undefined> = async ({
+  queryKey,
+}) => {
   const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/products/${queryKey[1]}`)
-  return await response.json()
+  const result = (await response.json()) as { data: ProductsSchema; success: boolean }
+
+  if (result.success) {
+    return result.data
+  }
+}
+
+export const getPaginatedProducts: QueryFunction<
+  PaginatedProductsSchema | undefined,
+  string[]
+> = async ({ queryKey }) => {
+  const data = JSON.parse(queryKey[1])
+  const params = new URLSearchParams(data).toString()
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_APP_URL}/api/products${params ? `?${params}` : ''}`
+  )
+
+  const result = (await response.json()) as PaginatedProductsResponse
+
+  if (result.success) {
+    return result.data
+  }
 }
 
 export const useProductsQuery = () =>
   useQuery({
     // cacheTime: 20 * (60 * 1000), // 20 minutes.
-    queryFn: getProducts,
+    queryFn: getAllProducts,
     queryKey: PRODUCTS_QUERY_KEY,
     // staleTime: 10 * (60 * 1000), // 10 minutes.
   })
@@ -28,4 +60,16 @@ export const useProductQuery = (cartUrl: string) =>
     queryFn: getProductByCartUrl,
     queryKey: [...PRODUCTS_QUERY_KEY, cartUrl],
     // staleTime: 10 * (60 * 1000), // 10 minutes.
+  })
+
+export const PAGINATED_PRODUCTS_QUERY_KEY = ['paginated-products']
+export const usePaginatedProducts = (data: {
+  categories?: number[]
+  page: number
+  perPage?: number
+}) =>
+  useQuery({
+    keepPreviousData: true,
+    queryFn: getPaginatedProducts,
+    queryKey: [...PAGINATED_PRODUCTS_QUERY_KEY, JSON.stringify(data)],
   })

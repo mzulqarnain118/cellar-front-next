@@ -70,3 +70,23 @@ interface Failure {
 
 export type ProductsResponse = ProductsSuccess | Failure
 export type ProductResponse = ProductSuccess | Failure
+
+export const paginatedProductsSchema = z.object({
+  nextPageUrl: z.string().optional(),
+  page: z.number().positive(),
+  perPage: z.number().positive(),
+  previousPageUrl: z.string().optional(),
+  products: z.array(schema),
+  results: z.number().positive(),
+  resultsShown: z.array(z.number()),
+  totalNumberOfPages: z.number().positive(),
+})
+
+export type PaginatedProductsSchema = z.infer<typeof paginatedProductsSchema>
+
+interface PaginatedProductsSuccess {
+  data: PaginatedProductsSchema
+  success: true
+}
+
+export type PaginatedProductsResponse = PaginatedProductsSuccess | Failure
