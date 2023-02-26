@@ -43,6 +43,10 @@
   .h6 {
     @apply !text-[1.25em] lg:!text-xl;
   }
+
+  .btn {
+    @apply normal-case;
+  }
 }
 
 @layer base {

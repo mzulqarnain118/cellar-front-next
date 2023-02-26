@@ -1,5 +1,6 @@
 import type { NextRequest } from 'next/server'
 
+import { uniqueBy } from '@/core/utils/uniqueBy'
 import { ProductsSchema } from '@/lib/types/schemas/product'
 
 export const config = {
@@ -117,7 +118,7 @@ const handler = async (req: NextRequest) => {
 
       return new Response(
         JSON.stringify({
-          data,
+          data: uniqueBy(data.slice(1), 'sku'),
           success: true,
         }),
         {

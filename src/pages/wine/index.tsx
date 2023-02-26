@@ -1,43 +1,59 @@
-import { GetStaticPropsContext, InferGetStaticPropsType, NextPage } from 'next'
+import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next'
 
-import { Content } from '@prismicio/client'
+import { useRouter } from 'next/router'
+
 import { dehydrate } from '@tanstack/react-query'
 
+import { ProductListing } from '@/components/product-listing'
 import { getStaticNavigation } from '@/lib/queries/header'
-import {
-  getPaginatedProducts,
-  PAGINATED_PRODUCTS_QUERY_KEY,
-  usePaginatedProducts,
-} from '@/lib/queries/products'
+import { getPaginatedProducts, PAGINATED_PRODUCTS_QUERY_KEY } from '@/lib/queries/products'
 
 import { createClient } from 'prismic-io'
 
-export const getStaticProps = async ({ previewData }: GetStaticPropsContext) => {
+const categories: number[] = [1]
+
+export const getServerSideProps: GetServerSideProps = async ({ previewData, query }) => {
+  let page = 1
+  let limit = 20
+  if (query.page) {
+    page = parseInt(query.page.toString())
+  }
+  if (query.limit) {
+    limit = parseInt(query.limit.toString())
+  }
   const client = createClient({ previewData })
-  const [page, queryClient] = await Promise.all([
-    client.getByUID<Content.PlpDocument>('plp', 'wine'),
+  const [queryClient, pageData] = await Promise.all([
     getStaticNavigation(client),
+    client.getByUID('plp', 'wine'),
   ])
 
   await queryClient.prefetchQuery(
-    [...PAGINATED_PRODUCTS_QUERY_KEY, JSON.stringify({ categories: [1], page: 1 })],
+    [...PAGINATED_PRODUCTS_QUERY_KEY, JSON.stringify({ categories, limit, page })],
     getPaginatedProducts
   )
 
   return {
-    props: { dehydratedState: dehydrate(queryClient), page },
+    props: {
+      dehydratedState: dehydrate(queryClient),
+      page: pageData,
+    },
   }
 }
 
-type PageProps = InferGetStaticPropsType<typeof getStaticProps>
+type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
 const PLP: NextPage<PageProps> = () => {
-  const { data } = usePaginatedProducts({ categories: [1], page: 1 })
-  const products = data?.products.map(product => (
-    <span key={product.sku}>{product.displayName}</span>
-  ))
+  const router = useRouter()
+  const currentPage = router.query.page ? parseInt(router.query.page.toString()) : 1
+  const limit = router.query.limit ? parseInt(router.query.limit.toString()) : 20
 
-  return <p>{products}</p>
+  return (
+    <div className="py-10">
+      <div className="container mx-auto">
+        <ProductListing categories={categories} limit={limit} page={currentPage} />
+      </div>
+    </div>
+  )
 }
 
 export default PLP

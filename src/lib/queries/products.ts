@@ -65,11 +65,13 @@ export const useProductQuery = (cartUrl: string) =>
 export const PAGINATED_PRODUCTS_QUERY_KEY = ['paginated-products']
 export const usePaginatedProducts = (data: {
   categories?: number[]
+  limit?: number
   page: number
-  perPage?: number
 }) =>
   useQuery({
     keepPreviousData: true,
     queryFn: getPaginatedProducts,
     queryKey: [...PAGINATED_PRODUCTS_QUERY_KEY, JSON.stringify(data)],
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
   })

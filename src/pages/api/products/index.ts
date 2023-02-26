@@ -26,7 +26,7 @@ const handler = async (req: NextRequest) => {
 
   const { searchParams } = new URL(req.url)
   const page = parseInt(searchParams.get('page') || '0') || 1
-  const perPage = parseInt(searchParams.get('per-page') || '0') || 20
+  const perPage = parseInt(searchParams.get('limit') || '0') || 20
   const displayCategoryIds = searchParams.get('categories')?.split('-').map(Number) || []
 
   try {
@@ -43,16 +43,24 @@ const handler = async (req: NextRequest) => {
                 product.displayCategories.some(category => displayCategoryIds.includes(category))
               )
             : productsData
-        const products = filteredProducts.splice(page !== 1 ? perPage * page + 1 : 0, perPage)
+        const indexOfLastRecord = page * perPage
+        const indexOfFirstRecord = indexOfLastRecord - perPage
+        const products = filteredProducts.slice(indexOfFirstRecord, indexOfLastRecord)
+        const totalNumberOfPages = Math.ceil(filteredProducts.length / perPage)
 
         return new Response(
           JSON.stringify({
             data: {
-              nextPageUrl: `${process.env.NEXT_PUBLIC_APP_URL}/api/products?page=${
-                page + 1
-              }&per-page=${perPage}${
-                displayCategoryIds.length > 0 ? `&categories=${displayCategoryIds.join('-')}` : ''
-              }`,
+              nextPageUrl:
+                page + 1 > totalNumberOfPages
+                  ? undefined
+                  : `${process.env.NEXT_PUBLIC_APP_URL}/api/products?page=${
+                      page + 1
+                    }&per-page=${perPage}${
+                      displayCategoryIds.length > 0
+                        ? `&categories=${displayCategoryIds.join('-')}`
+                        : ''
+                    }`,
               page,
               perPage,
               previousPageUrl:
@@ -67,8 +75,11 @@ const handler = async (req: NextRequest) => {
                     }`,
               products,
               results: filteredProducts.length,
-              resultsShown: [page <= 1 ? 1 : perPage * (page - 1) + 1, page * perPage],
-              totalNumberOfPages: Math.ceil(filteredProducts.length / perPage),
+              resultsShown: [
+                page <= 1 ? 1 : perPage * (page - 1) + 1,
+                page === totalNumberOfPages ? filteredProducts.length : page * perPage,
+              ],
+              totalNumberOfPages,
             },
             success: true,
           }),
