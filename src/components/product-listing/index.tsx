@@ -94,7 +94,7 @@ export const ProductListing = ({
       return newPage
     })
 
-    router.push(`wine?page=${newPage}&limit=${limit}`, undefined, { shallow: true })
+    router.push(`${router.pathname}?page=${newPage}&limit=${limit}`, undefined, { shallow: true })
   }, [limit, router, setPage])
 
   const handleNextPageClick = useCallback(() => {
@@ -105,7 +105,7 @@ export const ProductListing = ({
         return newPage
       })
 
-      router.push(`wine?page=${newPage}&limit=${limit}`, undefined, { shallow: true })
+      router.push(`${router.pathname}?page=${newPage}&limit=${limit}`, undefined, { shallow: true })
     }
   }, [data?.totalNumberOfPages, isPreviousData, limit, page, router])
 
@@ -139,7 +139,7 @@ export const ProductListing = ({
     [data?.results, data?.resultsShown]
   )
 
-  if (isLoading) {
+  if (isFetching || isLoading) {
     // ! TODO: Loading skeleton.
     return <>Loading...</>
   }
@@ -148,10 +148,10 @@ export const ProductListing = ({
     // ! TODO: Something bad happened.
   }
 
-  // if (!data) {
-  //   // ! TODO: Not found.
-  //   return <>Not found.</>
-  // }
+  if (!data) {
+    // ! TODO: Not found.
+    return <>Not found.</>
+  }
 
   return (
     <div className="flex flex-col gap-4">
