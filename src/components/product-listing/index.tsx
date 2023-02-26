@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import Image from 'next/image'
 import Link from 'next/link'
@@ -25,6 +25,12 @@ export const ProductListing = ({
     limit,
     page,
   })
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ behavior: 'smooth', top: 0 })
+    }
+  }, [page])
 
   const productCards = useMemo(
     () =>
@@ -87,9 +93,6 @@ export const ProductListing = ({
       newPage = Math.max(prev - 1, 0)
       return newPage
     })
-    if (typeof window !== 'undefined') {
-      window.scrollTo({ behavior: 'smooth', top: 0 })
-    }
 
     router.push(`wine?page=${newPage}&limit=${limit}`, undefined, { shallow: true })
   }, [limit, router, setPage])
@@ -101,9 +104,6 @@ export const ProductListing = ({
         newPage = prev + 1
         return newPage
       })
-      if (typeof window !== 'undefined') {
-        window.scrollTo({ behavior: 'smooth', top: 0 })
-      }
 
       router.push(`wine?page=${newPage}&limit=${limit}`, undefined, { shallow: true })
     }
