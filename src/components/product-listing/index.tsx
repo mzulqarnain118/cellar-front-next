@@ -83,12 +83,7 @@ export const ProductListing = ({
                 </Link>
                 <div className="rating rating-md mt-2">
                   <input className="mask mask-star-2 bg-orange-400" name="rating-2" type="radio" />
-                  <input
-                    checked
-                    className="mask mask-star-2 bg-orange-400"
-                    name="rating-2"
-                    type="radio"
-                  />
+                  <input className="mask mask-star-2 bg-orange-400" name="rating-2" type="radio" />
                   <input className="mask mask-star-2 bg-orange-400" name="rating-2" type="radio" />
                   <input className="mask mask-star-2 bg-orange-400" name="rating-2" type="radio" />
                   <input className="mask mask-star-2 bg-orange-400" name="rating-2" type="radio" />
