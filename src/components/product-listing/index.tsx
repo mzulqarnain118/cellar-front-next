@@ -69,11 +69,11 @@ export const ProductListing = ({
                 <Image
                   alt={product.displayName || 'Product'}
                   className="h-auto w-[10rem] lg:w-[12rem]"
-                  height={0}
+                  height={192}
                   priority={index < 4}
                   sizes="100vw"
                   src={product.pictureUrl}
-                  width={0}
+                  width={320}
                 />
               </Link>
             ) : (

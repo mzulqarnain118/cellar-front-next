@@ -9,8 +9,8 @@ export const Star = ({ active }: StarProps) => {
 
   return (
     <>
-      <label className="hidden" htmlFor={id}>
-        Star
+      <label className="invisible inline-block max-w-0" htmlFor={id}>
+        Star {id}
       </label>
       <input
         checked={active}
