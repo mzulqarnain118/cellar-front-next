@@ -12,7 +12,7 @@ import { createClient } from 'prismic-io'
 
 const categories: number[] = [1]
 
-export const getServerSideProps: GetServerSideProps = async ({ previewData, query }) => {
+export const getServerSideProps: GetServerSideProps = async ({ previewData, query, res }) => {
   let page = 1
   if (query.page) {
     page = parseInt(query.page.toString())
@@ -27,6 +27,8 @@ export const getServerSideProps: GetServerSideProps = async ({ previewData, quer
     [...PAGINATED_PRODUCTS_QUERY_KEY, JSON.stringify({ categories, page })],
     getPaginatedProducts
   )
+
+  res.setHeader('Cache-Control', 'public, s-maxage=10, stale-while-revalidate=59')
 
   return {
     props: {

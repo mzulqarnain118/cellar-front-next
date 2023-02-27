@@ -6,6 +6,8 @@ import { useRouter } from 'next/router'
 
 import { usePaginatedProducts } from '@/lib/queries/products'
 
+import { Rating } from '../rating'
+
 interface ProductListingProps {
   categories?: number[]
   page?: number
@@ -34,7 +36,7 @@ export const ProductListing = ({
 
   const productCards = useMemo(
     () =>
-      data?.products.map(product => (
+      data?.products.map((product, index) => (
         <div
           key={product.sku}
           className={`
@@ -68,6 +70,7 @@ export const ProductListing = ({
                   alt={product.displayName || 'Product'}
                   className="h-auto w-[10rem] lg:w-[12rem]"
                   height={0}
+                  priority={index < 4}
                   sizes="100vw"
                   src={product.pictureUrl}
                   width={0}
@@ -91,30 +94,21 @@ export const ProductListing = ({
                 >
                   {product.displayName}
                 </Link>
-                <div className="rating rating-md mt-2">
-                  <input className="mask mask-star-2 bg-orange-400" name="rating-2" type="radio" />
-                  <input className="mask mask-star-2 bg-orange-400" name="rating-2" type="radio" />
-                  <input className="mask mask-star-2 bg-orange-400" name="rating-2" type="radio" />
-                  <input className="mask mask-star-2 bg-orange-400" name="rating-2" type="radio" />
-                  <input className="mask mask-star-2 bg-orange-400" name="rating-2" type="radio" />
-                </div>
+                <Rating className="mt-2" rating={Math.floor(Math.random() * 5) + 1} />
               </div>
             </div>
             <div className="card-actions justify-between lg:mt-6">
               <div className="flex">
                 {product.attributes?.['Tasting Notes'] ? (
-                  product.attributes?.['Tasting Notes']
-                    ?.filter(item => item.name !== 'neutral' && item.name !== 'meyer-lemon')
-                    .slice(0, 3)
-                    .map(item => (
-                      <div
-                        key={item.name}
-                        className="tooltip cursor-pointer capitalize"
-                        data-tip={item.name.replaceAll('-', ' ')}
-                      >
-                        <Image alt={item.name} height={32} src={item.imageUrl} width={32} />
-                      </div>
-                    ))
+                  product.attributes?.['Tasting Notes'].slice(0, 3).map(item => (
+                    <div
+                      key={item.name}
+                      className="tooltip cursor-pointer capitalize"
+                      data-tip={item.name.replaceAll('-', ' ')}
+                    >
+                      <Image alt={item.name} height={32} src={item.imageUrl} width={32} />
+                    </div>
+                  ))
                 ) : (
                   <></>
                 )}
