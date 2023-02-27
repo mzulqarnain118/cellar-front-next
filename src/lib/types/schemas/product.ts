@@ -1,16 +1,18 @@
 import { z } from 'zod'
 
-const attributesSchema = z.object({
-  'AutoSip Base SKU': z.string(),
-  Brand: z.string(),
-  'Container Size': z.string(),
-  Origin: z.string(),
-  'Pairing Notes': z.array(z.object({ imageUrl: z.string(), name: z.string() })),
-  SubType: z.string(),
-  'Tasting Notes': z.array(z.object({ imageUrl: z.string(), name: z.string() })),
-  Varietal: z.string(),
-  Vintage: z.string(),
-})
+const attributesSchema = z
+  .object({
+    'AutoSip Base SKU': z.string(),
+    Brand: z.string(),
+    'Container Size': z.string(),
+    Origin: z.string(),
+    'Pairing Notes': z.array(z.object({ imageUrl: z.string(), name: z.string() })),
+    SubType: z.string(),
+    'Tasting Notes': z.array(z.object({ imageUrl: z.string(), name: z.string() })),
+    Varietal: z.string(),
+    Vintage: z.string(),
+  })
+  .partial()
 
 export const schema = z.object({
   attributes: attributesSchema.optional(),
