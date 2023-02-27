@@ -15,7 +15,7 @@ interface ProductListingProps {
 export const ProductListing = ({
   categories = [],
   page: initialPage = 1,
-  limit = 10,
+  limit,
 }: ProductListingProps) => {
   const [page, setPage] = useState(initialPage)
   const router = useRouter()
@@ -79,7 +79,7 @@ export const ProductListing = ({
               </Link>
             </div>
             <div className="card-actions justify-end lg:mt-6">
-              <button className="btn-sm btn lg:btn-md">Add to Cart</button>
+              <button className="btn-primary btn-sm btn lg:btn-md">Add to Cart</button>
             </div>
           </div>
         </div>
@@ -94,8 +94,8 @@ export const ProductListing = ({
       return newPage
     })
 
-    router.push(`${router.pathname}?page=${newPage}&limit=${limit}`, undefined, { shallow: true })
-  }, [limit, router, setPage])
+    router.push(`${router.pathname}?page=${newPage}`, undefined, { shallow: true })
+  }, [router, setPage])
 
   const handleNextPageClick = useCallback(() => {
     if (!!data?.totalNumberOfPages && !isPreviousData && page <= data.totalNumberOfPages) {
@@ -105,27 +105,33 @@ export const ProductListing = ({
         return newPage
       })
 
-      router.push(`${router.pathname}?page=${newPage}&limit=${limit}`, undefined, { shallow: true })
+      router.push(`${router.pathname}?page=${newPage}`, undefined, { shallow: true })
     }
-  }, [data?.totalNumberOfPages, isPreviousData, limit, page, router])
+  }, [data?.totalNumberOfPages, isPreviousData, page, router])
 
   const paginationFooter = useMemo(
     () => (
-      <div className="btn-group mx-auto">
-        <button className="btn" disabled={page === 1} onClick={handlePreviousPageClick}>
-          «
-        </button>
-        <button className="btn">Page {page}</button>
-        <button
-          className="btn"
-          disabled={
-            isPreviousData || (!!data?.totalNumberOfPages && page >= data.totalNumberOfPages)
-          }
-          onClick={handleNextPageClick}
-        >
-          »
-        </button>
-      </div>
+      <>
+        <div className="btn-group mx-auto">
+          <button
+            className="btn btn-primary"
+            disabled={page === 1}
+            onClick={handlePreviousPageClick}
+          >
+            «
+          </button>
+          <button className="btn btn-primary">Page {page}</button>
+          <button
+            className="btn btn-primary"
+            disabled={
+              isPreviousData || (!!data?.totalNumberOfPages && page >= data.totalNumberOfPages)
+            }
+            onClick={handleNextPageClick}
+          >
+            »
+          </button>
+        </div>
+      </>
     ),
     [data?.totalNumberOfPages, handleNextPageClick, handlePreviousPageClick, isPreviousData, page]
   )
@@ -140,8 +146,38 @@ export const ProductListing = ({
   )
 
   if (isFetching || isLoading) {
-    // ! TODO: Loading skeleton.
-    return <>Loading...</>
+    return (
+      <>
+        <div className="mb-4 h-6 w-60 animate-pulse rounded-lg bg-neutral-300" />
+        <div className="grid grid-cols-1 gap-4 lg:auto-rows-auto lg:grid-cols-4 lg:gap-6">
+          <div className="h-[31rem] animate-pulse rounded-lg bg-neutral-300" />
+          <div className="h-[31rem] animate-pulse rounded-lg bg-neutral-300" />
+          <div className="h-[31rem] animate-pulse rounded-lg bg-neutral-300" />
+          <div className="h-[31rem] animate-pulse rounded-lg bg-neutral-300" />
+          <div className="h-[31rem] animate-pulse rounded-lg bg-neutral-300" />
+          <div className="h-[31rem] animate-pulse rounded-lg bg-neutral-300" />
+          <div className="h-[31rem] animate-pulse rounded-lg bg-neutral-300" />
+          <div className="h-[31rem] animate-pulse rounded-lg bg-neutral-300" />
+          <div className="h-[31rem] animate-pulse rounded-lg bg-neutral-300" />
+          <div className="h-[31rem] animate-pulse rounded-lg bg-neutral-300" />
+          <div className="h-[31rem] animate-pulse rounded-lg bg-neutral-300" />
+          <div className="h-[31rem] animate-pulse rounded-lg bg-neutral-300" />
+          <div className="h-[31rem] animate-pulse rounded-lg bg-neutral-300" />
+          <div className="h-[31rem] animate-pulse rounded-lg bg-neutral-300" />
+          <div className="h-[31rem] animate-pulse rounded-lg bg-neutral-300" />
+          <div className="h-[31rem] animate-pulse rounded-lg bg-neutral-300" />
+          <div className="h-[31rem] animate-pulse rounded-lg bg-neutral-300" />
+          <div className="h-[31rem] animate-pulse rounded-lg bg-neutral-300" />
+          <div className="h-[31rem] animate-pulse rounded-lg bg-neutral-300" />
+          <div className="h-[31rem] animate-pulse rounded-lg bg-neutral-300" />
+        </div>
+        <div className="mx-auto mt-6 flex items-center justify-center">
+          <div className="h-[3rem] w-[2.5rem] animate-pulse rounded-lg bg-neutral-300" />
+          <div className="h-[3rem] w-[5rem] animate-pulse rounded-lg bg-neutral-300" />
+          <div className="h-[3rem] w-[2.5rem] animate-pulse rounded-lg bg-neutral-300" />
+        </div>
+      </>
+    )
   }
 
   if (isError) {

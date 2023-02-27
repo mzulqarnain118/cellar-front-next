@@ -7,6 +7,15 @@ module.exports = {
     './src/components/**/*.{ts,tsx}',
     './src/core/components/**/*.{ts,tsx}',
   ],
+  daisyui: {
+    themes: [
+      {
+        mytheme: {
+          primary: '#464c2c',
+        },
+      },
+    ],
+  },
   plugins: [
     require('@tailwindcss/forms')({
       strategy: 'class',

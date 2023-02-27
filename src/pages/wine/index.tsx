@@ -14,12 +14,8 @@ const categories: number[] = [1]
 
 export const getServerSideProps: GetServerSideProps = async ({ previewData, query }) => {
   let page = 1
-  let limit = 20
   if (query.page) {
     page = parseInt(query.page.toString())
-  }
-  if (query.limit) {
-    limit = parseInt(query.limit.toString())
   }
   const client = createClient({ previewData })
   const [queryClient, pageData] = await Promise.all([
@@ -28,7 +24,7 @@ export const getServerSideProps: GetServerSideProps = async ({ previewData, quer
   ])
 
   await queryClient.prefetchQuery(
-    [...PAGINATED_PRODUCTS_QUERY_KEY, JSON.stringify({ categories, limit, page })],
+    [...PAGINATED_PRODUCTS_QUERY_KEY, JSON.stringify({ categories, page })],
     getPaginatedProducts
   )
 

@@ -45,7 +45,7 @@
   }
 
   .btn {
-    @apply normal-case;
+    @apply font-semibold normal-case text-[#f4f4f3] disabled:bg-[#464c2c] disabled:text-[#f4f4f3] disabled:opacity-75;
   }
 }
 
