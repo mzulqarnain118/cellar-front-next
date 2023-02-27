@@ -53,7 +53,7 @@
   }
 
   .btn-ghost {
-    @apply border border-[#d4d4d4] disabled:text-[#171717];
+    @apply border border-[#d4d4d4] hover:border-neutral-400 disabled:text-[#171717];
   }
 
   .select {

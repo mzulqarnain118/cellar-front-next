@@ -10,7 +10,8 @@
     "prettier": "prettier --write .",
     "prepare": "husky install",
     "codegen": "prismic-ts-codegen",
-    "slicemachine": "start-slicemachine"
+    "slicemachine": "start-slicemachine",
+    "ts-lint-commit-hook": "tsc --noEmit --incremental"
   },
   "dependencies": {
     "@heroicons/react": "^2.0.16",
