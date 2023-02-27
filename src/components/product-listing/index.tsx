@@ -43,10 +43,20 @@ export const ProductListing = ({
           `}
         >
           {product.badges !== undefined && (
-            <div className="absolute top-4 left-4 flex gap-2">
+            <div className="absolute top-4 left-4 flex flex-col space-y-1 lg:space-y-2">
               {product.badges.map(badge => (
-                <div key={badge.name}>
-                  <Image alt={badge.name} height={36} src={badge.imageUrl} width={36} />
+                <div
+                  key={badge.name}
+                  className="tooltip cursor-pointer capitalize"
+                  data-tip={badge.name}
+                >
+                  <Image
+                    alt={badge.name}
+                    className="h-6 w-6 lg:h-8 lg:w-8"
+                    height={36}
+                    src={badge.imageUrl}
+                    width={36}
+                  />
                 </div>
               ))}
             </div>
@@ -191,7 +201,8 @@ export const ProductListing = ({
       <>
         <div className="flex items-center justify-between">
           <div className="mb-4 h-6 w-60 animate-pulse rounded-lg bg-neutral-300" />
-          <div className="">
+          <div className="grid gap-2">
+            <div className="h-6 w-[14.5rem] animate-pulse rounded-lg bg-neutral-300" />
             <div className="mb-4 h-12 w-[14.5rem] animate-pulse rounded-lg bg-neutral-300" />
           </div>
         </div>
