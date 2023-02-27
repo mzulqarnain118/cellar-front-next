@@ -63,17 +63,15 @@ export const ProductListing = ({
               ))}
             </div>
           )}
-          <figure className="self-center justify-self-center">
+          <figure className="relative block h-full w-[10rem] self-center justify-self-center lg:w-[12rem]">
             {product.pictureUrl !== undefined ? (
               <Link href={`/product/${product.cartUrl}`}>
                 <Image
+                  fill
                   alt={product.displayName || 'Product'}
-                  className="h-auto w-[10rem] lg:w-[12rem]"
-                  height={192}
+                  className="object-contain"
                   priority={index < 4}
-                  sizes="100vw"
                   src={product.pictureUrl}
-                  width={320}
                 />
               </Link>
             ) : (
