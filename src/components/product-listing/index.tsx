@@ -70,15 +70,50 @@ export const ProductListing = ({
           </figure>
           <div className="col-span-2 grid grid-rows-[1fr_auto] lg:col-span-1">
             <div className="card-body gap-0 !p-0">
-              <span>{product.attributes?.SubType}</span>
-              <Link
-                className="card-title text-base font-semibold leading-normal"
-                href={`/product/${product.cartUrl}`}
-              >
-                {product.displayName}
-              </Link>
+              <div>
+                <div className="flex items-center justify-between text-sm">
+                  <span>{product.attributes?.SubType}</span>
+                  <span>{product.attributes?.Origin}</span>
+                </div>
+                <Link
+                  className="card-title text-base font-semibold leading-normal"
+                  href={`/product/${product.cartUrl}`}
+                >
+                  {product.displayName}
+                </Link>
+                <div className="rating rating-md mt-2">
+                  <input className="mask mask-star-2 bg-orange-400" name="rating-2" type="radio" />
+                  <input
+                    checked
+                    className="mask mask-star-2 bg-orange-400"
+                    name="rating-2"
+                    type="radio"
+                  />
+                  <input className="mask mask-star-2 bg-orange-400" name="rating-2" type="radio" />
+                  <input className="mask mask-star-2 bg-orange-400" name="rating-2" type="radio" />
+                  <input className="mask mask-star-2 bg-orange-400" name="rating-2" type="radio" />
+                </div>
+              </div>
             </div>
-            <div className="card-actions justify-end lg:mt-6">
+            <div className="card-actions justify-between lg:mt-6">
+              <div className="flex">
+                {product.attributes?.['Tasting Notes'] ? (
+                  product.attributes?.['Tasting Notes']
+                    ?.filter(item => item.name !== 'neutral' && item.name !== 'meyer-lemon')
+                    .slice(0, 3)
+                    .map(item => (
+                      <div
+                        key={item.name}
+                        className="tooltip cursor-pointer capitalize"
+                        data-tip={item.name.replaceAll('-', ' ')}
+                      >
+                        <Image alt={item.name} height={32} src={item.imageUrl} width={32} />
+                      </div>
+                    ))
+                ) : (
+                  <></>
+                )}
+              </div>
               <button className="btn-primary btn-sm btn lg:btn-md">Add to Cart</button>
             </div>
           </div>
@@ -111,36 +146,47 @@ export const ProductListing = ({
 
   const paginationFooter = useMemo(
     () => (
-      <>
-        <div className="btn-group mx-auto">
-          <button
-            className="btn btn-primary"
-            disabled={page === 1}
-            onClick={handlePreviousPageClick}
-          >
-            «
-          </button>
-          <button className="btn btn-primary">Page {page}</button>
-          <button
-            className="btn btn-primary"
-            disabled={
-              isPreviousData || (!!data?.totalNumberOfPages && page >= data.totalNumberOfPages)
-            }
-            onClick={handleNextPageClick}
-          >
-            »
-          </button>
-        </div>
-      </>
+      <div className="btn-group mx-auto mt-8">
+        <button
+          aria-label="Previous Page"
+          className="btn btn-ghost"
+          disabled={page === 1}
+          onClick={handlePreviousPageClick}
+        >
+          «
+        </button>
+        <button className="btn btn-ghost">Page {page}</button>
+        <button
+          aria-label="Next Page"
+          className="btn btn-ghost"
+          disabled={
+            isPreviousData || (!!data?.totalNumberOfPages && page >= data.totalNumberOfPages)
+          }
+          onClick={handleNextPageClick}
+        >
+          »
+        </button>
+      </div>
     ),
     [data?.totalNumberOfPages, handleNextPageClick, handlePreviousPageClick, isPreviousData, page]
   )
 
   const paginationHeader = useMemo(
     () => (
-      <span>
-        Showing {data?.resultsShown?.[0]}-{data?.resultsShown?.[1]} results of {data?.results}.
-      </span>
+      <div className="flex items-center justify-between">
+        <span>
+          Showing {data?.resultsShown?.[0]}-{data?.resultsShown?.[1]} results of {data?.results}.
+        </span>
+        <label className="" htmlFor="sort">
+          Sort by:
+          <select className="select-bordered select w-full max-w-xs" id="sort" name="sort">
+            <option>Most relevant</option>
+            <option>Newest</option>
+            <option>Price (low to high)</option>
+            <option>Price (high to low)</option>
+          </select>
+        </label>
+      </div>
     ),
     [data?.results, data?.resultsShown]
   )
@@ -148,7 +194,12 @@ export const ProductListing = ({
   if (isFetching || isLoading) {
     return (
       <>
-        <div className="mb-4 h-6 w-60 animate-pulse rounded-lg bg-neutral-300" />
+        <div className="flex items-center justify-between">
+          <div className="mb-4 h-6 w-60 animate-pulse rounded-lg bg-neutral-300" />
+          <div className="">
+            <div className="mb-4 h-12 w-[14.5rem] animate-pulse rounded-lg bg-neutral-300" />
+          </div>
+        </div>
         <div className="grid grid-cols-1 gap-4 lg:auto-rows-auto lg:grid-cols-4 lg:gap-6">
           <div className="h-[31rem] animate-pulse rounded-lg bg-neutral-300" />
           <div className="h-[31rem] animate-pulse rounded-lg bg-neutral-300" />
@@ -192,7 +243,7 @@ export const ProductListing = ({
   return (
     <div className="flex flex-col gap-4">
       {paginationHeader}
-      <div className="grid grid-cols-1 gap-4 lg:auto-rows-auto lg:grid-cols-4 lg:gap-6">
+      <div className="grid grid-cols-1 gap-4 md:auto-rows-auto md:grid-cols-2 lg:grid-cols-4 lg:gap-6">
         {productCards}
       </div>
       {paginationFooter}

@@ -7,6 +7,11 @@ export const config = {
   runtime: 'edge',
 }
 
+interface PairingTastingNote {
+  imageUrl: string
+  name: string
+}
+
 const handler = async (req: NextRequest) => {
   if (req.method !== 'GET') {
     return new Response(
@@ -64,10 +69,23 @@ const handler = async (req: NextRequest) => {
         .map(product => ({
           attributes:
             (!!product.attributes &&
-              product.attributes?.reduce<{ [name: string]: string }>((map, attribute) => {
-                map[attribute.Name] = attribute.Value
-                return map
-              }, {})) ||
+              product.attributes?.reduce<{ [name: string]: string | PairingTastingNote[] }>(
+                (map, attribute) => {
+                  if (attribute.Name === 'Tasting Notes' || attribute.Name === 'Pairing Notes') {
+                    map[attribute.Name] = attribute.Value.split('|').map(note => {
+                      const name = note.toLowerCase().replaceAll(' ', '-')
+                      return {
+                        imageUrl: `https://storage.googleapis.com/cellar-static/pairing-tasting-icons/${name}.png`,
+                        name,
+                      } as PairingTastingNote
+                    })
+                  } else {
+                    map[attribute.Name] = attribute.Value
+                  }
+                  return map
+                },
+                {}
+              )) ||
             undefined,
           availability:
             (!!product.Availability &&

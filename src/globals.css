@@ -45,7 +45,19 @@
   }
 
   .btn {
-    @apply font-semibold normal-case text-[#f4f4f3] disabled:bg-[#464c2c] disabled:text-[#f4f4f3] disabled:opacity-75;
+    @apply font-semibold normal-case disabled:cursor-not-allowed disabled:opacity-75;
+  }
+
+  .btn-primary {
+    @apply text-[#f4f4f3] disabled:bg-[#464c2c] disabled:text-[#f4f4f3];
+  }
+
+  .btn-ghost {
+    @apply border border-[#d4d4d4] disabled:text-[#171717];
+  }
+
+  .select {
+    @apply border border-[#d4d4d4] bg-[#f5f5f5];
   }
 }
 
