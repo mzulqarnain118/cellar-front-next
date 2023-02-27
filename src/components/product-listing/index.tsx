@@ -67,11 +67,12 @@ export const ProductListing = ({
             {product.pictureUrl !== undefined ? (
               <Link href={`/product/${product.cartUrl}`}>
                 <Image
-                  fill
                   alt={product.displayName || 'Product'}
                   className="object-contain"
+                  height={304}
                   priority={index < 4}
                   src={product.pictureUrl}
+                  width={192}
                 />
               </Link>
             ) : (

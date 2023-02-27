@@ -82,7 +82,7 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
                     }
 
                     #nprogress .peg {
-                      box-shadow: 0 0 10px #464c2c, 0 0 5px #464c2c;
+                      box-shadow: 0 0 10px #464c2c, 0 0 5px #464c2c !important;
                     }
                   `}
                 </style>

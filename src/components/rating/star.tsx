@@ -13,6 +13,7 @@ export const Star = ({ active }: StarProps) => {
         Star {id}
       </label>
       <input
+        readOnly
         checked={active}
         className="mask mask-star-2 bg-orange-400"
         id={id}

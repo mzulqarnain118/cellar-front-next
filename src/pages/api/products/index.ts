@@ -26,7 +26,7 @@ const handler = async (req: NextRequest) => {
 
   const { searchParams } = new URL(req.url)
   const page = parseInt(searchParams.get('page') || '0') || 1
-  const perPage = parseInt(searchParams.get('limit') || '0') || 20
+  const perPage = parseInt(searchParams.get('limit') || '0') || 16
   const displayCategoryIds = searchParams.get('categories')?.split('-').map(Number) || []
 
   try {

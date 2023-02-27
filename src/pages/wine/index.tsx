@@ -12,7 +12,7 @@ import { createClient } from 'prismic-io'
 
 const categories: number[] = [1]
 
-export const getServerSideProps: GetServerSideProps = async ({ previewData, query, res }) => {
+export const getServerSideProps: GetServerSideProps = async ({ previewData, query }) => {
   let page = 1
   if (query.page) {
     page = parseInt(query.page.toString())
@@ -28,8 +28,6 @@ export const getServerSideProps: GetServerSideProps = async ({ previewData, quer
     getPaginatedProducts
   )
 
-  res.setHeader('Cache-Control', 'public, s-maxage=10, stale-while-revalidate=59')
-
   return {
     props: {
       dehydratedState: dehydrate(queryClient),
@@ -43,12 +41,11 @@ type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>
 const PLP: NextPage<PageProps> = () => {
   const router = useRouter()
   const currentPage = router.query.page ? parseInt(router.query.page.toString()) : 1
-  const limit = router.query.limit ? parseInt(router.query.limit.toString()) : 20
 
   return (
     <div className="py-10">
       <div className="container mx-auto">
-        <ProductListing categories={categories} limit={limit} page={currentPage} />
+        <ProductListing categories={categories} page={currentPage} />
       </div>
     </div>
   )
