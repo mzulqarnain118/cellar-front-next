@@ -1,4 +1,5 @@
 import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next'
+import { NextSeo } from 'next-seo'
 
 import { useRouter } from 'next/router'
 
@@ -43,11 +44,14 @@ const PLP: NextPage<PageProps> = () => {
   const currentPage = router.query.page ? parseInt(router.query.page.toString()) : 1
 
   return (
-    <div className="py-10">
-      <div className="container mx-auto">
-        <ProductListing categories={categories} page={currentPage} />
+    <>
+      <NextSeo />
+      <div className="py-10">
+        <div className="container mx-auto">
+          <ProductListing categories={categories} page={currentPage} />
+        </div>
       </div>
-    </div>
+    </>
   )
 }
 

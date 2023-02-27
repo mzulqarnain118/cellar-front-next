@@ -1,6 +1,7 @@
 import { FormEvent, useState } from 'react'
 
 import { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next'
+import { NextSeo } from 'next-seo'
 
 import { useRouter } from 'next/router'
 
@@ -33,20 +34,23 @@ const SignInPage: NextPage<PageProps> = () => {
   }
 
   return (
-    <div className="container mx-auto">
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="email">Email</label>
-        <input name="email" type="email" value={email} onChange={e => setEmail(e.target.value)} />
-        <label htmlFor="password">Password</label>
-        <input
-          name="password"
-          type="password"
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-        />
-        <button type="submit">Log in</button>
-      </form>
-    </div>
+    <>
+      <NextSeo />
+      <div className="container mx-auto">
+        <form onSubmit={handleSubmit}>
+          <label htmlFor="email">Email</label>
+          <input name="email" type="email" value={email} onChange={e => setEmail(e.target.value)} />
+          <label htmlFor="password">Password</label>
+          <input
+            name="password"
+            type="password"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+          />
+          <button type="submit">Log in</button>
+        </form>
+      </div>
+    </>
   )
 }
 

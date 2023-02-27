@@ -1,4 +1,5 @@
 import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next'
+import { NextSeo } from 'next-seo'
 
 import { useRouter } from 'next/router'
 
@@ -43,7 +44,12 @@ const PDP: NextPage<PageProps> = ({ page: _page }) => {
   const { url } = router.query
   const { data: _data } = useProductQuery(url?.toString() || '')
 
-  return <>PDP hi</>
+  return (
+    <>
+      <NextSeo />
+      PDP hi
+    </>
+  )
 }
 
 export default PDP

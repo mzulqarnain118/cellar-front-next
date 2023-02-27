@@ -1,4 +1,5 @@
 import { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType, NextPage } from 'next'
+import { NextSeo } from 'next-seo'
 
 import { asLink } from '@prismicio/helpers'
 import { dehydrate } from '@tanstack/react-query'
@@ -58,6 +59,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 type PageProps = InferGetStaticPropsType<typeof getStaticProps>
 
-const CategoryPage: NextPage<PageProps> = () => <>Hi, there</>
+const CategoryPage: NextPage<PageProps> = () => (
+  <>
+    <NextSeo />
+    Hi, there
+  </>
+)
 
 export default CategoryPage
