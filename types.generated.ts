@@ -2028,6 +2028,31 @@ export interface CategoriesDocumentDataProductItem {
  */
 export type CategoriesDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithoutUID<Simplify<CategoriesDocumentData>, 'categories', Lang>
+/** Content for Category Page documents */
+interface CategoryPageDocumentData {
+  /**
+   * Parent Page field in *Category Page*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: Select the PLP this category is attached to.
+   * - **API ID Path**: category_page.parent_page
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  parent_page: prismicT.RelationField<'plp'>
+}
+/**
+ * Category Page document from Prismic
+ *
+ * - **API ID**: `category_page`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type CategoryPageDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
+  prismicT.PrismicDocumentWithUID<Simplify<CategoryPageDocumentData>, 'category_page', Lang>
 /** Content for checkout_popup documents */
 interface CheckoutPopupDocumentData {
   /**
@@ -12788,6 +12813,7 @@ export type AllDocumentTypes =
   | CarouselDocument
   | CartPromoMsgsDocument
   | CategoriesDocument
+  | CategoryPageDocument
   | CheckoutPopupDocument
   | CleanCraftedPageDocument
   | ConsultantSearchPageDocument
@@ -13036,6 +13062,8 @@ declare module '@prismicio/client' {
       CategoriesDocumentData,
       CategoriesDocumentDataProductItem,
       CategoriesDocument,
+      CategoryPageDocumentData,
+      CategoryPageDocument,
       CheckoutPopupDocumentData,
       CheckoutPopupDocument,
       CleanCraftedPageDocumentData,

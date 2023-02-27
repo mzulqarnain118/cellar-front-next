@@ -28,6 +28,13 @@ const routes: ClientConfig['routes'] = [
     uid: 'wine',
   },
   {
+    path: '/:parent/:uid',
+    resolvers: {
+      parent: 'parent_page',
+    },
+    type: 'category_page',
+  },
+  {
     path: '/brands/:uid',
     type: 'brand_page',
   },
@@ -36,16 +43,7 @@ const routes: ClientConfig['routes'] = [
 /**
  * Tells Prismic how to navigate the site from PrismicLink and PrismicRichText components.
  */
-export const linkResolver: LinkResolverFunction = document => {
-  if (document.type === 'plp') {
-    const url = document.uid
-      ?.split('--')
-      .reduce((accumulator, current) => `${accumulator}/${current}`, '')
-    return url || HOME_PAGE_PATH
-  }
-
-  return document.url || HOME_PAGE_PATH
-}
+export const linkResolver: LinkResolverFunction = document => document.url || HOME_PAGE_PATH
 
 /**
  * Creates a Prismic client for the project's repository. The client is used to

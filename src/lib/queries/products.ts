@@ -75,3 +75,20 @@ export const usePaginatedProducts = (data: {
     refetchOnMount: false,
     refetchOnWindowFocus: false,
   })
+
+export const useInfiniteProducts = (data: { categories?: number[]; page: number }) =>
+  useQuery({
+    getNextPageParam: lastPage => {
+      if (lastPage !== undefined) {
+        const nextPage = lastPage.page + 1
+        if (lastPage.totalNumberOfPages <= nextPage) {
+          return JSON.stringify({
+            categories: data.categories,
+            page: lastPage.page + 1,
+          })
+        }
+      }
+    },
+    queryFn: getPaginatedProducts,
+    queryKey: [...PAGINATED_PRODUCTS_QUERY_KEY, JSON.stringify(data)],
+  })

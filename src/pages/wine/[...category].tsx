@@ -11,19 +11,14 @@ import { createClient, linkResolver } from 'prismic-io'
 
 export const getStaticProps = async ({ params, previewData }: GetStaticPropsContext) => {
   const client = createClient({ previewData })
-  let route
+  let uid
   if (params && params.category) {
-    route = params.category.toString()
-    if (typeof params.category === 'string') {
-      route = params.category
-    } else {
-      route = `wine--${params.category.join('--')}`
-    }
+    uid = params.category.toString()
   }
 
   let page
-  if (route !== undefined) {
-    page = await client.getByUID('plp', route)
+  if (uid !== undefined) {
+    page = await client.getByUID('category_page', uid)
   }
 
   if (page === undefined) {
@@ -45,11 +40,8 @@ export const getStaticProps = async ({ params, previewData }: GetStaticPropsCont
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const client = createClient()
-  const pages = await client.getAllByType('plp')
-  const paths = pages
-    .filter(page => page.uid !== 'wine' && page.uid.startsWith('wine--'))
-    .map(page => asLink(page, linkResolver) as string)
-    .filter(Boolean)
+  const pages = await client.getAllByType('category_page')
+  const paths = pages.map(page => asLink(page, linkResolver) as string).filter(Boolean)
 
   return {
     fallback: true,
