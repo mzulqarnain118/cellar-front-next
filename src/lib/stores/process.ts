@@ -1,15 +1,21 @@
 import { create } from 'zustand'
 
 interface ProcessStore {
-  cartOpen: boolean
-  setCartOpen: (cartOpen: boolean) => void
+  cartTriggerRef?: HTMLLabelElement
+  setCartTriggerRef: (ref: HTMLLabelElement) => void
   setShaderVisible: (shaderVisible: boolean) => void
   shaderVisible: boolean
+  toggleCartOpen: () => void
 }
 
-export const useProcessStore = create<ProcessStore>(set => ({
-  cartOpen: false,
-  setCartOpen: (cartOpen: boolean) => set({ cartOpen }),
+export const useProcessStore = create<ProcessStore>((set, get) => ({
+  setCartTriggerRef: ref => set({ cartTriggerRef: ref }),
   setShaderVisible: (shaderVisible: boolean) => set({ shaderVisible }),
   shaderVisible: false,
+  toggleCartOpen: () => {
+    const ref = get().cartTriggerRef
+    if (ref !== undefined) {
+      ref.click()
+    }
+  },
 }))

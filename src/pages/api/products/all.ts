@@ -1,6 +1,7 @@
 import type { NextRequest } from 'next/server'
 
 import { uniqueBy } from '@/core/utils/uniqueBy'
+import { DISPLAY_CATEGORY } from '@/lib/constants/display-category'
 import { ProductsSchema } from '@/lib/types/schemas/product'
 
 export const config = {
@@ -102,15 +103,22 @@ const handler = async (req: NextRequest) => {
             undefined,
           cartUrl: product.cartUrl || '',
           catalogId: product.CatalogID,
-          // displayCategories:
-          //   (!!product.displayCategories &&
-          //     product.displayCategories?.map(category => ({
-          //       id: category.displayCategoryID,
-          //       order: category.displayOrder,
-          //     }))) ||
-          //   undefined,
           displayCategories: product.CategoriesIDs || [],
+          displayCategoriesSortData: product.displayCategories?.map(category => ({
+            id: category.displayCategoryID,
+            order: category.displayOrder,
+          })),
           displayName: product.displayName,
+          isAutoShip: product.CategoriesIDs?.includes(DISPLAY_CATEGORY['Auto-Ship']) || false,
+          isClubOnly:
+            product.CategoriesIDs?.includes(DISPLAY_CATEGORY['Circle Exclusives']) || false,
+          isGift:
+            product.CategoriesIDs?.includes(DISPLAY_CATEGORY['Gift Sets']) ||
+            product.CategoriesIDs?.includes(DISPLAY_CATEGORY.Giftables) ||
+            false,
+          isGiftCard: product.CategoriesIDs?.includes(DISPLAY_CATEGORY['Gift Cards']) || false,
+          isScoutCircleClub:
+            product.CategoriesIDs?.includes(DISPLAY_CATEGORY['Scout Circle']) || false,
           onSalePrice: product.comparePrice
             ? parseFloat(product.comparePrice || '0') || undefined
             : undefined,
@@ -136,7 +144,44 @@ const handler = async (req: NextRequest) => {
 
       return new Response(
         JSON.stringify({
-          data: uniqueBy(data.slice(1), 'sku'),
+          data: uniqueBy(data.slice(1), 'sku')
+            .reduce<ProductsSchema[]>((array, product) => {
+              const subscriptionSku = product.attributes?.['AutoSip Base SKU']
+              if (subscriptionSku !== undefined) {
+                const autoSipProduct = array.find(item => item.sku === subscriptionSku)
+                product.autoSipProduct = autoSipProduct
+              }
+              array.push(product)
+              return array
+            }, [])
+            .filter(product => !product.displayCategories?.includes(53))
+            .sort((left, right) => {
+              const leftCategoryId = left.displayCategoriesSortData?.[0]?.id || undefined
+              const rightCategoryId = right.displayCategoriesSortData?.[0]?.id || undefined
+              const leftDisplayOrder = left.displayCategoriesSortData?.[0]?.order || 100000
+              const rightDisplayOrder = right.displayCategoriesSortData?.[0]?.order || 100000
+              const leftPrice = left.onSalePrice !== undefined ? left.onSalePrice : left.price || 0
+              const rightPrice =
+                right.onSalePrice !== undefined ? right.onSalePrice : right.price || 0
+
+              if (leftCategoryId && rightCategoryId && leftCategoryId - rightCategoryId > 0) {
+                return 1
+              } else if (
+                leftCategoryId &&
+                rightCategoryId &&
+                leftCategoryId - rightCategoryId < 0
+              ) {
+                return -1
+              } else if (leftDisplayOrder - rightDisplayOrder > 0) {
+                return 1
+              } else if (leftDisplayOrder - rightDisplayOrder < 0) {
+                return -1
+              } else if (leftPrice - rightPrice > 0) {
+                return 1
+              } else {
+                return -1
+              }
+            }),
           success: true,
         }),
         {

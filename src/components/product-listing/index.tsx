@@ -14,26 +14,38 @@ interface ProductListingProps {
   limit?: number
 }
 
+type Sort = 'relevant' | 'price-low-high' | 'price-high-low'
+
 export const ProductListing = ({
   categories = [],
   page: initialPage = 1,
   limit,
 }: ProductListingProps) => {
-  const [page, setPage] = useState(initialPage)
-  const [showFilters, setShowFilters] = useState(false)
   const router = useRouter()
+  const [page, setPage] = useState(initialPage)
+  const [sort, setSort] = useState<Sort>((router.query.sort?.toString() as Sort) || 'relevant')
+  const [showFilters, setShowFilters] = useState(false)
 
   const { data, isError, isFetching, isLoading, isPreviousData } = usePaginatedProducts({
     categories,
     limit,
     page,
+    sort,
   })
+
+  const updateRouter = useCallback(
+    () => router.push(`${router.pathname}?page=${page}&sort=${sort}`, undefined, { shallow: true }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [page, sort]
+  )
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
       window.scrollTo({ behavior: 'smooth', top: 0 })
     }
-  }, [page])
+
+    updateRouter()
+  }, [page, updateRouter])
 
   const productCards = useMemo(
     () =>
@@ -50,8 +62,8 @@ export const ProductListing = ({
       return newPage
     })
 
-    router.push(`${router.pathname}?page=${newPage}`, undefined, { shallow: true })
-  }, [router, setPage])
+    updateRouter()
+  }, [setPage, updateRouter])
 
   const handleNextPageClick = useCallback(() => {
     if (!!data?.totalNumberOfPages && !isPreviousData && page <= data.totalNumberOfPages) {
@@ -61,9 +73,9 @@ export const ProductListing = ({
         return newPage
       })
 
-      router.push(`${router.pathname}?page=${newPage}`, undefined, { shallow: true })
+      updateRouter()
     }
-  }, [data?.totalNumberOfPages, isPreviousData, page, router])
+  }, [data?.totalNumberOfPages, isPreviousData, page, updateRouter])
 
   const paginationFooter = useMemo(
     () => (
@@ -108,17 +120,26 @@ export const ProductListing = ({
           </button>
           <label aria-label="Sort by" htmlFor="sort">
             <span className="hidden lg:block">Sort by:</span>
-            <select className="select-bordered select max-w-xs lg:w-full" id="sort" name="sort">
-              <option>Most relevant</option>
-              <option>Newest</option>
-              <option>Price (low to high)</option>
-              <option>Price (high to low)</option>
+            <select
+              className="select-bordered select max-w-xs lg:w-full"
+              id="sort"
+              name="sort"
+              value={sort}
+              onChange={event => {
+                const newValue = event.target.value as Sort
+                setSort(newValue)
+                setPage(1)
+              }}
+            >
+              <option value="relevant">Most relevant</option>
+              <option value="price-low-high">Price (low to high)</option>
+              <option value="price-high-low">Price (high to low)</option>
             </select>
           </label>
         </div>
       </>
     ),
-    [data?.results, data?.resultsShown, showFilters]
+    [data?.results, data?.resultsShown, showFilters, sort]
   )
 
   if (isFetching || isLoading) {

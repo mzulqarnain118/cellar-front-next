@@ -1,5 +1,6 @@
 import { QueryFunction, useQuery } from '@tanstack/react-query'
 
+import { localApi } from '../api'
 import {
   PaginatedProductsResponse,
   PaginatedProductsSchema,
@@ -10,7 +11,7 @@ import {
 export const PRODUCTS_QUERY_KEY = ['products']
 
 export const getAllProducts: QueryFunction<ProductsSchema[] | undefined> = async () => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/products/all`)
+  const response = await localApi('products/all')
   const result = (await response.json()) as ProductsResponse
 
   if (result.success) {
@@ -21,7 +22,7 @@ export const getAllProducts: QueryFunction<ProductsSchema[] | undefined> = async
 export const getProductByCartUrl: QueryFunction<ProductsSchema | undefined> = async ({
   queryKey,
 }) => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/products/${queryKey[1]}`)
+  const response = await localApi(`products/${queryKey[1]}`)
   const result = (await response.json()) as { data: ProductsSchema; success: boolean }
 
   if (result.success) {
@@ -35,9 +36,7 @@ export const getPaginatedProducts: QueryFunction<
 > = async ({ queryKey }) => {
   const data = JSON.parse(queryKey[1])
   const params = new URLSearchParams(data).toString()
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_APP_URL}/api/products${params ? `?${params}` : ''}`
-  )
+  const response = await localApi(`products${params ? `?${params}` : ''}`)
 
   const result = (await response.json()) as PaginatedProductsResponse
 
@@ -64,9 +63,10 @@ export const useProductQuery = (cartUrl: string) =>
 
 export const PAGINATED_PRODUCTS_QUERY_KEY = ['paginated-products']
 export const usePaginatedProducts = (data: {
-  categories?: number[]
+  categories: number[]
   limit?: number
   page: number
+  sort: 'relevant' | 'price-low-high' | 'price-high-low'
 }) =>
   useQuery({
     keepPreviousData: true,
@@ -89,6 +89,9 @@ export const useInfiniteProducts = (data: { categories?: number[]; page: number 
         }
       }
     },
+    keepPreviousData: true,
     queryFn: getPaginatedProducts,
     queryKey: [...PAGINATED_PRODUCTS_QUERY_KEY, JSON.stringify(data)],
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
   })

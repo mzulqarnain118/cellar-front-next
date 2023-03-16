@@ -28,6 +28,8 @@ const handler = async (req: NextRequest) => {
   const page = parseInt(searchParams.get('page') || '0') || 1
   const perPage = parseInt(searchParams.get('limit') || '0') || 16
   const displayCategoryIds = searchParams.get('categories')?.split('-').map(Number) || []
+  const sort: 'relevant' | 'price-low-high' | 'price-high-low' =
+    (searchParams.get('sort') as 'relevant' | 'price-low-high' | 'price-high-low') || 'relevant'
 
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/products/all`)
@@ -37,12 +39,41 @@ const handler = async (req: NextRequest) => {
 
       if (data.success) {
         const { data: productsData } = data
-        const filteredProducts =
+        let filteredProducts =
           displayCategoryIds.length > 0
             ? productsData.filter(product =>
                 product.displayCategories.some(category => displayCategoryIds.includes(category))
               )
             : productsData
+        filteredProducts = filteredProducts.sort((left, right) => {
+          const leftPrice = left.onSalePrice !== undefined ? left.onSalePrice : left.price || 0
+          const rightPrice = right.onSalePrice !== undefined ? right.onSalePrice : right.price || 0
+
+          if (sort === 'price-high-low') {
+            return rightPrice - leftPrice
+          } else if (sort === 'price-low-high') {
+            return leftPrice - rightPrice
+          }
+
+          const leftCategoryId = left.displayCategoriesSortData?.[0]?.id || undefined
+          const rightCategoryId = right.displayCategoriesSortData?.[0]?.id || undefined
+          const leftDisplayOrder = left.displayCategoriesSortData?.[0]?.order || 100000
+          const rightDisplayOrder = right.displayCategoriesSortData?.[0]?.order || 100000
+
+          if (leftCategoryId && rightCategoryId && leftCategoryId - rightCategoryId > 0) {
+            return 1
+          } else if (leftCategoryId && rightCategoryId && leftCategoryId - rightCategoryId < 0) {
+            return -1
+          } else if (leftDisplayOrder - rightDisplayOrder > 0) {
+            return 1
+          } else if (leftDisplayOrder - rightDisplayOrder < 0) {
+            return -1
+          } else if (leftPrice - rightPrice > 0) {
+            return 1
+          }
+
+          return -1
+        })
         const indexOfLastRecord = page * perPage
         const indexOfFirstRecord = indexOfLastRecord - perPage
         const products = filteredProducts.slice(indexOfFirstRecord, indexOfLastRecord)
@@ -56,7 +87,7 @@ const handler = async (req: NextRequest) => {
                   ? undefined
                   : `${process.env.NEXT_PUBLIC_APP_URL}/api/products?page=${
                       page + 1
-                    }&per-page=${perPage}${
+                    }&sort=${sort}&limit=${perPage}${
                       displayCategoryIds.length > 0
                         ? `&categories=${displayCategoryIds.join('-')}`
                         : ''
@@ -68,7 +99,7 @@ const handler = async (req: NextRequest) => {
                   ? undefined
                   : `${process.env.NEXT_PUBLIC_APP_URL}/api/products?page=${
                       page - 1
-                    }&per-page=${perPage}${
+                    }&sort=${sort}&limit=${perPage}${
                       displayCategoryIds.length > 0
                         ? `&categories=${displayCategoryIds.join('-')}`
                         : ''

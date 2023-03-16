@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 type Key = ((item: { [key: string]: any }) => string) | string
 
-export const uniqueBy = (array: any[], key: Key) => {
+export const uniqueBy = <T extends { [key: string]: any }>(array: T[], key: Key): T[] => {
   if (typeof key !== 'function') {
     const property = key
     key = item => item[property]

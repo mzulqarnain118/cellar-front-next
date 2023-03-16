@@ -4,8 +4,7 @@ import { replaceItemByUniqueId } from '@/core/utils'
 
 import { api } from '../api'
 import { CART_QUERY_KEY, useCartQuery } from '../queries/cart'
-import { useProcessStore } from '../stores/process'
-import { Cart, CartItem, DEFAULT_CART_STATE } from '../types'
+import { Cart, CartProduct, DEFAULT_CART_STATE } from '../types'
 
 import { fetchSubtotalAndUpdateCart, getNewCartItems } from './helpers'
 import { CartModificationResponse } from './types'
@@ -15,7 +14,7 @@ export interface UpdateQuantityOptions {
   fetchSubtotal?: boolean
   orderId: number
   orderLineId: number
-  originalCartItems: CartItem[]
+  originalCartItems: CartProduct[]
   quantity: number
 }
 
@@ -63,7 +62,6 @@ export const updateQuantity = async ({
 
 export const useUpdateQuantityMutation = () => {
   const { data } = useCartQuery()
-  const { setCartOpen } = useProcessStore()
   const queryClient = useQueryClient()
 
   return useMutation<
@@ -111,7 +109,6 @@ export const useUpdateQuantityMutation = () => {
             : DEFAULT_CART_STATE
         })
 
-        setCartOpen(true)
         return { previousCart }
       },
     }

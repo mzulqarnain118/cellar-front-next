@@ -4,8 +4,7 @@ import { replaceItemByUniqueId } from '@/core/utils'
 
 import { api } from '../api'
 import { CART_QUERY_KEY, useCartQuery } from '../queries/cart'
-import { useProcessStore } from '../stores/process'
-import { Cart, CartItem, DEFAULT_CART_STATE } from '../types'
+import { Cart, CartProduct, DEFAULT_CART_STATE } from '../types'
 
 import { fetchSubtotalAndUpdateCart, getNewCartItems } from './helpers'
 import { CartModificationResponse } from './types'
@@ -13,15 +12,16 @@ import { CartModificationResponse } from './types'
 export interface AddToCartOptions {
   cartId?: string
   fetchSubtotal?: boolean
-  originalCartItems: CartItem[]
-  item: CartItem
+  originalCartItems: CartProduct[]
+  item: CartProduct
+  quantity: number
 }
 
 export const addToCart = async (options: AddToCartOptions) => {
   const response = await api('v2/checkout/AddToCart', {
     json: {
       CartID: options.cartId,
-      Quantity: options.item.quantity,
+      Quantity: options.quantity,
       SKU: options.item.sku,
     },
     method: 'post',
@@ -30,9 +30,9 @@ export const addToCart = async (options: AddToCartOptions) => {
   if (response.Success) {
     const newItems = getNewCartItems(response.Data.Cart.Data.OrderLines, options.originalCartItems)
     const itemAdded = newItems.find(item => item.sku === options.item.sku)
-    let modifiedItems: CartItem[] = newItems
+    let modifiedItems: CartProduct[] = newItems
     if (itemAdded) {
-      modifiedItems = replaceItemByUniqueId<CartItem>(
+      modifiedItems = replaceItemByUniqueId<CartProduct>(
         newItems,
         { field: 'sku', value: itemAdded.sku },
         {
@@ -61,13 +61,12 @@ export const addToCart = async (options: AddToCartOptions) => {
 
 export const useAddToCartMutation = () => {
   const { data } = useCartQuery()
-  const { setCartOpen } = useProcessStore()
   const queryClient = useQueryClient()
 
   return useMutation<
     Cart | undefined,
     Error,
-    Pick<AddToCartOptions, 'fetchSubtotal' | 'item'>,
+    Pick<AddToCartOptions, 'fetchSubtotal' | 'item' | 'quantity'>,
     { previousCart?: Cart }
   >(
     ['addToCart'],
@@ -78,6 +77,7 @@ export const useAddToCartMutation = () => {
         fetchSubtotal: options.fetchSubtotal || false,
         item: options.item,
         originalCartItems: data?.items || [],
+        quantity: options.quantity,
       }),
     {
       onError: (_err, _product, context) => {
@@ -109,7 +109,6 @@ export const useAddToCartMutation = () => {
             : DEFAULT_CART_STATE
         })
 
-        setCartOpen(true)
         return { previousCart }
       },
       onSuccess: data => {

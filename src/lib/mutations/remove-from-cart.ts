@@ -2,8 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { api } from '../api'
 import { CART_QUERY_KEY, useCartQuery } from '../queries/cart'
-import { useProcessStore } from '../stores/process'
-import { Cart, CartItem, DEFAULT_CART_STATE } from '../types'
+import { Cart, CartProduct, DEFAULT_CART_STATE } from '../types'
 
 import { fetchSubtotalAndUpdateCart, getNewCartItems } from './helpers'
 import { CartModificationResponse } from './types'
@@ -12,7 +11,7 @@ export interface RemoveFromCartOptions {
   cartId: string
   fetchSubtotal?: boolean
   sku: string
-  originalCartItems: CartItem[]
+  originalCartItems: CartProduct[]
 }
 
 export const removeFromCart = async (options: RemoveFromCartOptions) => {
@@ -59,7 +58,6 @@ export const removeFromCart = async (options: RemoveFromCartOptions) => {
 
 export const useRemoveFromCartMutation = () => {
   const { data } = useCartQuery()
-  const { setCartOpen } = useProcessStore()
   const queryClient = useQueryClient()
 
   return useMutation<
@@ -100,7 +98,6 @@ export const useRemoveFromCartMutation = () => {
           return newCart
         })
 
-        setCartOpen(true)
         return { previousCart }
       },
     }

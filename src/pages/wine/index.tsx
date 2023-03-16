@@ -6,12 +6,13 @@ import { useRouter } from 'next/router'
 import { dehydrate } from '@tanstack/react-query'
 
 import { ProductListing } from '@/components/product-listing'
+import { DISPLAY_CATEGORY } from '@/lib/constants/display-category'
 import { getStaticNavigation } from '@/lib/queries/header'
 import { getPaginatedProducts, PAGINATED_PRODUCTS_QUERY_KEY } from '@/lib/queries/products'
 
 import { createClient } from 'prismic-io'
 
-const categories: number[] = [1]
+const categories: number[] = [DISPLAY_CATEGORY.Wine]
 
 export const getServerSideProps: GetServerSideProps = async ({ previewData, query }) => {
   let page = 1
@@ -25,7 +26,7 @@ export const getServerSideProps: GetServerSideProps = async ({ previewData, quer
   ])
 
   await queryClient.prefetchQuery(
-    [...PAGINATED_PRODUCTS_QUERY_KEY, JSON.stringify({ categories, page })],
+    [...PAGINATED_PRODUCTS_QUERY_KEY, JSON.stringify({ categories, page, sort: 'relevant' })],
     getPaginatedProducts
   )
 

@@ -36,18 +36,17 @@ export const schema = z.object({
     .optional(),
   cartUrl: z.string().min(1, 'There must be a cartUrl.'),
   catalogId: z.number(),
-  // displayCategories: z
-  //   .array(
-  //     z.object({
-  //       id: z.number(),
-  //       order: z.number(),
-  //     })
-  //   )
-  //   .optional(),
   displayCategories: z.array(z.number()),
+  displayCategoriesSortData: z.array(z.object({ id: z.number(), order: z.number() })).optional(),
   displayName: z.string(),
+  isAutoShip: z.boolean(),
+  isClubOnly: z.boolean(),
+  isGift: z.boolean(),
+  isGiftCard: z.boolean(),
+  isScoutCircleClub: z.boolean(),
   onSalePrice: z.number().optional(),
   pictureUrl: z.string().optional(),
+  price: z.number(),
   quantityAvailable: z.number(),
   sku: z.string(),
   subscribable: z.boolean(),
@@ -63,7 +62,9 @@ export const schema = z.object({
     .optional(),
 })
 
-export type ProductsSchema = z.infer<typeof schema>
+const productSchema = schema.merge(z.object({ autoSipProduct: schema.optional() }))
+
+export type ProductsSchema = z.infer<typeof productSchema>
 
 interface ProductsSuccess {
   data: ProductsSchema[]

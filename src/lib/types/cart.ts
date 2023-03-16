@@ -1,4 +1,4 @@
-import { ProductAttribute, State } from '.'
+import { ProductsSchema } from './schemas/product'
 
 export interface ProductVariation {
   name: string
@@ -20,32 +20,15 @@ export interface Variation {
   }[]
 }
 
-export interface CartItem {
-  attributes: {
-    name: ProductAttribute
-    value: string
-  }[]
-  cartUrl: string
+export type AutoSipProduct = Omit<CartProduct, 'orderLineId' | 'orderId' | 'quantity'>
+
+export interface CartProduct extends ProductsSchema {
+  autoSipProduct?: AutoSipProduct
   categoryName?: string
-  imageUrl: string
-  isAutoShip: boolean
-  isClubOnly: boolean
-  isGift: boolean
-  isGiftCard: boolean
-  isMerch: boolean
-  isScoutCircleClub: boolean
-  name: string
-  onSalePrice?: number
   orderLineId: number
   orderId: number
-  parentSku?: string
-  price: number
   quantity: number
-  selectedVariation?: ProductVariation
-  sku: string
-  stateAvailability: State[]
-  subscribable: boolean
-  variations?: Variation[]
+  // selectedVariation?: ProductVariation
 }
 
 export interface CartDiscount {
@@ -57,7 +40,7 @@ export interface Cart {
   id: string
   orderDisplayId?: string
   isSharedCart?: boolean
-  items: CartItem[]
+  items: CartProduct[]
   discounts: CartDiscount[]
   prices: {
     subtotal: number

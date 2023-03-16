@@ -1,5 +1,5 @@
 import { api } from '../api'
-import { Cart, CartItem, Failure } from '../types'
+import { Cart, CartProduct, Failure } from '../types'
 
 interface ShippingMethod {
   ShippingMethodID: number
@@ -33,7 +33,7 @@ type GetSubtotalInfoResponse = GetSubtotalInfoSuccess | Failure
 
 export const fetchSubtotalAndUpdateCart = async (
   cartId: string,
-  originalCartItems: CartItem[],
+  originalCartItems: CartProduct[],
   otherCartData?: Omit<Cart, 'prices' | 'discounts' | 'id'>,
   fetchSubtotal = true
 ) => {
@@ -91,8 +91,10 @@ export const getNewCartItems = (
     OrderLineID: number
     OrderID: number
   }[],
-  originalCartItems: CartItem[]
-): CartItem[] =>
+  originalCartItems: CartProduct[]
+): CartProduct[] =>
+  // ! TODO
+  // @ts-ignore
   items
     .map(
       ({
@@ -136,4 +138,4 @@ export const getNewCartItems = (
         return item
       }
     )
-    .filter((value?: object): value is CartItem => !!value && 'sku' in value) as CartItem[]
+    .filter((value?: object): value is CartProduct => !!value && 'sku' in value) as CartProduct[]

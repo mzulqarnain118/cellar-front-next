@@ -1,23 +1,65 @@
-import { useMemo } from 'react'
+import { ChangeEvent, Fragment, useCallback, useMemo, useState } from 'react'
 
 import Image from 'next/image'
 import Link from 'next/link'
 
-import { ProductsSchema } from '@/lib/types/schemas/product'
+import { NumberPicker } from '@/core/components/number-picker'
+import { useAddToCartMutation } from '@/lib/mutations/add-to-cart'
+import { useUpdateQuantityMutation } from '@/lib/mutations/update-quantity'
+import { useCartQuery } from '@/lib/queries/cart'
+import { useProcessStore } from '@/lib/stores/process'
+import { AutoSipProduct, CartProduct } from '@/lib/types'
 
+import { Price } from '../price'
 import { Rating } from '../rating'
 
 interface ProductCardProps {
   priority?: boolean
-  product: ProductsSchema
+  product: AutoSipProduct | CartProduct
 }
 
+const isCartProduct = (product: AutoSipProduct | CartProduct): product is CartProduct =>
+  'orderLineId' in product && 'orderId' in product && 'quantity' in product
+
 export const ProductCard = ({ priority = false, product }: ProductCardProps) => {
+  const [selectedProduct, setSelectedProduct] = useState(product)
+  const [selectedSku, setSelectedSku] = useState(selectedProduct.sku)
+  const [changedVariation, setChangedVariation] = useState(false)
+  const [quantity, setQuantity] = useState(1)
+  const [variationType, setVariationType] = useState<string>()
+  const { toggleCartOpen } = useProcessStore()
+
+  const { data: cart } = useCartQuery()
+  const { mutate: addToCart } = useAddToCartMutation()
+  const { mutate: updateQuantity } = useUpdateQuantityMutation()
+
+  const handleQuantityChange = useCallback(
+    (item: CartProduct, newQuantity?: number) => {
+      const quantityToSend = newQuantity || quantity
+      if (cart?.items.find(product => product.sku === item.sku) && quantityToSend >= 1) {
+        updateQuantity({
+          orderId: item.orderId,
+          orderLineId: item.orderLineId,
+          quantity: quantityToSend,
+        })
+      } else {
+        addToCart({ item: { ...item, quantity: quantityToSend }, quantity: quantityToSend })
+      }
+
+      toggleCartOpen()
+    },
+    [addToCart, cart?.items, quantity, toggleCartOpen, updateQuantity]
+  )
+
+  const onChange = useCallback((newQuantity: number) => {
+    setQuantity(newQuantity)
+  }, [])
+
   const badges = useMemo(
     () =>
-      product.badges !== undefined && (
+      selectedProduct.badges !== undefined && (
         <div className="absolute top-4 left-4 flex flex-col space-y-1 lg:space-y-2">
-          {product.badges.map(badge => (
+          {selectedProduct.badges.map(badge => (
             <div
               key={badge.name}
               className="tooltip cursor-pointer capitalize"
@@ -34,22 +76,103 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
           ))}
         </div>
       ),
-    [product.badges]
+    [selectedProduct.badges]
   )
 
-  const tastingNotes = useMemo(
+  const variationOptions = useMemo(
     () =>
-      product.attributes?.['Tasting Notes']?.slice(0, 3).map(item => (
-        <div
-          key={item.name}
-          className="tooltip cursor-pointer capitalize"
-          data-tip={item.name.replaceAll('-', ' ')}
-        >
-          <Image alt={item.name} height={32} src={item.imageUrl} width={32} />
-        </div>
-      )),
-    [product.attributes]
+      product.autoSipProduct?.variations !== undefined
+        ? product.autoSipProduct.variations
+            .map(variation =>
+              variation.active ? (
+                variation.variations
+                  ?.map(innerVariation => {
+                    setVariationType(innerVariation.type)
+
+                    return (
+                      <option key={innerVariation.option} value={variation.sku}>
+                        {innerVariation.option}
+                      </option>
+                    )
+                  })
+                  .filter((element): element is JSX.Element => !!element)
+              ) : (
+                <Fragment key={variation.sku}></Fragment>
+              )
+            )
+            .filter((element): element is JSX.Element => !!element)
+        : undefined,
+    [product?.autoSipProduct?.variations]
   )
+
+  const handleDropdownChange = useCallback(
+    (event: ChangeEvent<HTMLSelectElement>) => {
+      const newValue = event.target.value
+      if (newValue !== product.sku && product.autoSipProduct !== undefined) {
+        setSelectedProduct(product.autoSipProduct)
+        setChangedVariation(true)
+      } else {
+        setSelectedProduct(product)
+        setChangedVariation(false)
+      }
+      setSelectedSku(newValue)
+      setQuantity(1)
+    },
+    [product]
+  )
+
+  const handleAdd = useCallback(() => setQuantity(prev => prev + 1), [])
+
+  const handleRemove = useCallback(() => setQuantity(prev => (prev === 1 ? 1 : prev - 1)), [])
+
+  const dropdownOrNumberPicker = useMemo(
+    () =>
+      product.autoSipProduct !== undefined || changedVariation ? (
+        <div className="grid gap-1">
+          <label
+            aria-label={variationType}
+            className="invisible h-0 w-0 text-sm"
+            htmlFor="selected-sku"
+          >
+            {variationType}
+          </label>
+          <select
+            className="select-bordered select select-sm h-12"
+            id="selected-sku"
+            name="selected-sku"
+            value={selectedSku}
+            onChange={handleDropdownChange}
+          >
+            <option value={product.sku}>One-time</option>
+            <optgroup label={variationType}>{variationOptions}</optgroup>
+          </select>
+        </div>
+      ) : (
+        <NumberPicker
+          handleAdd={handleAdd}
+          handleChange={onChange}
+          handleRemove={handleRemove}
+          initialValue={1}
+        />
+      ),
+    [
+      changedVariation,
+      handleAdd,
+      handleDropdownChange,
+      handleRemove,
+      onChange,
+      product,
+      selectedSku,
+      variationOptions,
+      variationType,
+    ]
+  )
+
+  const onClick = useCallback(() => {
+    if (isCartProduct(product)) {
+      handleQuantityChange(product, quantity)
+    }
+  }, [handleQuantityChange, product, quantity])
 
   return (
     <div
@@ -59,15 +182,19 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
       `}
     >
       {badges}
-      <figure className="relative block h-full w-[10rem] self-center justify-self-center lg:w-[12rem]">
-        {product.pictureUrl !== undefined ? (
-          <Link href={`/product/${product.cartUrl}`}>
+      <figure
+        className={`
+          relative flex h-full w-[10rem] items-center self-center justify-self-center lg:w-[12rem]
+        `}
+      >
+        {selectedProduct.pictureUrl !== undefined ? (
+          <Link href={`/product/${selectedProduct.cartUrl}`}>
             <Image
-              alt={product.displayName || 'Product'}
+              alt={selectedProduct.displayName || 'Product'}
               className="object-contain"
               height={304}
               priority={priority}
-              src={product.pictureUrl}
+              src={selectedProduct.pictureUrl}
               width={192}
             />
           </Link>
@@ -78,25 +205,46 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
       </figure>
       <div className="col-span-2 grid grid-rows-[1fr_auto] lg:col-span-1">
         <div className="card-body gap-0 !p-0">
-          <div>
-            <div className="flex items-center justify-between text-sm text-neutral-500">
-              <span>{product.attributes?.SubType}</span>
-              <span>{product.attributes?.Origin}</span>
+          <div className="grid h-full grid-rows-2">
+            <div>
+              <div className="flex items-center justify-between text-sm text-neutral-500">
+                <span>{selectedProduct.attributes?.Varietal}</span>
+                <span>{selectedProduct.attributes?.['Container Size']}</span>
+              </div>
+              <Link
+                className="card-title text-base font-semibold leading-normal"
+                href={`/product/${selectedProduct.cartUrl}`}
+              >
+                {selectedProduct.displayName}
+              </Link>
             </div>
-            <Link
-              className="card-title text-base font-semibold leading-normal"
-              href={`/product/${product.cartUrl}`}
-            >
-              {product.displayName}
-            </Link>
-            <Rating className="mt-2" rating={Math.floor(Math.random() * 5) + 1} />
+            <div className="flex items-center justify-between">
+              <Rating rating={Math.floor(Math.random() * 5) + 1} />
+              <Price price={selectedProduct.price} onSalePrice={selectedProduct.onSalePrice} />
+            </div>
           </div>
         </div>
-        <div className="card-actions justify-between lg:mt-6">
-          <div className="flex">{tastingNotes}</div>
-          <button className="btn-primary btn-sm btn lg:btn-md">Add to Cart</button>
+        <div className="card-actions items-center justify-between lg:mt-6">
+          {dropdownOrNumberPicker}
+          <button className="btn-primary btn-sm btn lg:btn-md" onClick={onClick}>
+            Add to Cart
+          </button>
         </div>
       </div>
     </div>
   )
 }
+
+// const tastingNotes = useMemo(
+//   () =>
+//     selectedProduct.attributes?.['Tasting Notes']?.slice(0, 3).map(item => (
+//       <div
+//         key={item.name}
+//         className="tooltip cursor-pointer capitalize"
+//         data-tip={item.name.replaceAll('-', ' ')}
+//       >
+//         <Image alt={item.name} height={32} src={item.imageUrl} width={32} />
+//       </div>
+//     )),
+//   [selectedProduct.attributes]
+// )

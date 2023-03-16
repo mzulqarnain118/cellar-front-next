@@ -35,7 +35,7 @@ export const NumberPicker = ({
   min = 1,
 }: NumberPickerProps) => {
   const inputRef = useRef<HTMLInputElement | null>(null)
-  const [value, setValue] = useState(initialValue <= 0 ? 1 : initialValue)
+  const [value, setValue] = useState(initialValue <= 1 ? 1 : initialValue)
 
   const onChange: ChangeEventHandler<HTMLInputElement> = event => {
     if (min <= 0 || max <= 0) {
@@ -58,11 +58,37 @@ export const NumberPicker = ({
     }
   }
 
+  const onAdd: MouseEventHandler<HTMLButtonElement> = event => {
+    setValue(prev => {
+      if (prev < max && prev >= min) {
+        return prev + 1
+      }
+      return prev
+    })
+
+    if (handleAdd !== undefined) {
+      handleAdd(event)
+    }
+  }
+
   const onRemove: MouseEventHandler<HTMLButtonElement> = event => {
     if (value === 1 && handleRemove) {
       handleRemove(event)
-    } else if (value > 1 && handleChange) {
-      handleChange(value - 1)
+    } else if (value > 1) {
+      let newValue: number | undefined
+
+      setValue(prev => {
+        if (prev > min && prev <= max) {
+          newValue = prev - 1
+        } else {
+          newValue = prev
+        }
+        return newValue
+      })
+
+      if (newValue && handleChange) {
+        handleChange(newValue)
+      }
     }
   }
 
@@ -117,7 +143,7 @@ export const NumberPicker = ({
         `}
         disabled={disabled}
         type="button"
-        onClick={handleAdd}
+        onClick={onAdd}
       >
         <PlusIcon height={BUTTON_SIZE} width={BUTTON_SIZE} />
       </button>

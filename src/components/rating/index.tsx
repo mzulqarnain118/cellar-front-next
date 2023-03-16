@@ -13,8 +13,8 @@ export const Rating = ({ className, rating }: RatingProps) => {
   const id = useId()
 
   return (
-    <div className={clsx('rating rating-md', className)}>
-      <form id={id}>
+    <div className={clsx('rating rating-md h-6', className)}>
+      <form className="flex" id={id}>
         <Star active={rating === 1} />
         <Star active={rating === 2} />
         <Star active={rating === 3} />

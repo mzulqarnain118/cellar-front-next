@@ -1,26 +1,36 @@
-import { useCallback } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 
 import Link from 'next/link'
 
-import { UserIcon } from '@heroicons/react/24/outline'
+import { ShoppingCartIcon, UserIcon } from '@heroicons/react/24/outline'
 import { clsx } from 'clsx'
 
 import { CompanyLogo } from '@/components/company-logo'
 import { Search } from '@/components/search'
 import { HOME_PAGE_PATH } from '@/lib/paths'
+import { useCartQuery } from '@/lib/queries/cart'
 import { useProcessStore } from '@/lib/stores/process'
 
-import { CartDrawer } from './cart-drawer'
 import { Navigation } from './navigation'
 interface DesktopMenuProps {
   className?: string
 }
 
 export const DesktopMenu = ({ className }: DesktopMenuProps) => {
-  const { setShaderVisible } = useProcessStore()
+  const { setCartTriggerRef, setShaderVisible } = useProcessStore()
+  const { data } = useCartQuery()
+  const ref = useRef<HTMLLabelElement | null>(null)
 
   const handleBlur = useCallback(() => setShaderVisible(false), [setShaderVisible])
   const handleFocus = useCallback(() => setShaderVisible(true), [setShaderVisible])
+
+  useEffect(() => {
+    if (ref.current) {
+      setCartTriggerRef(ref.current)
+    }
+  }, [setCartTriggerRef])
+
+  const quantityCount = data?.items.reduce((prev, current) => prev + current.quantity, 0)
 
   return (
     <div className={clsx('hidden lg:block', className)}>
@@ -34,7 +44,28 @@ export const DesktopMenu = ({ className }: DesktopMenuProps) => {
             <UserIcon className="h-6 w-6 fill-neutral-50 stroke-neutral-900 transition-colors" />
             Sign in
           </Link>
-          <CartDrawer />
+          <label
+            ref={ref}
+            aria-label="View shopping cart"
+            className={`
+              btn-ghost drawer-button btn-sm btn relative flex h-11 w-11 items-center justify-center
+              rounded-lg border-0 p-0 hover:border hover:bg-neutral-100
+            `}
+            htmlFor="cart-drawer"
+          >
+            <ShoppingCartIcon className="h-6 w-6" />
+            <span className="sr-only">Notifications</span>
+            {!!quantityCount && (
+              <div
+                className={`
+                  absolute top-0 right-0.5 h-4 min-w-[1rem] max-w-[2rem] rounded-full bg-brand-500
+                  px-1 text-center text-xs font-bold leading-4 text-neutral-100
+                `}
+              >
+                {quantityCount}
+              </div>
+            )}
+          </label>
         </div>
       </div>
       <Navigation />
