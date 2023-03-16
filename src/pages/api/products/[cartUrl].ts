@@ -1,6 +1,5 @@
 import type { NextRequest } from 'next/server'
 
-import { localApi } from '@/lib/api'
 import { ProductsResponse } from '@/lib/types/schemas/product'
 
 export const config = {
@@ -42,7 +41,7 @@ const handler = async (req: NextRequest) => {
       )
     }
 
-    const response = await localApi('products/all')
+    const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/products/all`)
 
     if (response.ok) {
       const data = (await response.json()) as ProductsResponse
