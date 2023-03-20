@@ -32,8 +32,8 @@ export const CartDrawer = () => {
       {cartItems !== undefined && (
         <div
           className={`
-              flex w-full items-center justify-between border-b-2 border-neutral-100 pb-4
-            `}
+            flex w-full items-center justify-between border-b-2 border-neutral-100 pb-4
+          `}
         >
           <div className="w-full space-y-1 px-4 text-center">
             {difference > 0 ? (
@@ -49,7 +49,7 @@ export const CartDrawer = () => {
 
             <div className="mb-4 h-5 w-full rounded-full bg-neutral-200">
               <div
-                className="h-5 rounded-full bg-brand-500"
+                className="h-5 rounded-full bg-brand"
                 style={{ maxWidth: '100%', width: `${percentage}%` }}
               ></div>
             </div>
@@ -57,31 +57,22 @@ export const CartDrawer = () => {
         </div>
       )}
       {cartItems !== undefined ? (
-        <div
-          className={`
-            divide-y-2 divide-neutral-100 px-4
-          `}
-        >
-          {cartItems}
-        </div>
+        <div className="divide-y-2 divide-neutral-100 px-4">{cartItems}</div>
       ) : (
-        <div className={`grid items-center justify-items-center px-4`}>Your cart is empty.</div>
+        <div className="grid items-center justify-items-center px-4">Your cart is empty.</div>
       )}
       <div
         className={`
-            flex h-max w-full items-center justify-between gap-10 self-end border-t-2
-            border-neutral-100 p-4
-          `}
+          flex h-max w-full items-center justify-between gap-10 self-end border-t-2
+          border-neutral-100 p-4
+        `}
       >
         <div className="flex flex-col">
           <span>Subtotal</span>
           <Price price={subtotal || 0} />
         </div>
         <Link
-          className={`
-              w-full rounded bg-[#337250] px-4 py-2 text-center text-[#F2F2F2]
-              transition-colors hover:bg-[#26563C] active:bg-[#152F21]
-            `}
+          className="w-full rounded bg-brand px-4 py-2 text-center transition-colors"
           href="/checkout"
         >
           Checkout

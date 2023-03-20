@@ -5,8 +5,8 @@ import defaultSEOConfig from 'next-seo.config'
 
 import type { AppProps } from 'next/app'
 import dynamic from 'next/dynamic'
+import { Merriweather } from 'next/font/google'
 
-import { Merriweather } from '@next/font/google'
 import { PrismicPreview } from '@prismicio/next'
 import { PrismicProvider } from '@prismicio/react'
 import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister'

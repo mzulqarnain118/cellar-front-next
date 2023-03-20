@@ -26,12 +26,12 @@ export const ProductListing = ({
   const [sort, setSort] = useState<Sort>((router.query.sort?.toString() as Sort) || 'relevant')
   const [showFilters, setShowFilters] = useState(false)
 
-  const { data, isError, isFetching, isLoading, isPreviousData } = usePaginatedProducts({
-    categories,
-    limit,
-    page,
-    sort,
-  })
+  const options = useMemo(
+    () => ({ categories, limit, page, sort }),
+    [categories, limit, page, sort]
+  )
+
+  const { data, isError, isFetching, isLoading, isPreviousData } = usePaginatedProducts(options)
 
   const updateRouter = useCallback(
     () => router.push(`${router.pathname}?page=${page}&sort=${sort}`, undefined, { shallow: true }),

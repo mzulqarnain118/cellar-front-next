@@ -34,7 +34,7 @@ export const NavigationItem = ({ item }: NavigationItemProps) => {
     >
       <div className="grid">
         <PrismicText field={item.primary.name} />
-        <span className="block h-0.5 max-w-0 bg-[#337250] transition-all group-hover:max-w-full" />
+        <span className="block h-0.5 max-w-0 bg-brand transition-all group-hover:max-w-full" />
       </div>
     </PrismicLink>
   )
@@ -47,7 +47,7 @@ export const NavigationItem = ({ item }: NavigationItemProps) => {
     >
       {link}
       {/* {showSubNav && subItems.length > 0 && (
-        <div className="absolute left-0 right-0 top-12 hidden min-h-[23.5rem] w-[1536px] rounded-b-lg bg-[#f0efed] text-neutral-900 shadow-lg group-hover:flex">
+        <div className="absolute left-0 right-0 top-12 hidden min-h-[23.5rem] w-[1536px] rounded-b-lg text-neutral-900 shadow-lg group-hover:flex">
           <nav className="flex flex-col gap-2">
             <PrismicLink
               className="flex items-center gap-1 py-2 px-4 font-semibold transition-all hover:gap-2"

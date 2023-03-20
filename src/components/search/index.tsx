@@ -23,7 +23,7 @@ export const Search = ({ className, id, onBlur, onFocus }: SearchProps) => {
           className={`
             h-10 w-full rounded-bl-lg rounded-tl-lg border border-neutral-300 bg-neutral-100 px-3
             transition-all duration-75 placeholder:text-neutral-500 focus:!outline focus:outline-1
-            focus:outline-offset-0 focus:outline-brand-500
+            focus:outline-offset-0 focus:outline-brand
           `}
           id={id}
           placeholder="What can we help you find?"
@@ -34,11 +34,9 @@ export const Search = ({ className, id, onBlur, onFocus }: SearchProps) => {
         <button
           aria-label="Search"
           className={clsx(
-            `
-            max-w-10 inline-flex h-10 w-10 items-center justify-center rounded-br-lg rounded-tr-lg
-            bg-[#337250] px-[0.625rem] text-[#F2F2F2] duration-300 hover:w-14 hover:bg-[#26563C] active:bg-[#152F21] disabled:cursor-not-allowed disabled:bg-brand-300
-          `,
-            isButtonFocused && 'w-14 bg-brand-600'
+            `max-w-10 btn-primary inline-flex h-10 w-10 items-center justify-center rounded-br-lg
+            rounded-tr-lg transition-all hover:w-14`,
+            isButtonFocused && 'w-14'
           )}
           type="submit"
           onBlur={() => setIsButtonFocused(false)}

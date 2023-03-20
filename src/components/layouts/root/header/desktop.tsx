@@ -58,7 +58,7 @@ export const DesktopMenu = ({ className }: DesktopMenuProps) => {
             {!!quantityCount && (
               <div
                 className={`
-                  absolute top-0 right-0.5 h-4 min-w-[1rem] max-w-[2rem] rounded-full bg-brand-500
+                  absolute top-0 right-0.5 h-4 min-w-[1rem] max-w-[2rem] rounded-full bg-brand
                   px-1 text-center text-xs font-bold leading-4 text-neutral-100
                 `}
               >

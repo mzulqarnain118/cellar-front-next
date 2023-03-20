@@ -68,7 +68,7 @@ export const CartItem = ({ product }: CartItemProps) => {
         <Link href={product.cartUrl || ''}>
           <Image
             alt={product.displayName || 'Product'}
-            className="group h-auto w-[80px] self-center"
+            className="group h-auto w-20 self-center"
             height={0}
             sizes="100vw"
             src={product.pictureUrl}

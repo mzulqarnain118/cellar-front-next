@@ -61,7 +61,7 @@ export const Filter = ({ name }: FilterProps) => {
         ))} */}
       </div>
       <button
-        className="mt-3 font-medium text-brand-500 transition-all hover:text-brand-600 hover:underline"
+        className="mt-3 font-medium text-brand transition-all hover:text-brand-600 hover:underline"
         type="button"
         onClick={handleSeeAllToggle}
       >

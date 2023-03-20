@@ -45,7 +45,7 @@ export const StatePicker = () => {
       aria-label="Shipping State"
       aria-labelledby="shipping-state-label"
       className={`
-        form-select cursor-pointer appearance-none rounded border-none bg-[#DAD9D9] p-0 text-sm
+        form-select cursor-pointer appearance-none rounded border-none p-0 text-sm
         focus:rounded-none focus:outline-dashed focus:outline-1 focus:outline-offset-1
         focus:!outline-neutral-500
       `}

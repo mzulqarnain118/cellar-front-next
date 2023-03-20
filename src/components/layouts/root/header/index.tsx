@@ -8,7 +8,7 @@ export const Header = () => (
   <header>
     <div className="relative top-0 left-0 z-20 w-full bg-neutral-50 text-neutral-900">
       <div className="shadow-lg">
-        <div className="flex h-12 items-center border-b border-neutral-300 bg-[#DAD9D9]">
+        <div className="flex h-12 items-center border-b border-neutral-300">
           <div className="container mx-auto flex items-center justify-between text-xs">
             <div className="flex flex-col">
               <span id="shipping-state-label">My Shipping State</span>

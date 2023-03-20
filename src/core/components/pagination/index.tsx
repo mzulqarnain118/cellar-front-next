@@ -83,7 +83,7 @@ export const Pagination = () => <>Hi</>
 //               </button>
 //               <button
 //                 aria-current="page"
-//                 className="relative z-10 inline-flex items-center border border-brand-500 bg-brand-50 px-4 py-2 text-sm font-medium text-brand-600 focus:z-20"
+//                 className="relative z-10 inline-flex items-center border border-brand bg-brand-50 px-4 py-2 text-sm font-medium text-brand-600 focus:z-20"
 //               >
 //                 1
 //               </button>
