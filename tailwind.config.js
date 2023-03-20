@@ -29,7 +29,9 @@ module.exports = {
     require('@tailwindcss/forms')({
       strategy: 'class',
     }),
+    require('@tailwindcss/typography'),
     require('daisyui'),
+    require('@headlessui/tailwindcss'),
   ],
   theme: {
     container: {

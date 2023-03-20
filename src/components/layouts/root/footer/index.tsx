@@ -20,32 +20,32 @@ export const Footer = () => (
           <span className="font-bold text-neutral-800">Shop</span>
           <div className="space-y-2">
             <div>
-              <Link className="hover:underline" href="/">
+              <Link className="link-hover link" href="/">
                 Wine
               </Link>
             </div>
             <div>
-              <Link className="hover:underline" href="/">
+              <Link className="link-hover link" href="/">
                 Wine Club
               </Link>
             </div>
             <div>
-              <Link className="hover:underline" href="/">
+              <Link className="link-hover link" href="/">
                 Coffee
               </Link>
             </div>
             <div>
-              <Link className="hover:underline" href="/">
+              <Link className="link-hover link" href="/">
                 Merch
               </Link>
             </div>
             <div>
-              <Link className="hover:underline" href="/">
+              <Link className="link-hover link" href="/">
                 About Clean-Crafted
               </Link>
             </div>
             <div>
-              <Link className="hover:underline" href="/">
+              <Link className="link-hover link" href="/">
                 Track Your Order
               </Link>
             </div>
@@ -55,32 +55,32 @@ export const Footer = () => (
           <span className="font-bold text-neutral-800">Services</span>
           <div className="space-y-2">
             <div>
-              <Link className="hover:underline" href="/">
+              <Link className="link-hover link" href="/">
                 FAQ
               </Link>
             </div>
             <div>
-              <Link className="hover:underline" href="/">
+              <Link className="link-hover link" href="/">
                 Find a Consultant
               </Link>
             </div>
             <div>
-              <Link className="hover:underline" href="/">
+              <Link className="link-hover link" href="/">
                 Become a Consultant
               </Link>
             </div>
             <div>
-              <Link className="hover:underline" href="/">
+              <Link className="link-hover link" href="/">
                 Log in as a Consultant
               </Link>
             </div>
             <div>
-              <Link className="hover:underline" href="/">
+              <Link className="link-hover link" href="/">
                 Winery Team Careers
               </Link>
             </div>
             <div>
-              <Link className="hover:underline" href="/">
+              <Link className="link-hover link" href="/">
                 Contact Us
               </Link>
             </div>
@@ -90,27 +90,27 @@ export const Footer = () => (
           <span className="font-bold text-neutral-800">Legal</span>
           <div className="space-y-2">
             <div>
-              <Link className="hover:underline" href="/">
+              <Link className="link-hover link" href="/">
                 Income Disclosure
               </Link>
             </div>
             <div>
-              <Link className="hover:underline" href="/">
+              <Link className="link-hover link" href="/">
                 Satisfaction Guarantee
               </Link>
             </div>
             <div>
-              <Link className="hover:underline" href="/">
+              <Link className="link-hover link" href="/">
                 Privacy Policy
               </Link>
             </div>
             <div>
-              <Link className="hover:underline" href="/">
+              <Link className="link-hover link" href="/">
                 Terms and Conditions
               </Link>
             </div>
             <div>
-              <Link className="hover:underline" href="/">
+              <Link className="link-hover link" href="/">
                 Press Inquires
               </Link>
             </div>

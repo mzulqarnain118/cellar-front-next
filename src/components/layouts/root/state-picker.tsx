@@ -1,6 +1,8 @@
-import { ChangeEvent, useMemo } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
+import { Combobox } from '@headlessui/react'
 import { useQueryClient } from '@tanstack/react-query'
+import { clsx } from 'clsx'
 
 import { CART_QUERY_KEY } from '@/lib/queries/cart'
 import { useStatesQuery } from '@/lib/queries/state'
@@ -14,23 +16,48 @@ export const StatePicker = () => {
   const queryClient = useQueryClient()
   const { data: states, isFetching, isLoading } = useStatesQuery()
   const { setShippingState, shippingState } = useShippingStateStore()
+  const [searchQuery, setSearchQuery] = useState('')
+  const [selectedState, setSelectedState] = useState(
+    shippingState || states?.[0] || ({ abbreviation: 'TX', name: 'Texas', provinceID: 48 } as State)
+  )
+
+  const filteredStates = useMemo(
+    () =>
+      searchQuery === ''
+        ? states
+        : states?.filter(
+            state =>
+              state.abbreviation.toLowerCase().includes(searchQuery.toLowerCase()) ||
+              state.name.toLowerCase().includes(searchQuery.toLowerCase())
+          ),
+    [searchQuery, states]
+  )
 
   const stateOptions = useMemo(
     () =>
-      states?.map((state: State) => (
-        <option key={state.abbreviation} className="capitalize" value={state.provinceID}>
+      filteredStates?.map((state: State) => (
+        <Combobox.Option
+          key={state.abbreviation}
+          className={`
+            py-2 px-3 capitalize ui-active:bg-brand
+            ui-active:text-white ui-not-active:bg-white ui-not-active:text-gray-800
+          `}
+          value={state}
+        >
           {state.name}
-        </option>
+        </Combobox.Option>
       )),
-    [states]
+    [filteredStates]
   )
 
-  const handleStateChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    const newProvinceId = parseInt(event.target.value)
-    const newShippingState = states?.find(state => state.provinceID === newProvinceId)
-    setShippingState(newShippingState)
-    queryClient.invalidateQueries(CART_QUERY_KEY)
-  }
+  const handleStateChange = useCallback(
+    (value: State) => {
+      setSelectedState(value)
+      setShippingState(value)
+      queryClient.invalidateQueries(CART_QUERY_KEY)
+    },
+    [queryClient, setShippingState]
+  )
 
   if (isFetching || isLoading) {
     return (
@@ -41,19 +68,22 @@ export const StatePicker = () => {
   }
 
   return (
-    <select
-      aria-label="Shipping State"
-      aria-labelledby="shipping-state-label"
-      className={`
-        form-select cursor-pointer appearance-none rounded border-none p-0 text-sm
-        focus:rounded-none focus:outline-dashed focus:outline-1 focus:outline-offset-1
-        focus:!outline-neutral-500
-      `}
-      title="Change my shipping state"
-      value={shippingState?.provinceID || 48} // * NOTE: Default to Texas if it's falsy.
-      onChange={handleStateChange}
-    >
-      {stateOptions}
-    </select>
+    <Combobox value={selectedState} onChange={handleStateChange}>
+      <Combobox.Input
+        className="bg-neutral-50"
+        displayValue={(state: State | undefined) => state?.name || ''}
+        onChange={event => setSearchQuery(event.target.value)}
+      />
+      <div className="absolute">
+        <Combobox.Options
+          className={clsx(
+            'relative z-10 max-h-56 overflow-y-scroll',
+            filteredStates?.length === 0 && 'h-0'
+          )}
+        >
+          {stateOptions}
+        </Combobox.Options>
+      </div>
+    </Combobox>
   )
 }
