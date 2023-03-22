@@ -40,7 +40,12 @@ export const DesktopMenu = ({ className }: DesktopMenuProps) => {
         </Link>
         <Search id="desktop-menu-search" onBlur={handleBlur} onFocus={handleFocus} />
         <div className="flex gap-6">
-          <Link className="flex w-max items-center gap-2 hover:underline" href={HOME_PAGE_PATH}>
+          <Link
+            className={`
+              btn-ghost btn flex w-max items-center gap-2 hover:bg-neutral-100 hover:underline
+            `}
+            href={HOME_PAGE_PATH}
+          >
             <UserIcon className="h-6 w-6 fill-neutral-50 stroke-neutral-900 transition-colors" />
             Sign in
           </Link>
@@ -49,7 +54,7 @@ export const DesktopMenu = ({ className }: DesktopMenuProps) => {
             aria-label="View shopping cart"
             className={`
               btn-ghost drawer-button btn-sm btn relative flex h-11 w-11 items-center justify-center
-              rounded-lg border-0 p-0 hover:border hover:bg-neutral-100
+              rounded-lg border p-0 hover:bg-neutral-100
             `}
             htmlFor="cart-drawer"
           >
@@ -59,7 +64,7 @@ export const DesktopMenu = ({ className }: DesktopMenuProps) => {
               <div
                 className={`
                   absolute top-0 right-0.5 h-4 min-w-[1rem] max-w-[2rem] rounded-full bg-brand
-                  px-1 text-center text-xs font-bold leading-4 text-neutral-100
+                  px-1 text-center text-xs font-normal leading-4 text-neutral-100
                 `}
               >
                 {quantityCount}

@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { api } from '../api'
 import { CART_QUERY_KEY, useCartQuery } from '../queries/cart'
+import { useProcessStore } from '../stores/process'
 import { Cart, CartProduct, DEFAULT_CART_STATE } from '../types'
 
 import { fetchSubtotalAndUpdateCart, getNewCartItems } from './helpers'
@@ -10,6 +11,7 @@ import { CartModificationResponse } from './types'
 export interface RemoveFromCartOptions {
   cartId: string
   fetchSubtotal?: boolean
+  item: Omit<CartProduct, 'orderLineId' | 'orderId' | 'quantity'>
   sku: string
   originalCartItems: CartProduct[]
 }
@@ -27,8 +29,9 @@ export const removeFromCart = async (options: RemoveFromCartOptions) => {
 
     if (response.Success) {
       const newItems = getNewCartItems(
-        response.Data.Cart.Data.OrderLines,
-        options.originalCartItems
+        response.data?.cart.OrderLines || response.Data.Cart.Data.OrderLines,
+        options.originalCartItems,
+        options.item
       )
       try {
         return await fetchSubtotalAndUpdateCart(
@@ -49,7 +52,7 @@ export const removeFromCart = async (options: RemoveFromCartOptions) => {
       //   localStorage.removeItem('giftMessage')
       // }
     } else {
-      throw new Error('You may only have a maximum of 24 of each product.') // ! TODO: Update message.
+      throw new Error(response.Error.Message)
     }
   } catch {
     throw new Error('There was an issue removing the item from your cart. Please try again later.')
@@ -59,11 +62,12 @@ export const removeFromCart = async (options: RemoveFromCartOptions) => {
 export const useRemoveFromCartMutation = () => {
   const { data } = useCartQuery()
   const queryClient = useQueryClient()
+  const { setIsMutatingCart } = useProcessStore()
 
   return useMutation<
     Cart | undefined,
     Error,
-    Pick<RemoveFromCartOptions, 'fetchSubtotal' | 'sku'>,
+    Pick<RemoveFromCartOptions, 'fetchSubtotal' | 'item' | 'sku'>,
     { previousCart?: Cart }
   >(
     ['removeFromCart'],
@@ -79,6 +83,7 @@ export const useRemoveFromCartMutation = () => {
         queryClient.setQueryData(CART_QUERY_KEY, context?.previousCart)
       },
       onMutate: async product => {
+        setIsMutatingCart(true)
         // Cancel any outgoing fetches.
         await queryClient.cancelQueries({ queryKey: CART_QUERY_KEY })
 
@@ -99,6 +104,9 @@ export const useRemoveFromCartMutation = () => {
         })
 
         return { previousCart }
+      },
+      onSettled: () => {
+        setIsMutatingCart(false)
       },
     }
   )

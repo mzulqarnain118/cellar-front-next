@@ -1,4 +1,4 @@
-import { ChangeEventHandler, MouseEventHandler, useRef, useState } from 'react'
+import { ChangeEventHandler, MouseEventHandler, useRef } from 'react'
 
 import { MinusIcon, PlusIcon } from '@heroicons/react/20/solid'
 import { clsx } from 'clsx'
@@ -11,11 +11,11 @@ interface NumberPickerProps {
   /** Callback for when the add button is pressed. */
   handleAdd?: MouseEventHandler<HTMLButtonElement>
   /** Callback for when the value in the text input changes. */
-  handleChange?: (newValue: number) => void
+  handleChange?: ChangeEventHandler
   /** Callback for when the remove button is pressed. */
-  handleRemove?: MouseEventHandler<HTMLButtonElement>
+  handleMinus?: MouseEventHandler<HTMLButtonElement>
   /** Initial value for the picker. Defaults to 1. Value must be positive. */
-  initialValue?: number
+  value: number
   /** Maximum value of the number picker. Defaults to 24. Value must be positive. */
   max?: number
   /** Minimum value of the number picker. Defaults to 1. Value must be positive. */
@@ -29,68 +29,12 @@ export const NumberPicker = ({
   disabled,
   handleAdd,
   handleChange,
-  handleRemove,
-  initialValue = 1,
+  handleMinus,
+  value,
   max = 24,
   min = 1,
 }: NumberPickerProps) => {
   const inputRef = useRef<HTMLInputElement | null>(null)
-  const [value, setValue] = useState(initialValue <= 1 ? 1 : initialValue)
-
-  const onChange: ChangeEventHandler<HTMLInputElement> = event => {
-    if (min <= 0 || max <= 0) {
-      return
-    }
-
-    const parsedValue = parseInt(event.target.value || '0')
-    let newValue = 0
-    if (parsedValue >= min && parsedValue <= max) {
-      newValue = parsedValue
-    } else if (parsedValue < min) {
-      newValue = min
-    } else if (parsedValue > max) {
-      newValue = max
-    }
-    setValue(newValue)
-
-    if (parsedValue > 0 && handleChange !== undefined) {
-      handleChange(newValue)
-    }
-  }
-
-  const onAdd: MouseEventHandler<HTMLButtonElement> = event => {
-    setValue(prev => {
-      if (prev < max && prev >= min) {
-        return prev + 1
-      }
-      return prev
-    })
-
-    if (handleAdd !== undefined) {
-      handleAdd(event)
-    }
-  }
-
-  const onRemove: MouseEventHandler<HTMLButtonElement> = event => {
-    if (value === 1 && handleRemove) {
-      handleRemove(event)
-    } else if (value > 1) {
-      let newValue: number | undefined
-
-      setValue(prev => {
-        if (prev > min && prev <= max) {
-          newValue = prev - 1
-        } else {
-          newValue = prev
-        }
-        return newValue
-      })
-
-      if (newValue && handleChange) {
-        handleChange(newValue)
-      }
-    }
-  }
 
   return (
     <div
@@ -104,12 +48,17 @@ export const NumberPicker = ({
     >
       <button
         aria-label="Remove 1"
-        className={`
-          flex h-10 w-8 items-center justify-center rounded-lg rounded-r-none hover:bg-neutral-100
-        `}
+        className={clsx(
+          `
+          flex h-10 w-8 items-center justify-center rounded-lg rounded-l-none transition
+          hover:bg-neutral-100 disabled:cursor-not-allowed disabled:bg-neutral-100
+          disabled:text-neutral-200
+        `,
+          value === min && 'cursor-not-allowed'
+        )}
         disabled={disabled}
         type="button"
-        onClick={onRemove}
+        onClick={handleMinus}
       >
         <MinusIcon height={BUTTON_SIZE} width={BUTTON_SIZE} />
       </button>
@@ -118,7 +67,8 @@ export const NumberPicker = ({
         aria-label="Product Quantity"
         className={`
           w-10 appearance-none border-neutral-100 border-y-transparent bg-neutral-50 p-0
-          text-center transition-all focus:border-y
+          text-center transition-all focus:border-y disabled:cursor-not-allowed
+          disabled:bg-neutral-100 disabled:text-neutral-200
         `}
         disabled={disabled}
         inputMode="numeric"
@@ -127,7 +77,7 @@ export const NumberPicker = ({
         pattern="[0-9]+"
         type="number"
         value={value}
-        onChange={onChange}
+        onChange={handleChange}
         onFocus={() => {
           if (inputRef.current) {
             inputRef.current.select()
@@ -141,9 +91,9 @@ export const NumberPicker = ({
           hover:bg-neutral-100 disabled:cursor-not-allowed disabled:bg-neutral-100
           disabled:text-neutral-200
         `}
-        disabled={disabled}
+        disabled={disabled || value === max}
         type="button"
-        onClick={onAdd}
+        onClick={handleAdd}
       >
         <PlusIcon height={BUTTON_SIZE} width={BUTTON_SIZE} />
       </button>

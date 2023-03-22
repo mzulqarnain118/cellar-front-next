@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { ChangeEvent, useCallback, useEffect, useState } from 'react'
 
 import Image from 'next/image'
 import Link from 'next/link'
@@ -9,23 +9,38 @@ import { useAddToCartMutation } from '@/lib/mutations/add-to-cart'
 import { useRemoveFromCartMutation } from '@/lib/mutations/remove-from-cart'
 import { useUpdateQuantityMutation } from '@/lib/mutations/update-quantity'
 import { useCartQuery } from '@/lib/queries/cart'
+import { useProcessStore } from '@/lib/stores/process'
 import { CartProduct } from '@/lib/types'
+
+const MIN = 1
+const MAX = 24
 
 interface CartItemProps {
   product: CartProduct
 }
 
 export const CartItem = ({ product }: CartItemProps) => {
+  const { isMutatingCart } = useProcessStore()
   const { mutate: addToCart } = useAddToCartMutation()
   const { mutate: removeFromCart } = useRemoveFromCartMutation()
   const { mutate: updateQuantity } = useUpdateQuantityMutation()
   const { data: cart } = useCartQuery()
 
+  const [quantity, setQuantity] = useState(product.quantity || 1)
+
   const containerSize = product.attributes?.['Container Size']
 
   const handleAdd = useCallback(() => {
+    setQuantity(prev => {
+      if (prev < MAX && prev >= MIN) {
+        return prev + 1
+      }
+      return prev
+    })
+
     if (cart?.items.find(item => product.sku === item.sku)) {
       updateQuantity({
+        item: product,
         orderId: product.orderId,
         orderLineId: product.orderLineId,
         quantity: product.quantity + 1,
@@ -39,33 +54,75 @@ export const CartItem = ({ product }: CartItemProps) => {
     (item: CartProduct, newQuantity: number) => {
       if (newQuantity >= 1) {
         updateQuantity({
+          item: product,
           orderId: item.orderId,
           orderLineId: item.orderLineId,
           quantity: newQuantity,
         })
       } else if (newQuantity === 0) {
-        removeFromCart({ sku: item.sku })
+        removeFromCart({ item, sku: item.sku })
       } else {
         addToCart({ item, quantity: newQuantity })
       }
     },
-    [addToCart, removeFromCart, updateQuantity]
+    [addToCart, product, removeFromCart, updateQuantity]
   )
 
   const handleChange = useCallback(
-    (newQuantity: number) => handleQuantityChange(product, newQuantity),
+    (event: ChangeEvent<HTMLInputElement>) => {
+      if (MIN <= 0 || MAX <= 0) {
+        return
+      }
+
+      const parsedValue = parseInt(event.target.value || '0')
+      let newValue = 0
+      if (parsedValue >= MIN && parsedValue <= MAX) {
+        newValue = parsedValue
+      } else if (parsedValue < MIN) {
+        newValue = MIN
+      } else if (parsedValue > MAX) {
+        newValue = MAX
+      }
+
+      if (parsedValue > 0) {
+        setQuantity(newValue)
+        handleQuantityChange(product, parsedValue)
+      }
+    },
     [handleQuantityChange, product]
   )
 
-  const handleRemove = useCallback(
-    () => removeFromCart({ sku: product.sku }),
-    [product.sku, removeFromCart]
-  )
+  const handleRemove = useCallback(() => {
+    removeFromCart({ item: product, sku: product.sku })
+  }, [product, removeFromCart])
+
+  const handleMinus = useCallback(() => {
+    if (quantity === 1) {
+      removeFromCart({ item: product, sku: product.sku })
+    } else if (quantity > 1) {
+      let newValue: number | undefined
+
+      setQuantity(prev => {
+        if (prev > MIN && prev <= MAX) {
+          newValue = prev - 1
+        } else {
+          newValue = prev
+        }
+        return newValue
+      })
+
+      handleQuantityChange(product, quantity > MIN && quantity <= MAX ? quantity - 1 : quantity)
+    }
+  }, [handleQuantityChange, product, quantity, removeFromCart])
+
+  useEffect(() => {
+    setQuantity(product.quantity || 1)
+  }, [product.quantity])
 
   return (
     <div className="grid grid-cols-[120px_calc(100%-140px)] gap-3 py-3">
       {product.pictureUrl !== undefined && (
-        <Link href={product.cartUrl || ''}>
+        <Link href={`/product/${product.cartUrl || ''}`}>
           <Image
             alt={product.displayName || 'Product'}
             className="group h-auto w-20 self-center"
@@ -82,7 +139,7 @@ export const CartItem = ({ product }: CartItemProps) => {
             <div>
               <Link
                 className="font-bold transition-all hover:underline"
-                href={product.cartUrl || ''}
+                href={`/product/${product.cartUrl || ''}`}
               >
                 {product.displayName}
               </Link>
@@ -91,19 +148,28 @@ export const CartItem = ({ product }: CartItemProps) => {
           </div>
           <Price
             className="text-base !font-semibold"
-            price={product.price * product.quantity}
-            onSalePrice={product.onSalePrice || 0 * product.quantity}
+            price={product.price}
+            onSalePrice={
+              product.onSalePrice === product.price ? undefined : product.onSalePrice || 0
+            }
           />
         </div>
         <div className="ml-auto space-y-2 self-center text-center">
           <NumberPicker
+            disabled={isMutatingCart}
             handleAdd={handleAdd}
             handleChange={handleChange}
-            handleRemove={handleRemove}
-            initialValue={product.quantity}
+            handleMinus={handleMinus}
+            max={MAX}
+            min={MIN}
+            value={quantity}
           />
           <button
-            className="text-sm text-neutral-400 hover:text-neutral-500 hover:underline"
+            className={`
+              text-sm text-neutral-400 enabled:hover:text-neutral-500 enabled:hover:underline
+              disabled:cursor-not-allowed
+            `}
+            disabled={isMutatingCart}
             type="button"
             onClick={handleRemove}
           >

@@ -4,6 +4,7 @@ import { replaceItemByUniqueId } from '@/core/utils'
 
 import { api } from '../api'
 import { CART_QUERY_KEY, useCartQuery } from '../queries/cart'
+import { useProcessStore } from '../stores/process'
 import { Cart, CartProduct, DEFAULT_CART_STATE } from '../types'
 
 import { fetchSubtotalAndUpdateCart, getNewCartItems } from './helpers'
@@ -12,6 +13,7 @@ import { CartModificationResponse } from './types'
 export interface UpdateQuantityOptions {
   cartId: string
   fetchSubtotal?: boolean
+  item: Omit<CartProduct, 'orderLineId' | 'orderId' | 'quantity'>
   orderId: number
   orderLineId: number
   originalCartItems: CartProduct[]
@@ -21,6 +23,7 @@ export interface UpdateQuantityOptions {
 export const updateQuantity = async ({
   cartId,
   fetchSubtotal,
+  item,
   orderId,
   orderLineId,
   originalCartItems,
@@ -38,7 +41,11 @@ export const updateQuantity = async ({
     }).json<CartModificationResponse>()
 
     if (response.Success) {
-      const newItems = getNewCartItems(response.Data.Cart.Data.OrderLines, originalCartItems)
+      const newItems = getNewCartItems(
+        response.data?.cart.OrderLines || response.Data.Cart.Data.OrderLines,
+        originalCartItems,
+        item
+      )
       try {
         return await fetchSubtotalAndUpdateCart(
           cartId,
@@ -52,6 +59,8 @@ export const updateQuantity = async ({
       } catch (error) {
         throw new Error('There was an issue calculating the total of your cart.')
       }
+    } else {
+      throw new Error(response.Error.Message)
     }
   } catch {
     throw new Error(
@@ -63,6 +72,7 @@ export const updateQuantity = async ({
 export const useUpdateQuantityMutation = () => {
   const { data } = useCartQuery()
   const queryClient = useQueryClient()
+  const { setIsMutatingCart } = useProcessStore()
 
   return useMutation<
     Cart | undefined,
@@ -83,6 +93,7 @@ export const useUpdateQuantityMutation = () => {
         queryClient.setQueryData(CART_QUERY_KEY, context?.previousCart)
       },
       onMutate: async product => {
+        setIsMutatingCart(true)
         // Cancel any outgoing fetches.
         await queryClient.cancelQueries({ queryKey: CART_QUERY_KEY })
 
@@ -110,6 +121,9 @@ export const useUpdateQuantityMutation = () => {
         })
 
         return { previousCart }
+      },
+      onSettled: () => {
+        setIsMutatingCart(false)
       },
     }
   )

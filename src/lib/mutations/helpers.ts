@@ -1,6 +1,8 @@
 import { api } from '../api'
 import { Cart, CartProduct, Failure } from '../types'
 
+import { CartProductOrderLine } from './types'
+
 interface ShippingMethod {
   ShippingMethodID: number
   DisplayName: string
@@ -81,48 +83,43 @@ export const fetchSubtotalAndUpdateCart = async (
 }
 
 export const getNewCartItems = (
-  items: {
-    DisplayPrice: number
-    Price: number
-    Quantity: number
-    ProductDisplayName: string
-    ProductSKU: string
-    ProductImage: string
-    OrderLineID: number
-    OrderID: number
-  }[],
-  originalCartItems: CartProduct[]
+  items: CartProductOrderLine[],
+  originalCartItems: CartProduct[],
+  cartItem: Omit<CartProduct, 'orderLineId' | 'orderId' | 'quantity'>
 ): CartProduct[] =>
-  // ! TODO
-  // @ts-ignore
   items
     .map(
       ({
+        ComparePrice,
         DisplayPrice,
         OrderID,
         OrderLineID,
         Price,
+        ProductCartUrl,
         ProductDisplayName,
         ProductImage,
         ProductSKU,
         Quantity,
       }) => {
         const correspondingItem = originalCartItems.find(item => item.sku === ProductSKU)
-        const item: {
-          imageUrl: string
-          name: string
-          onSalePrice: number
-          orderId: number
-          orderLineId: number
-          price: number
-          quantity: number
-          sku: string
-        } = {
-          imageUrl: ProductImage,
-          name: ProductDisplayName,
-          onSalePrice: DisplayPrice,
+        const fallbackValues = {
+          catalogId: 0,
+          displayCategories: [],
+          isAutoShip: false,
+          isClubOnly: false,
+          isGift: false,
+          isGiftCard: false,
+          isScoutCircleClub: false,
+          quantityAvailable: 0,
+          subscribable: false,
+        }
+        const item = {
+          cartUrl: ProductCartUrl,
+          displayName: ProductDisplayName,
+          onSalePrice: DisplayPrice || ComparePrice,
           orderId: OrderID,
           orderLineId: OrderLineID,
+          pictureUrl: ProductImage,
           price: Price,
           quantity: Quantity,
           sku: ProductSKU,
@@ -132,10 +129,17 @@ export const getNewCartItems = (
           return {
             ...correspondingItem,
             ...item,
-          }
+          } satisfies CartProduct
         }
 
-        return item
+        if (cartItem.sku === ProductSKU) {
+          return {
+            ...item,
+            ...cartItem,
+          } satisfies CartProduct
+        }
+
+        return { ...item, ...fallbackValues } satisfies CartProduct
       }
     )
     .filter((value?: object): value is CartProduct => !!value && 'sku' in value) as CartProduct[]

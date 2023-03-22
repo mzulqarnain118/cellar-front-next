@@ -13,6 +13,9 @@ import { AutoSipProduct, CartProduct } from '@/lib/types'
 import { Price } from '../price'
 import { Rating } from '../rating'
 
+const MIN = 1
+const MAX = 24
+
 interface ProductCardProps {
   priority?: boolean
   product: AutoSipProduct | CartProduct
@@ -38,22 +41,24 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
       const quantityToSend = newQuantity || quantity
       if (cart?.items.find(product => product.sku === item.sku) && quantityToSend >= 1) {
         updateQuantity({
+          item: product,
           orderId: item.orderId,
           orderLineId: item.orderLineId,
           quantity: quantityToSend,
         })
       } else {
-        addToCart({ item: { ...item, quantity: quantityToSend }, quantity: quantityToSend })
+        addToCart({ item, quantity: quantityToSend })
       }
 
       toggleCartOpen()
     },
-    [addToCart, cart?.items, quantity, toggleCartOpen, updateQuantity]
+    [addToCart, cart?.items, product, quantity, toggleCartOpen, updateQuantity]
   )
 
-  const onChange = useCallback((newQuantity: number) => {
-    setQuantity(newQuantity)
-  }, [])
+  const handleAddToCart = useCallback(() => {
+    addToCart({ item: product, quantity })
+    toggleCartOpen()
+  }, [addToCart, product, quantity, toggleCartOpen])
 
   const badges = useMemo(
     () =>
@@ -62,7 +67,7 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
           {selectedProduct.badges.map(badge => (
             <div
               key={badge.name}
-              className="tooltip cursor-pointer capitalize"
+              className="tooltip tooltip-right tooltip-secondary cursor-pointer capitalize"
               data-tip={badge.name}
             >
               <Image
@@ -123,6 +128,13 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
 
   const handleAdd = useCallback(() => setQuantity(prev => prev + 1), [])
 
+  const handleChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+    const newQuantity = parseInt(event.target.value)
+    if (newQuantity >= MIN && newQuantity <= MAX) {
+      setQuantity(newQuantity)
+    }
+  }, [])
+
   const handleRemove = useCallback(() => setQuantity(prev => (prev === 1 ? 1 : prev - 1)), [])
 
   const dropdownOrNumberPicker = useMemo(
@@ -150,18 +162,21 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
       ) : (
         <NumberPicker
           handleAdd={handleAdd}
-          handleChange={onChange}
-          handleRemove={handleRemove}
-          initialValue={1}
+          handleChange={handleChange}
+          handleMinus={handleRemove}
+          max={MAX}
+          min={MIN}
+          value={quantity}
         />
       ),
     [
       changedVariation,
       handleAdd,
+      handleChange,
       handleDropdownChange,
       handleRemove,
-      onChange,
       product,
+      quantity,
       selectedSku,
       variationOptions,
       variationType,
@@ -171,17 +186,15 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
   const onClick = useCallback(() => {
     if (isCartProduct(product)) {
       handleQuantityChange(product, quantity)
+    } else {
+      handleAddToCart()
     }
-  }, [handleQuantityChange, product, quantity])
+  }, [handleAddToCart, handleQuantityChange, product, quantity])
 
-  return (
-    <div
-      className={`
-        relative grid grid-cols-3 rounded-lg p-4 shadow lg:grid-cols-none
-        lg:grid-rows-[19rem_1fr_auto] lg:p-6
-      `}
-    >
-      {badges}
+  const productImageDimensions = useMemo(() => ({ height: 304, width: 192 }), [])
+
+  const productImageLink = useMemo(
+    () => (
       <figure
         className={`
           relative flex h-full w-[10rem] items-center self-center justify-self-center lg:w-[12rem]
@@ -195,6 +208,7 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
               height={304}
               priority={priority}
               src={selectedProduct.pictureUrl}
+              style={productImageDimensions}
               width={192}
             />
           </Link>
@@ -203,13 +217,28 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
           <></>
         )}
       </figure>
+    ),
+    [priority, productImageDimensions, selectedProduct]
+  )
+
+  return (
+    <div
+      className={`
+        relative grid grid-cols-3 rounded-lg p-4 shadow lg:grid-cols-none
+        lg:grid-rows-[19rem_1fr_auto] lg:p-6
+      `}
+    >
+      {badges}
+      {productImageLink}
       <div className="col-span-2 grid grid-rows-[1fr_auto] lg:col-span-1">
         <div className="card-body gap-0 !p-0">
           <div className="grid h-full grid-rows-2">
             <div>
-              <div className="flex items-center justify-between text-sm text-neutral-500">
+              <div className="grid grid-cols-2 items-center justify-between text-sm text-neutral-500">
                 <span>{selectedProduct.attributes?.Varietal}</span>
-                <span>{selectedProduct.attributes?.['Container Size']}</span>
+                <span className="justify-self-end text-right">
+                  {selectedProduct.attributes?.['Container Size']}
+                </span>
               </div>
               <Link
                 className="card-title text-base font-semibold leading-normal"
@@ -234,17 +263,3 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
     </div>
   )
 }
-
-// const tastingNotes = useMemo(
-//   () =>
-//     selectedProduct.attributes?.['Tasting Notes']?.slice(0, 3).map(item => (
-//       <div
-//         key={item.name}
-//         className="tooltip cursor-pointer capitalize"
-//         data-tip={item.name.replaceAll('-', ' ')}
-//       >
-//         <Image alt={item.name} height={32} src={item.imageUrl} width={32} />
-//       </div>
-//     )),
-//   [selectedProduct.attributes]
-// )

@@ -1,5 +1,18 @@
 import { Failure } from '../types'
 
+export interface CartProductOrderLine {
+  ComparePrice: number
+  DisplayPrice: number
+  OrderID: number
+  OrderLineID: number
+  Price: number
+  ProductCartUrl: string
+  ProductDisplayName: string
+  ProductImage: string
+  ProductSKU: string
+  Quantity: number
+}
+
 export interface CartResponse {
   Success: boolean
   Data: {
@@ -8,16 +21,7 @@ export interface CartResponse {
     OrderDate: string
     EventDisplayID: string
     Subtotal: number
-    OrderLines: {
-      DisplayPrice: number
-      Price: number
-      Quantity: number
-      ProductDisplayName: string
-      ProductSKU: string
-      ProductImage: string
-      OrderLineID: number
-      OrderID: number
-    }[]
+    OrderLines: CartProductOrderLine[]
     DiscountTotals: {
       TotalDescription: string
       TotalAmount: number
@@ -30,6 +34,14 @@ interface CartModificationResponseSuccess {
   CartID: string
   Data: {
     Cart: CartResponse
+  }
+  data?: {
+    cart: {
+      OrderLines: CartProductOrderLine[]
+      Subtotal: number
+      SubtotalAfterSavings: number
+      TaxTotal: number
+    }
   }
 }
 

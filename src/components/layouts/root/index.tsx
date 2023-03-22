@@ -29,8 +29,8 @@ export const RootLayout = ({ children }: RootLayoutProps) => {
         <div
           className={clsx(
             `
-            invisible fixed inset-0 z-10 max-h-screen bg-black opacity-0 transition-all
-          `,
+              invisible fixed inset-0 z-10 max-h-screen bg-black opacity-0 transition-all
+            `,
             shaderVisible && '!visible opacity-50'
           )}
         />
@@ -41,7 +41,7 @@ export const RootLayout = ({ children }: RootLayoutProps) => {
       </div>
       <div className="drawer-side">
         <label className="drawer-overlay" htmlFor="cart-drawer"></label>
-        <div className="w-100 bg-neutral-100 p-4">
+        <div className="w-100 bg-neutral-100">
           <CartDrawer />
         </div>
       </div>

@@ -4,6 +4,7 @@ import { replaceItemByUniqueId } from '@/core/utils'
 
 import { api } from '../api'
 import { CART_QUERY_KEY, useCartQuery } from '../queries/cart'
+import { useProcessStore } from '../stores/process'
 import { Cart, CartProduct, DEFAULT_CART_STATE } from '../types'
 
 import { fetchSubtotalAndUpdateCart, getNewCartItems } from './helpers'
@@ -13,7 +14,7 @@ export interface AddToCartOptions {
   cartId?: string
   fetchSubtotal?: boolean
   originalCartItems: CartProduct[]
-  item: CartProduct
+  item: Omit<CartProduct, 'orderLineId' | 'orderId' | 'quantity'>
   quantity: number
 }
 
@@ -28,7 +29,11 @@ export const addToCart = async (options: AddToCartOptions) => {
   }).json<CartModificationResponse>()
 
   if (response.Success) {
-    const newItems = getNewCartItems(response.Data.Cart.Data.OrderLines, options.originalCartItems)
+    const newItems = getNewCartItems(
+      response.data?.cart.OrderLines || response.Data.Cart.Data.OrderLines,
+      options.originalCartItems,
+      options.item
+    )
     const itemAdded = newItems.find(item => item.sku === options.item.sku)
     let modifiedItems: CartProduct[] = newItems
     if (itemAdded) {
@@ -55,13 +60,14 @@ export const addToCart = async (options: AddToCartOptions) => {
       throw new Error('There was an issue calculating the total of your cart.')
     }
   } else {
-    throw new Error('You may only have a maximum of 24 of each product.')
+    throw new Error(response.Error.Message)
   }
 }
 
 export const useAddToCartMutation = () => {
   const { data } = useCartQuery()
   const queryClient = useQueryClient()
+  const { setIsMutatingCart } = useProcessStore()
 
   return useMutation<
     Cart | undefined,
@@ -84,6 +90,8 @@ export const useAddToCartMutation = () => {
         queryClient.setQueryData(CART_QUERY_KEY, context?.previousCart)
       },
       onMutate: async product => {
+        setIsMutatingCart(true)
+
         // Cancel any outgoing fetches.
         await queryClient.cancelQueries({ queryKey: CART_QUERY_KEY })
 
@@ -91,7 +99,7 @@ export const useAddToCartMutation = () => {
         const previousCart = queryClient.getQueryData<Cart | undefined>(CART_QUERY_KEY)
 
         // Optimistically update to the new value.
-        queryClient.setQueryData<Cart>(CART_QUERY_KEY, () => {
+        queryClient.setQueryData(CART_QUERY_KEY, () => {
           const existingItem = previousCart?.items.find(item => item.sku === product.item.sku)
 
           return previousCart !== undefined
@@ -102,7 +110,7 @@ export const useAddToCartMutation = () => {
                     ? replaceItemByUniqueId(
                         previousCart.items,
                         { field: 'sku', value: existingItem.sku },
-                        { ...existingItem, quantity: existingItem.quantity + 1 }
+                        { ...existingItem, quantity: product.quantity || existingItem.quantity + 1 }
                       )
                     : [...previousCart.items, product.item],
               }
@@ -110,6 +118,9 @@ export const useAddToCartMutation = () => {
         })
 
         return { previousCart }
+      },
+      onSettled: () => {
+        setIsMutatingCart(false)
       },
       onSuccess: data => {
         queryClient.setQueryData<Cart>(CART_QUERY_KEY, data)
