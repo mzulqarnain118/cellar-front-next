@@ -52,7 +52,7 @@ export const CartDrawer = () => {
   }, [toggleCartOpen])
 
   return (
-    <div className="relative flex h-screen w-screen flex-col lg:w-[40vw]">
+    <div className="relative flex h-full w-screen flex-col lg:w-[40vw]">
       <button
         className="btn-error btn-square btn-sm btn absolute top-3 right-3"
         onClick={toggleCartOpen}
