@@ -7,6 +7,8 @@ import { clsx } from 'clsx'
 
 type HeroBannerProps = SliceComponentProps<Content.RichContentPageDocumentDataBodyHeroBannerSlice>
 
+const imageDimensions = { height: 'auto', width: 'auto' }
+
 export const HeroBanner = ({ slice }: HeroBannerProps) => (
   <div
     className={`
@@ -28,7 +30,7 @@ export const HeroBanner = ({ slice }: HeroBannerProps) => (
         )}
       >
         <div className="flex flex-col items-center justify-center">
-          <PrismicNextImage field={slice.primary.logo} width={350} />
+          <PrismicNextImage field={slice.primary.logo} style={imageDimensions} width={350} />
           <section
             className="flex flex-col items-center text-center [&>*]:!normal-case"
             style={{ '--highlight': slice.primary.highlight_color || 'inherit' } as CSSProperties}

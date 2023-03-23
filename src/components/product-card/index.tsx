@@ -24,6 +24,8 @@ interface ProductCardProps {
 const isCartProduct = (product: AutoSipProduct | CartProduct): product is CartProduct =>
   'orderLineId' in product && 'orderId' in product && 'quantity' in product
 
+const productImageDimensions = { height: 'auto', width: 'auto' }
+
 export const ProductCard = ({ priority = false, product }: ProductCardProps) => {
   const [selectedProduct, setSelectedProduct] = useState(product)
   const [selectedSku, setSelectedSku] = useState(selectedProduct.sku)
@@ -191,8 +193,6 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
     }
   }, [handleAddToCart, handleQuantityChange, product, quantity])
 
-  const productImageDimensions = useMemo(() => ({ height: 304, width: 192 }), [])
-
   const productImageLink = useMemo(
     () => (
       <figure className="relative flex items-center self-center justify-self-center md:w-40">
@@ -214,7 +214,7 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
         )}
       </figure>
     ),
-    [priority, productImageDimensions, selectedProduct]
+    [priority, selectedProduct]
   )
 
   return (
