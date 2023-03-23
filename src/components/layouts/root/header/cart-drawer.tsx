@@ -61,56 +61,58 @@ export const CartDrawer = () => {
         <span className="sr-only">Close button</span>
       </button>
       <h1 className="h3 m-0 py-4 text-center">Your Cart</h1>
-      {cartItems !== undefined ? (
-        <div className="divide-y">
-          <div
-            className={`
+      <div className="flex-1">
+        {cartItems !== undefined ? (
+          <div className="divide-y">
+            <div
+              className={`
               flex w-full items-center justify-between pb-4
             `}
-          >
-            <div className="w-full space-y-1 px-4 text-center">
-              {difference > 0 ? (
-                <span>
-                  You are {formatCurrency(difference)} away from{' '}
-                  <span className="font-bold">FREE SHIPPING</span>
-                </span>
-              ) : (
-                <span>
-                  🎉 Cheers! You&apos;ve unlocked <span className="font-bold">FREE SHIPPING</span>!
-                </span>
-              )}
+            >
+              <div className="w-full space-y-1 px-4 text-center">
+                {difference > 0 ? (
+                  <span>
+                    You are {formatCurrency(difference)} away from{' '}
+                    <span className="font-bold">FREE SHIPPING</span>
+                  </span>
+                ) : (
+                  <span>
+                    🎉 Cheers! You&apos;ve unlocked <span className="font-bold">FREE SHIPPING</span>
+                    !
+                  </span>
+                )}
 
-              <div className="mb-4 h-5 w-full rounded-full bg-neutral-200">
-                <div
-                  className="h-5 rounded-full bg-brand"
-                  style={{ maxWidth: '100%', width: `${percentage}%` }}
-                ></div>
+                <div className="mb-4 h-5 w-full rounded-full bg-neutral-200">
+                  <div
+                    className="h-5 rounded-full bg-brand"
+                    style={{ maxWidth: '100%', width: `${percentage}%` }}
+                  ></div>
+                </div>
               </div>
             </div>
+            <div className="divide-y divide-neutral-200 overflow-y-auto px-4">{cartItems}</div>
           </div>
-          <div className="divide-y divide-neutral-200 overflow-y-auto px-4">{cartItems}</div>
-        </div>
-      ) : (
-        <div className="grid h-full grid-cols-1 grid-rows-1 items-center justify-items-center px-4">
-          <div className="flex flex-col items-center justify-center gap-1">
-            <span className="pb-2 text-lg">Your cart is empty!</span>
-            <Link
-              className={`
+        ) : (
+          <div className="grid h-full grid-cols-1 grid-rows-1 items-center justify-items-center px-4">
+            <div className="flex flex-col items-center justify-center gap-1">
+              <span className="pb-2 text-lg">Your cart is empty!</span>
+              <Link
+                className={`
                 btn-outline btn-secondary btn-sm btn inline-flex items-center justify-center gap-1
               `}
-              href={WINE_PAGE_PATH}
-              onClick={handleGoShoppingClick}
-            >
-              Go shopping
-              <ChevronRightIcon className="h-5 w-5" />
-            </Link>
+                href={WINE_PAGE_PATH}
+                onClick={handleGoShoppingClick}
+              >
+                Go shopping
+                <ChevronRightIcon className="h-5 w-5" />
+              </Link>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
       <div
         className={`
-          mt-auto flex h-max w-full items-center justify-between gap-10 self-end
-          border-t-2 border-neutral-100 p-4
+          flex w-full items-center justify-between gap-10 border-t-2 border-neutral-100 p-4
         `}
       >
         <div className="flex flex-col">
