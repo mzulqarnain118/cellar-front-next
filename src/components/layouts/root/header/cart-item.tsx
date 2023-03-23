@@ -1,4 +1,4 @@
-import { ChangeEvent, useCallback, useEffect, useState } from 'react'
+import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react'
 
 import Image from 'next/image'
 import Link from 'next/link'
@@ -115,6 +115,9 @@ export const CartItem = ({ product }: CartItemProps) => {
     }
   }, [handleQuantityChange, product, quantity, removeFromCart])
 
+  // TODO!: There is a bug in Next.js that requires the inline style to remove the console warning.
+  const imageDimensions = useMemo(() => ({ height: 128, width: 80 }), [])
+
   useEffect(() => {
     setQuantity(product.quantity || 1)
   }, [product.quantity])
@@ -125,16 +128,16 @@ export const CartItem = ({ product }: CartItemProps) => {
         <Link href={`/product/${product.cartUrl || ''}`}>
           <Image
             alt={product.displayName || 'Product'}
-            className="group h-auto w-20 self-center"
-            height={0}
-            sizes="100vw"
+            className="group h-32 w-20 self-center"
+            height={128}
             src={product.pictureUrl}
-            width={0}
+            style={imageDimensions}
+            width={80}
           />
         </Link>
       )}
       <div className="flex items-center justify-between">
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 px-1">
           <div className="flex flex-col">
             <div>
               <Link

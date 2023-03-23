@@ -49,9 +49,13 @@ export const ProductListing = ({
 
   const productCards = useMemo(
     () =>
-      data?.products.map((product, index) => (
-        <ProductCard key={product.sku} priority={index < 4} product={product} />
-      )),
+      data?.products !== undefined ? (
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {data.products.map((product, index) => (
+            <ProductCard key={product.sku} priority={index < 4} product={product} />
+          ))}
+        </div>
+      ) : undefined,
     [data?.products]
   )
 
@@ -192,9 +196,7 @@ export const ProductListing = ({
   return (
     <div className="flex flex-col gap-4">
       {paginationHeader}
-      <div className="grid grid-cols-1 gap-4 md:auto-rows-auto md:grid-cols-2 lg:grid-cols-4 lg:gap-6">
-        {productCards}
-      </div>
+      {productCards}
       {paginationFooter}
     </div>
   )

@@ -62,7 +62,7 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
 
   const badges = useMemo(
     () =>
-      selectedProduct.badges !== undefined && (
+      selectedProduct.badges !== undefined ? (
         <div className="absolute top-4 left-4 flex flex-col space-y-1 lg:space-y-2">
           {selectedProduct.badges.map(badge => (
             <div
@@ -80,7 +80,7 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
             </div>
           ))}
         </div>
-      ),
+      ) : undefined,
     [selectedProduct.badges]
   )
 
@@ -195,11 +195,7 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
 
   const productImageLink = useMemo(
     () => (
-      <figure
-        className={`
-          relative flex h-full w-[10rem] items-center self-center justify-self-center lg:w-[12rem]
-        `}
-      >
+      <figure className="relative flex items-center self-center justify-self-center md:w-40">
         {selectedProduct.pictureUrl !== undefined ? (
           <Link href={`/product/${selectedProduct.cartUrl}`}>
             <Image
@@ -222,19 +218,20 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
   )
 
   return (
-    <div
-      className={`
-        relative grid grid-cols-3 rounded-lg p-4 shadow lg:grid-cols-none
-        lg:grid-rows-[19rem_1fr_auto] lg:p-6
-      `}
-    >
-      {badges}
-      {productImageLink}
-      <div className="col-span-2 grid grid-rows-[1fr_auto] lg:col-span-1">
-        <div className="card-body gap-0 !p-0">
-          <div className="grid h-full grid-rows-2">
+    <div className="relative grid rounded-lg p-6 shadow md:gap-6">
+      <div className="justify-self-center">
+        {badges}
+        {productImageLink}
+      </div>
+      <div className="flex flex-col justify-between md:gap-4">
+        <div>
+          <div className="grid grid-rows-2">
             <div>
-              <div className="grid grid-cols-2 items-center justify-between text-sm text-neutral-500">
+              <div
+                className={`
+                  grid grid-cols-2 items-center justify-between text-sm text-neutral-500
+                `}
+              >
                 <span>{selectedProduct.attributes?.Varietal}</span>
                 <span className="justify-self-end text-right">
                   {selectedProduct.attributes?.['Container Size']}
@@ -247,13 +244,17 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
                 {selectedProduct.displayName}
               </Link>
             </div>
-            <div className="flex items-center justify-between">
+            <div
+              className={`
+                flex items-center justify-between md:flex-col md:items-start md:gap-2 md:pt-2
+              `}
+            >
               <Rating rating={Math.floor(Math.random() * 5) + 1} />
               <Price price={selectedProduct.price} onSalePrice={selectedProduct.onSalePrice} />
             </div>
           </div>
         </div>
-        <div className="card-actions items-center justify-between lg:mt-6">
+        <div className="flex items-center justify-between lg:mt-auto">
           {dropdownOrNumberPicker}
           <button className="btn-primary btn-sm btn lg:btn-md" onClick={onClick}>
             Add to Cart

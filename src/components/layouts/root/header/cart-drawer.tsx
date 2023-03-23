@@ -109,8 +109,8 @@ export const CartDrawer = () => {
       )}
       <div
         className={`
-          flex h-max w-full items-center justify-between gap-10 self-end border-t-2
-          border-neutral-100 p-4
+          mt-auto flex h-max w-full items-center justify-between gap-10 self-end
+          border-t-2 border-neutral-100 p-4
         `}
       >
         <div className="flex flex-col">

@@ -102,6 +102,7 @@
     @apply h-full;
     @apply text-neutral-900;
     @apply font-body;
+    @apply overflow-x-hidden;
   }
 
   * {
