@@ -1,7 +1,7 @@
 /** User-related paths. */
 export const HOME_PAGE_PATH = '/'
-export const SIGN_IN_PAGE_PATH = '/login'
-export const SIGNUP_PAGE_PATH = '/signup'
+export const SIGN_IN_PAGE_PATH = '/sign-in'
+export const CREATE_ACCOUNT_PAGE_PATH = '/create-account'
 export const CHECKOUT_PAGE_PATH = '/checkout'
 
 /** Purchasing paths. */

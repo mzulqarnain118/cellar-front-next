@@ -65,11 +65,14 @@ export const NumberPicker = ({
       <input
         ref={inputRef}
         aria-label="Product Quantity"
-        className={`
-          w-10 appearance-none border-neutral-100 border-y-transparent bg-neutral-50 p-0
-          text-center transition-all focus:border-y disabled:cursor-not-allowed
-          disabled:bg-neutral-100 disabled:text-neutral-200
-        `}
+        className={clsx(
+          `
+            w-10 appearance-none border-neutral-100 border-y-transparent bg-neutral-50 p-0
+            text-center transition-all focus:border-y disabled:cursor-not-allowed
+            disabled:bg-neutral-100 disabled:text-neutral-200
+          `,
+          disabled && 'disabled:bg-neutral-100 disabled:text-neutral-200'
+        )}
         disabled={disabled}
         inputMode="numeric"
         max={max}

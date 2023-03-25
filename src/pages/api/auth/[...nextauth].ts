@@ -2,7 +2,7 @@ import NextAuth, { NextAuthOptions } from 'next-auth'
 
 import CredentialsProvider from 'next-auth/providers/credentials'
 
-import { api } from '@/lib/api'
+import { noHooksApi } from '@/lib/api'
 import { CORPORATE_CONSULTANT_ID } from '@/lib/constants'
 import { SIGN_IN_PAGE_PATH } from '@/lib/paths'
 import { useConsultantStore } from '@/lib/stores/consultant'
@@ -141,7 +141,7 @@ export const authOptions: NextAuthOptions = {
 
         let user: User | null = null
         try {
-          const response = await api('CustomLogin', {
+          const response = await noHooksApi('CustomLogin', {
             json: payload,
             method: 'post',
           })
@@ -151,16 +151,16 @@ export const authOptions: NextAuthOptions = {
 
             if (loginData.result) {
               const headers = { Authorization: `Bearer ${loginData.data.token}` }
-              const personPortalInfo = await api('Person/GetPersonPortalInfo', {
+              const personPortalInfo = await noHooksApi('Person/GetPersonPortalInfo', {
                 headers,
               }).json<GetPersonPortalInfoResponse>()
 
-              void api('v2/SetOrderOwner', {
+              void noHooksApi('v2/SetOrderOwner', {
                 headers,
                 json: { cartId: '' },
                 method: 'POST',
               }).json()
-              const clubInfo = await api(`clubs/${personPortalInfo.DisplayID}`, {
+              const clubInfo = await noHooksApi(`clubs/${personPortalInfo.DisplayID}`, {
                 headers,
               }).json<GetClubInfoResponse>()
 
@@ -233,7 +233,7 @@ export const authOptions: NextAuthOptions = {
                 setConsultant(consultantStateData)
               }
 
-              const curatedCartInfo = await api('orders/getcustomerordersforwebsite', {
+              const curatedCartInfo = await noHooksApi('orders/getcustomerordersforwebsite', {
                 json: {
                   ConsultantDisplayID:
                     consultant.displayId !== CORPORATE_CONSULTANT_ID
@@ -280,7 +280,8 @@ export const authOptions: NextAuthOptions = {
             }
           }
           return { id: user?.displayId || '', user }
-        } catch {
+        } catch (error) {
+          // console.log('error', error)
           return null
         }
       },

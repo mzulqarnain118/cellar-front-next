@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 
 import { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next'
 import { NextSeo } from 'next-seo'
@@ -6,7 +6,7 @@ import { NextSeo } from 'next-seo'
 import { useRouter } from 'next/router'
 
 import { dehydrate } from '@tanstack/react-query'
-import { signIn } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 
 import { HOME_PAGE_PATH } from '@/lib/paths'
 import { getStaticNavigation } from '@/lib/queries/header'
@@ -23,6 +23,7 @@ export const getStaticProps: GetStaticProps = async ({ previewData }) => {
 type PageProps = InferGetStaticPropsType<typeof getStaticProps>
 
 const SignInPage: NextPage<PageProps> = () => {
+  const { data: session } = useSession()
   const router = useRouter()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -31,6 +32,16 @@ const SignInPage: NextPage<PageProps> = () => {
     e.preventDefault()
     await signIn('sign-in', { email, password, redirect: false })
     router.push(HOME_PAGE_PATH)
+  }
+
+  useEffect(() => {
+    if (session?.user) {
+      router.push(HOME_PAGE_PATH)
+    }
+  }, [router, session])
+
+  if (session?.user) {
+    return <></>
   }
 
   return (

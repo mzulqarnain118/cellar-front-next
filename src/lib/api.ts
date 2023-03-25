@@ -43,4 +43,8 @@ export const api = ky.create({ prefixUrl: `${baseApiUrl}/api` }).extend({
   timeout: 15000, // 15 seconds.
 })
 
+export const noHooksApi = ky.create({ prefixUrl: `${baseApiUrl}/api` }).extend({
+  timeout: 15000, // 15 seconds.
+})
+
 export const localApi = ky.create({ prefixUrl: `${process.env.NEXT_PUBLIC_APP_URL}/api` })
