@@ -1,7 +1,7 @@
 import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react'
 
+import dynamic from 'next/dynamic'
 import Image from 'next/image'
-import Link from 'next/link'
 
 import { Price } from '@/components/price'
 import { NumberPicker } from '@/core/components/number-picker'
@@ -11,6 +11,10 @@ import { useUpdateQuantityMutation } from '@/lib/mutations/update-quantity'
 import { useCartQuery } from '@/lib/queries/cart'
 import { useProcessStore } from '@/lib/stores/process'
 import { CartProduct } from '@/lib/types'
+
+const Link = dynamic(() => import('src/components/link').then(module => module.Link), {
+  ssr: false,
+})
 
 const MIN = 1
 const MAX = 24

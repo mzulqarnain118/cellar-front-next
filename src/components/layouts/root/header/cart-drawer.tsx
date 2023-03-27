@@ -1,6 +1,6 @@
 import { MouseEventHandler, useCallback, useMemo } from 'react'
 
-import Link from 'next/link'
+import dynamic from 'next/dynamic'
 
 import { ChevronRightIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { clsx } from 'clsx'
@@ -10,6 +10,10 @@ import { formatCurrency } from '@/core/utils'
 import { WINE_PAGE_PATH } from '@/lib/paths'
 import { useCartQuery } from '@/lib/queries/cart'
 import { useProcessStore } from '@/lib/stores/process'
+
+const Link = dynamic(() => import('src/components/link').then(module => module.Link), {
+  ssr: false,
+})
 
 import { CartItem } from './cart-item'
 

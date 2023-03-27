@@ -6,6 +6,7 @@ import { AdjustmentsHorizontalIcon } from '@heroicons/react/24/outline'
 
 import { usePaginatedProducts } from '@/lib/queries/products'
 
+import { Link } from '../link'
 import { ProductCard } from '../product-card'
 
 interface ProductListingProps {
@@ -33,19 +34,19 @@ export const ProductListing = ({
 
   const { data, isError, isFetching, isLoading, isPreviousData } = usePaginatedProducts(options)
 
-  const updateRouter = useCallback(
-    () => router.push(`${router.pathname}?page=${page}&sort=${sort}`, undefined, { shallow: true }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [page, sort]
-  )
+  // const updateRouter = useCallback(
+  //   () => router.push(`${router.pathname}?page=${page}&sort=${sort}`, undefined, { shallow: true }),
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  //   [page, sort]
+  // )
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
       window.scrollTo({ behavior: 'smooth', top: 0 })
     }
 
-    updateRouter()
-  }, [page, updateRouter])
+    // updateRouter()
+  }, [page])
 
   const productCards = useMemo(
     () =>
@@ -66,8 +67,8 @@ export const ProductListing = ({
       return newPage
     })
 
-    updateRouter()
-  }, [setPage, updateRouter])
+    // updateRouter()
+  }, [setPage])
 
   const handleNextPageClick = useCallback(() => {
     if (!!data?.totalNumberOfPages && !isPreviousData && page <= data.totalNumberOfPages) {
@@ -77,9 +78,23 @@ export const ProductListing = ({
         return newPage
       })
 
-      updateRouter()
+      // updateRouter()
     }
-  }, [data?.totalNumberOfPages, isPreviousData, page, updateRouter])
+  }, [data?.totalNumberOfPages, isPreviousData, page])
+
+  const nextPageHref = useMemo(
+    () => ({
+      pathname: router.pathname,
+      // search: `?categories=16&limit=16&page=${page + 1}&sort=${sort}`,
+      query: {
+        categories: '16',
+        limit: '16',
+        page: page + 1,
+        sort,
+      },
+    }),
+    [page, router.pathname, sort]
+  )
 
   const paginationFooter = useMemo(
     () => (
@@ -103,9 +118,17 @@ export const ProductListing = ({
         >
           »
         </button>
+        <Link href={nextPageHref}>»</Link>
       </div>
     ),
-    [data?.totalNumberOfPages, handleNextPageClick, handlePreviousPageClick, isPreviousData, page]
+    [
+      data?.totalNumberOfPages,
+      handleNextPageClick,
+      handlePreviousPageClick,
+      isPreviousData,
+      nextPageHref,
+      page,
+    ]
   )
 
   const paginationHeader = useMemo(

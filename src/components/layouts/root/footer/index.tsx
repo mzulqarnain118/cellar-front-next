@@ -1,7 +1,11 @@
-import Link from 'next/link'
+import dynamic from 'next/dynamic'
 
 import { CompanyLogo } from '@/components/company-logo'
 import { HOME_PAGE_PATH } from '@/lib/paths'
+
+const Link = dynamic(() => import('src/components/link').then(module => module.Link), {
+  ssr: false,
+})
 
 export const Footer = () => (
   // ! TODO: Fetch data from Prismic

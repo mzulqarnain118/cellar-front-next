@@ -1,4 +1,8 @@
-import Link from 'next/link'
+import dynamic from 'next/dynamic'
+
+const Link = dynamic(() => import('src/components/link').then(module => module.Link), {
+  ssr: false,
+})
 
 export const SkipLink = () => (
   <Link

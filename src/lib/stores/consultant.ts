@@ -6,6 +6,7 @@ import { Consultant } from '../types'
 
 interface ConsultantStore {
   consultant: Consultant
+  resetConsultant: () => void
   setConsultant: (consultant: Consultant) => void
 }
 
@@ -19,6 +20,7 @@ export const useConsultantStore = create<ConsultantStore>()(
   persist(
     set => ({
       consultant: DEFAULT_CONSULTANT_STATE,
+      resetConsultant: () => set({ consultant: DEFAULT_CONSULTANT_STATE }),
       setConsultant: (consultant: Consultant) => set({ consultant }),
     }),
     { name: 'consultant' }

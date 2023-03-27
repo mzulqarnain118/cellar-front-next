@@ -7,6 +7,7 @@ import { CORPORATE_CONSULTANT_ID } from '@/lib/constants'
 import { SIGN_IN_PAGE_PATH } from '@/lib/paths'
 import { useConsultantStore } from '@/lib/stores/consultant'
 import { useCuratedCartStore } from '@/lib/stores/curated-cart'
+import { useShippingStateStore } from '@/lib/stores/shipping-state'
 import { Consultant, User } from '@/lib/types'
 
 interface LoginResponse {
@@ -164,14 +165,18 @@ export const authOptions: NextAuthOptions = {
                 headers,
               }).json<GetClubInfoResponse>()
 
-              const userStateData = {
+              const { shippingState } = useShippingStateStore.getState()
+              const userStateData: User = {
                 displayId: personPortalInfo.DisplayID,
                 email: loginData.data.user.Email,
+                fullName: `${personPortalInfo.FirstName} ${personPortalInfo.LastName}`,
                 isClubMember: clubInfo.is_club_member,
+                isGuest: false,
                 name: {
                   first: personPortalInfo.FirstName,
                   last: personPortalInfo.LastName,
                 },
+                shippingState,
                 token: loginData.data.token,
                 username: loginData.data.user.Username,
               }
@@ -277,11 +282,15 @@ export const authOptions: NextAuthOptions = {
               //   await navigate('/')
               // }
               // }
+            } else {
+              return null
             }
+          } else {
+            return null
           }
           return { id: user?.displayId || '', user }
         } catch (error) {
-          // console.log('error', error)
+          // ! TODO: Handle error.
           return null
         }
       },

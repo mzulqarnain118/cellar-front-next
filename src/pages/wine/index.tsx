@@ -8,7 +8,7 @@ import { dehydrate } from '@tanstack/react-query'
 import { ProductListing } from '@/components/product-listing'
 import { DISPLAY_CATEGORY } from '@/lib/constants/display-category'
 import { getStaticNavigation } from '@/lib/queries/header'
-import { getPaginatedProducts, PAGINATED_PRODUCTS_QUERY_KEY } from '@/lib/queries/products'
+import { PAGINATED_PRODUCTS_QUERY_KEY, getPaginatedProducts } from '@/lib/queries/products'
 
 import { createClient } from 'prismic-io'
 
@@ -26,7 +26,10 @@ export const getServerSideProps: GetServerSideProps = async ({ previewData, quer
   ])
 
   await queryClient.prefetchQuery(
-    [...PAGINATED_PRODUCTS_QUERY_KEY, JSON.stringify({ categories, page, sort: 'relevant' })],
+    [
+      ...PAGINATED_PRODUCTS_QUERY_KEY,
+      JSON.stringify({ categories, limit: 16, page, sort: 'relevant' }),
+    ],
     getPaginatedProducts
   )
 

@@ -1,6 +1,6 @@
 import { Fragment, useCallback, useEffect, useMemo, useRef } from 'react'
 
-import Link from 'next/link'
+import dynamic from 'next/dynamic'
 
 import { Popover, Transition } from '@headlessui/react'
 import {
@@ -19,6 +19,11 @@ import { useCartQuery } from '@/lib/queries/cart'
 import { useProcessStore } from '@/lib/stores/process'
 
 import { Navigation } from './navigation'
+
+const Link = dynamic(() => import('src/components/link').then(module => module.Link), {
+  ssr: false,
+})
+
 interface DesktopMenuProps {
   className?: string
 }

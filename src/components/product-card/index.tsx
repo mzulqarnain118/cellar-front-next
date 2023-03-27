@@ -1,7 +1,7 @@
 import { ChangeEvent, Fragment, useCallback, useMemo, useState } from 'react'
 
+import dynamic from 'next/dynamic'
 import Image from 'next/image'
-import Link from 'next/link'
 
 import { NumberPicker } from '@/core/components/number-picker'
 import { useAddToCartMutation } from '@/lib/mutations/add-to-cart'
@@ -12,6 +12,10 @@ import { AutoSipProduct, CartProduct } from '@/lib/types'
 
 import { Price } from '../price'
 import { Rating } from '../rating'
+
+const Link = dynamic(() => import('src/components/link').then(module => module.Link), {
+  ssr: false,
+})
 
 const MIN = 1
 const MAX = 24

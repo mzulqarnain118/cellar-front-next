@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 
+import dynamic from 'next/dynamic'
 import Image from 'next/image'
-import Link from 'next/link'
 
 import { Bars3Icon, ShoppingCartIcon, UserIcon } from '@heroicons/react/24/outline'
 import { clsx } from 'clsx'
@@ -10,6 +10,10 @@ import { Search } from '@/components/search'
 import { HOME_PAGE_PATH } from '@/lib/paths'
 import { useCartQuery } from '@/lib/queries/cart'
 import { useProcessStore } from '@/lib/stores/process'
+
+const Link = dynamic(() => import('src/components/link').then(module => module.Link), {
+  ssr: false,
+})
 
 interface MobileMenuProps {
   className?: string

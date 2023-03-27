@@ -1,0 +1,79 @@
+import { useState } from 'react'
+
+import { clsx } from 'clsx'
+import { FieldValues, useController } from 'react-hook-form'
+
+import { DateOfBirthProps } from './types'
+
+export const Day = <T extends FieldValues>({ setFocus, ...rest }: DateOfBirthProps<T>) => {
+  const {
+    field,
+    formState: { errors },
+  } = useController(rest)
+  const [value, setValue] = useState('')
+  const error = errors.month?.message || errors.day?.message || errors.year?.message
+
+  const slash = (
+    <span
+      className={clsx(
+        `
+          inline-flex items-center justify-center text-xl text-[#828282] transition-all
+          duration-500 md:h-10 md:bg-[#EFEFEF]
+        `,
+        !!error && '!border-red-700'
+      )}
+    >
+      /
+    </span>
+  )
+
+  return (
+    <>
+      {slash}
+      <input
+        className={clsx(
+          `
+            h-10 rounded-lg !rounded-l-none !rounded-r-none border-none bg-[#EFEFEF]
+            text-center !outline-none transition-all duration-500 placeholder:text-[#7C7C7C]
+            md:w-14
+          `,
+          !!error && '!border-red-700'
+        )}
+        id="day"
+        inputMode="numeric"
+        placeholder="dd"
+        type="text"
+        {...field}
+        value={value}
+        onChange={event => {
+          field.onChange(event)
+
+          const input = event.target.value
+          const isNumber = !isNaN(+input)
+          const firstNumber = parseInt(input.at(0) || '-1')
+          const secondNumber = parseInt(input.at(1) || '-1')
+
+          if (input.length === 0) {
+            setFocus('month')
+          }
+
+          if (isNumber && firstNumber <= 3 && input.length <= 2) {
+            if (
+              (firstNumber === 0 && secondNumber === 0) ||
+              (firstNumber === 3 && secondNumber > 1)
+            ) {
+              return
+            }
+
+            setValue(input)
+
+            if (input.length === 2) {
+              setFocus('year')
+            }
+          }
+        }}
+      />
+      {slash}
+    </>
+  )
+}

@@ -5,6 +5,7 @@ module.exports = {
   content: [
     './src/pages/**/*.{ts,tsx}',
     './src/components/**/*.{ts,tsx}',
+    './src/features/**/*.{ts,tsx}',
     './src/core/components/**/*.{ts,tsx}',
   ],
   daisyui: {
@@ -13,7 +14,7 @@ module.exports = {
         theme: {
           accent: '#826145',
           'base-100': '#f8fcfc',
-          error: '#e97c78',
+          error: '#e84e48',
           ghost: '#f5f5f5',
           info: '#3176bd',
           neutral: '#151215',
@@ -58,7 +59,7 @@ module.exports = {
           900: '#464c2c',
           DEFAULT: '#464C2C',
         },
-        error: '#e97c78',
+        error: '#e84e48',
         ghost: '#f5f5f5',
         info: '#3176bd',
         neutral: {

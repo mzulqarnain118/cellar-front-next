@@ -1,5 +1,18 @@
+import { State } from './state'
+
 export interface User {
   displayId: string
+  dateOfBirth?: Date
+  email: string
+  fullName: string
+  isClubMember: boolean
+  name: {
+    first: string
+    last: string
+  }
+  isGuest: boolean
+  shippingState: State
+  token: string
   tokenDetails?: {
     accessToken: string
     issued: string
@@ -8,12 +21,5 @@ export interface User {
     refreshToken: string
     refreshTokenExpires: string
   }
-  email: string
   username?: string
-  name: {
-    first: string
-    last: string
-  }
-  isClubMember: boolean
-  dateOfBirth?: Date
 }
