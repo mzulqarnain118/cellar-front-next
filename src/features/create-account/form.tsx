@@ -19,12 +19,7 @@ import { CORPORATE_CONSULTANT_ID } from '@/lib/constants'
 import { useCreateAccountMutation } from '@/lib/mutations/create-account'
 import { useGuestSignInMutation } from '@/lib/mutations/guest-sign-in'
 import { ValidateEmail, useValidateEmailMutation } from '@/lib/mutations/validate-email'
-import {
-  CREATE_ACCOUNT_PAGE_PATH,
-  FORGOT_PASSWORD_PAGE_PATH,
-  HOME_PAGE_PATH,
-  SIGN_IN_PAGE_PATH,
-} from '@/lib/paths'
+import { HOME_PAGE_PATH, SIGN_IN_PAGE_PATH } from '@/lib/paths'
 import { useCartQuery } from '@/lib/queries/cart'
 import { useConsultantStore } from '@/lib/stores/consultant'
 
@@ -244,16 +239,16 @@ export const CreateAccountForm = () => {
       } else {
         createAccount(payload)
 
-        if (
-          payload.redirection !== undefined &&
-          payload.redirection !== SIGN_IN_PAGE_PATH &&
-          payload.redirection !== CREATE_ACCOUNT_PAGE_PATH &&
-          payload.redirection !== FORGOT_PASSWORD_PAGE_PATH
-        ) {
-          router.push(payload.redirection)
-        } else {
-          router.push(HOME_PAGE_PATH)
-        }
+        // if (
+        //   payload.redirection !== undefined &&
+        //   payload.redirection !== SIGN_IN_PAGE_PATH &&
+        //   payload.redirection !== CREATE_ACCOUNT_PAGE_PATH &&
+        //   payload.redirection !== FORGOT_PASSWORD_PAGE_PATH
+        // ) {
+        //   router.push(payload.redirection)
+        // } else {
+        //   router.push(HOME_PAGE_PATH)
+        // }
       }
     } finally {
       setIsLoading(false)

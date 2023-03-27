@@ -94,12 +94,24 @@ const SignInPage: NextPage<PageProps> = () => {
 
   const onSubmit: SubmitHandler<SignInSchema> = useCallback(
     async ({ email, password }) => {
-      setIsLoading(true)
-      const response = await signIn('sign-in', { email, password, redirect: false })
+      try {
+        setIsLoading(true)
+        const response = await signIn('sign-in', { email, password, redirect: false })
 
-      if (response?.ok) {
-        router.push(HOME_PAGE_PATH)
-      } else {
+        if (response?.ok) {
+          router.push(HOME_PAGE_PATH)
+        } else {
+          setError('email', {
+            message: 'Invalid email or password.',
+            type: 'invalid',
+          })
+          setError('password', {
+            message: 'Invalid email or password.',
+            type: 'invalid',
+          })
+        }
+      } catch (error) {
+        // ! TODO: Handle error.
         setError('email', {
           message: 'Invalid email or password.',
           type: 'invalid',
@@ -108,8 +120,9 @@ const SignInPage: NextPage<PageProps> = () => {
           message: 'Invalid email or password.',
           type: 'invalid',
         })
+      } finally {
+        setIsLoading(false)
       }
-      setIsLoading(false)
     },
     [router, setError]
   )

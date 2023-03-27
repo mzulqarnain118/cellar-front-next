@@ -156,10 +156,10 @@ export const authOptions: NextAuthOptions = {
                 headers,
               }).json<GetPersonPortalInfoResponse>()
 
-              void noHooksApi('v2/SetOrderOwner', {
+              await noHooksApi('v2/SetOrderOwner', {
                 headers,
                 json: { cartId: '' },
-                method: 'POST',
+                method: 'post',
               }).json()
               const clubInfo = await noHooksApi(`clubs/${personPortalInfo.DisplayID}`, {
                 headers,
