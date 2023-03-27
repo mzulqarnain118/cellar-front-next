@@ -151,7 +151,10 @@ export const authOptions: NextAuthOptions = {
             const loginData = await response.json<LoginResponse>()
 
             if (loginData.result) {
-              const headers = { Authorization: `Bearer ${loginData.data.token}` }
+              const headers = {
+                Authorization: `Bearer ${loginData.data.token}`,
+                SCAuth: process.env.NEXT_PUBLIC_TOWER_API_KEY,
+              }
               const personPortalInfo = await noHooksApi('Person/GetPersonPortalInfo', {
                 headers,
               }).json<GetPersonPortalInfoResponse>()

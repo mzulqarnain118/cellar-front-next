@@ -133,7 +133,7 @@ export const useCreateAccountMutation = () => {
           setUser(prev => ({ ...prev, ...userStateData, shippingState: prev.shippingState }))
           setConsultant(consultantStateData)
 
-          await signIn('sign-in', { callback: redirection, email, password, redirect: false })
+          await signIn('sign-in', { callbackUrl: redirection, email, password, redirect: false })
 
           // const curatedCartInfo = await getCuratedCartInfo({
           //   consultantDisplayId,
