@@ -16,7 +16,7 @@ import { FormProvider, SubmitHandler, UseFormProps, useForm } from 'react-hook-f
 import { z } from 'zod'
 
 import { CORPORATE_CONSULTANT_ID } from '@/lib/constants'
-import { useCreateAccountMutation } from '@/lib/mutations/create-account'
+import { CreateAccountOptions, useCreateAccountMutation } from '@/lib/mutations/create-account'
 import { useGuestSignInMutation } from '@/lib/mutations/guest-sign-in'
 import { ValidateEmail, useValidateEmailMutation } from '@/lib/mutations/validate-email'
 import { HOME_PAGE_PATH, SIGN_IN_PAGE_PATH } from '@/lib/paths'
@@ -145,7 +145,7 @@ export type CreateAccountSchema = z.infer<typeof createAccountSchema>
 export const CreateAccountForm = () => {
   const { data: cart } = useCartQuery()
   const { consultant } = useConsultantStore()
-  const { mutate: guestSignIn } = useGuestSignInMutation()
+  const { isLoading, mutate: guestSignIn } = useGuestSignInMutation()
 
   const defaultValues: Partial<CreateAccountSchema> = useMemo(
     () => ({
@@ -186,7 +186,6 @@ export const CreateAccountForm = () => {
   const [isExistingCustomer, setIsExistingCustomer] = useState(false)
   const [fullName, setFullName] = useState('')
   const [isGuest, setIsGuest] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
   const [isValidatingEmail, setIsValidatingEmail] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
 
@@ -199,59 +198,47 @@ export const CreateAccountForm = () => {
     password,
     year,
   }) => {
-    try {
-      setIsLoading(true)
-      setValue('consultant', consultant?.displayName)
+    setValue('consultant', consultant?.displayName)
 
-      if (isGuest) {
-        guestSignIn({
-          cartId: cart?.id || '',
-          createAccount: true,
-          dateOfBirth: { day, month, year },
-          email,
-          firstName,
-          lastName,
-          password,
-        })
-      }
-
-      const dateOfBirth = isGuest ? `${year}-${month}-${day}` : `${month}/${day}/${year}`
-      const payload = {
-        dateOfBirth,
+    if (isGuest) {
+      guestSignIn({
+        cartId: cart?.id || '',
+        createAccount: true,
+        dateOfBirth: { day, month, year },
         email,
         firstName,
-        isGuest,
         lastName,
         password,
-        redirection: HOME_PAGE_PATH,
-      }
+      })
+    }
 
-      // generateSimpleGtmEvent('GA-Create-Account-Clicked')
+    const dateOfBirth = isGuest ? `${year}-${month}-${day}` : `${month}/${day}/${year}`
+    const payload: CreateAccountOptions = {
+      callback: () => {
+        // ! TODO: Create user welcome page.
+        router.push(HOME_PAGE_PATH)
+      },
+      dateOfBirth,
+      email,
+      firstName,
+      isGuest,
+      lastName,
+      password,
+      redirection: HOME_PAGE_PATH,
+    }
 
-      // if (consultant.displayName) {
-      //   generateGtmEventWithData('GA-Signed-Up-With-Consultant', {
-      //     signUpConsultantname: consultant.displayName,
-      //   })
-      // }
+    // generateSimpleGtmEvent('GA-Create-Account-Clicked')
 
-      if (isGuest) {
-        await router.push(HOME_PAGE_PATH)
-      } else {
-        createAccount(payload)
+    // if (consultant.displayName) {
+    //   generateGtmEventWithData('GA-Signed-Up-With-Consultant', {
+    //     signUpConsultantname: consultant.displayName,
+    //   })
+    // }
 
-        // if (
-        //   payload.redirection !== undefined &&
-        //   payload.redirection !== SIGN_IN_PAGE_PATH &&
-        //   payload.redirection !== CREATE_ACCOUNT_PAGE_PATH &&
-        //   payload.redirection !== FORGOT_PASSWORD_PAGE_PATH
-        // ) {
-        //   router.push(payload.redirection)
-        // } else {
-        //   router.push(HOME_PAGE_PATH)
-        // }
-      }
-    } finally {
-      setIsLoading(false)
+    if (isGuest) {
+      await router.push(HOME_PAGE_PATH)
+    } else {
+      createAccount(payload)
     }
   }
 

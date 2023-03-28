@@ -8,7 +8,8 @@ import { useConsultantStore } from '../stores/consultant'
 import { useUserStore } from '../stores/user'
 import { Consultant } from '../types'
 
-interface SignUpOptions {
+export interface CreateAccountOptions {
+  callback?: () => void
   cartId?: string
   consultantDisplayId?: string
   dateOfBirth: string
@@ -16,6 +17,7 @@ interface SignUpOptions {
   firstName: string
   lastName: string
   password: string
+  isGuest: boolean
   redirection?: string
 }
 
@@ -53,7 +55,7 @@ interface GetClubInfoResponse {
 
 const SET_ORDER_PERSON_URL = 'v2/SetOrderOwner'
 
-const createAccount = async (data: SignUpOptions) =>
+const createAccount = async (data: CreateAccountOptions) =>
   await api('shop/cartSignup', {
     json: {
       DateOfBirth: data.dateOfBirth,
@@ -73,14 +75,13 @@ export const useCreateAccountMutation = () => {
   const { consultant, setConsultant } = useConsultantStore()
   const { setUser } = useUserStore()
 
-  return useMutation<SignUpResponse, Error, SignUpOptions>(
+  return useMutation<SignUpResponse, Error, CreateAccountOptions>(
     ['create-account'],
     options =>
       createAccount({ ...options, cartId: cart?.id, consultantDisplayId: consultant.displayId }),
     {
-      onSuccess: async (signUpData, { email, password, redirection }) => {
+      onSuccess: async (signUpData, { callback, email, password, redirection }) => {
         if (!signUpData?.data) {
-          // setIsLoading(false)
           // showErrorNotification('There was an error creating your account.')
           return
         }
@@ -133,8 +134,6 @@ export const useCreateAccountMutation = () => {
           setUser(prev => ({ ...prev, ...userStateData, shippingState: prev.shippingState }))
           setConsultant(consultantStateData)
 
-          await signIn('sign-in', { callbackUrl: redirection, email, password, redirect: false })
-
           // const curatedCartInfo = await getCuratedCartInfo({
           //   consultantDisplayId,
           //   userDisplayId: signUpData.data.user.DisplayID,
@@ -155,6 +154,12 @@ export const useCreateAccountMutation = () => {
           //   displayName: `${userStateData.name.first} ${userStateData.name.last}`,
           //   email: userStateData.email,
           // })
+
+          await signIn('sign-in', { callbackUrl: redirection, email, password, redirect: false })
+
+          if (callback !== undefined) {
+            callback()
+          }
         }
       },
     }
