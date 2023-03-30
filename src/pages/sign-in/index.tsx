@@ -99,7 +99,7 @@ const SignInPage: NextPage<PageProps> = () => {
         const response = await signIn('sign-in', { email, password, redirect: false })
 
         if (response?.ok) {
-          router.push(HOME_PAGE_PATH)
+          await router.push(HOME_PAGE_PATH)
         } else {
           setError('email', {
             message: 'Invalid email or password.',
@@ -131,10 +131,10 @@ const SignInPage: NextPage<PageProps> = () => {
   const { ref: passwordFormRef, ...passwordRegister } = register('password')
 
   useEffect(() => {
-    if (session?.user !== undefined) {
+    if (!isLoading && session?.user !== undefined) {
       router.push(HOME_PAGE_PATH)
     }
-  }, [router, session])
+  }, [isLoading, router, session])
 
   if (session?.user) {
     return <></>
