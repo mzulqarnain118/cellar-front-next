@@ -1,3 +1,5 @@
+import { ParsedUrlQueryInput } from 'querystring'
+
 import { useMemo } from 'react'
 
 import NextLink, { LinkProps } from 'next/link'
@@ -10,15 +12,28 @@ type Props = Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, keyof LinkProps
     children?: React.ReactNode
   } & React.RefAttributes<HTMLAnchorElement>
 
+const isParsedQueryInput = (
+  query: string | ParsedUrlQueryInput | null | undefined
+): query is ParsedUrlQueryInput =>
+  query !== undefined && query !== null && typeof query === 'object' && typeof query !== 'string'
+
 export const Link = ({ href: initialHref, ...rest }: Props) => {
   const { consultant } = useConsultantStore()
 
   const href = useMemo(() => {
-    const pathname = initialHref.toString()
+    const pathname = typeof initialHref === 'string' ? initialHref : initialHref.pathname || ''
+    const query = typeof initialHref === 'string' ? undefined : initialHref.query
 
     if (pathname.includes('#')) {
       return {
         pathname,
+      }
+    }
+
+    if (isParsedQueryInput(query)) {
+      return {
+        pathname,
+        query: { ...query },
       }
     }
 
