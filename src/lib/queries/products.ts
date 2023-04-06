@@ -10,6 +10,13 @@ import {
 
 export const PRODUCTS_QUERY_KEY = ['products']
 
+interface Data {
+  categories: number[]
+  limit?: number
+  page: number
+  sort: 'relevant' | 'price-low-high' | 'price-high-low'
+}
+
 export const getAllProducts: QueryFunction<ProductsSchema[] | undefined> = async () => {
   const response = await localApi('products/all')
   const result = (await response.json()) as ProductsResponse
@@ -34,7 +41,7 @@ export const getPaginatedProducts: QueryFunction<
   PaginatedProductsSchema | undefined,
   string[]
 > = async ({ queryKey }) => {
-  const data = JSON.parse(queryKey[1])
+  const data = JSON.parse(queryKey[1]) as Record<string, string>
   const params = new URLSearchParams(data).toString()
   const response = await localApi(`products${params ? `?${params}` : ''}`)
 
@@ -62,12 +69,7 @@ export const useProductQuery = (cartUrl: string) =>
   })
 
 export const PAGINATED_PRODUCTS_QUERY_KEY = ['paginated-products']
-export const usePaginatedProducts = (data: {
-  categories: number[]
-  limit?: number
-  page: number
-  sort: 'relevant' | 'price-low-high' | 'price-high-low'
-}) =>
+export const usePaginatedProducts = (data: Data) =>
   useQuery({
     keepPreviousData: true,
     queryFn: getPaginatedProducts,

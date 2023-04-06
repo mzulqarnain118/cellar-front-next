@@ -30,6 +30,9 @@ module.exports = {
     require('@tailwindcss/forms')({
       strategy: 'class',
     }),
+    require('tailwindcss/plugin')(({ addVariant }) => {
+      addVariant('search-cancel', '&::-webkit-search-cancel-button')
+    }),
     require('@tailwindcss/typography'),
     require('daisyui'),
     require('@headlessui/tailwindcss'),

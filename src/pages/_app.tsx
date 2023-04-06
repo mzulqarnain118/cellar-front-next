@@ -7,6 +7,7 @@ import type { AppProps } from 'next/app'
 import dynamic from 'next/dynamic'
 import { Merriweather } from 'next/font/google'
 
+import { MantineProvider, MantineThemeOverride } from '@mantine/core'
 import { PrismicPreview } from '@prismicio/next'
 import { PrismicProvider } from '@prismicio/react'
 import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister'
@@ -48,6 +49,21 @@ const persistOptions: Omit<PersistQueryClientOptions, 'queryClient'> = {
   persister,
 }
 
+const theme: MantineThemeOverride = {
+  colorScheme: 'light',
+  components: {
+    NavLink: {
+      classNames: { label: 'text-base' },
+    },
+  },
+  cursorType: 'pointer',
+  defaultRadius: 4,
+  fontFamily: 'Proxima Nova, sans-serif',
+  headings: {
+    fontFamily: 'Merriweather, Georgia, serif',
+  },
+}
+
 const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
   const [queryClient] = useState(
     () =>
@@ -62,35 +78,37 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
     <SessionProvider session={session}>
       <PersistQueryClientProvider client={queryClient} persistOptions={persistOptions}>
         <Hydrate state={pageProps.dehydratedState}>
-          <PrismicProvider
-            internalLinkComponent={InternalLink}
-            linkResolver={linkResolver}
-            richTextComponents={richTextComponents}
-          >
-            <PrismicPreview repositoryName={repositoryName}>
-              <DefaultSeo {...defaultSEOConfig} />
-              <RootLayout>
-                <style global jsx>
-                  {`
-                    :root {
-                      --font-merriweather: ${merriweather.style.fontFamily};
-                    }
+          <MantineProvider withGlobalStyles withNormalizeCSS theme={theme}>
+            <PrismicProvider
+              internalLinkComponent={InternalLink}
+              linkResolver={linkResolver}
+              richTextComponents={richTextComponents}
+            >
+              <PrismicPreview repositoryName={repositoryName}>
+                <DefaultSeo {...defaultSEOConfig} />
+                <RootLayout>
+                  <style global jsx>
+                    {`
+                      :root {
+                        --font-merriweather: ${merriweather.style.fontFamily};
+                      }
 
-                    #nprogress .bar {
-                      background: #464c2c !important;
-                      height: 0.25rem !important;
-                    }
+                      #nprogress .bar {
+                        background: #464c2c !important;
+                        height: 0.25rem !important;
+                      }
 
-                    #nprogress .peg {
-                      box-shadow: 0 0 10px #464c2c, 0 0 5px #464c2c !important;
-                    }
-                  `}
-                </style>
-                <Component {...pageProps} />
-                <ProgressBar />
-              </RootLayout>
-            </PrismicPreview>
-          </PrismicProvider>
+                      #nprogress .peg {
+                        box-shadow: 0 0 10px #464c2c, 0 0 5px #464c2c !important;
+                      }
+                    `}
+                  </style>
+                  <Component {...pageProps} />
+                  <ProgressBar />
+                </RootLayout>
+              </PrismicPreview>
+            </PrismicProvider>
+          </MantineProvider>
           <ReactQueryDevtools />
         </Hydrate>
       </PersistQueryClientProvider>

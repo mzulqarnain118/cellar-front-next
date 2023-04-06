@@ -99,7 +99,8 @@
 
   body {
     @apply bg-neutral-50;
-    @apply h-full;
+    @apply min-h-full;
+    @apply h-screen;
     @apply text-neutral-900;
     @apply font-body;
     @apply overflow-x-hidden;

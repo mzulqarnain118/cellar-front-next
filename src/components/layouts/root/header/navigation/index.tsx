@@ -12,7 +12,7 @@ export const Navigation = () => {
 
   const navigationItems = useMemo(
     () => (
-      <ul className="flex gap-12">
+      <ul className="flex items-center gap-12">
         {data?.data.body?.filter(Boolean).map(item => (
           <li key={item.id}>
             <NavigationItem item={item} />

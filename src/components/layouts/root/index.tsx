@@ -22,7 +22,7 @@ export const RootLayout = ({ children }: RootLayoutProps) => {
   return (
     <div className="drawer drawer-end">
       <input className="drawer-toggle" id="cart-drawer" type="checkbox" />
-      <div className="drawer-content">
+      <div className="drawer-content" id="root-element">
         <SkipLink />
         <Header />
 

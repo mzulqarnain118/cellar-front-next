@@ -1,65 +1,81 @@
+import { ComponentPropsWithoutRef, forwardRef } from 'react'
+
+import { ChevronDownIcon } from '@heroicons/react/24/outline'
+import { Menu, NavLink, UnstyledButton } from '@mantine/core'
 import type { Content } from '@prismicio/client'
+import { asText } from '@prismicio/helpers'
 import { PrismicLink, PrismicText } from '@prismicio/react'
-// import type { FilledContentRelationshipField } from '@prismicio/types'
+import { LinkField, RichTextField } from '@prismicio/types'
+
+interface TargetProps extends ComponentPropsWithoutRef<'button'> {
+  linkField: LinkField | null | undefined
+  textField: RichTextField | null | undefined
+}
+
+const Target = forwardRef<HTMLButtonElement, TargetProps>(
+  ({ linkField, textField, ...rest }, ref) => (
+    <UnstyledButton ref={ref} {...rest}>
+      <div className="flex items-center gap-1">
+        {!linkField || linkField.link_type === 'Any' ? (
+          <PrismicText field={textField} />
+        ) : (
+          <PrismicLink field={linkField}>
+            <PrismicText field={textField} />
+          </PrismicLink>
+        )}
+        <ChevronDownIcon className="h-3 w-3 transition-transform group-hover:-rotate-180" />
+      </div>
+    </UnstyledButton>
+  )
+)
+
+Target.displayName = 'Target'
 
 interface NavigationItemProps {
   item: Content.NavigationMenuDocumentDataBodyNavigationLinkSlice
 }
 
-// ! TODO: Make this a helper.
-// const isValidNavigationItem = (
-//   item: unknown
-// ): item is FilledContentRelationshipField<
-//   'navigation_item',
-//   string,
-//   Content.NavigationMenuDocumentData
-// > => typeof item === 'object' && !!item && 'id' in item
-
-export const NavigationItem = ({ item }: NavigationItemProps) => {
-  // const [showSubNav, setShowSubNav] = useState(false)
-
-  // const subItems = item.items
-  //   .map(navItem => {
-  //     if (isValidNavigationItem(navItem.child_link)) {
-  //       return <SubNavigationItem key={navItem.child_link.id} data={navItem} />
-  //     }
-  //   })
-  //   .filter(isTruthyJSXElement)
-
-  const link = !!item.primary.link && (
-    <PrismicLink
-      className="group flex h-12 items-center font-semibold"
-      field={item.primary.link}
-      // onMouseEnter={() => setShowSubNav(true)}
-    >
-      <div className="grid">
-        <PrismicText field={item.primary.name} />
-        <span className="block h-0.5 max-w-0 bg-brand transition-all group-hover:max-w-full" />
-      </div>
-    </PrismicLink>
-  )
-
-  // ! TODO: Responsive design.
-  return (
-    <div
-      className="group"
-      // onMouseLeave={() => setShowSubNav(false)}
-    >
-      {link}
-      {/* {showSubNav && subItems.length > 0 && (
-        <div className="absolute left-0 right-0 top-12 hidden min-h-[23.5rem] w-[1536px] rounded-b-lg text-neutral-900 shadow-lg group-hover:flex">
-          <nav className="flex flex-col gap-2">
-            <PrismicLink
-              className="flex items-center gap-1 py-2 px-4 font-semibold transition-all hover:gap-2"
-              field={item.primary.link}
-            >
-              All <PrismicText field={item.primary.name} />
-              <ArrowRightIcon className="h-4 w-4 stroke-2" />
-            </PrismicLink>
-            <ul>{subItems}</ul>
-          </nav>
-        </div>
-      )} */}
+export const NavigationItem = ({ item }: NavigationItemProps) =>
+  item.primary.link ? (
+    <div className="group font-semibold">
+      {item.items.length > 0 &&
+      item.items.some(
+        subNav => subNav.child_link.link_type !== 'Any' && 'url' in subNav.child_link
+      ) ? (
+        <Menu withArrow closeDelay={400} openDelay={100} shadow="md" trigger="hover">
+          <Menu.Target>
+            <Target linkField={item.primary.link} textField={item.primary.name} />
+          </Menu.Target>
+          <Menu.Dropdown>
+            {item.items
+              .map((subItem, index) => {
+                if (subItem.child_link.link_type !== 'Any' && 'url' in subItem.child_link) {
+                  return (
+                    <Menu.Item
+                      // ! TODO: Don't use index as key.
+                      // eslint-disable-next-line react/no-array-index-key
+                      key={`${subItem.child_link.url}-${index}`}
+                      className="font-normal"
+                      component={PrismicLink}
+                      field={subItem.child_link}
+                    >
+                      <PrismicText field={subItem.child_name} />
+                    </Menu.Item>
+                  )
+                }
+                return undefined
+              })
+              .filter(Boolean)}
+          </Menu.Dropdown>
+        </Menu>
+      ) : (
+        <NavLink
+          component={PrismicLink}
+          field={item.primary.link}
+          label={asText(item.primary.name)}
+        />
+      )}
     </div>
+  ) : (
+    <></>
   )
-}
