@@ -24,5 +24,9 @@ export const useScrollDirection = () => {
     return () => div?.removeEventListener('scroll', handleScroll)
   }, [handleScroll])
 
-  return visible ? 'up' : 'down'
+  return {
+    direction: visible ? 'up' : 'down',
+    scrollTop:
+      typeof window !== 'undefined' ? document.querySelector('#root-element')?.scrollTop || 0 : 0,
+  }
 }

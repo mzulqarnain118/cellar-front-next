@@ -17,14 +17,15 @@ const Consultant = dynamic(() => import('./consultant').then(module => module.Co
 
 export const Header = () => {
   const ref = useRef<HTMLElement | null>(null)
-  const scrollDirection = useScrollDirection()
+  const { direction, scrollTop } = useScrollDirection()
+  const headerHeight = ref?.current?.clientHeight || 0
 
   return (
     <header
       ref={ref}
       className={clsx(
         'sticky top-0 z-20 h-[10.5rem] transition-all delay-150 duration-500 lg:h-52',
-        scrollDirection === 'down' ? '-translate-y-52' : 'translate-y-0'
+        direction === 'down' && scrollTop > headerHeight ? '-translate-y-52' : 'translate-y-0'
       )}
     >
       <div className="relative top-0 left-0 z-20 w-full bg-neutral-50 text-neutral-900">
