@@ -8,6 +8,7 @@ export const SkipLink = () => (
   <Link
     className="absolute right-full top-0 z-50 border-2 border-white p-4 text-white focus:right-auto focus:bg-black"
     href="#main"
+    prefetch={false}
   >
     Skip to content
   </Link>
