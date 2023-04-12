@@ -3,10 +3,10 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/router'
 
 import { AdjustmentsHorizontalIcon } from '@heroicons/react/24/outline'
+import { Pagination, PaginationProps } from '@mantine/core'
 
 import { usePaginatedProducts } from '@/lib/queries/products'
 
-import { Link } from '../link'
 import { ProductCard } from '../product-card'
 
 interface ProductListingProps {
@@ -20,33 +20,25 @@ type Sort = 'relevant' | 'price-low-high' | 'price-high-low'
 export const ProductListing = ({
   categories = [],
   page: initialPage = 1,
-  limit,
+  limit = 16,
 }: ProductListingProps) => {
   const router = useRouter()
-  const [page, setPage] = useState(initialPage)
+  const [active, setPage] = useState(initialPage)
   const [sort, setSort] = useState<Sort>((router.query.sort?.toString() as Sort) || 'relevant')
   const [showFilters, setShowFilters] = useState(false)
 
   const options = useMemo(
-    () => ({ categories, limit, page, sort }),
-    [categories, limit, page, sort]
+    () => ({ categories, limit, page: active, sort }),
+    [categories, limit, active, sort]
   )
 
-  const { data, isError, isFetching, isLoading, isPreviousData } = usePaginatedProducts(options)
-
-  // const updateRouter = useCallback(
-  //   () => router.push(`${router.pathname}?page=${page}&sort=${sort}`, undefined, { shallow: true }),
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  //   [page, sort]
-  // )
+  const { data, isError, isFetching, isLoading } = usePaginatedProducts(options)
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
       window.scrollTo({ behavior: 'smooth', top: 0 })
     }
-
-    // updateRouter()
-  }, [page])
+  }, [active])
 
   const productCards = useMemo(
     () =>
@@ -60,77 +52,6 @@ export const ProductListing = ({
     [data?.products]
   )
 
-  const handlePreviousPageClick = useCallback(() => {
-    let newPage = 0
-    setPage(prev => {
-      newPage = Math.max(prev - 1, 0)
-      return newPage
-    })
-
-    // updateRouter()
-  }, [setPage])
-
-  const handleNextPageClick = useCallback(() => {
-    if (!!data?.totalNumberOfPages && !isPreviousData && page <= data.totalNumberOfPages) {
-      let newPage = 0
-      setPage(prev => {
-        newPage = prev + 1
-        return newPage
-      })
-
-      // updateRouter()
-    }
-  }, [data?.totalNumberOfPages, isPreviousData, page])
-
-  const nextPageHref = useMemo(
-    () => ({
-      pathname: router.pathname,
-      // search: `?categories=16&limit=16&page=${page + 1}&sort=${sort}`,
-      query: {
-        categories: '16',
-        limit: '16',
-        page: page + 1,
-        sort,
-      },
-    }),
-    [page, router.pathname, sort]
-  )
-
-  const paginationFooter = useMemo(
-    () => (
-      <div className="btn-group mx-auto mt-8">
-        <button
-          aria-label="Previous Page"
-          className="btn-ghost btn"
-          disabled={page === 1}
-          onClick={handlePreviousPageClick}
-        >
-          «
-        </button>
-        <button className="btn-ghost btn">Page {page}</button>
-        <button
-          aria-label="Next Page"
-          className="btn-ghost btn"
-          disabled={
-            isPreviousData || (!!data?.totalNumberOfPages && page >= data.totalNumberOfPages)
-          }
-          onClick={handleNextPageClick}
-        >
-          »
-        </button>
-        <Link href={nextPageHref}>»</Link>
-      </div>
-    ),
-    [
-      data?.totalNumberOfPages,
-      handleNextPageClick,
-      handlePreviousPageClick,
-      isPreviousData,
-      nextPageHref,
-      page,
-    ]
-  )
-
   const paginationHeader = useMemo(
     () => (
       <>
@@ -142,7 +63,9 @@ export const ProductListing = ({
             className="group btn-ghost btn flex items-center gap-2"
             onClick={() => setShowFilters(prev => !prev)}
           >
-            <AdjustmentsHorizontalIcon className="h-8 w-8 transition-transform group-hover:rotate-90" />
+            <AdjustmentsHorizontalIcon
+              className={`h-8 w-8 transition-transform group-hover:rotate-90`}
+            />
             <span className="hidden lg:block">{showFilters ? 'Hide' : 'Show'} Filters</span>
           </button>
           <label aria-label="Sort by" htmlFor="sort">
@@ -166,7 +89,60 @@ export const ProductListing = ({
         </div>
       </>
     ),
-    [data?.results, data?.resultsShown, showFilters, sort]
+    [data?.results, data?.resultsShown, setPage, showFilters, sort]
+  )
+
+  const getControlProps: PaginationProps['getControlProps'] = useCallback(
+    (control: 'first' | 'previous' | 'last' | 'next') => {
+      if (control === 'first') {
+        return {
+          component: 'a',
+          href: `${
+            router.pathname
+          }?categories=${categories.toString()}&limit=${limit}&page=1&sort=${sort}`,
+        }
+      }
+
+      if (control === 'last') {
+        return {
+          component: 'a',
+          href: `${router.pathname}?categories=${categories.toString()}&limit=${limit}&page=${
+            data?.totalNumberOfPages
+          }&sort=${sort}`,
+        }
+      }
+
+      if (control === 'next') {
+        return {
+          component: 'a',
+          href: `${router.pathname}?categories=${categories.toString()}&limit=${limit}&page=${
+            active === data?.totalNumberOfPages ? active : active + 1
+          }&sort=${sort}`,
+        }
+      }
+
+      if (control === 'previous') {
+        return {
+          component: 'a',
+          href: `${router.pathname}?categories=${categories.toString()}&limit=${limit}&page=${
+            active === 1 ? 1 : active - 1
+          }&sort=${sort}`,
+        }
+      }
+
+      return {}
+    },
+    [active, categories, data?.totalNumberOfPages, limit, router.pathname, sort]
+  )
+
+  const getItemProps: PaginationProps['getItemProps'] = useCallback(
+    (page: number) => ({
+      component: 'a',
+      href: `${
+        router.pathname
+      }?categories=${categories.toString()}&limit=${limit}&page=${page}&sort=${sort}`,
+    }),
+    [categories, limit, router.pathname, sort]
   )
 
   if (isFetching || isLoading) {
@@ -220,7 +196,16 @@ export const ProductListing = ({
     <div className="flex flex-col gap-4">
       {paginationHeader}
       {productCards}
-      {paginationFooter}
+      <Pagination
+        withEdges
+        disabled={isFetching || isLoading}
+        getControlProps={getControlProps}
+        getItemProps={getItemProps}
+        position="center"
+        total={data?.totalNumberOfPages}
+        value={active}
+        onChange={setPage}
+      />
     </div>
   )
 }

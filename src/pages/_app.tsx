@@ -51,6 +51,20 @@ const persistOptions: Omit<PersistQueryClientOptions, 'queryClient'> = {
 
 const theme: MantineThemeOverride = {
   colorScheme: 'light',
+  colors: {
+    brand: [
+      '#464c2c',
+      '#464c2c',
+      '#464c2c',
+      '#464c2c',
+      '#464c2c',
+      '#464c2c',
+      '#464c2c',
+      '#464c2c',
+      '#464c2c',
+      '#464c2c',
+    ],
+  },
   components: {
     NavLink: {
       classNames: { label: 'text-base' },
@@ -62,6 +76,7 @@ const theme: MantineThemeOverride = {
   headings: {
     fontFamily: 'Merriweather, Georgia, serif',
   },
+  primaryColor: 'brand',
 }
 
 const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
