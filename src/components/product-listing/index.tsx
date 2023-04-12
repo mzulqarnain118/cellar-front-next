@@ -1,11 +1,13 @@
 import { useCallback, useMemo, useState } from 'react'
 
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 import { AdjustmentsHorizontalIcon } from '@heroicons/react/24/outline'
 import { Pagination, PaginationProps } from '@mantine/core'
 
 import { usePaginatedProducts } from '@/lib/queries/products'
+import { useConsultantStore } from '@/lib/stores/consultant'
 
 import { ProductCard } from '../product-card'
 
@@ -22,6 +24,7 @@ export const ProductListing = ({
   page: initialPage = 1,
   limit = 16,
 }: ProductListingProps) => {
+  const { consultant } = useConsultantStore()
   const router = useRouter()
   const [active, setPage] = useState(initialPage)
   const [sort, setSort] = useState<Sort>((router.query.sort?.toString() as Sort) || 'relevant')
@@ -90,61 +93,63 @@ export const ProductListing = ({
     (control: 'first' | 'previous' | 'last' | 'next') => {
       if (control === 'first') {
         return {
-          component: 'a',
+          component: Link,
           href: `${
             router.pathname
-          }?categories=${categories.toString()}&limit=${limit}&page=1&sort=${sort}`,
+          }?categories=${categories.toString()}&limit=${limit}&page=1&sort=${sort}${
+            consultant.url ? `&u=${consultant.url}` : ''
+          }`,
+          shallow: true,
         }
       }
 
       if (control === 'last') {
         return {
-          component: 'a',
+          component: Link,
           href: `${router.pathname}?categories=${categories.toString()}&limit=${limit}&page=${
             data?.totalNumberOfPages
-          }&sort=${sort}`,
+          }&sort=${sort}${consultant.url ? `&u=${consultant.url}` : ''}`,
+          shallow: true,
         }
       }
 
       if (control === 'next') {
         return {
-          component: 'a',
+          component: Link,
           href: `${router.pathname}?categories=${categories.toString()}&limit=${limit}&page=${
             active === data?.totalNumberOfPages ? active : active + 1
-          }&sort=${sort}`,
+          }&sort=${sort}${consultant.url ? `&u=${consultant.url}` : ''}`,
+          shallow: true,
         }
       }
 
       if (control === 'previous') {
         return {
-          component: 'a',
+          component: Link,
           href: `${router.pathname}?categories=${categories.toString()}&limit=${limit}&page=${
             active === 1 ? 1 : active - 1
-          }&sort=${sort}`,
+          }&sort=${sort}${consultant.url ? `&u=${consultant.url}` : ''}`,
+          shallow: true,
         }
       }
 
       return {}
     },
-    [active, categories, data?.totalNumberOfPages, limit, router.pathname, sort]
+    [active, categories, consultant.url, data?.totalNumberOfPages, limit, router.pathname, sort]
   )
 
   const getItemProps: PaginationProps['getItemProps'] = useCallback(
     (page: number) => ({
-      component: 'a',
+      component: Link,
       href: `${
         router.pathname
-      }?categories=${categories.toString()}&limit=${limit}&page=${page}&sort=${sort}`,
+      }?categories=${categories.toString()}&limit=${limit}&page=${page}&sort=${sort}${
+        consultant.url ? `&u=${consultant.url}` : ''
+      }`,
+      shallow: true,
     }),
-    [categories, limit, router.pathname, sort]
+    [categories, consultant.url, limit, router.pathname, sort]
   )
-
-  const onPageChange = useCallback((page: number) => {
-    if (typeof window !== 'undefined') {
-      window.scrollTo({ behavior: 'smooth', top: 0 })
-    }
-    setPage(page)
-  }, [])
 
   if (isFetching || isLoading) {
     return (
@@ -205,7 +210,7 @@ export const ProductListing = ({
         position="center"
         total={data?.totalNumberOfPages}
         value={active}
-        onChange={onPageChange}
+        onChange={setPage}
       />
     </div>
   )
