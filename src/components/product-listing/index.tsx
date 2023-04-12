@@ -6,12 +6,18 @@ import { useRouter } from 'next/router'
 import { AdjustmentsHorizontalIcon } from '@heroicons/react/24/outline'
 import { Pagination, PaginationProps } from '@mantine/core'
 
+import { DISPLAY_CATEGORY } from '@/lib/constants/display-category'
 import { usePaginatedProducts } from '@/lib/queries/products'
 import { useConsultantStore } from '@/lib/stores/consultant'
 
 import { ProductCard } from '../product-card'
 
 export type Sort = 'relevant' | 'price-low-high' | 'price-high-low'
+
+export const DEFAULT_CATEGORIES = [DISPLAY_CATEGORY.Wine]
+export const DEFAULT_LIMIT = 16
+export const DEFAULT_PAGE = 1
+export const DEFAULT_SORT: Sort = 'relevant'
 
 interface ProductListingProps {
   categories?: number[]
@@ -96,11 +102,7 @@ export const ProductListing = ({
       if (control === 'first') {
         return {
           component: Link,
-          href: `${
-            router.pathname
-          }?categories=${categories.toString()}&limit=${limit}&page=1&sort=${sort}${
-            consultant.url ? `&u=${consultant.url}` : ''
-          }`,
+          href: `${router.pathname}?page=1${consultant.url ? `&u=${consultant.url}` : ''}`,
           scroll: true,
           shallow: true,
         }
@@ -109,9 +111,9 @@ export const ProductListing = ({
       if (control === 'last') {
         return {
           component: Link,
-          href: `${router.pathname}?categories=${categories.toString()}&limit=${limit}&page=${
-            data?.totalNumberOfPages
-          }&sort=${sort}${consultant.url ? `&u=${consultant.url}` : ''}`,
+          href: `${router.pathname}?page=${data?.totalNumberOfPages}${
+            consultant.url ? `&u=${consultant.url}` : ''
+          }`,
           scroll: true,
           shallow: true,
         }
@@ -120,9 +122,9 @@ export const ProductListing = ({
       if (control === 'next') {
         return {
           component: Link,
-          href: `${router.pathname}?categories=${categories.toString()}&limit=${limit}&page=${
+          href: `${router.pathname}?page=${
             active === data?.totalNumberOfPages ? active : active + 1
-          }&sort=${sort}${consultant.url ? `&u=${consultant.url}` : ''}`,
+          }${consultant.url ? `&u=${consultant.url}` : ''}`,
           scroll: true,
           shallow: true,
         }
@@ -131,9 +133,9 @@ export const ProductListing = ({
       if (control === 'previous') {
         return {
           component: Link,
-          href: `${router.pathname}?categories=${categories.toString()}&limit=${limit}&page=${
-            active === 1 ? 1 : active - 1
-          }&sort=${sort}${consultant.url ? `&u=${consultant.url}` : ''}`,
+          href: `${router.pathname}?page=${active === 1 ? 1 : active - 1}${
+            consultant.url ? `&u=${consultant.url}` : ''
+          }`,
           scroll: true,
           shallow: true,
         }
@@ -141,21 +143,17 @@ export const ProductListing = ({
 
       return {}
     },
-    [active, categories, consultant.url, data?.totalNumberOfPages, limit, router.pathname, sort]
+    [active, consultant.url, data?.totalNumberOfPages, router.pathname]
   )
 
   const getItemProps: PaginationProps['getItemProps'] = useCallback(
     (page: number) => ({
       component: Link,
-      href: `${
-        router.pathname
-      }?categories=${categories.toString()}&limit=${limit}&page=${page}&sort=${sort}${
-        consultant.url ? `&u=${consultant.url}` : ''
-      }`,
+      href: `${router.pathname}?page=${page}${consultant.url ? `&u=${consultant.url}` : ''}`,
       scroll: true,
       shallow: true,
     }),
-    [categories, consultant.url, limit, router.pathname, sort]
+    [consultant.url, router.pathname]
   )
 
   const onPageChange = useCallback((page: number) => {

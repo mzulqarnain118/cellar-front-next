@@ -2,9 +2,9 @@ import { ParsedUrlQueryInput } from 'querystring'
 
 import { useMemo } from 'react'
 
+import { Url } from 'next/dist/shared/lib/router/router'
 import NextLink, { LinkProps } from 'next/link'
 
-import { DISPLAY_CATEGORY } from '@/lib/constants/display-category'
 import { useConsultantStore } from '@/lib/stores/consultant'
 
 type Props = Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, keyof LinkProps> &
@@ -20,7 +20,7 @@ const isParsedQueryInput = (
 export const Link = ({ href: initialHref, ...rest }: Props) => {
   const { consultant } = useConsultantStore()
 
-  const href = useMemo(() => {
+  const href: Url = useMemo(() => {
     const pathname = typeof initialHref === 'string' ? initialHref : initialHref.pathname || ''
     const query = typeof initialHref === 'string' ? undefined : initialHref.query
 
@@ -44,15 +44,9 @@ export const Link = ({ href: initialHref, ...rest }: Props) => {
       searchParams.append('u', consultant.url)
     }
     if (pathname.startsWith('/wine')) {
-      searchParams.set('categories', DISPLAY_CATEGORY.Wine.toString())
-      searchParams.set('limit', '16')
       searchParams.set('page', '1')
-      searchParams.set('sort', 'relevant')
     } else {
-      searchParams.delete('categories')
-      searchParams.delete('limit')
       searchParams.delete('page')
-      searchParams.delete('sort')
     }
 
     return {
@@ -61,5 +55,11 @@ export const Link = ({ href: initialHref, ...rest }: Props) => {
     }
   }, [initialHref, consultant])
 
-  return <NextLink href={href} {...rest} />
+  return (
+    <NextLink
+      as={href.pathname?.startsWith('/wine') ? href.pathname : undefined}
+      href={href}
+      {...rest}
+    />
+  )
 }

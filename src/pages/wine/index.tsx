@@ -6,8 +6,13 @@ import { useRouter } from 'next/router'
 
 import { dehydrate } from '@tanstack/react-query'
 
-import { Sort } from '@/components/product-listing'
-import { DISPLAY_CATEGORY } from '@/lib/constants/display-category'
+import {
+  DEFAULT_CATEGORIES,
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_SORT,
+  Sort,
+} from '@/components/product-listing'
 import { getStaticNavigation } from '@/lib/queries/header'
 import { PAGINATED_PRODUCTS_QUERY_KEY, getPaginatedProducts } from '@/lib/queries/products'
 
@@ -19,10 +24,10 @@ const ProductListing = dynamic(
 )
 
 export const getServerSideProps: GetServerSideProps = async ({ previewData, query }) => {
-  let categories: number[] = [DISPLAY_CATEGORY.Wine]
-  let limit = 16
-  let page = 1
-  let sort: Sort = 'relevant'
+  let categories: number[] = DEFAULT_CATEGORIES
+  let limit = DEFAULT_LIMIT
+  let page = DEFAULT_PAGE
+  let sort: Sort = DEFAULT_SORT
   if (query.categories) {
     categories = query.categories.toString().split(',').map(Number)
   }
@@ -58,12 +63,12 @@ type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
 const PLP: NextPage<PageProps> = () => {
   const router = useRouter()
-  const currentPage = router.query.page ? parseInt(router.query.page.toString()) : 1
+  const currentPage = router.query.page ? parseInt(router.query.page.toString()) : DEFAULT_PAGE
   const categories = router.query.categories
     ? router.query.categories.toString().split(',').map(Number)
-    : [DISPLAY_CATEGORY.Wine]
-  const limit = router.query.limit ? parseInt(router.query.limit.toString()) : 16
-  const sort: Sort = router.query.sort ? (router.query.sort.toString() as Sort) : 'relevant'
+    : DEFAULT_CATEGORIES
+  const limit = router.query.limit ? parseInt(router.query.limit.toString()) : DEFAULT_LIMIT
+  const sort: Sort = router.query.sort ? (router.query.sort.toString() as Sort) : DEFAULT_SORT
 
   return (
     <>
