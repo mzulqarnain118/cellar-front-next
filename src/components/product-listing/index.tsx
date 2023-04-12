@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import { useRouter } from 'next/router'
 
@@ -33,12 +33,6 @@ export const ProductListing = ({
   )
 
   const { data, isError, isFetching, isLoading } = usePaginatedProducts(options)
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      window.scrollTo({ behavior: 'smooth', top: 0 })
-    }
-  }, [active])
 
   const productCards = useMemo(
     () =>
@@ -145,6 +139,13 @@ export const ProductListing = ({
     [categories, limit, router.pathname, sort]
   )
 
+  const onPageChange = useCallback((page: number) => {
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ behavior: 'smooth', top: 0 })
+    }
+    setPage(page)
+  }, [])
+
   if (isFetching || isLoading) {
     return (
       <>
@@ -204,7 +205,7 @@ export const ProductListing = ({
         position="center"
         total={data?.totalNumberOfPages}
         value={active}
-        onChange={setPage}
+        onChange={onPageChange}
       />
     </div>
   )
