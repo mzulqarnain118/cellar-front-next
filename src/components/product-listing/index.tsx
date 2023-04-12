@@ -203,7 +203,7 @@ export const ProductListing = ({
     // ! TODO: Something bad happened.
   }
 
-  if (!data) {
+  if (!data || data.products.length === 0) {
     // ! TODO: Not found.
     return <>Not found.</>
   }
