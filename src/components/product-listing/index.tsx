@@ -156,6 +156,11 @@ export const ProductListing = ({
     [categories, consultant.url, limit, router.pathname, sort]
   )
 
+  const onPageChange = useCallback((page: number) => {
+    document.querySelector('#root-element')?.scrollTo({ behavior: 'smooth', left: 0, top: 0 })
+    setPage(page)
+  }, [])
+
   if (isFetching || isLoading) {
     return (
       <>
@@ -215,7 +220,7 @@ export const ProductListing = ({
         position="center"
         total={data?.totalNumberOfPages}
         value={active}
-        onChange={setPage}
+        onChange={onPageChange}
       />
     </div>
   )
