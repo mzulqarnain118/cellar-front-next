@@ -11,23 +11,25 @@ import { useConsultantStore } from '@/lib/stores/consultant'
 
 import { ProductCard } from '../product-card'
 
+export type Sort = 'relevant' | 'price-low-high' | 'price-high-low'
+
 interface ProductListingProps {
   categories?: number[]
   page?: number
   limit?: number
+  sort?: Sort
 }
-
-type Sort = 'relevant' | 'price-low-high' | 'price-high-low'
 
 export const ProductListing = ({
   categories = [],
   page: initialPage = 1,
   limit = 16,
+  sort: initialSort = 'relevant',
 }: ProductListingProps) => {
   const { consultant } = useConsultantStore()
   const router = useRouter()
   const [active, setPage] = useState(initialPage)
-  const [sort, setSort] = useState<Sort>((router.query.sort?.toString() as Sort) || 'relevant')
+  const [sort, setSort] = useState<Sort>(initialSort)
   const [showFilters, setShowFilters] = useState(false)
 
   const options = useMemo(
@@ -214,6 +216,7 @@ export const ProductListing = ({
       {productCards}
       <Pagination
         withEdges
+        className="pt-12"
         disabled={isFetching || isLoading}
         getControlProps={getControlProps}
         getItemProps={getItemProps}
