@@ -99,6 +99,7 @@ export const ProductListing = ({
           }?categories=${categories.toString()}&limit=${limit}&page=1&sort=${sort}${
             consultant.url ? `&u=${consultant.url}` : ''
           }`,
+          scroll: true,
           shallow: true,
         }
       }
@@ -109,6 +110,7 @@ export const ProductListing = ({
           href: `${router.pathname}?categories=${categories.toString()}&limit=${limit}&page=${
             data?.totalNumberOfPages
           }&sort=${sort}${consultant.url ? `&u=${consultant.url}` : ''}`,
+          scroll: true,
           shallow: true,
         }
       }
@@ -119,6 +121,7 @@ export const ProductListing = ({
           href: `${router.pathname}?categories=${categories.toString()}&limit=${limit}&page=${
             active === data?.totalNumberOfPages ? active : active + 1
           }&sort=${sort}${consultant.url ? `&u=${consultant.url}` : ''}`,
+          scroll: true,
           shallow: true,
         }
       }
@@ -129,6 +132,7 @@ export const ProductListing = ({
           href: `${router.pathname}?categories=${categories.toString()}&limit=${limit}&page=${
             active === 1 ? 1 : active - 1
           }&sort=${sort}${consultant.url ? `&u=${consultant.url}` : ''}`,
+          scroll: true,
           shallow: true,
         }
       }
@@ -146,6 +150,7 @@ export const ProductListing = ({
       }?categories=${categories.toString()}&limit=${limit}&page=${page}&sort=${sort}${
         consultant.url ? `&u=${consultant.url}` : ''
       }`,
+      scroll: true,
       shallow: true,
     }),
     [categories, consultant.url, limit, router.pathname, sort]
