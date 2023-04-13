@@ -5,6 +5,9 @@ import { useMemo } from 'react'
 import { Url } from 'next/dist/shared/lib/router/router'
 import NextLink, { LinkProps } from 'next/link'
 
+import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline'
+import { clsx } from 'clsx'
+
 import { useConsultantStore } from '@/lib/stores/consultant'
 
 type Props = Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, keyof LinkProps> &
@@ -55,11 +58,26 @@ export const Link = ({ href: initialHref, ...rest }: Props) => {
     }
   }, [initialHref, consultant])
 
-  return (
-    <NextLink
-      as={href.pathname?.startsWith('/wine') ? href.pathname : undefined}
-      href={href}
-      {...rest}
-    />
+  const link = useMemo(
+    () =>
+      href.pathname?.startsWith('/') ? (
+        <NextLink
+          as={href.pathname?.startsWith('/wine') ? href.pathname : undefined}
+          href={href}
+          {...rest}
+        />
+      ) : (
+        <NextLink
+          as={href.pathname?.startsWith('/wine') ? href.pathname : undefined}
+          className={clsx('flex gap-1', rest.className)}
+          href={href}
+        >
+          {rest.children}
+          <ArrowTopRightOnSquareIcon className="h-4 w-4 cursor-pointer" />
+        </NextLink>
+      ),
+    [href, rest]
   )
+
+  return link
 }
