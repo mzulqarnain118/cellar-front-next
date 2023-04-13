@@ -8,6 +8,7 @@ import dynamic from 'next/dynamic'
 import { Merriweather } from 'next/font/google'
 
 import { MantineProvider, MantineThemeOverride } from '@mantine/core'
+import { Notifications } from '@mantine/notifications'
 import { PrismicPreview } from '@prismicio/next'
 import { PrismicProvider } from '@prismicio/react'
 import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister'
@@ -94,6 +95,7 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
       <PersistQueryClientProvider client={queryClient} persistOptions={persistOptions}>
         <Hydrate state={pageProps.dehydratedState}>
           <MantineProvider withGlobalStyles withNormalizeCSS theme={theme}>
+            <Notifications position="top-center" />
             <PrismicProvider
               internalLinkComponent={InternalLink}
               linkResolver={linkResolver}

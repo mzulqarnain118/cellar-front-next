@@ -23,6 +23,7 @@
     "@mantine/core": "^6.0.6",
     "@mantine/hooks": "^6.0.6",
     "@mantine/next": "^6.0.6",
+    "@mantine/notifications": "^6.0.7",
     "@prismicio/client": "^6.7.3",
     "@prismicio/helpers": "^2.3.9",
     "@prismicio/next": "^1.0.3",
