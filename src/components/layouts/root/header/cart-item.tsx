@@ -132,7 +132,7 @@ export const CartItem = ({ product }: CartItemProps) => {
         <Link href={`/product/${product.cartUrl || ''}`}>
           <BlurImage
             alt={product.displayName || 'Product'}
-            className="group h-32 w-20 self-center"
+            className="group h-32 w-20 self-center object-contain"
             height={128}
             src={product.pictureUrl}
             style={imageDimensions}

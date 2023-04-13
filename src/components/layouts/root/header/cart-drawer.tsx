@@ -102,8 +102,8 @@ export const CartDrawer = () => {
               <span className="pb-2 text-lg">Your cart is empty!</span>
               <Link
                 className={`
-                btn-outline btn-secondary btn-sm btn inline-flex items-center justify-center gap-1
-              `}
+                  btn-outline btn-secondary btn-sm btn inline-flex items-center justify-center gap-1
+                `}
                 href={WINE_PAGE_PATH}
                 onClick={handleGoShoppingClick}
               >
