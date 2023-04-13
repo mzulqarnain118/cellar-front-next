@@ -17,8 +17,8 @@ export const Day = <T extends FieldValues>({ setFocus, ...rest }: DateOfBirthPro
     <span
       className={clsx(
         `
-          inline-flex items-center justify-center text-xl text-[#828282] transition-all
-          duration-500 md:h-10 md:bg-[#EFEFEF]
+          inline-flex items-center justify-center text-xl text-neutral-500 transition-all
+          duration-500 md:h-10 md:bg-neutral
         `,
         !!error && '!border-red-700'
       )}
@@ -33,8 +33,8 @@ export const Day = <T extends FieldValues>({ setFocus, ...rest }: DateOfBirthPro
       <input
         className={clsx(
           `
-            h-10 rounded-lg !rounded-l-none !rounded-r-none border-none bg-[#EFEFEF]
-            text-center !outline-none transition-all duration-500 placeholder:text-[#7C7C7C]
+            h-10 rounded-lg !rounded-l-none !rounded-r-none border-none bg-neutral
+            text-center !outline-none transition-all duration-500 placeholder:text-neutral-300
             md:w-14
           `,
           !!error && '!border-red-700'

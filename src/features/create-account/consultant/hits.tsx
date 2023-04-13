@@ -65,7 +65,7 @@ export const Hits = ({ handleConsultantSelect }: HitsProps) => {
         .map(hit => (
           <button
             key={hit.DisplayID}
-            className="cursor-pointer border-0 p-2 hover:bg-[#d0d0d0]"
+            className="cursor-pointer border-0 p-2 hover:bg-neutral-200"
             onClick={() => handleSelect(hit)}
           >
             {`${hit.DisplayName} - ${hit.Address.ProvinceAbbreviation}`}

@@ -416,7 +416,7 @@ export const CreateAccountForm = () => {
               className={clsx(
                 `
                   grid grid-cols-5 items-center justify-between rounded-lg border
-                  border-[#BDBDBD] bg-[#EFEFEF] transition-all
+                  border-neutral-200 bg-neutral transition-all
                 `,
                 !!dobError && '!border-red-700'
               )}

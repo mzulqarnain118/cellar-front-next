@@ -17,9 +17,9 @@ export const Year = <T extends FieldValues>({ setFocus, ...rest }: DateOfBirthPr
     <input
       className={clsx(
         `
-          h-10 rounded-lg !rounded-l-none border-none bg-[#EFEFEF]
+          h-10 rounded-lg !rounded-l-none border-none bg-neutral
           !outline-none transition-all duration-500
-          placeholder:text-[#7C7C7C]
+          placeholder:text-neutral-300
         `,
         !!error && '!border-red-700'
       )}

@@ -49,9 +49,9 @@ export const ConsultantSearch = ({
       <input
         className={clsx(
           `
-            z-10 h-10 rounded-lg border border-[#BDBDBD] bg-[#EFEFEF] px-3
-            transition-all duration-500 placeholder:text-[#7C7C7C] focus:!outline
-            focus:outline-1 focus:outline-offset-0 focus:outline-[#464c2c]
+            z-10 h-10 rounded-lg border border-neutral-200 bg-neutral px-3
+            transition-all duration-500 placeholder:text-neutral-300 focus:!outline
+            focus:outline-1 focus:outline-offset-0 focus:outline-brand
             disabled:cursor-not-allowed md:w-full
           `,
           errors.consultant?.message && '!border-red-700 focus:!outline-red-700'

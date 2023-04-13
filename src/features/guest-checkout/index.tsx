@@ -213,7 +213,7 @@ export const GuestCheckout = () => {
       <div className="container mx-auto my-16 flex items-center justify-center">
         <div
           className={`
-            max-w-3xl rounded-lg border border-neutral-300 bg-[#f5f5f5] py-10 px-10 md:px-20
+            max-w-3xl rounded-lg border border-neutral-300 bg-neutral-50 py-10 px-10 md:px-20
           `}
         >
           <h3>Checkout as guest</h3>
@@ -230,9 +230,9 @@ export const GuestCheckout = () => {
                 <input
                   className={clsx(
                     `
-                      z-10 h-10 w-full rounded-lg border border-[#BDBDBD] bg-[#EFEFEF]
-                      px-3 transition-all duration-500 placeholder:text-[#7C7C7C] focus:!outline
-                      focus:outline-1 focus:outline-offset-0 focus:outline-[#464c2c]
+                      z-10 h-10 w-full rounded-lg border border-neutral-200 bg-neutral
+                      px-3 transition-all duration-500 placeholder:text-neutral-300 focus:!outline
+                      focus:outline-1 focus:outline-offset-0 focus:outline-brand
                     `,
                     errors.firstName?.message && '!border-red-700 focus:!outline-red-700'
                   )}
@@ -261,9 +261,9 @@ export const GuestCheckout = () => {
                 <input
                   className={clsx(
                     `
-                      z-10 h-10 w-full rounded-lg border border-[#BDBDBD] bg-[#EFEFEF]
-                      px-3 transition-all duration-500 placeholder:text-[#7C7C7C] focus:!outline
-                      focus:outline-1 focus:outline-offset-0 focus:outline-[#464c2c]
+                      z-10 h-10 w-full rounded-lg border border-neutral-200 bg-neutral
+                      px-3 transition-all duration-500 placeholder:text-neutral-300 focus:!outline
+                      focus:outline-1 focus:outline-offset-0 focus:outline-brand
                     `,
                     errors.lastName?.message && '!border-red-700 focus:!outline-red-700'
                   )}
@@ -292,10 +292,10 @@ export const GuestCheckout = () => {
                 <input
                   className={clsx(
                     `
-                      z-10 h-10 w-full rounded-lg border border-[#BDBDBD] bg-[#EFEFEF]
-                      px-3 transition-all duration-500 placeholder:text-[#7C7C7C]
+                      z-10 h-10 w-full rounded-lg border border-neutral-200 bg-neutral
+                      px-3 transition-all duration-500 placeholder:text-neutral-300
                       focus:!outline focus:outline-1 focus:outline-offset-0
-                      focus:outline-[#464c2c]
+                      focus:outline-brand
                     `,
                     errors.email?.message && '!border-red-700 focus:!outline-red-700'
                   )}
@@ -350,7 +350,7 @@ export const GuestCheckout = () => {
                   className={clsx(
                     `
                         grid grid-cols-5 items-center justify-between rounded-lg border
-                        border-[#BDBDBD] bg-[#EFEFEF] transition-all
+                        border-neutral-200 bg-neutral transition-all
                       `,
                     !!dobError && '!border-red-700'
                   )}
