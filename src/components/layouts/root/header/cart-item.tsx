@@ -1,8 +1,8 @@
 import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react'
 
 import dynamic from 'next/dynamic'
-import Image from 'next/image'
 
+import { BlurImage } from '@/components/blur-image'
 import { Price } from '@/components/price'
 import { NumberPicker } from '@/core/components/number-picker'
 import { useAddToCartMutation } from '@/lib/mutations/add-to-cart'
@@ -119,7 +119,7 @@ export const CartItem = ({ product }: CartItemProps) => {
     }
   }, [handleQuantityChange, product, quantity, removeFromCart])
 
-  // TODO!: There is a bug in Next.js that requires the inline style to remove the console warning.
+  // * NOTE: There is a bug in Next.js that requires the inline style to remove the console warning.
   const imageDimensions = useMemo(() => ({ height: 128, width: 80 }), [])
 
   useEffect(() => {
@@ -130,7 +130,7 @@ export const CartItem = ({ product }: CartItemProps) => {
     <div className="grid grid-cols-[120px_calc(100%-140px)] gap-3 py-3">
       {product.pictureUrl !== undefined && (
         <Link href={`/product/${product.cartUrl || ''}`}>
-          <Image
+          <BlurImage
             alt={product.displayName || 'Product'}
             className="group h-32 w-20 self-center"
             height={128}

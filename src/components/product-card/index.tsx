@@ -13,6 +13,8 @@ import { AutoSipProduct, CartProduct } from '@/lib/types'
 import { Price } from '../price'
 import { Rating } from '../rating'
 
+import { ProductImageLink } from './product-image-link'
+
 const Link = dynamic(() => import('src/components/link').then(module => module.Link), {
   ssr: false,
 })
@@ -27,8 +29,6 @@ interface ProductCardProps {
 
 const isCartProduct = (product: AutoSipProduct | CartProduct): product is CartProduct =>
   'orderLineId' in product && 'orderId' in product && 'quantity' in product
-
-const productImageDimensions = { height: 'auto', width: 'auto' }
 
 export const ProductCard = ({ priority = false, product }: ProductCardProps) => {
   const [selectedProduct, setSelectedProduct] = useState(product)
@@ -199,24 +199,13 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
 
   const productImageLink = useMemo(
     () => (
-      <figure className="relative flex items-center self-center justify-self-center md:w-40">
-        {selectedProduct.pictureUrl !== undefined ? (
-          <Link href={`/product/${selectedProduct.cartUrl}`}>
-            <Image
-              alt={selectedProduct.displayName || 'Product'}
-              className="object-contain"
-              height={304}
-              priority={priority}
-              src={selectedProduct.pictureUrl}
-              style={productImageDimensions}
-              width={192}
-            />
-          </Link>
-        ) : (
-          // ! TODO: No image available.
-          <></>
-        )}
-      </figure>
+      <ProductImageLink
+        key={selectedProduct.sku}
+        cartUrl={selectedProduct.cartUrl}
+        displayName={selectedProduct.displayName}
+        pictureUrl={selectedProduct.pictureUrl}
+        priority={priority}
+      />
     ),
     [priority, selectedProduct]
   )
