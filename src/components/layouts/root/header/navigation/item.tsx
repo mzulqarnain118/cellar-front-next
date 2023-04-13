@@ -48,13 +48,11 @@ export const NavigationItem = ({ item }: NavigationItemProps) =>
           </Menu.Target>
           <Menu.Dropdown>
             {item.items
-              .map((subItem, index) => {
+              .map(subItem => {
                 if (subItem.child_link.link_type !== 'Any' && 'url' in subItem.child_link) {
                   return (
                     <Menu.Item
-                      // ! TODO: Don't use index as key.
-                      // eslint-disable-next-line react/no-array-index-key
-                      key={`${subItem.child_link.url}-${index}`}
+                      key={`${subItem.child_link.url}-${item.id}-${asText(subItem.child_name)}`}
                       className="font-normal"
                       component={PrismicLink}
                       field={subItem.child_link}

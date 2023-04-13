@@ -43,6 +43,10 @@ export const MobileMenu = ({ className }: MobileMenuProps) => {
   const handleBlur = useCallback(() => setShaderVisible(false), [setShaderVisible])
   const handleFocus = useCallback(() => setShaderVisible(true), [setShaderVisible])
 
+  const handleNavLinkClick = useCallback(() => {
+    close()
+  }, [close])
+
   useEffect(() => {
     if (ref.current) {
       setCartTriggerRef(ref.current)
@@ -82,22 +86,22 @@ export const MobileMenu = ({ className }: MobileMenuProps) => {
           key={item.id}
           defaultOpened
           className="font-bold"
-          component={PrismicLink}
+          component={item.primary.link.link_type !== 'Any' ? PrismicLink : undefined}
           field={item.primary.link}
           label={asText(item.primary.name)}
+          onClick={item.items.length > 0 ? undefined : handleNavLinkClick}
         >
           {item.items.length > 0 &&
             item.items
-              .map((subItem, index) => {
+              .map(subItem => {
                 if (subItem.child_link.link_type !== 'Any' && 'url' in subItem.child_link) {
                   return (
                     <NavLink
-                      // ! TODO: Don't use index as key.
-                      // eslint-disable-next-line react/no-array-index-key
-                      key={`${subItem.child_link.url}-${index}`}
+                      key={`${item.id}-${subItem.child_link.url}-${asText(subItem.child_name)}`}
                       component={PrismicLink}
                       field={subItem.child_link}
                       label={asText(subItem.child_name)}
+                      onClick={handleNavLinkClick}
                     />
                   )
                 }
@@ -106,7 +110,7 @@ export const MobileMenu = ({ className }: MobileMenuProps) => {
               .filter(Boolean)}
         </NavLink>
       )),
-    [navigation?.data.body]
+    [handleNavLinkClick, navigation?.data.body]
   )
 
   const userButton = useMemo(

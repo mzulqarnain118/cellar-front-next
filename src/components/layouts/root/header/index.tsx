@@ -2,20 +2,21 @@ import { useRef } from 'react'
 
 import dynamic from 'next/dynamic'
 
+import { useMediaQuery } from '@mantine/hooks'
 import { clsx } from 'clsx'
 
 import { useScrollDirection } from '@/core/hooks/use-scroll-direction'
 
 import { StatePicker } from '../state-picker'
 
-import { DesktopMenu } from './desktop'
-import { MobileMenu } from './mobile'
-
 const Consultant = dynamic(() => import('./consultant').then(module => module.Consultant), {
   ssr: false,
 })
+const DesktopMenu = dynamic(() => import('./desktop').then(module => module.DesktopMenu))
+const MobileMenu = dynamic(() => import('./mobile').then(module => module.MobileMenu))
 
 export const Header = () => {
+  const isDesktop = useMediaQuery('(min-width: 1024px)')
   const ref = useRef<HTMLElement | null>(null)
   const { direction, scrollTop } = useScrollDirection()
   const headerHeight = ref?.current?.clientHeight || 0
@@ -41,10 +42,7 @@ export const Header = () => {
               <Consultant />
             </div>
           </div>
-          <div className="flex flex-col">
-            <MobileMenu />
-            <DesktopMenu />
-          </div>
+          <div className="flex flex-col">{isDesktop ? <DesktopMenu /> : <MobileMenu />}</div>
         </div>
       </div>
     </header>
