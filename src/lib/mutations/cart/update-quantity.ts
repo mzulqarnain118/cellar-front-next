@@ -1,14 +1,13 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { replaceItemByUniqueId } from '@/core/utils'
+import { api } from '@/lib/api'
+import { CART_QUERY_KEY, useCartQuery } from '@/lib/queries/cart'
+import { useProcessStore } from '@/lib/stores/process'
+import { Cart, CartProduct, DEFAULT_CART_STATE } from '@/lib/types'
 
-import { api } from '../api'
-import { CART_QUERY_KEY, useCartQuery } from '../queries/cart'
-import { useProcessStore } from '../stores/process'
-import { Cart, CartProduct, DEFAULT_CART_STATE } from '../types'
-
-import { fetchSubtotalAndUpdateCart, getNewCartItems } from './helpers'
-import { CartModificationResponse } from './types'
+import { fetchSubtotalAndUpdateCart, getNewCartItems } from '../helpers'
+import { CartModificationResponse } from '../types'
 
 export interface UpdateQuantityOptions {
   cartId: string

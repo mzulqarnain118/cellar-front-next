@@ -102,6 +102,18 @@ const theme: MantineThemeOverride = {
       '#372020',
       '#2C1A1A',
     ],
+    success: [
+      '#6e9f5e',
+      '#6e9f5e',
+      '#6e9f5e',
+      '#6e9f5e',
+      '#6e9f5e',
+      '#6e9f5e',
+      '#6e9f5e',
+      '#6e9f5e',
+      '#6e9f5e',
+      '#6e9f5e',
+    ],
   },
   components: {
     NavLink: {

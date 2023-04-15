@@ -48,7 +48,7 @@ export const useCartQuery = () => {
   const { shippingState } = useShippingStateStore()
 
   const options = {
-    isLoggedIn: !!session?.user.tokenDetails?.accessToken,
+    isLoggedIn: !!session?.user?.tokenDetails?.accessToken,
     provinceId: shippingState?.provinceID,
   }
 
