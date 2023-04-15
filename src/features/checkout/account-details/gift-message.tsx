@@ -17,7 +17,7 @@ import { SubmitHandler, UseFormProps, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { useAddGiftMessageMutation } from '@/lib/mutations/checkout/add-gift-message'
-import { useCheckoutStore } from '@/lib/stores/checkout'
+import { useCheckoutActions, useCheckoutGiftMessage } from '@/lib/stores/checkout'
 
 const giftMessageSchema = z.object({
   isChecked: z.boolean(),
@@ -37,23 +37,21 @@ interface GiftMessageProps {
 }
 
 export const GiftMessage = ({ toggleEdit, toggleOverlay }: GiftMessageProps) => {
-  const { accountDetails, setAccountDetails } = useCheckoutStore()
+  const giftMessage = useCheckoutGiftMessage()
+  const { resetGiftMessage } = useCheckoutActions()
   const [warningModalOpened, { close, open }] = useDisclosure()
 
   const disclosureOptions = useMemo(
     () => ({
       onClose: () => {
-        if (accountDetails?.giftMessage !== undefined) {
+        if (giftMessage.message) {
           open()
         }
       },
     }),
-    [accountDetails?.giftMessage, open]
+    [giftMessage.message, open]
   )
-  const [isGift, { toggle: toggleIsGift }] = useDisclosure(
-    accountDetails?.giftMessage !== undefined,
-    disclosureOptions
-  )
+  const [isGift, { toggle: toggleIsGift }] = useDisclosure(!!giftMessage.message, disclosureOptions)
 
   const addGiftMessageMutationOptions = useMemo(
     () => ({
@@ -73,14 +71,14 @@ export const GiftMessage = ({ toggleEdit, toggleOverlay }: GiftMessageProps) => 
   const formOptions: UseFormProps<GiftMessageSchema> = useMemo(
     () => ({
       defaultValues: {
-        message: accountDetails?.giftMessage?.message,
-        recipientEmail: accountDetails?.giftMessage?.recipientEmail,
+        message: giftMessage?.message,
+        recipientEmail: giftMessage?.recipientEmail,
       },
       mode: 'onBlur',
       reValidateMode: 'onChange',
       resolver: zodResolver(giftMessageSchema),
     }),
-    [accountDetails?.giftMessage?.message, accountDetails?.giftMessage?.recipientEmail]
+    [giftMessage?.message, giftMessage?.recipientEmail]
   )
 
   const {
@@ -100,7 +98,7 @@ export const GiftMessage = ({ toggleEdit, toggleOverlay }: GiftMessageProps) => 
   const closeButtonProps: ModalBaseCloseButtonProps = useMemo(() => ({ size: 'lg' }), [])
 
   const onYesClick = useCallback(() => {
-    setAccountDetails({ giftMessage: undefined })
+    resetGiftMessage()
     setValue('message', '')
     setValue('recipientEmail', '')
     close()
@@ -110,7 +108,7 @@ export const GiftMessage = ({ toggleEdit, toggleOverlay }: GiftMessageProps) => 
       icon: <CheckIcon className="h-4 w-4" />,
       message: 'Your gift message updated successfully.',
     })
-  }, [close, setAccountDetails, setValue])
+  }, [close, resetGiftMessage, setValue])
 
   const onCancelClick = useCallback(() => {
     toggleIsGift()

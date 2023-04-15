@@ -1,11 +1,16 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { PencilIcon } from '@heroicons/react/24/outline'
 import { Box, LoaderProps, LoadingOverlay } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { useSession } from 'next-auth/react'
 
-import { CheckoutStore, useCheckoutStore } from '@/lib/stores/checkout'
+import {
+  CheckoutStore,
+  useCheckoutAccountDetails,
+  useCheckoutActions,
+  useCheckoutGiftMessage,
+} from '@/lib/stores/checkout'
 
 import { GiftMessage } from './gift-message'
 
@@ -21,15 +26,9 @@ export const AccountDetails = () => {
 
   const { data: session } = useSession()
 
-  const checkoutStoreOptions = useCallback(
-    (state: CheckoutStore) => ({
-      accountDetails: state.accountDetails,
-      setAccountDetails: state.setAccountDetails,
-    }),
-    []
-  )
-  const { accountDetails: actualAccountDetails, setAccountDetails } =
-    useCheckoutStore(checkoutStoreOptions)
+  const actualAccountDetails = useCheckoutAccountDetails()
+  const giftMessage = useCheckoutGiftMessage()
+  const { setAccountDetails } = useCheckoutActions()
   const [accountDetails, setDisplayedAccountDetails] = useState<CheckoutStore['accountDetails']>()
 
   useEffect(() => {
@@ -52,18 +51,18 @@ export const AccountDetails = () => {
           <span>{accountDetails.fullName}</span>
           <span>{accountDetails.email}</span>
           {editing && <GiftMessage toggleEdit={toggleEdit} toggleOverlay={toggleOverlay} />}
-          {accountDetails.giftMessage !== undefined && !editing ? (
+          {!!giftMessage.message && !editing ? (
             <div className="flex flex-col">
               <span className="font-semibold">Gift message:</span>
-              <span>{accountDetails.giftMessage.recipientEmail}</span>
-              <span>{accountDetails.giftMessage.message}</span>
+              <span>{giftMessage.recipientEmail}</span>
+              <span>{giftMessage.message}</span>
             </div>
           ) : (
             <></>
           )}
         </>
       ),
-    [accountDetails, editing, toggleEdit, toggleOverlay]
+    [accountDetails, editing, giftMessage, toggleEdit, toggleOverlay]
   )
 
   return (

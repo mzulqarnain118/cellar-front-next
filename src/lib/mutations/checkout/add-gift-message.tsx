@@ -3,7 +3,7 @@ import { notifications } from '@mantine/notifications'
 import { UseMutationOptions, useMutation } from '@tanstack/react-query'
 
 import { useCartQuery } from '@/lib/queries/cart'
-import { useCheckoutStore } from '@/lib/stores/checkout'
+import { useCheckoutActions } from '@/lib/stores/checkout'
 
 interface AddGiftMessageSuccess {
   Success: true
@@ -69,7 +69,7 @@ export const useAddGiftMessageMutation = (
   options?: UseMutationOptions<AddGiftMessageSuccess | undefined, Error, AddGiftMessageOptions>
 ) => {
   const { data: cart } = useCartQuery()
-  const { setAccountDetails } = useCheckoutStore()
+  const { setGiftMessage } = useCheckoutActions()
 
   return useMutation<AddGiftMessageSuccess | undefined, Error, AddGiftMessageOptions>(
     ['addGiftMessage'],
@@ -78,8 +78,9 @@ export const useAddGiftMessageMutation = (
       ...options,
       onSettled: (apiResponse, error, variables, context) => {
         const { message, recipientEmail } = variables
-        setAccountDetails({
-          giftMessage: { message, recipientEmail },
+        setGiftMessage({
+          message,
+          recipientEmail,
         })
 
         notifications.show({
