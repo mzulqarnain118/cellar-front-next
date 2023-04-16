@@ -1,14 +1,7 @@
 import { CheckIcon, ExclamationTriangleIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { NotificationProps, notifications } from '@mantine/notifications'
 
-export const toastSuccess = (props: NotificationProps) =>
-  notifications.show({
-    color: 'success',
-    icon: <CheckIcon className="h-4 w-4" />,
-    ...props,
-    title: <span className="font-bold">{props.title || 'Success'}</span>,
-  })
-
+// ! TODO: Sentry logging.
 export const toastError = (props: NotificationProps) =>
   notifications.show({
     autoClose: false,
@@ -16,6 +9,14 @@ export const toastError = (props: NotificationProps) =>
     icon: <XMarkIcon className="h-4 w-4" />,
     ...props,
     title: <span className="font-bold">{props.title || 'Error'}</span>,
+  })
+
+export const toastSuccess = (props: NotificationProps) =>
+  notifications.show({
+    color: 'success',
+    icon: <CheckIcon className="h-4 w-4" />,
+    ...props,
+    title: <span className="font-bold">{props.title || 'Success'}</span>,
   })
 
 export const toastWarning = (props: NotificationProps) =>
