@@ -1,9 +1,9 @@
 import { CheckIcon } from '@heroicons/react/24/outline'
-import { notifications } from '@mantine/notifications'
 import { UseMutationOptions, useMutation } from '@tanstack/react-query'
 
 import { useCartQuery } from '@/lib/queries/cart'
 import { useCheckoutActions } from '@/lib/stores/checkout'
+import { toastSuccess } from '@/lib/utils/notifications'
 
 interface AddGiftMessageSuccess {
   Success: true
@@ -83,8 +83,7 @@ export const useAddGiftMessageMutation = (
           recipientEmail,
         })
 
-        notifications.show({
-          color: 'success',
+        toastSuccess({
           icon: <CheckIcon className="h-4 w-4" />,
           message: 'Your gift message was successfully added.',
         })

@@ -15,7 +15,9 @@ export const theme: MantineThemeOverride = {
           ...Object.fromEntries(
             Object.entries(tailwindColors).map(([key, value]) => {
               const modifiedValue =
-                typeof value === 'string' ? value : Object.values(value).map(color => color)
+                typeof value === 'string'
+                  ? [value, value, value, value, value, value, value, value, value, value]
+                  : Object.values(value).map(color => color)
 
               return [key, modifiedValue]
             })
@@ -30,3 +32,5 @@ export const theme: MantineThemeOverride = {
   loader: 'dots',
   primaryColor: 'brand',
 }
+
+console.log(theme)

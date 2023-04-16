@@ -12,13 +12,13 @@ import {
   Textarea,
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import { notifications } from '@mantine/notifications'
 import { SubmitHandler, UseFormProps, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { Button } from '@/core/components/button'
 import { useAddGiftMessageMutation } from '@/lib/mutations/checkout/add-gift-message'
 import { useCheckoutActions, useCheckoutGiftMessage } from '@/lib/stores/checkout'
+import { toastSuccess } from '@/lib/utils/notifications'
 
 const giftMessageSchema = z.object({
   isChecked: z.boolean(),
@@ -104,7 +104,7 @@ export const GiftMessage = ({ toggleEdit, toggleOverlay }: GiftMessageProps) => 
     setValue('recipientEmail', '')
     close()
 
-    notifications.show({
+    toastSuccess({
       color: 'success',
       icon: <CheckIcon className="h-4 w-4" />,
       message: 'Your gift message updated successfully.',
@@ -172,9 +172,9 @@ export const GiftMessage = ({ toggleEdit, toggleOverlay }: GiftMessageProps) => 
               minRows={2}
               {...register('message')}
             />
-            <Button className="btn-sm mt-2" type="submit">
+            <button className="btn-primary btn-sm btn mt-2" type="submit">
               Save
-            </Button>
+            </button>
           </form>
         </Collapse>
       </div>
