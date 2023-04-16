@@ -6,6 +6,7 @@ import { Popover, Transition } from '@headlessui/react'
 import {
   ArrowLeftOnRectangleIcon,
   ChevronDownIcon,
+  ChevronRightIcon,
   ShoppingCartIcon,
   UserIcon,
 } from '@heroicons/react/24/outline'
@@ -18,6 +19,8 @@ import { Button } from '@/core/components/button'
 import { HOME_PAGE_PATH, SIGN_IN_PAGE_PATH } from '@/lib/paths'
 import { useCartQuery } from '@/lib/queries/cart'
 import { useProcessStore } from '@/lib/stores/process'
+
+import { StatePicker } from '../state-picker'
 
 import { Navigation } from './navigation'
 
@@ -155,7 +158,7 @@ export const DesktopMenu = ({ className }: DesktopMenuProps) => {
           Sign in
         </Link>
       ),
-    [session?.user]
+    [onSignOutClick, session?.user]
   )
 
   useEffect(() => {
@@ -166,12 +169,17 @@ export const DesktopMenu = ({ className }: DesktopMenuProps) => {
 
   return (
     <div className={clsx('hidden lg:block', className)}>
-      <div className="container mx-auto flex h-28 items-center justify-between gap-20">
+      <div className="container mx-auto grid h-28 grid-cols-[auto_1fr_auto] items-center gap-20">
         <Link href={HOME_PAGE_PATH}>
           <CompanyLogo />
         </Link>
         <Search id="desktop-menu-search" onBlur={handleBlur} onFocus={handleFocus} />
-        <div className="flex gap-6">
+        <div className="flex items-center justify-self-end">
+          <StatePicker />
+          <Link className="btn-link btn gap-2 no-underline hover:underline" href="/">
+            Find a consultant
+            <ChevronRightIcon className="h-4 w-4" />
+          </Link>
           {userButton}
           <label
             ref={ref}

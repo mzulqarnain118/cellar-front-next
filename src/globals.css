@@ -106,14 +106,6 @@
     @apply overflow-x-hidden;
   }
 
-  * {
-    @apply focus-visible:outline-dashed focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-neutral-400;
-  }
-
-  select {
-    @apply focus-visible:rounded-lg focus-visible:!outline-dashed focus-visible:!outline-1 focus-visible:!outline-offset-4 focus-visible:!outline-neutral-400 focus-visible:!ring-0;
-  }
-
   input[type='number']::-webkit-outer-spin-button,
   input[type='number']::-webkit-inner-spin-button,
   input[type='number'] {
@@ -121,50 +113,4 @@
     margin: 0;
     -moz-appearance: textfield !important;
   }
-
-  /* h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    @apply font-heading;
-  }
-
-  h1,
-  h2 {
-    @apply font-extrabold;
-  }
-
-  h3,
-  h4,
-  h5,
-  h6 {
-    @apply font-bold;
-  }
-
-  h1 {
-    @apply text-4xl;
-    @apply lg:text-h1;
-  }
-
-  h2 {
-    @apply text-h2;
-  }
-
-  h3 {
-    @apply text-h3;
-  }
-
-  h4 {
-    @apply text-h4;
-  }
-
-  h5 {
-    @apply text-h5;
-  }
-
-  h6 {
-    @apply text-h6;
-  } */
 }

@@ -1,6 +1,9 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 
-import { Combobox } from '@headlessui/react'
+import Image from 'next/image'
+
+import { getFlagUrl } from '@geobuff/flags'
+import { Combobox, Transition } from '@headlessui/react'
 import { useQueryClient } from '@tanstack/react-query'
 import { clsx } from 'clsx'
 
@@ -18,8 +21,9 @@ export const StatePicker = () => {
   const { setShippingState, shippingState } = useShippingStateStore()
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedState, setSelectedState] = useState(
-    shippingState || states?.[0] || ({ abbreviation: 'TX', name: 'Texas', provinceID: 48 } as State)
+    shippingState || states?.[0] || ({ abbreviation: 'TX', name: 'TX', provinceID: 48 } as State)
   )
+  const ref = useRef<HTMLInputElement | null>(null)
 
   const filteredStates = useMemo(
     () =>
@@ -39,15 +43,23 @@ export const StatePicker = () => {
         <Combobox.Option
           key={state.abbreviation}
           className={`
-            py-2 px-3 capitalize ui-active:bg-brand
+            flex cursor-pointer gap-2 py-2 px-3 text-sm capitalize ui-active:bg-brand
             ui-active:text-white ui-not-active:bg-white ui-not-active:text-gray-800
           `}
           value={state}
         >
+          <div className="relative h-4 w-4">
+            <Image
+              fill
+              alt={`${selectedState.name} state flag`}
+              className="object-contain"
+              src={getFlagUrl(`us-${state.abbreviation}`)}
+            />
+          </div>
           {state.name}
         </Combobox.Option>
       )),
-    [filteredStates]
+    [filteredStates, selectedState.name]
   )
 
   const handleStateChange = useCallback(
@@ -69,11 +81,27 @@ export const StatePicker = () => {
 
   return (
     <Combobox value={selectedState} onChange={handleStateChange}>
-      <Combobox.Input
-        className="bg-neutral-50"
-        displayValue={(state: State | undefined) => state?.name || ''}
-        onChange={event => setSearchQuery(event.target.value)}
-      />
+      <div className="group flex items-center rounded border px-1 text-sm">
+        <button
+          className="group-hover:cusor-pointer relative h-6 w-6"
+          onClick={() => ref.current?.select()}
+        >
+          <Image
+            fill
+            alt={`${selectedState.name} state flag`}
+            className="object-contain"
+            src={getFlagUrl(`us-${selectedState.abbreviation}`)}
+          />
+        </button>
+        <Combobox.Input
+          ref={ref}
+          className="h-8 w-10 bg-neutral-50 p-0.5 text-center font-bold group-hover:cursor-pointer"
+          displayValue={(state: State | undefined) => state?.abbreviation || ''}
+          onChange={event => setSearchQuery(event.target.value)}
+          onClick={() => ref.current?.select()}
+        />
+        <Transition />
+      </div>
       <div className="absolute">
         <Combobox.Options
           className={clsx(
