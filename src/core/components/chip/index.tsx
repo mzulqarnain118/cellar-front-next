@@ -1,4 +1,4 @@
-import { KeyboardEvent } from 'react'
+import { KeyboardEvent, useCallback } from 'react'
 
 interface ChipProps {
   className?: string
@@ -7,11 +7,11 @@ interface ChipProps {
 }
 
 export const Chip = ({ className, name, onClick }: ChipProps) => {
-  const handleOnClick = () => {
+  const handleOnClick = useCallback(() => {
     if (onClick) {
       onClick(name)
     }
-  }
+  }, [name, onClick])
 
   const handleKeyDown = (event: KeyboardEvent) => {
     event.preventDefault()

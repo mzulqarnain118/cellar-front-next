@@ -15,6 +15,7 @@ import { clsx } from 'clsx'
 import { FormProvider, SubmitHandler, UseFormProps, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
+import { Button } from '@/core/components/button'
 import { CORPORATE_CONSULTANT_ID } from '@/lib/constants'
 import { CreateAccountOptions, useCreateAccountMutation } from '@/lib/mutations/create-account'
 import { useGuestSignInMutation } from '@/lib/mutations/guest-sign-in'
@@ -407,9 +408,9 @@ export const CreateAccountForm = () => {
                 className="tooltip tooltip-left  z-20"
                 data-tip="We need your date of birth to confirm that you are at least 21 years old."
               >
-                <button className="p-0">
+                <Button className="p-0">
                   <InformationCircleIcon className="h-6 w-6" />
-                </button>
+                </Button>
               </div>
             </div>
             <div

@@ -10,6 +10,7 @@ import { clsx } from 'clsx'
 import { FormProvider, SubmitHandler, UseFormProps, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
+import { Button } from '@/core/components/button'
 import { CORPORATE_CONSULTANT_ID } from '@/lib/constants'
 import { useValidateEmailMutation } from '@/lib/mutations/validate-email'
 import { CHECKOUT_PAGE_PATH, SIGN_IN_PAGE_PATH } from '@/lib/paths'
@@ -341,9 +342,9 @@ export const GuestCheckout = () => {
                       We need your date of birth to confirm that you are at least 21 years old.
                     `}
                   >
-                    <button className="btn-ghost p-0">
-                      <span className=" md-18">info</span>
-                    </button>
+                    <Button className="btn-ghost p-0">
+                      <span className="md-18">info</span>
+                    </Button>
                   </div>
                 </div>
                 <div

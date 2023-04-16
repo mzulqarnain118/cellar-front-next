@@ -16,6 +16,7 @@ import { notifications } from '@mantine/notifications'
 import { SubmitHandler, UseFormProps, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
+import { Button } from '@/core/components/button'
 import { useAddGiftMessageMutation } from '@/lib/mutations/checkout/add-gift-message'
 import { useCheckoutActions, useCheckoutGiftMessage } from '@/lib/stores/checkout'
 
@@ -130,12 +131,12 @@ export const GiftMessage = ({ toggleEdit, toggleOverlay }: GiftMessageProps) => 
           <Modal.Body>
             <Text>Are you sure you want to remove your gift message?</Text>
             <Group className="pt-4">
-              <button className="btn-error btn-sm btn" onClick={onYesClick}>
+              <Button className="btn-error btn-sm btn" onClick={onYesClick}>
                 Yes
-              </button>
-              <button className="btn-ghost btn-sm btn" onClick={onCancelClick}>
+              </Button>
+              <Button className="btn-ghost btn-sm btn" onClick={onCancelClick}>
                 Cancel
-              </button>
+              </Button>
             </Group>
           </Modal.Body>
         </Modal.Content>
@@ -171,9 +172,9 @@ export const GiftMessage = ({ toggleEdit, toggleOverlay }: GiftMessageProps) => 
               minRows={2}
               {...register('message')}
             />
-            <button className="btn-primary btn-sm btn mt-2" type="submit">
+            <Button className="btn-sm mt-2" type="submit">
               Save
-            </button>
+            </Button>
           </form>
         </Collapse>
       </div>

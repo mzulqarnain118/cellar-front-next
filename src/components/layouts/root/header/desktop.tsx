@@ -14,6 +14,7 @@ import { signOut, useSession } from 'next-auth/react'
 
 import { CompanyLogo } from '@/components/company-logo'
 import { Search } from '@/components/search'
+import { Button } from '@/core/components/button'
 import { HOME_PAGE_PATH, SIGN_IN_PAGE_PATH } from '@/lib/paths'
 import { useCartQuery } from '@/lib/queries/cart'
 import { useProcessStore } from '@/lib/stores/process'
@@ -36,6 +37,7 @@ export const DesktopMenu = ({ className }: DesktopMenuProps) => {
 
   const handleBlur = useCallback(() => setShaderVisible(false), [setShaderVisible])
   const handleFocus = useCallback(() => setShaderVisible(true), [setShaderVisible])
+  const onSignOutClick = useCallback(() => signOut(), [])
 
   const quantityCount = data?.items.reduce((prev, current) => prev + current.quantity, 0)
 
@@ -108,13 +110,13 @@ export const DesktopMenu = ({ className }: DesktopMenuProps) => {
                       >
                         Subscriptions
                       </Link>
-                      <button
-                        className="btn-ghost btn flex h-12 items-center justify-start gap-2 px-7 hover:bg-gray-50"
-                        onClick={() => signOut()}
+                      <Button
+                        className="btn-ghost flex h-12 items-center justify-start gap-2 px-7 hover:bg-gray-50"
+                        onClick={onSignOutClick}
                       >
                         <ArrowLeftOnRectangleIcon className="h-6 w-6" />
                         Sign out
-                      </button>
+                      </Button>
                     </div>
                     <div className="bg-gray-50 p-4">
                       <a

@@ -3,6 +3,7 @@ import { ChangeEvent, Fragment, useCallback, useMemo, useState } from 'react'
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
 
+import { Button } from '@/core/components/button'
 import { NumberPicker } from '@/core/components/number-picker'
 import { useAddToCartMutation } from '@/lib/mutations/cart/add-to-cart'
 import { useUpdateQuantityMutation } from '@/lib/mutations/cart/update-quantity'
@@ -249,9 +250,9 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
         </div>
         <div className="flex items-center justify-between lg:mt-auto">
           {dropdownOrNumberPicker}
-          <button className="btn-primary btn-sm btn lg:btn-md" onClick={onClick}>
+          <Button className="btn-sm lg:btn-md" onClick={onClick}>
             Add to Cart
-          </button>
+          </Button>
         </div>
       </div>
     </div>

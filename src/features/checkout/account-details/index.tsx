@@ -5,6 +5,7 @@ import { Box, LoaderProps, LoadingOverlay } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { useSession } from 'next-auth/react'
 
+import { Button } from '@/core/components/button'
 import {
   CheckoutStore,
   useCheckoutAccountDetails,
@@ -72,14 +73,14 @@ export const AccountDetails = () => {
         <div className="mb-4 flex items-center justify-between">
           <h6 className="!font-semibold">Account Details</h6>
           {!editing ? (
-            <button className="btn-link btn-sm btn items-center gap-2" onClick={toggleEdit}>
+            <Button className="btn-sm items-center gap-2" variant="subtle" onClick={toggleEdit}>
               <PencilIcon className="h-4 w-4" />
               Edit
-            </button>
+            </Button>
           ) : (
-            <button className="btn-link btn-sm btn" onClick={toggleEdit}>
+            <Button className="btn-sm" variant="subtle" onClick={toggleEdit}>
               Cancel
-            </button>
+            </Button>
           )}
         </div>
         {details}

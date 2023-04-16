@@ -14,6 +14,7 @@ import { signIn, useSession } from 'next-auth/react'
 import { SubmitHandler, UseFormProps, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
+import { Button } from '@/core/components/button'
 import { CORPORATE_CONSULTANT_ID } from '@/lib/constants'
 import { useValidateEmailMutation } from '@/lib/mutations/validate-email'
 import { HOME_PAGE_PATH } from '@/lib/paths'
@@ -251,13 +252,9 @@ const SignInPage: NextPage<PageProps> = () => {
                   </div>
                 </div>
                 <div className="flex items-center justify-between pt-2">
-                  <button
-                    className={clsx('btn-primary btn', isLoading && 'loading')}
-                    disabled={isValidatingEmail || isLoading}
-                    type="submit"
-                  >
+                  <Button disabled={isValidatingEmail || isLoading} type="submit">
                     Sign in
-                  </button>
+                  </Button>
                   <Link className="btn-link btn" href="/forgot-password">
                     Forgot password?
                   </Link>
