@@ -3,7 +3,10 @@ import { getServerSession } from 'next-auth'
 import { NextSeo } from 'next-seo'
 
 import { AccountDetails } from '@/features/checkout/account-details'
+import { Payment } from '@/features/checkout/payment'
 import { SIGN_IN_PAGE_PATH } from '@/lib/paths'
+
+import { Delivery } from '../features/checkout/delivery'
 
 import { authOptions } from './api/auth/[...nextauth]'
 
@@ -32,8 +35,10 @@ const CheckoutPage: NextPage<PageProps> = () => (
   <>
     <NextSeo title="Checkout" />
     <div className="mt-10 grid grid-cols-[2fr_1fr] gap-10">
-      <div className="">
+      <div className="space-y-6">
         <AccountDetails />
+        <Delivery />
+        <Payment />
       </div>
       <div className="rounded border border-neutral-300 bg-neutral-50 p-6">
         <h5>Order Summary</h5>

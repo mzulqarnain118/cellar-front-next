@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 
 import { PencilIcon } from '@heroicons/react/24/outline'
-import { Box, LoaderProps, LoadingOverlay } from '@mantine/core'
+import { Blockquote, Box, LoaderProps, LoadingOverlay } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { useSession } from 'next-auth/react'
 
@@ -53,11 +53,17 @@ export const AccountDetails = () => {
           <span>{accountDetails.email}</span>
           {editing && <GiftMessage toggleEdit={toggleEdit} toggleOverlay={toggleOverlay} />}
           {!!giftMessage.message && !editing ? (
-            <div className="flex flex-col">
-              <span className="font-semibold">Gift message:</span>
-              <span>{giftMessage.recipientEmail}</span>
-              <span>{giftMessage.message}</span>
-            </div>
+            <>
+              Your gift message to be sent to {giftMessage.recipientEmail}
+              <Blockquote cite={`- ${accountDetails.fullName}`} icon={null}>
+                {giftMessage.message}
+                {/* <div className="mt-2 flex flex-col">
+                <span className="font-semibold">Gift message:</span>
+                <span>{giftMessage.recipientEmail}</span>
+                <span>{giftMessage.message}</span>
+              </div> */}
+              </Blockquote>
+            </>
           ) : (
             <></>
           )}

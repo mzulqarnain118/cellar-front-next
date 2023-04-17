@@ -15,7 +15,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           `,
           className,
           variant === 'outline' && 'btn-outline',
-          variant === 'subtle' && '!btn-link !no-underline !h-auto'
+          variant === 'subtle' && '!btn-link !no-underline !h-auto',
+          variant === 'light' && 'btn-ghost'
         ),
       }),
       [className, variant]

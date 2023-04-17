@@ -81,7 +81,7 @@ export const StatePicker = () => {
 
   return (
     <Combobox value={selectedState} onChange={handleStateChange}>
-      <div className="group flex items-center rounded border px-1 text-sm">
+      <div className="group flex items-center rounded border border-neutral-300 px-1 text-sm">
         <button
           className="group-hover:cusor-pointer relative h-6 w-6"
           onClick={() => ref.current?.select()}

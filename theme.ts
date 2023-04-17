@@ -32,5 +32,3 @@ export const theme: MantineThemeOverride = {
   loader: 'dots',
   primaryColor: 'brand',
 }
-
-console.log(theme)
