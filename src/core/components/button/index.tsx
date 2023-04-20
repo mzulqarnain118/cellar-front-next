@@ -6,20 +6,21 @@ import { clsx } from 'clsx'
 type ButtonProps = ComponentPropsWithoutRef<'button'> & MantineButtonProps
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, ...props }, ref) => {
+  ({ className, size, variant, ...props }, ref) => {
     const classNames = useMemo(
       () => ({
+        inner: className,
         root: clsx(
           `
-            btn btn-primary enabled:hover:underline disabled:cursor-not-allowed
+            btn btn-primary enabled:hover:underline disabled:cursor-not-allowed  text-unset
           `,
-          className,
           variant === 'outline' && 'btn-outline',
           variant === 'subtle' && '!btn-link !no-underline !h-auto',
-          variant === 'light' && 'btn-ghost'
+          variant === 'light' && 'btn-ghost',
+          size === 'sm' && 'btn-sm'
         ),
       }),
-      [className, variant]
+      [className, size, variant]
     )
 
     return <MantineButton {...props} ref={ref} classNames={classNames}></MantineButton>

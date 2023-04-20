@@ -4,7 +4,6 @@ import dynamic from 'next/dynamic'
 
 import { BlurImage } from '@/components/blur-image'
 import { Price } from '@/components/price'
-import { Button } from '@/core/components/button'
 import { NumberPicker } from '@/core/components/number-picker'
 import { useAddToCartMutation } from '@/lib/mutations/cart/add-to-cart'
 import { useRemoveFromCartMutation } from '@/lib/mutations/cart/remove-from-cart'
@@ -172,16 +171,17 @@ export const CartItem = ({ product }: CartItemProps) => {
             min={MIN}
             value={quantity}
           />
-          <Button
+          <button
             className={`
-              text-sm text-neutral-400 enabled:hover:text-neutral-500
+              text-sm text-neutral-500
+              enabled:hover:text-neutral-600 enabled:active:text-neutral-700 enabled:active:underline
             `}
             disabled={isMutatingCart}
             type="button"
             onClick={handleRemove}
           >
             Remove
-          </Button>
+          </button>
         </div>
       </div>
     </div>
