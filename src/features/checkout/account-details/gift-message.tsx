@@ -3,6 +3,7 @@ import { useCallback, useMemo } from 'react'
 import { CheckIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
+  Button,
   Collapse,
   Group,
   Modal,
@@ -15,7 +16,6 @@ import { useDisclosure } from '@mantine/hooks'
 import { SubmitHandler, UseFormProps, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import { Button } from '@/core/components/button'
 import { useAddGiftMessageMutation } from '@/lib/mutations/checkout/add-gift-message'
 import { useCheckoutActions, useCheckoutGiftMessage } from '@/lib/stores/checkout'
 import { toastSuccess } from '@/lib/utils/notifications'

@@ -6,11 +6,11 @@ import dynamic from 'next/dynamic'
 
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Button } from '@mantine/core'
 import { clsx } from 'clsx'
 import { FormProvider, SubmitHandler, UseFormProps, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import { Button } from '@/core/components/button'
 import { CORPORATE_CONSULTANT_ID } from '@/lib/constants'
 import { useValidateEmailMutation } from '@/lib/mutations/validate-email'
 import { CHECKOUT_PAGE_PATH, SIGN_IN_PAGE_PATH } from '@/lib/paths'
@@ -231,9 +231,9 @@ export const GuestCheckout = () => {
                 <input
                   className={clsx(
                     `
-                      z-10 h-10 w-full rounded-lg border border-neutral-200 bg-neutral
-                      px-3 transition-all duration-500 placeholder:text-neutral-300 focus:!outline
-                      focus:outline-1 focus:outline-offset-0 focus:outline-brand
+                      focus:outline-brand z-10 h-10 w-full rounded-lg border border-neutral-200
+                      bg-neutral px-3 transition-all duration-500 placeholder:text-neutral-300
+                      focus:!outline focus:outline-1 focus:outline-offset-0
                     `,
                     errors.firstName?.message && '!border-red-700 focus:!outline-red-700'
                   )}
@@ -262,9 +262,9 @@ export const GuestCheckout = () => {
                 <input
                   className={clsx(
                     `
-                      z-10 h-10 w-full rounded-lg border border-neutral-200 bg-neutral
-                      px-3 transition-all duration-500 placeholder:text-neutral-300 focus:!outline
-                      focus:outline-1 focus:outline-offset-0 focus:outline-brand
+                      focus:outline-brand z-10 h-10 w-full rounded-lg border border-neutral-200
+                      bg-neutral px-3 transition-all duration-500 placeholder:text-neutral-300
+                      focus:!outline focus:outline-1 focus:outline-offset-0
                     `,
                     errors.lastName?.message && '!border-red-700 focus:!outline-red-700'
                   )}
@@ -293,10 +293,10 @@ export const GuestCheckout = () => {
                 <input
                   className={clsx(
                     `
-                      z-10 h-10 w-full rounded-lg border border-neutral-200 bg-neutral
-                      px-3 transition-all duration-500 placeholder:text-neutral-300
-                      focus:!outline focus:outline-1 focus:outline-offset-0
-                      focus:outline-brand
+                      focus:outline-brand z-10 h-10 w-full rounded-lg border border-neutral-200
+                      bg-neutral px-3 transition-all duration-500
+                      placeholder:text-neutral-300 focus:!outline focus:outline-1
+                      focus:outline-offset-0
                     `,
                     errors.email?.message && '!border-red-700 focus:!outline-red-700'
                   )}

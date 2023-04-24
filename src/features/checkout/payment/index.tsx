@@ -1,8 +1,6 @@
 import { PencilIcon } from '@heroicons/react/24/outline'
-import { Box, LoaderProps, LoadingOverlay } from '@mantine/core'
+import { Box, Button, LoaderProps, LoadingOverlay } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-
-import { Button } from '@/core/components/button'
 
 const loaderProps: LoaderProps = {
   color: 'brand.2',
@@ -12,7 +10,7 @@ const loaderProps: LoaderProps = {
 
 export const Payment = () => {
   const [isEditing, { toggle: toggleEdit }] = useDisclosure()
-  const [isOverlayVisible, { toggle: toggleOverlay }] = useDisclosure(false)
+  const [isOverlayVisible, { toggle: _toggleOverlay }] = useDisclosure(false)
 
   return (
     <Box pos="relative">

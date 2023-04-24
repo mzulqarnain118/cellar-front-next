@@ -1,6 +1,7 @@
 import { CheckIcon } from '@heroicons/react/24/outline'
 import { UseMutationOptions, useMutation } from '@tanstack/react-query'
 
+import { api } from '@/lib/api'
 import { useCartQuery } from '@/lib/queries/cart'
 import { useCheckoutActions } from '@/lib/stores/checkout'
 import { toastSuccess } from '@/lib/utils/notifications'
@@ -29,35 +30,35 @@ interface AddGiftMessageOptions {
   recipientEmail: string
 }
 
-const sleep = (ms: number) =>
-  new Promise(resolve => {
-    setTimeout(resolve, ms)
-  })
+// const sleep = (ms: number) =>
+//   new Promise(resolve => {
+//     setTimeout(resolve, ms)
+//   })
 
 export const addGiftMessage = async ({
-  message: _m,
+  message,
   orderDisplayId,
-  recipientEmail: _e,
+  recipientEmail,
 }: AddGiftMessageOptions) => {
   try {
     if (orderDisplayId === undefined) {
       return
     }
 
-    // const response = await api('v2/checkout/AddGiftMessage', {
-    //   json: {
-    //     EmailAddress: recepientEmail,
-    //     Message: message.trim(),
-    //     OrderDisplayID: parseInt(orderDisplayId),
-    //   },
-    //   method: 'post',
-    // }).json<AddGiftMessageResponse>()
+    const response = await api('v2/checkout/AddGiftMessage', {
+      json: {
+        EmailAddress: recipientEmail,
+        Message: message.trim(),
+        OrderDisplayID: parseInt(orderDisplayId),
+      },
+      method: 'post',
+    }).json<AddGiftMessageResponse>()
 
-    // if (!response.Success) {
-    //   throw new Error(response.Error.Message || fallbackErrorMessage)
-    // }
+    if (!response.Success) {
+      throw new Error(response.Error.Message || fallbackErrorMessage)
+    }
 
-    await sleep(500)
+    // await sleep(500)
 
     return undefined
   } catch (error) {

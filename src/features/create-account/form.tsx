@@ -11,11 +11,11 @@ import {
   InformationCircleIcon,
 } from '@heroicons/react/24/outline'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Button } from '@mantine/core'
 import { clsx } from 'clsx'
 import { FormProvider, SubmitHandler, UseFormProps, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import { Button } from '@/core/components/button'
 import { CORPORATE_CONSULTANT_ID } from '@/lib/constants'
 import { CreateAccountOptions, useCreateAccountMutation } from '@/lib/mutations/create-account'
 import { useGuestSignInMutation } from '@/lib/mutations/guest-sign-in'

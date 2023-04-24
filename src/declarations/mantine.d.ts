@@ -1,6 +1,57 @@
-import '@mantine/core'
+import { DefaultMantineColor, Tuple } from '@mantine/core'
+
+type ExtendedCustomColors =
+  | 'accent'
+  | 'brand'
+  | 'error'
+  | 'ghost'
+  | 'info'
+  | 'neutral'
+  | 'product'
+  | 'success'
+  | DefaultMantineColor
 
 declare module '@mantine/core' {
+  export interface MantineThemeColorsOverride {
+    colors: Record<ExtendedCustomColors, Tuple<string, 10>>
+  }
+
+  export interface ButtonProps<T> extends DefaultProps<ButtonStylesNames, ButtonStylesParams> {
+    /** Predefined button size */
+    size?: MantineSize
+    /** Button type attribute */
+    type?: 'submit' | 'button' | 'reset'
+    /** Button color from theme */
+    color?: MantineColor
+    /** Adds icon before button label  */
+    leftIcon?: React.ReactNode
+    /** Adds icon after button label  */
+    rightIcon?: React.ReactNode
+    /** Sets button width to 100% of parent element */
+    fullWidth?: boolean
+    /** Key of theme.radius or any valid CSS value to set border-radius, theme.defaultRadius by default */
+    radius?: MantineNumberSize
+    /** Controls button appearance */
+    variant?: Variants<'filled' | 'outline' | 'light' | 'white' | 'default' | 'subtle' | 'gradient'>
+    /** Controls gradient settings in gradient variant only */
+    gradient?: MantineGradient
+    /** Set text-transform to uppercase */
+    uppercase?: boolean
+    /** Reduces vertical and horizontal spacing */
+    compact?: boolean
+    /** Indicate loading state */
+    loading?: boolean
+    /** Props spread to Loader component */
+    loaderProps?: LoaderProps
+    /** Loader position relative to button label */
+    loaderPosition?: 'left' | 'right' | 'center'
+    /** Button label */
+    children?: React.ReactNode
+    /** Disabled state */
+    disabled?: boolean
+    component?: React.ElementType<T>
+  }
+
   export interface NavLinkProps<T>
     extends DefaultProps<NavLinkStylesNames, NavLinkStylesParams>,
       T {

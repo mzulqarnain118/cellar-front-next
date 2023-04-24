@@ -3,7 +3,8 @@ import { ChangeEvent, Fragment, useCallback, useMemo, useState } from 'react'
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
 
-import { Button } from '@/core/components/button'
+import { Button } from '@mantine/core'
+
 import { NumberPicker } from '@/core/components/number-picker'
 import { useAddToCartMutation } from '@/lib/mutations/cart/add-to-cart'
 import { useUpdateQuantityMutation } from '@/lib/mutations/cart/update-quantity'

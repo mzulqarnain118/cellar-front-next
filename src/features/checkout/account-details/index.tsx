@@ -1,11 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
 
 import { PencilIcon } from '@heroicons/react/24/outline'
-import { Blockquote, Box, LoaderProps, LoadingOverlay } from '@mantine/core'
+import { Blockquote, Box, Button, LoaderProps, LoadingOverlay } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { useSession } from 'next-auth/react'
 
-import { Button } from '@/core/components/button'
 import {
   CheckoutStore,
   useCheckoutAccountDetails,
