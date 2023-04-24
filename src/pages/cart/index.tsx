@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import { NextPage } from 'next'
 
 import { ChevronRightIcon } from '@heroicons/react/24/outline'
-import { TextInput } from '@mantine/core'
+import { Button, TextInput } from '@mantine/core'
 
 import { CartItem } from '@/components/layouts/root/header/cart-item'
 import { Link } from '@/components/link'
@@ -36,24 +36,28 @@ const CartPage: NextPage = () => {
   return (
     <div className="container mx-auto py-4">
       <div className="space-y-2">
-        <Link
+        <Button
           className={`
-            btn-ghost btn flex items-center gap-2 rounded transition-all hover:gap-4
-            hover:bg-brand hover:text-neutral-50
+            flex items-center gap-2 rounded transition-all
+            enabled:hover:gap-4
           `}
+          component={Link}
           href={href}
+          variant=""
         >
           Sign in for a better and faster checkout experience
           <ChevronRightIcon className="h-6 w-6" />
-        </Link>
+        </Button>
         <h1 className="h4">Your Cart</h1>
         {cartItems}
         <div className="grid grid-cols-2 items-end py-4">
           <TextInput classNames={classNames} label="Promo Code" placeholder="XXXXX-XXXXX-XXXXX" />
-          <button className="btn-primary btn-sm btn h-10 rounded-l-none">Apply</button>
+          <Button className="h-10 rounded-l-none" color="brand">
+            Apply
+          </Button>
         </div>
         <div className="rounded bg-neutral-50 p-4">
-          <h2 className="h5 mb-3 !font-semibold !tracking-wider">Order Summary</h2>
+          <h2 className="h5 mb-3 !mt-0 !font-semibold !tracking-wider">Order Summary</h2>
           <div className="space-y-1">
             <div className="flex items-center justify-between tracking-wider text-neutral-600">
               <span>Subtotal</span>
@@ -67,7 +71,6 @@ const CartPage: NextPage = () => {
               <span>Shipping</span>
               <span className="tracking-widest">$--.--</span>
             </div>
-            <div>Calculate shipping</div>
             <div
               className={`
                 !mt-3 flex items-center justify-between border-y border-neutral-300 py-3 font-bold
@@ -79,6 +82,9 @@ const CartPage: NextPage = () => {
             </div>
           </div>
         </div>
+        <Button fullWidth color="dark" size="md">
+          Checkout
+        </Button>
       </div>
     </div>
   )

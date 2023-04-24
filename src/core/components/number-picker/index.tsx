@@ -1,7 +1,7 @@
 import { ChangeEventHandler, MouseEventHandler, useCallback, useRef } from 'react'
 
 import { MinusIcon, PlusIcon } from '@heroicons/react/20/solid'
-import { Button, Input, InputBaseProps, rem } from '@mantine/core'
+import { Button } from '@mantine/core'
 import { clsx } from 'clsx'
 
 interface NumberPickerProps {
@@ -21,25 +21,10 @@ interface NumberPickerProps {
   max?: number
   /** Minimum value of the number picker. Defaults to 1. Value must be positive. */
   min?: number
+  size?: 'sm' | 'md'
 }
 
 const BUTTON_SIZE = 16
-
-const inputClassNames = {
-  input: 'rounded-none border-none',
-}
-
-const inputStyles: InputBaseProps['styles'] = theme => ({
-  input: {
-    height: `${rem(40)} !important`,
-    textAlign: 'center',
-  },
-  wrapper: {
-    border: `1px solid ${theme.colors.neutral[3]} !important`,
-    height: `${rem(40)} !important`,
-    overflowY: 'hidden',
-  },
-})
 
 export const NumberPicker = ({
   containerClassName,
@@ -50,6 +35,7 @@ export const NumberPicker = ({
   value,
   max = 24,
   min = 1,
+  size = 'md',
 }: NumberPickerProps) => {
   const inputRef = useRef<HTMLInputElement | null>(null)
 
@@ -68,7 +54,8 @@ export const NumberPicker = ({
             flex h-10 w-8 items-center justify-center rounded-lg rounded-r-none transition
             disabled:cursor-not-allowed
           `,
-          value === min && 'cursor-not-allowed'
+          value === min && 'cursor-not-allowed',
+          size === 'sm' && 'h-8 w-6'
         )}
         disabled={disabled}
         type="button"
@@ -76,25 +63,23 @@ export const NumberPicker = ({
       >
         <MinusIcon height={BUTTON_SIZE} width={BUTTON_SIZE} />
       </Button>
-      <Input
+      <input
         ref={inputRef}
         aria-label="Product Quantity"
         className={clsx(
           `
-            w-10 appearance-none border-neutral-100 border-y-transparent bg-neutral-50 p-0
-            text-center transition-all focus:border-y disabled:cursor-not-allowed
-            disabled:bg-neutral-100 disabled:text-neutral-200
+            w-10 appearance-none border-x-0 border-y border-solid border-neutral-400
+            bg-neutral-50 p-0 text-center transition-all disabled:cursor-not-allowed
+            disabled:border-neutral-100 disabled:bg-neutral-100 disabled:text-neutral-200
           `,
-          disabled && 'disabled:bg-neutral-100 disabled:text-neutral-200'
+          disabled && 'disabled:bg-neutral-100 disabled:text-neutral-200',
+          size === 'sm' && '!h-8'
         )}
-        classNames={inputClassNames}
         disabled={disabled}
         inputMode="numeric"
         max={max}
         min={min}
         pattern="[0-9]+"
-        size="md"
-        styles={inputStyles}
         type="number"
         value={value}
         onChange={handleChange}
@@ -102,10 +87,13 @@ export const NumberPicker = ({
       />
       <Button
         aria-label="Add 1"
-        className={`
+        className={clsx(
+          `
           flex h-10 w-8 items-center justify-center rounded-lg rounded-l-none transition
           disabled:cursor-not-allowed
-        `}
+        `,
+          size === 'sm' && 'h-8 w-6'
+        )}
         disabled={disabled || value === max}
         type="button"
         onClick={handleAdd}

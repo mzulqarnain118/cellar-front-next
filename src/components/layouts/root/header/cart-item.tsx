@@ -2,6 +2,8 @@ import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react'
 
 import dynamic from 'next/dynamic'
 
+import { CloseButton } from '@mantine/core'
+
 import { BlurImage } from '@/components/blur-image'
 import { Price } from '@/components/price'
 import { NumberPicker } from '@/core/components/number-picker'
@@ -127,63 +129,57 @@ export const CartItem = ({ product }: CartItemProps) => {
   }, [product.quantity])
 
   return (
-    <div className="grid grid-cols-[120px_calc(100%-140px)] gap-3 py-3">
-      {product.pictureUrl !== undefined && (
-        <Link href={`/product/${product.cartUrl || ''}`}>
-          <BlurImage
-            alt={product.displayName || 'Product'}
-            className="group h-32 w-20 self-center object-contain"
-            height={128}
-            src={product.pictureUrl}
-            style={imageDimensions}
-            width={80}
-          />
-        </Link>
-      )}
-      <div className="flex items-center justify-between">
-        <div className="flex flex-col gap-2 px-1">
-          <div className="flex flex-col">
-            <div>
-              <Link
-                className="font-bold transition-all hover:underline"
-                href={`/product/${product.cartUrl || ''}`}
-              >
-                {product.displayName}
-              </Link>
+    <div className="border-0 border-b border-solid border-neutral-300 pb-4">
+      <div className="grid grid-cols-[auto_1fr] gap-3 pt-3">
+        {product.pictureUrl !== undefined && (
+          <Link href={`/product/${product.cartUrl || ''}`}>
+            <BlurImage
+              alt={product.displayName || 'Product'}
+              className="group h-32 w-20 self-center object-contain"
+              height={128}
+              src={product.pictureUrl}
+              style={imageDimensions}
+              width={80}
+            />
+          </Link>
+        )}
+        <div className="flex items-center justify-between">
+          <div className="flex flex-col gap-2 px-1">
+            <div className="flex flex-col">
+              <div>
+                <Link
+                  className="font-bold transition-all hover:underline"
+                  href={`/product/${product.cartUrl || ''}`}
+                >
+                  {product.displayName}
+                </Link>
+              </div>
+              <span className="text-sm">{containerSize}</span>
             </div>
-            <span className="text-sm">{containerSize}</span>
+            <Price
+              className="text-base !font-semibold"
+              price={product.price}
+              onSalePrice={
+                product.onSalePrice === product.price ? undefined : product.onSalePrice || 0
+              }
+            />
           </div>
-          <Price
-            className="text-base !font-semibold"
-            price={product.price}
-            onSalePrice={
-              product.onSalePrice === product.price ? undefined : product.onSalePrice || 0
-            }
-          />
-        </div>
-        <div className="ml-auto space-y-2 self-center text-center">
-          <NumberPicker
-            disabled={isMutatingCart}
-            handleAdd={handleAdd}
-            handleChange={handleChange}
-            handleMinus={handleMinus}
-            max={MAX}
-            min={MIN}
-            value={quantity}
-          />
-          <button
-            className={`
-              text-sm text-neutral-500
-              enabled:hover:text-neutral-600 enabled:active:text-neutral-700 enabled:active:underline
-            `}
-            disabled={isMutatingCart}
-            type="button"
-            onClick={handleRemove}
-          >
-            Remove
-          </button>
+          <div className="self-start">
+            <CloseButton size="md" onClick={handleRemove} />
+          </div>
         </div>
       </div>
+      <NumberPicker
+        containerClassName="justify-end"
+        disabled={isMutatingCart}
+        handleAdd={handleAdd}
+        handleChange={handleChange}
+        handleMinus={handleMinus}
+        max={MAX}
+        min={MIN}
+        size="sm"
+        value={quantity}
+      />
     </div>
   )
 }

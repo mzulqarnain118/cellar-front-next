@@ -20,7 +20,7 @@ import { PrismicLink } from '@prismicio/react'
 import { CompanyLogo } from '@/components/company-logo'
 import { Link } from '@/components/link'
 import { Search } from '@/components/search'
-import { HOME_PAGE_PATH } from '@/lib/paths'
+import { CART_PAGE_PATH, HOME_PAGE_PATH } from '@/lib/paths'
 import { useCartQuery } from '@/lib/queries/cart'
 import { useNavigationQuery } from '@/lib/queries/header'
 
@@ -132,7 +132,11 @@ export const Navigation = () => {
     [handleNavLinkClick, isDesktop, menu?.data.body]
   )
 
-  const cartQuantity = cart?.items.reduce((prev, product) => prev + product.quantity, 0)
+  const cartQuantity =
+    useMemo(
+      () => cart?.items.reduce((prev, product) => prev + product.quantity, 0),
+      [cart?.items]
+    ) || 0
 
   return (
     <div
@@ -179,8 +183,8 @@ export const Navigation = () => {
         <ActionIcon className="text-neutral-900">
           <UserIcon className="h-5 w-5" />
         </ActionIcon>
-        <ActionIcon className="text-neutral-900">
-          <Indicator inline label={cartQuantity} size={16}>
+        <ActionIcon className="text-neutral-900" component={Link} href={CART_PAGE_PATH}>
+          <Indicator inline color="brand" label={cartQuantity} size={16}>
             <ShoppingCartIcon className="h-5 w-5" />
           </Indicator>
         </ActionIcon>
