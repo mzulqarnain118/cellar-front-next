@@ -377,21 +377,6 @@ export const GuestCheckout = () => {
                   <div className="col-span-2 grid">
                     <ConsultantCheckbox disabled={!!defaultValues.shoppingWithConsultant} />
                   </div>
-                  <div className="col-span-2 grid grid-cols-[1rem_auto] items-center gap-2 pb-3">
-                    <input
-                      aria-describedby="receivePromoMessages"
-                      className="checkbox-primary checkbox checkbox-xs"
-                      id="receivePromoMessages"
-                      type="checkbox"
-                      {...register('receivePromoMessages')}
-                    />
-                    <label
-                      className="z-20 mb-0 cursor-pointer font-medium text-gray-900 md:ml-2"
-                      htmlFor="receivePromoMessages"
-                    >
-                      Yes, I would like to receive promotional marketing messages.
-                    </label>
-                  </div>
                   <div
                     className={`
                         col-span-2 flex flex-col items-center justify-between gap-4 pt-2 pb-3

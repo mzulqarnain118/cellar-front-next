@@ -2,11 +2,12 @@ import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next'
 import { getServerSession } from 'next-auth'
 import { NextSeo } from 'next-seo'
 
-import { AccountDetails } from '@/features/checkout/account-details'
-import { Payment } from '@/features/checkout/payment'
-import { SIGN_IN_PAGE_PATH } from '@/lib/paths'
+import { Tabs, rem } from '@mantine/core'
 
-import { Delivery } from '../features/checkout/delivery'
+import { Delivery } from '@/features/checkout/delivery'
+import { Tab } from '@/features/checkout/tab'
+import { SIGN_IN_PAGE_PATH } from '@/lib/paths'
+import { useCheckoutActions, useCheckoutTabs } from '@/lib/stores/checkout'
 
 import { authOptions } from './api/auth/[...nextauth]'
 
@@ -31,32 +32,55 @@ export const getServerSideProps: GetServerSideProps = async context => {
 
 type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
-const CheckoutPage: NextPage<PageProps> = () => (
-  <>
-    <NextSeo title="Checkout" />
-    <div className="mt-10 grid grid-cols-[2fr_1fr] gap-10">
-      <div className="space-y-6">
-        <AccountDetails />
-        <Delivery />
-        <Payment />
-      </div>
-      <div className="rounded border border-neutral-300 bg-neutral-50 p-6">
-        <h5>Order Summary</h5>
-        <div className="grid auto-rows-auto grid-cols-2 items-center">
-          <span>Subtotal</span>
-          <span className="text-right">$1.00</span>
-        </div>
-        <div className="grid auto-rows-auto grid-cols-2 items-center">
-          <span>Shipping</span>
-          <span className="text-right">$1.00</span>
-        </div>
-        <div className="grid auto-rows-auto grid-cols-2 items-center">
-          <span>Tax</span>
-          <span className="text-right">$1.00</span>
-        </div>
-      </div>
-    </div>
-  </>
-)
+const tabsStyles = {
+  tabLabel: {
+    fontSize: rem(16),
+  },
+}
+
+const CheckoutPage: NextPage<PageProps> = () => {
+  const { setActiveTab } = useCheckoutActions()
+  const { activeTab, completedTabs } = useCheckoutTabs()
+
+  return (
+    <>
+      <NextSeo title="Checkout" />
+      <Tabs
+        orientation="horizontal"
+        styles={tabsStyles}
+        value={activeTab}
+        onTabChange={setActiveTab}
+      >
+        <Tabs.List>
+          <Tab
+            active={activeTab === 'delivery'}
+            complete={completedTabs.some(tab => tab === 'delivery')}
+            value="delivery"
+          />
+          <Tab
+            active={activeTab === 'shipping'}
+            complete={completedTabs.some(tab => tab === 'shipping')}
+            disabled={!completedTabs.some(tab => tab === 'delivery')}
+            value="shipping"
+          />
+          <Tab
+            active={activeTab === 'payment'}
+            complete={completedTabs.some(tab => tab === 'payment')}
+            disabled={!completedTabs.some(tab => tab === 'shipping')}
+            value="payment"
+          />
+        </Tabs.List>
+
+        <Tabs.Panel value="delivery">
+          <Delivery />
+        </Tabs.Panel>
+
+        <Tabs.Panel value="shipping">Shipping</Tabs.Panel>
+
+        <Tabs.Panel value="payment">Payment</Tabs.Panel>
+      </Tabs>
+    </>
+  )
+}
 
 export default CheckoutPage

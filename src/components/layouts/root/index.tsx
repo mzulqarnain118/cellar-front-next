@@ -26,11 +26,10 @@ export const RootLayout = ({ children }: RootLayoutProps) => {
   return pathname.startsWith(CHECKOUT_PAGE_PATH) ? (
     <div className="h-full min-h-screen bg-neutral-100">
       <div className="py-4">
-        <header className="container mx-auto grid max-w-7xl grid-cols-3 items-center">
+        <header className="container mx-auto flex items-center justify-center">
           <CompanyLogo size="lg" />
-          <h1 className="h3 text-center !font-semibold">Checkout</h1>
         </header>
-        <main className="container mx-auto max-w-7xl ">{children}</main>
+        <main className="container mx-auto">{children}</main>
       </div>
     </div>
   ) : (

@@ -1,11 +1,14 @@
 import { QueryClient, useMutation } from '@tanstack/react-query'
+import { signIn } from 'next-auth/react'
 
 import { api } from '../api'
+import { CHECKOUT_PAGE_PATH } from '../paths'
 import { CART_QUERY_KEY } from '../queries/cart'
 import { useUserStore } from '../stores/user'
 import { Cart, Failure } from '../types'
 
 interface GuestSignInOptions {
+  callback?: () => void
   cartId: string
   createAccount: boolean
   dateOfBirth: { day: string; month: string; year: string }
@@ -13,6 +16,7 @@ interface GuestSignInOptions {
   firstName: string
   lastName: string
   password: string
+  redirection?: string
 }
 
 interface GuestSuccess {
@@ -40,7 +44,16 @@ export const useGuestSignInMutation = () =>
     {
       onSuccess: async (
         response,
-        { createAccount, dateOfBirth: { day, month, year }, email, firstName, lastName, password }
+        {
+          callback,
+          createAccount,
+          dateOfBirth: { day, month, year },
+          email,
+          firstName,
+          lastName,
+          password,
+          redirection = CHECKOUT_PAGE_PATH,
+        }
       ) => {
         if (response?.Success) {
           const token = { Authorization: `Bearer ${response.Data.data.token}` }
@@ -84,6 +97,12 @@ export const useGuestSignInMutation = () =>
               },
               method: 'post',
             }).json<GuestResponse>()
+          }
+
+          await signIn('sign-in', { callbackUrl: redirection, email, password, redirect: false })
+
+          if (callback) {
+            callback()
           }
         }
       },

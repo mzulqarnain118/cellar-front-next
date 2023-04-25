@@ -71,7 +71,6 @@ export const baseCreateAccountSchema = z.object({
     .min(1, { message: 'Please enter the month.' })
     .length(2, 'Please enter the month.')
     .trim(),
-  receivePromoMessages: z.boolean().default(false),
   shoppingWithConsultant: z.boolean().default(false),
   year: z
     .string()
@@ -222,7 +221,6 @@ export const CreateAccountForm = () => {
       dateOfBirth,
       email,
       firstName,
-      isGuest,
       lastName,
       password,
       redirection: HOME_PAGE_PATH,
@@ -566,7 +564,7 @@ export const CreateAccountForm = () => {
                   className="checkbox-primary checkbox checkbox-xs rounded"
                   id="receivePromoMessages"
                   type="checkbox"
-                  {...register('receivePromoMessages')}
+                  // {...register('receivePromoMessages')}
                 />
                 <label
                   className="z-20 mb-0 cursor-pointer font-medium text-gray-900 md:ml-2"

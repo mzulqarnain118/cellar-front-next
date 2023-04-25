@@ -4,14 +4,11 @@ import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 import algoliasearch from 'algoliasearch/lite'
 import { clsx } from 'clsx'
 import { useFormContext } from 'react-hook-form'
-import { InstantSearch } from 'react-instantsearch-hooks-web'
 
 import { useConsultantStore } from '@/lib/stores/consultant'
 
 import { CreateAccountSchema } from 'src/features/create-account/form'
 import { GuestCheckoutSchema } from 'src/features/guest-checkout'
-
-import { ConsultantSearch } from './search'
 
 const searchClient = algoliasearch(
   process.env.NEXT_PUBLIC_ALGOLIA_APP_ID || '',
@@ -79,14 +76,14 @@ export const ConsultantCheckbox = ({ disabled = false, isChecked }: ConsultantCh
         <label className="m-0" htmlFor="consultant">
           Your Consultant
         </label>
-        <InstantSearch indexName={algoliaIndex} searchClient={searchClient}>
+        {/* <InstantSearch indexName={algoliaIndex} searchClient={searchClient}>
           <ConsultantSearch
             control={control}
             disabled={isDisabled}
             handleSelect={handleConsultantSelect}
             name="consultant"
           />
-        </InstantSearch>
+        </InstantSearch> */}
         <div
           className={clsx(
             'flex max-h-0 items-center gap-2 py-2 pb-2 opacity-0 transition-all duration-500',

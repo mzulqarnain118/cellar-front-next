@@ -17,7 +17,6 @@ export interface CreateAccountOptions {
   firstName: string
   lastName: string
   password: string
-  isGuest: boolean
   redirection?: string
 }
 

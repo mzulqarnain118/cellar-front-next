@@ -17,15 +17,21 @@ interface AccountDetails {
   isLoading: boolean
 }
 
+export type CheckoutTab = 'delivery' | 'shipping' | 'payment'
+
 interface CheckoutStoreState {
   accountDetails: AccountDetails
   giftMessage: GiftMessage
+  activeTab: CheckoutTab
+  completedTabs: CheckoutTab[]
 }
 
 interface CheckoutStoreActions {
   resetAccountDetails: () => void
   resetGiftMessage: () => void
   setAccountDetails: Setter<AccountDetails>
+  setActiveTab: (tab: CheckoutTab) => void
+  setCompletedTabs: Setter<CheckoutTab[]>
   setGiftMessage: Setter<GiftMessage>
 }
 
@@ -38,6 +44,8 @@ const initialValues: CheckoutStoreState = {
     fullName: '',
     isLoading: true,
   },
+  activeTab: 'delivery',
+  completedTabs: [],
   giftMessage: {
     message: '',
     recipientEmail: '',
@@ -55,6 +63,11 @@ const useCheckoutStore = create<CheckoutStore>()(
           typeof update === 'function'
             ? set(state => ({ accountDetails: update(state.accountDetails) }))
             : set(() => ({ accountDetails: update })),
+        setActiveTab: activeTab => set(() => ({ activeTab })),
+        setCompletedTabs: update =>
+          typeof update === 'function'
+            ? set(state => ({ completedTabs: update(state.completedTabs) }))
+            : set(() => ({ completedTabs: update })),
         setGiftMessage: update =>
           typeof update === 'function'
             ? set(state => ({ giftMessage: update(state.giftMessage) }))
@@ -67,6 +80,14 @@ const useCheckoutStore = create<CheckoutStore>()(
     }
   )
 )
+
+export const useCheckoutTabs = () => {
+  const selector = useCallback(
+    (state: CheckoutStore) => ({ activeTab: state.activeTab, completedTabs: state.completedTabs }),
+    []
+  )
+  return useCheckoutStore(selector)
+}
 
 export const useCheckoutAccountDetails = () => {
   const selector = useCallback((state: CheckoutStore) => state.accountDetails, [])
