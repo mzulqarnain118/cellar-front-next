@@ -78,6 +78,7 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
                 <PrismicPreview repositoryName={repositoryName}>
                   <DefaultSeo {...defaultSEOConfig} />
                   <RootLayout>
+                    <meta content="width=device-width, initial-scale=1" name="viewport" />
                     <style global jsx>
                       {`
                         :root {
