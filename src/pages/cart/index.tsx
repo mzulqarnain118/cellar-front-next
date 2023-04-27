@@ -4,12 +4,13 @@ import { NextPage } from 'next'
 
 import { useRouter } from 'next/router'
 
-import { Button, Drawer, LoadingOverlay, TextInput } from '@mantine/core'
+import { Affix, Button, Drawer, LoadingOverlay, TextInput, Transition, rem } from '@mantine/core'
 import { useDisclosure, useReducedMotion } from '@mantine/hooks'
 import { clsx } from 'clsx'
 import { useSession } from 'next-auth/react'
 
 import { CartItem } from '@/components/layouts/root/header/cart-item'
+import { formatCurrency } from '@/core/utils'
 import { delay } from '@/core/utils/time'
 import { CheckoutDrawer } from '@/features/cart/checkout-drawer'
 import { CHECKOUT_PAGE_PATH } from '@/lib/paths'
@@ -26,6 +27,8 @@ const promoCodeClassNames = {
     focus:outline-offset-0 focus:outline-brand-300 tracking-widest rounded-r-none
   `,
 }
+
+const affixPosition = { bottom: rem(16), left: rem(16), right: rem(16) }
 
 const CartPage: NextPage = () => {
   const reduceMotion = useReducedMotion()
@@ -131,9 +134,21 @@ const CartPage: NextPage = () => {
               </div>
             </div>
           </div>
-          <Button fullWidth color="dark" size="md" onClick={handleCheckoutClick}>
-            Checkout
-          </Button>
+          <Affix position={affixPosition}>
+            <Transition mounted transition="slide-up">
+              {transitionStyles => (
+                <Button
+                  fullWidth
+                  color="dark"
+                  size="md"
+                  style={transitionStyles}
+                  onClick={handleCheckoutClick}
+                >
+                  Checkout ({formatCurrency(190)})
+                </Button>
+              )}
+            </Transition>
+          </Affix>
         </div>
       </div>
     </>

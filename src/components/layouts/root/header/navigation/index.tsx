@@ -134,11 +134,10 @@ export const Navigation = () => {
     [handleNavLinkClick, isDesktop, menu?.data.body]
   )
 
-  const cartQuantity =
-    useMemo(
-      () => cart?.items.reduce((prev, product) => prev + product.quantity, 0),
-      [cart?.items]
-    ) || 0
+  const cartQuantity = useMemo(
+    () => cart?.items.reduce((prev, product) => prev + product.quantity, 0),
+    [cart?.items]
+  )
 
   return (
     <div
@@ -186,7 +185,12 @@ export const Navigation = () => {
           <UserIcon className="h-5 w-5" />
         </ActionIcon>
         <ActionIcon className="text-neutral-900" component={Link} href={CART_PAGE_PATH}>
-          <Indicator inline color="brand" label={cartQuantity} size={16}>
+          <Indicator
+            inline
+            color={cartQuantity === 0 ? 'transparent' : 'brand'}
+            label={cartQuantity || 0}
+            size={16}
+          >
             <ShoppingCartIcon className="h-5 w-5" />
           </Indicator>
         </ActionIcon>
