@@ -15,10 +15,8 @@ import { signIn, useSession } from 'next-auth/react'
 import { SubmitHandler, UseFormProps, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import { CORPORATE_CONSULTANT_ID } from '@/lib/constants'
 import { useValidateEmailMutation } from '@/lib/mutations/validate-email'
 import { HOME_PAGE_PATH } from '@/lib/paths'
-import { useCartQuery } from '@/lib/queries/cart'
 import { getStaticNavigation } from '@/lib/queries/header'
 import { useUserStore } from '@/lib/stores/user'
 
@@ -76,7 +74,6 @@ const SignInPage: NextPage<PageProps> = () => {
   const [showPassword, setShowPassword] = useState(false)
   const passwordRef = useRef<HTMLInputElement | null>(null)
 
-  const { data: cart } = useCartQuery()
   const { isLoading: isValidatingEmail, mutate: validateEmail } = useValidateEmailMutation()
 
   const handleEmailBlur: FocusEventHandler<HTMLInputElement> = useCallback(() => {
@@ -86,12 +83,10 @@ const SignInPage: NextPage<PageProps> = () => {
         callback: _resopnse => {
           // console.log()
         },
-        cartId: cart?.id || '',
         email,
-        sponsorId: CORPORATE_CONSULTANT_ID,
       })
     }
-  }, [cart?.id, getValues, validateEmail])
+  }, [getValues, validateEmail])
 
   const onSubmit: SubmitHandler<SignInSchema> = useCallback(
     async ({ email, password }) => {

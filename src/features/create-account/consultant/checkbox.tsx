@@ -1,7 +1,7 @@
-import { useCallback, useState } from 'react'
+import { useState } from 'react'
 
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
-import algoliasearch from 'algoliasearch/lite'
+// import algoliasearch from 'algoliasearch/lite'
 import { clsx } from 'clsx'
 import { useFormContext } from 'react-hook-form'
 
@@ -10,11 +10,11 @@ import { useConsultantStore } from '@/lib/stores/consultant'
 import { CreateAccountSchema } from 'src/features/create-account/form'
 import { GuestCheckoutSchema } from 'src/features/guest-checkout'
 
-const searchClient = algoliasearch(
-  process.env.NEXT_PUBLIC_ALGOLIA_APP_ID || '',
-  process.env.NEXT_PUBLIC_ALGOLIA_API_KEY || ''
-)
-const algoliaIndex = process.env.NEXT_PUBLIC_ALGOLIA_INDEX || 'dev_consultants'
+// const searchClient = algoliasearch(
+//   process.env.NEXT_PUBLIC_ALGOLIA_APP_ID || '',
+//   process.env.NEXT_PUBLIC_ALGOLIA_API_KEY || ''
+// )
+// const algoliaIndex = process.env.NEXT_PUBLIC_ALGOLIA_INDEX || 'dev_consultants'
 
 interface ConsultantCheckboxProps {
   isChecked?: boolean
@@ -23,16 +23,16 @@ interface ConsultantCheckboxProps {
 
 export const ConsultantCheckbox = ({ disabled = false, isChecked }: ConsultantCheckboxProps) => {
   const {
-    control,
+    // control,
     formState: { errors },
     register,
   } = useFormContext<CreateAccountSchema | GuestCheckoutSchema>()
   const { resetConsultant } = useConsultantStore()
   const [checked, setChecked] = useState(isChecked !== undefined ? isChecked : disabled)
-  const [updatedFromSearch, setUpdatedFromSearch] = useState(false)
+  const [updatedFromSearch, _setUpdatedFromSearch] = useState(false)
   const isDisabled = disabled && !updatedFromSearch
 
-  const handleConsultantSelect = useCallback(() => setUpdatedFromSearch(true), [])
+  // const handleConsultantSelect = useCallback(() => setUpdatedFromSearch(true), [])
 
   return (
     <div className={clsx('z-0', checked && 'z-30')}>

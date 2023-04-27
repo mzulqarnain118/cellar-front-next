@@ -272,24 +272,14 @@ export const CreateAccountForm = () => {
               }
               setIsGuest(response?.result === 1 && response.data.guest)
             },
-            cartId: cart?.id || '',
             email: newEmail,
-            sponsorId: consultant?.displayId || CORPORATE_CONSULTANT_ID,
           })
         }
       } finally {
         setIsValidatingEmail(false)
       }
     },
-    [
-      cart?.id,
-      consultant?.displayId,
-      emailRegister,
-      errors.email?.message,
-      getValues,
-      setError,
-      validateEmail,
-    ]
+    [emailRegister, errors.email?.message, getValues, setError, validateEmail]
   )
 
   const dobError = errors.month?.message || errors.day?.message || errors.year?.message

@@ -51,7 +51,9 @@ export const NumberPicker = ({
         aria-label="Remove 1"
         className={clsx(
           `
-            flex h-10 w-8 items-center justify-center rounded-lg rounded-r-none transition
+            flex h-10 w-8 items-center justify-center rounded rounded-r-none border-solid
+            border-neutral-400 bg-neutral-50 text-neutral-600 transition
+            enabled:hover:bg-neutral-600 enabled:hover:text-neutral-50
             disabled:cursor-not-allowed
           `,
           value === min && 'cursor-not-allowed',
@@ -59,6 +61,7 @@ export const NumberPicker = ({
         )}
         disabled={disabled}
         type="button"
+        variant="light"
         onClick={handleMinus}
       >
         <MinusIcon height={BUTTON_SIZE} width={BUTTON_SIZE} />
@@ -69,11 +72,12 @@ export const NumberPicker = ({
         className={clsx(
           `
             w-10 appearance-none border-x-0 border-y border-solid border-neutral-400
-            bg-neutral-50 p-0 text-center transition-all disabled:cursor-not-allowed
+            bg-neutral-100 p-0 text-center transition-all disabled:cursor-not-allowed
             disabled:border-neutral-100 disabled:bg-neutral-100 disabled:text-neutral-200
           `,
           disabled && 'disabled:bg-neutral-100 disabled:text-neutral-200',
-          size === 'sm' && '!h-8'
+          size === 'sm' && '!h-8',
+          size === 'md' && '!h-10'
         )}
         disabled={disabled}
         inputMode="numeric"
@@ -89,13 +93,16 @@ export const NumberPicker = ({
         aria-label="Add 1"
         className={clsx(
           `
-          flex h-10 w-8 items-center justify-center rounded-lg rounded-l-none transition
-          disabled:cursor-not-allowed
-        `,
+            flex h-10 w-8 items-center justify-center rounded rounded-l-none border-solid
+            border-neutral-400 bg-neutral-50 text-neutral-600 transition
+            enabled:hover:bg-neutral-600 enabled:hover:text-neutral-50
+            disabled:cursor-not-allowed
+          `,
           size === 'sm' && 'h-8 w-6'
         )}
         disabled={disabled || value === max}
         type="button"
+        variant="light"
         onClick={handleAdd}
       >
         <PlusIcon height={BUTTON_SIZE} width={BUTTON_SIZE} />

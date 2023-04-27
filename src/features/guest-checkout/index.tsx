@@ -14,7 +14,6 @@ import { z } from 'zod'
 import { CORPORATE_CONSULTANT_ID } from '@/lib/constants'
 import { useValidateEmailMutation } from '@/lib/mutations/validate-email'
 import { CHECKOUT_PAGE_PATH, SIGN_IN_PAGE_PATH } from '@/lib/paths'
-import { useCartQuery } from '@/lib/queries/cart'
 import { useConsultantStore } from '@/lib/stores/consultant'
 
 import { ConsultantCheckbox } from '../create-account/consultant/checkbox'
@@ -67,7 +66,6 @@ export const GuestCheckout = () => {
   const [isValidatingEmail, setIsValidatingEmail] = useState(false)
   const [fullName, setFullName] = useState('')
   const { mutate: validateEmail } = useValidateEmailMutation()
-  const { data: cart } = useCartQuery()
   const { consultant } = useConsultantStore()
 
   const defaultValues: Partial<GuestCheckoutSchema> = useMemo(
@@ -133,24 +131,14 @@ export const GuestCheckout = () => {
                 }
               }
             },
-            cartId: cart?.id || '',
             email: newEmail,
-            sponsorId: consultant?.displayId || '',
           })
         }
       } finally {
         setIsValidatingEmail(false)
       }
     },
-    [
-      cart?.id,
-      consultant?.displayId,
-      emailRegister,
-      errors.email?.message,
-      getValues,
-      setError,
-      validateEmail,
-    ]
+    [emailRegister, errors.email?.message, getValues, setError, validateEmail]
   )
 
   const onSubmit: SubmitHandler<GuestCheckoutSchema> = async _data => {

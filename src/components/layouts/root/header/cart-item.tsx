@@ -148,7 +148,7 @@ export const CartItem = ({ product }: CartItemProps) => {
             <div className="flex flex-col">
               <div>
                 <Link
-                  className="font-bold transition-all hover:underline"
+                  className="font-bold !text-neutral-900 transition-all hover:underline"
                   href={`/product/${product.cartUrl || ''}`}
                 >
                   {product.displayName}

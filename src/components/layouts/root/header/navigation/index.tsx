@@ -87,6 +87,8 @@ export const Navigation = () => {
               <Button
                 key={link.id}
                 component={PrismicLink}
+                // * NOTE: Error with type definition.
+                // @ts-ignore
                 field={link.primary.link}
                 size="md"
                 variant="subtle"

@@ -4,24 +4,37 @@ import { useRouter } from 'next/router'
 
 import { CheckCircleIcon, ChevronRightIcon } from '@heroicons/react/24/outline'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Button, Collapse, PasswordInput, Switch, TextInput, Title } from '@mantine/core'
+import {
+  Button,
+  Collapse,
+  Divider,
+  DividerProps,
+  PasswordInput,
+  Switch,
+  Text,
+  TextInput,
+  Title,
+  Transition,
+} from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
+import { clsx } from 'clsx'
 import { useSession } from 'next-auth/react'
 import { FormProvider, SubmitHandler, UseFormProps, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { ConsultantCheckbox } from '@/components/consultant-checkbox'
 import { DateOfBirthPicker } from '@/components/date-of-birth-picker'
-import { Link } from '@/components/link'
 import { MAX_DAYS, MONTH_MAP, is21OrOlder, isLeapYear } from '@/features/create-account/dob/util'
 import { CORPORATE_CONSULTANT_ID } from '@/lib/constants'
 import { CreateAccountOptions, useCreateAccountMutation } from '@/lib/mutations/create-account'
 import { useCreateGuestAccountMutation } from '@/lib/mutations/create-guest-account'
 import { useGuestSignInMutation } from '@/lib/mutations/guest-sign-in'
 import { useValidateEmailMutation } from '@/lib/mutations/validate-email'
-import { CHECKOUT_PAGE_PATH, SIGN_IN_PAGE_PATH } from '@/lib/paths'
+import { CHECKOUT_PAGE_PATH } from '@/lib/paths'
 import { useCartQuery } from '@/lib/queries/cart'
 import { useConsultantQuery } from '@/lib/queries/consultant'
+
+import { SignIn } from './sign-in'
 
 const passwordSchema = z
   .object({
@@ -135,7 +148,23 @@ export type ConsultantSchema = z.infer<typeof consultantSchema>
 
 const rightIcon = <ChevronRightIcon className="h-4 w-4" />
 
-export const CheckoutDrawer = () => {
+const dividerClassNames: DividerProps['classNames'] = {
+  label: 'text-sm font-bold tracking-widest my-6',
+}
+
+interface CheckoutDrawerProps {
+  hideOverlay: () => void
+  showOverlay: () => void
+  signInChecked: boolean
+  toggleSignInChecked: () => void
+}
+
+export const CheckoutDrawer = ({
+  hideOverlay,
+  showOverlay,
+  signInChecked,
+  toggleSignInChecked,
+}: CheckoutDrawerProps) => {
   const { data: session } = useSession()
   const { data: consultant } = useConsultantQuery()
   const [createAccountOpened, { toggle: toggleCreateAccount }] = useDisclosure(false)
@@ -293,124 +322,168 @@ export const CheckoutDrawer = () => {
     ]
   )
 
+  const handleSignInClick = useCallback(() => {
+    toggleSignInChecked()
+  }, [toggleSignInChecked])
+
   return (
     <FormProvider {...methods}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Button
-          className="p-0 underline"
-          color="brand"
-          component={Link}
-          href={SIGN_IN_PAGE_PATH}
-          rightIcon={rightIcon}
-          variant="subtle"
-        >
-          Sign in for a faster checkout experience
-        </Button>
-        <Title order={6}>Your information</Title>
-        <div className="mt-4 flex flex-col gap-4">
-          <div className="grid grid-cols-2 gap-4">
-            <TextInput
-              error={errors.firstName?.message}
-              label="First name"
-              rightSection={
-                errors.firstName?.message === undefined && dirtyFields.firstName ? (
-                  <CheckCircleIcon className="h-5 w-5 stroke-2 text-success" />
-                ) : undefined
-              }
-              {...register('firstName')}
-            />
-            <TextInput
-              error={errors.lastName?.message}
-              label="Last name"
-              rightSection={
-                errors.lastName?.message === undefined && dirtyFields.lastName ? (
-                  <CheckCircleIcon className="h-5 w-5 stroke-2 text-success" />
-                ) : undefined
-              }
-              {...register('lastName')}
-            />
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <TextInput
-              error={errors.email?.message}
-              label="Email"
-              rightSection={
-                errors.email?.message === undefined && dirtyFields.email ? (
-                  <CheckCircleIcon className="h-5 w-5 stroke-2 text-success" />
-                ) : undefined
-              }
-              type="email"
-              {...register('email', {
-                onBlur: event => {
-                  validateEmail({
-                    callback: response => {
-                      const isExisting =
-                        response?.result === 1 && response?.data.customer && !response.data.guest
-                      setIsExistingCustomer(isExisting)
-
-                      if (isExisting) {
-                        setError('email', {
-                          message: 'You already have an account.',
-                        })
-                      } else if (response?.result === 1 && response?.data.consultant) {
-                        setError('email', {
-                          message: "You're a consultant.",
-                        })
-                      }
-
-                      setIsGuest(response?.result === 1 && response.data.guest)
-                    },
-                    cartId: cartData?.id || '',
-                    email: event.target.value.trim(),
-                    sponsorId: consultant?.displayId || '',
-                  })
-                },
-              })}
-            />
-            <DateOfBirthPicker />
-          </div>
-          <FormProvider {...consultantMethods}>
-            <ConsultantCheckbox />
-          </FormProvider>
-          <Switch
-            color="dark"
-            label="Create an account to save time during my next order."
-            {...register('createAccount', {
-              onChange: () => {
-                toggleCreateAccount()
-                resetPasswordForm()
-              },
-            })}
-          />
-          <Collapse in={createAccountOpened}>
-            <PasswordInput
-              error={passwordErrors.password?.message}
-              label="Password"
-              visible={passwordVisible}
-              onVisibilityChange={togglePasswordVisible}
-              {...passwordRegister('password')}
-            />
-            <PasswordInput
-              error={passwordErrors.confirmPassword?.message}
-              label="Confirm password"
-              visible={passwordVisible}
-              onVisibilityChange={togglePasswordVisible}
-              {...passwordRegister('confirmPassword')}
-            />
-          </Collapse>
-          <Button
-            fullWidth
-            className="col-span-2"
-            color="brand"
-            disabled={!valid}
-            rightIcon={rightIcon}
-            size="md"
-            type="submit"
+      <div className="flex">
+        <div className={clsx(signInChecked && 'basis-full')}>
+          <Transition
+            duration={300}
+            mounted={signInChecked}
+            timingFunction="linear"
+            transition="slide-left"
           >
-            Continue to checkout
-          </Button>
+            {styles => (
+              <div style={styles}>
+                <SignIn
+                  handleBack={toggleSignInChecked}
+                  hideOverlay={hideOverlay}
+                  showOverlay={showOverlay}
+                />
+              </div>
+            )}
+          </Transition>
         </div>
-      </form>
+        <div className={clsx(!signInChecked && 'basis-full')}>
+          <Transition
+            duration={300}
+            mounted={!signInChecked}
+            timingFunction="linear"
+            transition="slide-right"
+          >
+            {styles => (
+              <div style={styles}>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  <Button
+                    className="mx-auto block"
+                    color="brand"
+                    rightIcon={rightIcon}
+                    variant="outline"
+                    onClick={handleSignInClick}
+                  >
+                    Sign in for a faster checkout experience
+                  </Button>
+                  <Divider
+                    classNames={dividerClassNames}
+                    label="OR"
+                    labelPosition="center"
+                    size="sm"
+                  />
+                  <Title order={6}>Your information</Title>
+                  <Text color="neutral">We need a few details before we can continue</Text>
+                  <div className="mt-4 flex flex-col gap-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <TextInput
+                        error={errors.firstName?.message}
+                        label="First name"
+                        rightSection={
+                          errors.firstName?.message === undefined && dirtyFields.firstName ? (
+                            <CheckCircleIcon className="h-5 w-5 stroke-2 text-success" />
+                          ) : undefined
+                        }
+                        {...register('firstName')}
+                      />
+                      <TextInput
+                        error={errors.lastName?.message}
+                        label="Last name"
+                        rightSection={
+                          errors.lastName?.message === undefined && dirtyFields.lastName ? (
+                            <CheckCircleIcon className="h-5 w-5 stroke-2 text-success" />
+                          ) : undefined
+                        }
+                        {...register('lastName')}
+                      />
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <TextInput
+                        error={errors.email?.message}
+                        label="Email"
+                        rightSection={
+                          errors.email?.message === undefined && dirtyFields.email ? (
+                            <CheckCircleIcon className="h-5 w-5 stroke-2 text-success" />
+                          ) : undefined
+                        }
+                        type="email"
+                        {...register('email', {
+                          onBlur: event => {
+                            validateEmail({
+                              callback: response => {
+                                const isExisting =
+                                  response?.result === 1 &&
+                                  response?.data.customer &&
+                                  !response.data.guest
+                                setIsExistingCustomer(isExisting)
+
+                                if (isExisting) {
+                                  setError('email', {
+                                    message: 'You already have an account.',
+                                  })
+                                } else if (response?.result === 1 && response?.data.consultant) {
+                                  setError('email', {
+                                    message: "You're a consultant.",
+                                  })
+                                }
+
+                                setIsGuest(response?.result === 1 && response.data.guest)
+                              },
+                              email: event.target.value.trim(),
+                            })
+                          },
+                        })}
+                      />
+                      <DateOfBirthPicker />
+                    </div>
+                    <FormProvider {...consultantMethods}>
+                      <ConsultantCheckbox />
+                    </FormProvider>
+                    <Switch
+                      checked={createAccountOpened}
+                      color="dark"
+                      label="Create an account to save time during my next order."
+                      {...register('createAccount', {
+                        onChange: () => {
+                          toggleCreateAccount()
+                          resetPasswordForm()
+                        },
+                      })}
+                    />
+                    <Collapse in={createAccountOpened}>
+                      <PasswordInput
+                        error={passwordErrors.password?.message}
+                        label="Password"
+                        visible={passwordVisible}
+                        onVisibilityChange={togglePasswordVisible}
+                        {...passwordRegister('password')}
+                      />
+                      <PasswordInput
+                        error={passwordErrors.confirmPassword?.message}
+                        label="Confirm password"
+                        visible={passwordVisible}
+                        onVisibilityChange={togglePasswordVisible}
+                        {...passwordRegister('confirmPassword')}
+                      />
+                    </Collapse>
+                    <Button
+                      fullWidth
+                      className="col-span-2"
+                      color="brand"
+                      disabled={!valid}
+                      rightIcon={rightIcon}
+                      size="md"
+                      type="submit"
+                    >
+                      Continue to checkout
+                    </Button>
+                  </div>
+                </form>
+              </div>
+            )}
+          </Transition>
+        </div>
+      </div>
     </FormProvider>
   )
 }

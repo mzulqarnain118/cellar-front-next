@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+
 import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next'
 import { getServerSession } from 'next-auth'
 import { NextSeo } from 'next-seo'
@@ -6,7 +8,9 @@ import { Tabs, rem } from '@mantine/core'
 
 import { Delivery } from '@/features/checkout/delivery'
 import { Tab } from '@/features/checkout/tab'
+import { useSetCartOwnerMutation } from '@/lib/mutations/cart/set-owner'
 import { SIGN_IN_PAGE_PATH } from '@/lib/paths'
+import { useCartQuery } from '@/lib/queries/cart'
 import { useCheckoutActions, useCheckoutTabs } from '@/lib/stores/checkout'
 
 import { authOptions } from './api/auth/[...nextauth]'
@@ -41,6 +45,14 @@ const tabsStyles = {
 const CheckoutPage: NextPage<PageProps> = () => {
   const { setActiveTab } = useCheckoutActions()
   const { activeTab, completedTabs } = useCheckoutTabs()
+  const { mutate: setCartOwner } = useSetCartOwnerMutation()
+  const { data: cart } = useCartQuery()
+
+  useEffect(() => {
+    if (cart !== undefined) {
+      setCartOwner()
+    }
+  }, [cart, setCartOwner])
 
   return (
     <>

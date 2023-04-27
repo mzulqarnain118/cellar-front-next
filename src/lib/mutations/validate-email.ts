@@ -1,13 +1,15 @@
 import { useMutation } from '@tanstack/react-query'
 
 import { api } from '../api'
+import { useCartQuery } from '../queries/cart'
+import { useConsultantQuery } from '../queries/consultant'
 
 export const VALIDATE_EMAIL_QUERY_KEY = ['validate-email']
 export interface ValidateEmailOptions {
   email: string
-  callback: (response: ValidateEmail) => void
-  cartId: string
-  sponsorId: string
+  callback?: (response: ValidateEmail) => void
+  cartId?: string
+  sponsorId?: string
   source?: string
 }
 
@@ -28,7 +30,6 @@ const validateEmail = async (data: ValidateEmailOptions) => {
       json: data,
       method: 'post',
     }).json<ValidateEmail>()
-    data.callback(response)
     return response
   } catch {
     // ! TODO: handle error.
@@ -36,13 +37,19 @@ const validateEmail = async (data: ValidateEmailOptions) => {
   }
 }
 
-export const useValidateEmailMutation = () =>
-  useMutation<
+export const useValidateEmailMutation = () => {
+  const { data: cart } = useCartQuery()
+  const { data: consultant } = useConsultantQuery()
+
+  return useMutation<ValidateEmail, Error, ValidateEmailOptions>(
+    VALIDATE_EMAIL_QUERY_KEY,
+    data => validateEmail({ ...data, cartId: cart?.id || '', sponsorId: consultant.displayId }),
     {
-      data: { consultant: boolean; customer: boolean; guest: boolean }
-      message: string
-      result: number
-    },
-    Error,
-    ValidateEmailOptions
-  >(VALIDATE_EMAIL_QUERY_KEY, data => validateEmail(data))
+      onSuccess: (response, data) => {
+        if (data.callback) {
+          data.callback(response)
+        }
+      },
+    }
+  )
+}

@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 import { AdjustmentsHorizontalIcon } from '@heroicons/react/24/outline'
-import { Pagination, PaginationProps } from '@mantine/core'
+import { Button, Pagination, PaginationProps, Select, SelectProps } from '@mantine/core'
 
 import { DISPLAY_CATEGORY } from '@/lib/constants/display-category'
 import { usePaginatedProducts } from '@/lib/queries/products'
@@ -18,6 +18,32 @@ export const DEFAULT_CATEGORIES = [DISPLAY_CATEGORY.Wine]
 export const DEFAULT_LIMIT = 16
 export const DEFAULT_PAGE = 1
 export const DEFAULT_SORT: Sort = 'relevant'
+
+const leftIcon = (
+  <AdjustmentsHorizontalIcon className="h-8 w-8 transition-transform group-hover:rotate-90" />
+)
+
+const selectClassNames = { label: 'font-bold', root: 'text-right' }
+const selectData = [
+  { label: 'Relevant', value: 'relevant' },
+  { label: 'Price (low to high)', value: 'price-low-high' },
+  { label: 'Price (high to low)', value: 'price-high-low' },
+]
+const selectStyles: SelectProps['styles'] = theme => ({
+  item: {
+    // applies styles to hovered item (with mouse or keyboard)
+    '&[data-hovered]': {},
+
+    // applies styles to selected item
+    '&[data-selected]': {
+      '&, &:hover': {
+        backgroundColor:
+          theme.colorScheme === 'dark' ? theme.colors.brand[9] : theme.colors.brand[1],
+        color: theme.colorScheme === 'dark' ? theme.white : theme.colors.brand[9],
+      },
+    },
+  },
+})
 
 interface ProductListingProps {
   categories?: number[]
@@ -36,7 +62,7 @@ export const ProductListing = ({
   const router = useRouter()
   const [active, setPage] = useState(initialPage)
   const [sort, setSort] = useState<Sort>(initialSort)
-  const [showFilters, setShowFilters] = useState(false)
+  const [showFilters, setShowFilters] = useState(true)
 
   const options = useMemo(
     () => ({ categories, limit, page: active, sort }),
@@ -57,44 +83,54 @@ export const ProductListing = ({
     [data?.products]
   )
 
+  const onSortChange = useCallback((value: Sort) => {
+    setSort(value)
+    setPage(1)
+  }, [])
+
+  const onFilterToggle = useCallback(() => setShowFilters(prev => !prev), [])
+
   const paginationHeader = useMemo(
     () => (
       <>
-        <span>
-          Showing {data?.resultsShown?.[0]}-{data?.resultsShown?.[1]} results of {data?.results}.
-        </span>
+        {isFetching || isLoading ? (
+          <div className="mb-4 h-6 w-60 animate-pulse rounded-lg bg-neutral-300" />
+        ) : (
+          <span>
+            Showing {data?.resultsShown?.[0]}-{data?.resultsShown?.[1]} results of {data?.results}.
+          </span>
+        )}
         <div className="flex items-center justify-between">
-          <button
-            className="group btn-ghost btn flex items-center gap-2"
-            onClick={() => setShowFilters(prev => !prev)}
+          <Button
+            color="neutral"
+            leftIcon={leftIcon}
+            size="sm"
+            variant={showFilters ? 'subtle' : 'outline'}
+            onClick={onFilterToggle}
           >
-            <AdjustmentsHorizontalIcon
-              className={`h-8 w-8 transition-transform group-hover:rotate-90`}
-            />
             <span className="hidden lg:block">{showFilters ? 'Hide' : 'Show'} Filters</span>
-          </button>
-          <label aria-label="Sort by" htmlFor="sort">
-            <span className="hidden lg:block">Sort by:</span>
-            <select
-              className="select-bordered select max-w-xs lg:w-full"
-              id="sort"
-              name="sort"
-              value={sort}
-              onChange={event => {
-                const newValue = event.target.value as Sort
-                setSort(newValue)
-                setPage(1)
-              }}
-            >
-              <option value="relevant">Most relevant</option>
-              <option value="price-low-high">Price (low to high)</option>
-              <option value="price-high-low">Price (high to low)</option>
-            </select>
-          </label>
+          </Button>
+          <Select
+            classNames={selectClassNames}
+            data={selectData}
+            label="Sort by"
+            styles={selectStyles}
+            value={sort}
+            onChange={onSortChange}
+          />
         </div>
       </>
     ),
-    [data?.results, data?.resultsShown, setPage, showFilters, sort]
+    [
+      data?.results,
+      data?.resultsShown,
+      isFetching,
+      isLoading,
+      onFilterToggle,
+      onSortChange,
+      showFilters,
+      sort,
+    ]
   )
 
   const getControlProps: PaginationProps['getControlProps'] = useCallback(
@@ -164,15 +200,8 @@ export const ProductListing = ({
   if (isFetching || isLoading) {
     return (
       <>
-        <div className="mb-4 h-6 w-60 animate-pulse rounded-lg bg-neutral-300" />
-        <div className="flex items-center justify-between">
-          <div className="h-12 w-[14.5rem] animate-pulse rounded-lg bg-neutral-300" />
-          <div className="grid gap-2">
-            <div className="h-6 w-[14.5rem] animate-pulse rounded-lg bg-neutral-300" />
-            <div className="mb-4 h-12 w-[14.5rem] animate-pulse rounded-lg bg-neutral-300" />
-          </div>
-        </div>
-        <div className="grid grid-cols-1 gap-4 lg:auto-rows-auto lg:grid-cols-4 lg:gap-6">
+        {paginationHeader}
+        <div className="mt-4 grid grid-cols-1 gap-4 lg:auto-rows-auto lg:grid-cols-4 lg:gap-6">
           <div className="h-[31rem] animate-pulse rounded-lg bg-neutral-300" />
           <div className="h-[31rem] animate-pulse rounded-lg bg-neutral-300" />
           <div className="h-[31rem] animate-pulse rounded-lg bg-neutral-300" />

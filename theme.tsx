@@ -177,6 +177,15 @@ export const theme: MantineThemeOverride = {
         },
       }),
     },
+    LoadingOverlay: {
+      defaultProps: {
+        loaderProps: {
+          color: 'dark',
+          size: 'xl',
+        },
+        overlayBlur: 2,
+      },
+    },
     NavLink: {
       defaultProps: {
         rightSection: <ChevronRightIcon height={18} width={18} />,

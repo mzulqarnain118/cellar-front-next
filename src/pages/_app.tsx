@@ -9,6 +9,7 @@ import { Merriweather } from 'next/font/google'
 
 import { MantineProvider, TypographyStylesProvider } from '@mantine/core'
 import { useMediaQuery } from '@mantine/hooks'
+import { ModalsProvider } from '@mantine/modals'
 import { Notifications } from '@mantine/notifications'
 import { PrismicPreview } from '@prismicio/next'
 import { PrismicProvider } from '@prismicio/react'
@@ -68,39 +69,41 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
       <PersistQueryClientProvider client={queryClient} persistOptions={persistOptions}>
         <Hydrate state={pageProps.dehydratedState}>
           <MantineProvider withGlobalStyles withNormalizeCSS theme={theme}>
-            <TypographyStylesProvider>
-              <Notifications position={isDesktop ? 'top-center' : 'bottom-center'} />
-              <PrismicProvider
-                internalLinkComponent={InternalLink}
-                linkResolver={linkResolver}
-                richTextComponents={richTextComponents}
-              >
-                <PrismicPreview repositoryName={repositoryName}>
-                  <DefaultSeo {...defaultSEOConfig} />
-                  <RootLayout>
-                    <meta content="width=device-width, initial-scale=1" name="viewport" />
-                    <style global jsx>
-                      {`
-                        :root {
-                          --font-merriweather: ${merriweather.style.fontFamily};
-                        }
+            <ModalsProvider>
+              <TypographyStylesProvider>
+                <Notifications position={isDesktop ? 'top-center' : 'bottom-center'} />
+                <PrismicProvider
+                  internalLinkComponent={InternalLink}
+                  linkResolver={linkResolver}
+                  richTextComponents={richTextComponents}
+                >
+                  <PrismicPreview repositoryName={repositoryName}>
+                    <DefaultSeo {...defaultSEOConfig} />
+                    <RootLayout>
+                      <meta content="width=device-width, initial-scale=1" name="viewport" />
+                      <style global jsx>
+                        {`
+                          :root {
+                            --font-merriweather: ${merriweather.style.fontFamily};
+                          }
 
-                        #nprogress .bar {
-                          background: #464c2c !important;
-                          height: 0.25rem !important;
-                        }
+                          #nprogress .bar {
+                            background: #464c2c !important;
+                            height: 0.25rem !important;
+                          }
 
-                        #nprogress .peg {
-                          box-shadow: 0 0 10px #464c2c, 0 0 5px #464c2c !important;
-                        }
-                      `}
-                    </style>
-                    <Component {...pageProps} />
-                    <ProgressBar />
-                  </RootLayout>
-                </PrismicPreview>
-              </PrismicProvider>
-            </TypographyStylesProvider>
+                          #nprogress .peg {
+                            box-shadow: 0 0 10px #464c2c, 0 0 5px #464c2c !important;
+                          }
+                        `}
+                      </style>
+                      <Component {...pageProps} />
+                      <ProgressBar />
+                    </RootLayout>
+                  </PrismicPreview>
+                </PrismicProvider>
+              </TypographyStylesProvider>
+            </ModalsProvider>
           </MantineProvider>
           <ReactQueryDevtools />
         </Hydrate>

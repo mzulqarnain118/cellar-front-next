@@ -4,6 +4,8 @@ import dynamic from 'next/dynamic'
 import Image from 'next/image'
 
 import { Button } from '@mantine/core'
+import { useMediaQuery } from '@mantine/hooks'
+import { UseMediaQueryOptions } from '@mantine/hooks/lib/use-media-query/use-media-query'
 
 import { NumberPicker } from '@/core/components/number-picker'
 import { useAddToCartMutation } from '@/lib/mutations/cart/add-to-cart'
@@ -28,11 +30,14 @@ interface ProductCardProps {
   priority?: boolean
   product: AutoSipProduct | CartProduct
 }
+const gradient = { deg: 90, from: 'brand.5', to: 'brand.6' }
 
 const isCartProduct = (product: AutoSipProduct | CartProduct): product is CartProduct =>
   'orderLineId' in product && 'orderId' in product && 'quantity' in product
+const mediaQueryOptions: UseMediaQueryOptions = { getInitialValueInEffect: false }
 
 export const ProductCard = ({ priority = false, product }: ProductCardProps) => {
+  const isDesktop = useMediaQuery('(min-width: 64em)', true, mediaQueryOptions)
   const [selectedProduct, setSelectedProduct] = useState(product)
   const [selectedSku, setSelectedSku] = useState(selectedProduct.sku)
   const [changedVariation, setChangedVariation] = useState(false)
@@ -41,8 +46,9 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
   const { toggleCartOpen } = useProcessStore()
 
   const { data: cart } = useCartQuery()
-  const { mutate: addToCart } = useAddToCartMutation()
-  const { mutate: updateQuantity } = useUpdateQuantityMutation()
+  const { mutate: addToCart, isLoading: isAddingToCart } = useAddToCartMutation()
+  const { mutate: updateQuantity, isLoading: isUpdatingQuantity } = useUpdateQuantityMutation()
+  const numberPickerDisabled = isAddingToCart || isUpdatingQuantity
 
   const handleQuantityChange = useCallback(
     (item: CartProduct, newQuantity?: number) => {
@@ -80,7 +86,7 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
             >
               <Image
                 alt={badge.name}
-                className="h-6 w-6 lg:h-8 lg:w-8"
+                className="h-6 w-6 lg:h-9 lg:w-9"
                 height={36}
                 src={badge.imageUrl}
                 width={36}
@@ -169,11 +175,14 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
         </div>
       ) : (
         <NumberPicker
+          containerClassName="justify-end"
+          disabled={numberPickerDisabled}
           handleAdd={handleAdd}
           handleChange={handleChange}
           handleMinus={handleRemove}
           max={MAX}
           min={MIN}
+          size={isDesktop ? 'md' : 'sm'}
           value={quantity}
         />
       ),
@@ -183,7 +192,10 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
       handleChange,
       handleDropdownChange,
       handleRemove,
-      product,
+      isDesktop,
+      numberPickerDisabled,
+      product.autoSipProduct,
+      product.sku,
       quantity,
       selectedSku,
       variationOptions,
@@ -213,8 +225,8 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
   )
 
   return (
-    <div className="relative grid rounded-lg p-6 shadow md:gap-6">
-      <div className="justify-self-center">
+    <div className="relative grid grid-rows-[1fr_auto_auto] rounded-lg p-6 shadow md:gap-6">
+      <div className="flex items-center justify-center justify-self-center">
         {badges}
         {productImageLink}
       </div>
@@ -233,7 +245,7 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
                 </span>
               </div>
               <Link
-                className="card-title text-base font-semibold leading-normal"
+                className="card-title text-base font-semibold leading-normal !text-neutral-900"
                 href={`/product/${selectedProduct.cartUrl}`}
               >
                 {selectedProduct.displayName}
@@ -251,7 +263,14 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
         </div>
         <div className="flex items-center justify-between lg:mt-auto">
           {dropdownOrNumberPicker}
-          <Button className="btn-sm lg:btn-md" onClick={onClick}>
+          <Button
+            color="brand"
+            disabled={numberPickerDisabled}
+            gradient={gradient}
+            size={isDesktop ? 'md' : 'sm'}
+            variant="gradient"
+            onClick={onClick}
+          >
             Add to Cart
           </Button>
         </div>

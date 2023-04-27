@@ -1,172 +1,252 @@
-import { ChangeEvent, useCallback, useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 
-import { ChevronRightIcon } from '@heroicons/react/24/outline'
+import { CheckCircleIcon, ChevronRightIcon, MinusIcon, PlusIcon } from '@heroicons/react/24/outline'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Button, Paper, TextInput, Title } from '@mantine/core'
+import { Button, Collapse, LoadingOverlay, Paper, Text, TextInput, Title } from '@mantine/core'
+import { useDisclosure } from '@mantine/hooks'
+import { modals } from '@mantine/modals'
 import { SubmitHandler, UseFormProps, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import { MAX_DAYS, MONTH_MAP, is21OrOlder, isLeapYear } from '@/features/create-account/dob/util'
-import { baseCreateAccountSchema } from '@/features/create-account/form'
-import { GuestCheckoutSchema } from '@/features/guest-checkout'
-import { CORPORATE_CONSULTANT_ID } from '@/lib/constants'
-import { useValidateEmailMutation } from '@/lib/mutations/validate-email'
-import { useCartQuery } from '@/lib/queries/cart'
-import { useConsultantStore } from '@/lib/stores/consultant'
+import { StateDropdown } from '@/components/state-dropdown'
+import { useCreateAddressMutation } from '@/lib/mutations/address/create'
+import { useValidateAddressMutation } from '@/lib/mutations/address/validate'
+import { useApplyCheckoutSelectionsMutation } from '@/lib/mutations/checkout/apply-selections'
+import { useCheckoutActions } from '@/lib/stores/checkout'
 
-const guestCheckoutSchema = baseCreateAccountSchema.superRefine((data, context) => {
-  const isFebruary = data.month === '02'
-  const month = parseInt(data.month)
-  const day = parseInt(data.day)
-  const year = parseInt(data.year)
-  const isValidDate =
-    !isNaN(parseInt(data.month)) && !isNaN(parseInt(data.day)) && !isNaN(parseInt(data.year))
-
-  if (!is21OrOlder(year, month, day)) {
-    context.addIssue({
-      code: z.ZodIssueCode.custom,
-      message: 'You must be 21 or older to create an account.',
-      path: ['year'],
-    })
-  }
-
-  if (isFebruary && isLeapYear(year)) {
-    MAX_DAYS['02'] = 29
-  }
-
-  const maxDays = MAX_DAYS[data.month]
-  if (parseInt(data.day) > maxDays && isValidDate) {
-    context.addIssue({
-      code: z.ZodIssueCode.custom,
-      message: `There are only ${maxDays} days in ${MONTH_MAP[data.month]} ${year}.`,
-      path: ['day'],
-    })
-  }
+const deliverySchema = z.object({
+  addressOne: z.string().min(1, { message: 'Please enter the address.' }),
+  addressTwo: z.string().optional(),
+  city: z.string().min(1, { message: 'Please enter the city.' }),
+  firstName: z.string().min(1, { message: 'Please enter the first name.' }),
+  lastName: z.string().min(1, { message: 'Please enter the last name.' }),
+  state: z.string().min(1, { message: 'Please select the state.' }),
+  zipCode: z.string().min(1, { message: 'Please enter the zip code.' }),
 })
 
-export const Delivery = () => {
-  const { consultant } = useConsultantStore()
-  const { mutate: validateEmail, isLoading: isValidatingEmail } = useValidateEmailMutation()
-  const { data: cart } = useCartQuery()
+export type DeliverySchema = z.infer<typeof deliverySchema>
 
-  const defaultValues: Partial<GuestCheckoutSchema> = useMemo(
+export const Delivery = () => {
+  const { setActiveTab, setCompletedTabs } = useCheckoutActions()
+  const [addAddressTwo, { toggle: toggleAddAddressTwo }] = useDisclosure(false)
+
+  const defaultValues: Partial<DeliverySchema> = useMemo(
     () => ({
-      consultant:
-        consultant?.displayId !== CORPORATE_CONSULTANT_ID
-          ? consultant?.displayName || consultant?.url
-          : undefined,
-      shoppingWithConsultant: consultant?.displayId !== CORPORATE_CONSULTANT_ID || false,
+      addressOne: '',
+      city: '',
+      firstName: '',
+      lastName: '',
+      state: '',
+      zipCode: '',
     }),
-    [consultant]
+    []
   )
 
-  const options: UseFormProps<GuestCheckoutSchema> = useMemo(
+  const options: UseFormProps<DeliverySchema> = useMemo(
     () => ({
       defaultValues,
       mode: 'onBlur',
       reValidateMode: 'onBlur',
-      resolver: zodResolver(guestCheckoutSchema),
+      resolver: zodResolver(deliverySchema),
     }),
     [defaultValues]
   )
-
-  const methods = useForm<GuestCheckoutSchema>(options)
   const {
     control,
-    formState: { errors },
-    getValues,
+    formState: { dirtyFields, errors, isSubmitting, isValid },
     handleSubmit,
     register,
-    setError,
-    setFocus,
-  } = methods
+  } = useForm<DeliverySchema>(options)
 
   const rightIcon = useMemo(() => <ChevronRightIcon className="h-6 w-6" />, [])
-
-  const handleEmailBlur = useCallback<(e: ChangeEvent) => Promise<void>>(
-    async _event => {
-      // setIsValidatingEmail(true)
-
-      try {
-        const newEmail = getValues().email
-        if (newEmail.length > 0 && !errors.email?.message) {
-          validateEmail({
-            callback: response => {
-              // setIsExistingGuest(!!response?.data?.guest)
-              // setIsExistingCustomer(!!(!response?.data.guest && response?.data.customer))
-              // setFullName(
-              //   response !== undefined
-              //     ? response.email_info?.ExistingPersons?.[0]?.PersonFullName || ''
-              //     : ''
-              // )
-              if (response?.result === 1) {
-                if (!response.data.guest && response.data.customer) {
-                  setError('email', {
-                    message: 'You already have an account.',
-                  })
-                } else if (response.data.consultant) {
-                  setError('email', {
-                    message: "You're a consultant.",
-                  })
-                }
-              }
-            },
-            cartId: cart?.id || '',
-            email: newEmail,
-            sponsorId: consultant?.displayId || '',
-          })
-        }
-      } finally {
-        // setIsValidatingEmail(false)
-      }
+  const { mutate: validateAddress, isLoading: isValidatingAddress } = useValidateAddressMutation()
+  const { mutate: createAddress, isLoading: isCreatingAddress } = useCreateAddressMutation()
+  const { mutate: applyCheckoutSelections, isLoading: isApplyingCheckoutSelections } =
+    useApplyCheckoutSelectionsMutation()
+  const isLoading =
+    isSubmitting || isValidatingAddress || isCreatingAddress || isApplyingCheckoutSelections
+  const onSubmit: SubmitHandler<DeliverySchema> = useCallback(
+    async ({
+      addressOne: addressLineOne,
+      addressTwo: addressLineTwo = '',
+      city,
+      firstName,
+      lastName,
+      state,
+      zipCode,
+    }) => {
+      validateAddress({
+        addressLineOne,
+        addressLineTwo,
+        callback: response => {
+          if (response.Success) {
+            const { OriginalAddress, ValidatedAddresses } = response.Data
+            modals.openConfirmModal({
+              centered: true,
+              children: (
+                <div className="flex flex-col space-y-4">
+                  <Title order={6}>Please confirm your address</Title>
+                  <div className="rounded bg-accent-50 p-2">
+                    <Text className="font-bold">You entered:</Text>
+                    {!!OriginalAddress.Company && <Text>{OriginalAddress.Company}</Text>}
+                    <Text>{OriginalAddress.Street1}</Text>
+                    {!!OriginalAddress.Street2 && <Text>{OriginalAddress.Street2}</Text>}
+                    <Text>
+                      {OriginalAddress.City}, {OriginalAddress.ProvinceAbbreviation}{' '}
+                      {OriginalAddress.PostalCode}
+                    </Text>
+                  </div>
+                  <div className="rounded bg-accent-50 p-2">
+                    <Text className="font-bold">We suggest:</Text>
+                    {!!ValidatedAddresses[0].Company && (
+                      <Text>{ValidatedAddresses[0].Company}</Text>
+                    )}
+                    <Text>{ValidatedAddresses[0].Street1}</Text>
+                    {!!ValidatedAddresses[0].Street2 && (
+                      <Text>{ValidatedAddresses[0].Street2}</Text>
+                    )}
+                    <Text>
+                      {ValidatedAddresses[0].City}, {ValidatedAddresses[0].ProvinceAbbreviation}{' '}
+                      {ValidatedAddresses[0].PostalCode}
+                    </Text>
+                  </div>
+                </div>
+              ),
+              closeOnConfirm: false,
+              confirmProps: {
+                color: 'brand',
+              },
+              labels: { cancel: 'Use original address', confirm: 'Use suggested address' },
+              onCancel: () => {
+                const address = response.Data.OriginalAddress
+                createAddress({
+                  address,
+                  callback: () => {
+                    applyCheckoutSelections({ addressId: address.AddressID })
+                  },
+                })
+                setCompletedTabs(prev => [...prev, 'delivery'])
+                setActiveTab('shipping')
+                modals.closeAll()
+              },
+              onConfirm: () => {
+                const address = response.Data.ValidatedAddresses[0]
+                createAddress({
+                  address,
+                  callback: () => {
+                    applyCheckoutSelections({ addressId: address.AddressID })
+                  },
+                })
+                setCompletedTabs(prev => [...prev, 'delivery'])
+                setActiveTab('shipping')
+                modals.closeAll()
+              },
+            })
+          }
+        },
+        city,
+        company: '',
+        firstName,
+        lastName,
+        provinceId: parseInt(state) || 48,
+        zipCode,
+      })
     },
-    [cart?.id, consultant?.displayId, errors.email?.message, getValues, setError, validateEmail]
+    [applyCheckoutSelections, createAddress, setActiveTab, setCompletedTabs, validateAddress]
   )
 
-  const onSubmit: SubmitHandler<GuestCheckoutSchema> = useCallback(async values => {
-    console.log('values', values)
-  }, [])
-
   return (
-    <Paper mt="lg" p="lg">
-      <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
-        {/* <Title order={3}>Your information</Title>
-        <TextInput
-          error={errors.firstName?.message}
-          label="First Name"
-          size="md"
-          {...register('firstName')}
-        />
-        <TextInput
-          error={errors.lastName?.message}
-          label="Last Name"
-          size="md"
-          {...register('lastName')}
-        />
-        <TextInput
-          error={errors.email?.message}
-          label="Email"
-          rightSection={isValidatingEmail ? <Loader size="xs" /> : undefined}
-          size="md"
-          type="email"
-          {...register('email', { onBlur: handleEmailBlur })}
-        />
-        <Month<GuestCheckoutSchema> control={control} name="month" setFocus={setFocus} />
-        <Day<GuestCheckoutSchema> control={control} name="day" setFocus={setFocus} />
-        <Year<GuestCheckoutSchema> control={control} name="year" setFocus={setFocus} /> */}
+    <>
+      <Paper mt="lg" p="lg">
+        <LoadingOverlay visible={isLoading} />
+        <form className="space-y-3" onSubmit={handleSubmit(onSubmit)}>
+          <Title order={3}>Delivery address</Title>
+          <TextInput
+            error={errors.firstName?.message}
+            label="First Name"
+            rightSection={
+              errors.firstName?.message === undefined && dirtyFields.firstName ? (
+                <CheckCircleIcon className="h-5 w-5 stroke-2 text-success" />
+              ) : undefined
+            }
+            {...register('firstName')}
+          />
+          <TextInput
+            error={errors.lastName?.message}
+            label="Last Name"
+            rightSection={
+              errors.lastName?.message === undefined && dirtyFields.lastName ? (
+                <CheckCircleIcon className="h-5 w-5 stroke-2 text-success" />
+              ) : undefined
+            }
+            {...register('lastName')}
+          />
+          <TextInput
+            error={errors.addressOne?.message}
+            label="Address 1"
+            rightSection={
+              errors.addressOne?.message === undefined && dirtyFields.addressOne ? (
+                <CheckCircleIcon className="h-5 w-5 stroke-2 text-success" />
+              ) : undefined
+            }
+            {...register('addressOne')}
+          />
+          <Button
+            compact
+            leftIcon={
+              addAddressTwo ? <MinusIcon className="h-4 w-4" /> : <PlusIcon className="h-4 w-4" />
+            }
+            variant="light"
+            onClick={toggleAddAddressTwo}
+          >
+            {addAddressTwo ? 'Remove' : 'Add'} Address 2
+          </Button>
 
-        <Title order={3}>Delivery address</Title>
-        <TextInput label="First Name" size="md" />
-        <TextInput label="Last Name" size="md" />
-        <TextInput label="Address 1" size="md" />
-        <TextInput label="Address 2" size="md" />
-        <TextInput label="City" size="md" />
-        <TextInput label="State" size="md" />
-        <TextInput label="Zip Code" size="md" />
-        <Button fullWidth color="dark" rightIcon={rightIcon} size="md" type="submit">
-          Continue
-        </Button>
-      </form>
-    </Paper>
+          <Collapse in={addAddressTwo}>
+            <TextInput
+              error={errors.addressTwo?.message}
+              label="Address 2"
+              rightSection={
+                errors.addressTwo?.message === undefined && dirtyFields.addressTwo ? (
+                  <CheckCircleIcon className="h-5 w-5 stroke-2 text-success" />
+                ) : undefined
+              }
+              {...register('addressTwo')}
+            />
+          </Collapse>
+          <TextInput
+            error={errors.city?.message}
+            label="City"
+            rightSection={
+              errors.city?.message === undefined && dirtyFields.city ? (
+                <CheckCircleIcon className="h-5 w-5 stroke-2 text-success" />
+              ) : undefined
+            }
+            {...register('city')}
+          />
+          <StateDropdown control={control} name="state" />
+          <TextInput
+            error={errors.zipCode?.message}
+            label="Zip Code"
+            rightSection={
+              errors.zipCode?.message === undefined && dirtyFields.zipCode ? (
+                <CheckCircleIcon className="h-5 w-5 stroke-2 text-success" />
+              ) : undefined
+            }
+            {...register('zipCode')}
+          />
+          <Button
+            fullWidth
+            color="dark"
+            disabled={!isValid}
+            rightIcon={rightIcon}
+            size="md"
+            type="submit"
+          >
+            Continue
+          </Button>
+        </form>
+      </Paper>
+    </>
   )
 }
