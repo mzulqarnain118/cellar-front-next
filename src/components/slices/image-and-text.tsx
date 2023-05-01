@@ -28,7 +28,7 @@ export const ImageAndText = ({ slice }: ImageAndTextProps) => (
       }`}
     >
       <div
-        className={clsx('py-5 md:py-0 md:px-5', !!slice.primary.center_content && '!text-center')}
+        className={clsx('py-5 md:px-5 md:py-0', !!slice.primary.center_content && '!text-center')}
       >
         <div
           className={clsx(

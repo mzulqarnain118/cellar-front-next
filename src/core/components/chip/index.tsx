@@ -1,5 +1,7 @@
 import { KeyboardEvent, useCallback } from 'react'
 
+import { Typography } from '../typogrpahy'
+
 interface ChipProps {
   className?: string
   name: string
@@ -31,7 +33,7 @@ export const Chip = ({ className, name, onClick }: ChipProps) => {
       onClick={handleOnClick}
       onKeyDown={handleKeyDown}
     >
-      <span
+      <Typography
         className={`
           align-center ease group flex w-max cursor-pointer rounded-full bg-neutral-200
           px-4 py-2 text-sm font-semibold text-neutral-600 transition-colors hover:bg-neutral-300 hover:text-neutral-700 active:bg-neutral-300
@@ -52,7 +54,7 @@ export const Chip = ({ className, name, onClick }: ChipProps) => {
             ></path>
           </svg>
         </button>
-      </span>
+      </Typography>
     </div>
   )
 }

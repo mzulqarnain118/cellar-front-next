@@ -1,6 +1,8 @@
 import { CheckIcon, ExclamationTriangleIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { NotificationProps, notifications } from '@mantine/notifications'
 
+import { Typography } from '@/core/components/typogrpahy'
+
 // ! TODO: Sentry logging.
 export const toastError = (props: NotificationProps) =>
   notifications.show({
@@ -8,7 +10,7 @@ export const toastError = (props: NotificationProps) =>
     color: 'error',
     icon: <XMarkIcon className="h-4 w-4" />,
     ...props,
-    title: <span className="font-bold">{props.title || 'Error'}</span>,
+    title: <Typography className="font-bold">{props.title || 'Error'}</Typography>,
   })
 
 export const toastSuccess = (props: NotificationProps) =>
@@ -16,7 +18,7 @@ export const toastSuccess = (props: NotificationProps) =>
     color: 'success',
     icon: <CheckIcon className="h-4 w-4" />,
     ...props,
-    title: <span className="font-bold">{props.title || 'Success'}</span>,
+    title: <Typography className="font-bold">{props.title || 'Success'}</Typography>,
   })
 
 export const toastWarning = (props: NotificationProps) =>
@@ -30,5 +32,5 @@ export const toastWarning = (props: NotificationProps) =>
       },
     }),
     ...props,
-    title: <span className="font-bold">{props.title || 'Error'}</span>,
+    title: <Typography className="font-bold">{props.title || 'Error'}</Typography>,
   })

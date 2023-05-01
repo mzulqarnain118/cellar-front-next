@@ -1,5 +1,6 @@
 import dynamic from 'next/dynamic'
 
+import { Typography } from '@/core/components/typogrpahy'
 import { CORPORATE_CONSULTANT_ID } from '@/lib/constants'
 import { CONSULTANTS_PAGE_PATH } from '@/lib/paths'
 import { useConsultantQuery } from '@/lib/queries/consultant'
@@ -29,9 +30,9 @@ export const Consultant = () => {
     <div className="flex animate-fade-in flex-col text-right duration-1000">
       {consultant.displayId !== CORPORATE_CONSULTANT_ID ? (
         <div>
-          <span>My Consultant</span>
+          <Typography>My Consultant</Typography>
           <div className="text-sm font-bold">
-            <span>{consultant.displayName || consultant.url}</span>
+            <Typography>{consultant.displayName || consultant.url}</Typography>
           </div>
         </div>
       ) : (

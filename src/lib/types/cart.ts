@@ -20,9 +20,9 @@ export interface Variation {
   }[]
 }
 
-export type AutoSipProduct = Omit<CartProduct, 'orderLineId' | 'orderId' | 'quantity'>
+export type AutoSipProduct = Omit<CartItem, 'orderLineId' | 'orderId' | 'quantity'>
 
-export interface CartProduct extends ProductsSchema {
+export interface CartItem extends ProductsSchema {
   autoSipProduct?: AutoSipProduct
   categoryName?: string
   orderLineId: number
@@ -40,7 +40,7 @@ export interface Cart {
   id: string
   orderDisplayId?: string
   isSharedCart?: boolean
-  items: CartProduct[]
+  items: CartItem[]
   discounts: CartDiscount[]
   prices: {
     subtotal: number

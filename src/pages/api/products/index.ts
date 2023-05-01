@@ -114,7 +114,13 @@ const handler = async (req: NextRequest) => {
             },
             success: true,
           }),
-          { status: 200 }
+          {
+            headers: {
+              'Cache-Control': 's-maxage=1200, stale-while-revalidate=600',
+              'Content-Type': 'application/json',
+            },
+            status: 200,
+          }
         )
       }
       // ! TODO

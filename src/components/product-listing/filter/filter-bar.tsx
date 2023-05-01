@@ -26,7 +26,7 @@ export const FilterBar = () => {
       ))}
       {activeFilters.length > 0 && (
         <button
-          className="ml-2 text-brand transition-colors hover:text-brand-600 hover:underline active:text-brand-700"
+          className="text-brand hover:text-brand-600 active:text-brand-700 ml-2 transition-colors hover:underline"
           type="button"
           onClick={() => clearAll()}
         >

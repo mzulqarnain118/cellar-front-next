@@ -43,7 +43,7 @@ export const StatePicker = () => {
         <Combobox.Option
           key={state.abbreviation}
           className={`
-            flex cursor-pointer gap-2 py-2 px-3 text-sm capitalize ui-active:bg-brand
+            ui-active:bg-brand flex cursor-pointer gap-2 px-3 py-2 text-sm capitalize
             ui-active:text-white ui-not-active:bg-white ui-not-active:text-gray-800
           `}
           value={state}

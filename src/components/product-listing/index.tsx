@@ -4,8 +4,10 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 import { AdjustmentsHorizontalIcon } from '@heroicons/react/24/outline'
-import { Button, Pagination, PaginationProps, Select, SelectProps } from '@mantine/core'
+import { Pagination, PaginationProps, Select, SelectProps } from '@mantine/core'
 
+import { Button } from '@/core/components/button'
+import { Typography } from '@/core/components/typogrpahy'
 import { DISPLAY_CATEGORY } from '@/lib/constants/display-category'
 import { usePaginatedProducts } from '@/lib/queries/products'
 import { useConsultantStore } from '@/lib/stores/consultant'
@@ -96,19 +98,19 @@ export const ProductListing = ({
         {isFetching || isLoading ? (
           <div className="mb-4 h-6 w-60 animate-pulse rounded-lg bg-neutral-300" />
         ) : (
-          <span>
+          <Typography>
             Showing {data?.resultsShown?.[0]}-{data?.resultsShown?.[1]} results of {data?.results}.
-          </span>
+          </Typography>
         )}
         <div className="flex items-center justify-between">
           <Button
-            color="neutral"
-            leftIcon={leftIcon}
+            className="group"
             size="sm"
-            variant={showFilters ? 'subtle' : 'outline'}
+            startIcon={leftIcon}
+            variant={showFilters ? 'link' : 'outline'}
             onClick={onFilterToggle}
           >
-            <span className="hidden lg:block">{showFilters ? 'Hide' : 'Show'} Filters</span>
+            {showFilters ? 'Hide' : 'Show'} Filters
           </Button>
           <Select
             classNames={selectClassNames}

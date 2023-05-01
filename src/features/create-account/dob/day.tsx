@@ -3,6 +3,8 @@ import { useState } from 'react'
 import { clsx } from 'clsx'
 import { FieldValues, useController } from 'react-hook-form'
 
+import { Typography } from '@/core/components/typogrpahy'
+
 import { DateOfBirthProps } from './types'
 
 export const Day = <T extends FieldValues>({ setFocus, ...rest }: DateOfBirthProps<T>) => {
@@ -14,17 +16,17 @@ export const Day = <T extends FieldValues>({ setFocus, ...rest }: DateOfBirthPro
   const error = errors.month?.message || errors.day?.message || errors.year?.message
 
   const slash = (
-    <span
+    <Typography
       className={clsx(
         `
           inline-flex items-center justify-center text-xl text-neutral-500 transition-all
           duration-500 md:h-10 md:bg-neutral
         `,
-        !!error && '!border-red-700'
+        !!error && '!border-error'
       )}
     >
       /
-    </span>
+    </Typography>
   )
 
   return (
@@ -37,7 +39,7 @@ export const Day = <T extends FieldValues>({ setFocus, ...rest }: DateOfBirthPro
             text-center !outline-none transition-all duration-500 placeholder:text-neutral-300
             md:w-14
           `,
-          !!error && '!border-red-700'
+          !!error && '!border-error'
         )}
         id="day"
         inputMode="numeric"

@@ -4,13 +4,13 @@ import { CheckCircleIcon } from '@heroicons/react/24/outline'
 import { Select, SelectProps } from '@mantine/core'
 import { UseControllerProps, useController } from 'react-hook-form'
 
-import { DeliverySchema } from '@/features/checkout/delivery'
+// import { DeliverySchema } from '@/features/checkout/delivery'
 import { useStatesQuery } from '@/lib/queries/state'
 import { State } from '@/lib/types'
 
-type Schema = DeliverySchema
+// type Schema = DeliverySchema
 
-export const StateDropdown = (props: UseControllerProps<Schema>) => {
+export const StateDropdown = (props: UseControllerProps) => {
   const {
     field,
     fieldState: { error, isDirty },

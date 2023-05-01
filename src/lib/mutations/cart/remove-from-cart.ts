@@ -1,18 +1,20 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
+import { useCartActions } from '@/lib/stores/cart'
+
 import { api } from '../../api'
 import { CART_QUERY_KEY, useCartQuery } from '../../queries/cart'
 import { useProcessStore } from '../../stores/process'
-import { Cart, CartProduct, DEFAULT_CART_STATE } from '../../types'
+import { Cart, CartItem, DEFAULT_CART_STATE } from '../../types'
 import { fetchSubtotalAndUpdateCart, getNewCartItems } from '../helpers'
 import { CartModificationResponse } from '../types'
 
 export interface RemoveFromCartOptions {
   cartId: string
   fetchSubtotal?: boolean
-  item: Omit<CartProduct, 'orderLineId' | 'orderId' | 'quantity'>
+  item: Omit<CartItem, 'orderLineId' | 'orderId' | 'quantity'>
   sku: string
-  originalCartItems: CartProduct[]
+  originalCartItems: CartItem[]
 }
 
 export const removeFromCart = async (options: RemoveFromCartOptions) => {
@@ -60,6 +62,7 @@ export const removeFromCart = async (options: RemoveFromCartOptions) => {
 
 export const useRemoveFromCartMutation = () => {
   const { data } = useCartQuery()
+  const { setCart } = useCartActions()
   const queryClient = useQueryClient()
   const { setIsMutatingCart } = useProcessStore()
 
@@ -104,7 +107,10 @@ export const useRemoveFromCartMutation = () => {
 
         return { previousCart }
       },
-      onSettled: () => {
+      onSettled: data => {
+        if (data !== undefined) {
+          setCart(data)
+        }
         setIsMutatingCart(false)
       },
     }

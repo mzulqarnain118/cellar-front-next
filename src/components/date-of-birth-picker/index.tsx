@@ -1,60 +1,51 @@
 import { useState } from 'react'
 
-import { CheckCircleIcon } from '@heroicons/react/24/outline'
-import { Text, TextInput, TextInputProps } from '@mantine/core'
+import { TextInput } from '@mantine/core'
 import { useFormContext } from 'react-hook-form'
 
-import { PreCheckoutSchema } from '@/features/cart/checkout-drawer'
+import { Input } from '@/core/components/input'
+import { Typography } from '@/core/components/typogrpahy'
+// import { PreCheckoutSchema } from '@/features/cart/checkout-drawer'
 
-const monthStyles: TextInputProps['styles'] = {
-  input: {
-    borderBottomRightRadius: '0',
-    borderRight: '0',
-    borderTopRightRadius: '0',
-    padding: '0',
-    textAlign: 'center',
-  },
-}
-const dayStyles: TextInputProps['styles'] = {
-  input: {
-    borderLeft: '0',
-    borderRadius: '0',
-    borderRight: '0',
-    padding: '0',
-    textAlign: 'center',
-  },
-}
-const yearStyles: TextInputProps['styles'] = {
-  input: {
-    borderBottomLeftRadius: '0',
-    borderLeft: '0',
-    borderTopLeftRadius: '0',
-    padding: '0',
-  },
-}
+// const dayStyles: TextInputProps['styles'] = {
+//   input: {
+//     borderLeft: '0',
+//     borderRadius: '0',
+//     borderRight: '0',
+//     padding: '0',
+//     textAlign: 'center',
+//   },
+// }
+// const yearStyles: TextInputProps['styles'] = {
+//   input: {
+//     borderBottomLeftRadius: '0',
+//     borderLeft: '0',
+//     borderTopLeftRadius: '0',
+//     padding: '0',
+//   },
+// }
 
 export const DateOfBirthPicker = () => {
   const [month, setMonth] = useState('')
   const [day, setDay] = useState('')
   const [year, setYear] = useState('')
   const {
-    formState: { dirtyFields, errors },
+    formState: { dirtyFields: _, errors },
     register,
     setFocus,
-  } = useFormContext<PreCheckoutSchema>()
+  } = useFormContext()
   const hasError = !!(errors.month?.message || errors.day?.message || errors.year?.message)
-  const error = errors.month?.message || errors.day?.message || errors.year?.message
-  const allDirty = dirtyFields.month && dirtyFields.day && dirtyFields.year
+  // const error = errors.month?.message || errors.day?.message || errors.year?.message
+  // const allDirty = dirtyFields.month && dirtyFields.day && dirtyFields.year
 
   return (
     <div className="">
-      <Text className="mb-1" size="sm">
-        Date of birth
-      </Text>
+      <Typography className="mb-1 text-14">Date of birth</Typography>
       <div className="flex items-end">
-        <TextInput
+        <Input
+          className="rounded-r-0"
           error={hasError}
-          styles={monthStyles}
+          id="month"
           {...register('month', {
             onChange: event => {
               const input = event.target.value
@@ -82,9 +73,11 @@ export const DateOfBirthPicker = () => {
           })}
           value={month}
         />
-        <TextInput
+        <Input
+          className="rounded-r-0 border-l-0 border-r-0 p-0 text-center"
           error={hasError}
-          styles={dayStyles}
+          id="day"
+          // styles={dayStyles}
           {...register('day', {
             onChange: event => {
               const input = event.target.value
@@ -116,12 +109,12 @@ export const DateOfBirthPicker = () => {
         />
         <TextInput
           error={hasError}
-          rightSection={
-            !hasError && allDirty ? (
-              <CheckCircleIcon className="h-5 w-5 stroke-2 text-success" />
-            ) : undefined
-          }
-          styles={yearStyles}
+          // rightSection={
+          //   !hasError && allDirty ? (
+          //     <CheckCircleIcon className="h-5 w-5 stroke-2 text-success" />
+          //   ) : undefined
+          // }
+          // styles={yearStyles}
           {...register('year', {
             onChange: event => {
               const input = event.target.value
@@ -139,9 +132,9 @@ export const DateOfBirthPicker = () => {
           value={year}
         />
       </div>
-      <Text color="error" size="xs">
-        {error}
-      </Text>
+      <Typography className="text-sm" color="error">
+        {/* {error} */}
+      </Typography>
     </div>
   )
 }

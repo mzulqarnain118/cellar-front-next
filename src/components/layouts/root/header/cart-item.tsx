@@ -7,12 +7,13 @@ import { CloseButton } from '@mantine/core'
 import { BlurImage } from '@/components/blur-image'
 import { Price } from '@/components/price'
 import { NumberPicker } from '@/core/components/number-picker'
+import { Typography } from '@/core/components/typogrpahy'
 import { useAddToCartMutation } from '@/lib/mutations/cart/add-to-cart'
 import { useRemoveFromCartMutation } from '@/lib/mutations/cart/remove-from-cart'
 import { useUpdateQuantityMutation } from '@/lib/mutations/cart/update-quantity'
 import { useCartQuery } from '@/lib/queries/cart'
 import { useProcessStore } from '@/lib/stores/process'
-import { CartProduct } from '@/lib/types'
+import { CartItem as CartProduct } from '@/lib/types'
 
 const Link = dynamic(() => import('src/components/link').then(module => module.Link), {
   ssr: false,
@@ -154,10 +155,10 @@ export const CartItem = ({ product }: CartItemProps) => {
                   {product.displayName}
                 </Link>
               </div>
-              <span className="text-sm">{containerSize}</span>
+              <Typography className="text-sm">{containerSize}</Typography>
             </div>
             <Price
-              className="text-base !font-semibold"
+              className="!font-semibold text-neutral-dark"
               price={product.price}
               onSalePrice={
                 product.onSalePrice === product.price ? undefined : product.onSalePrice || 0

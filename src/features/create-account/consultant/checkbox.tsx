@@ -5,6 +5,7 @@ import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 import { clsx } from 'clsx'
 import { useFormContext } from 'react-hook-form'
 
+import { Typography } from '@/core/components/typogrpahy'
 import { useConsultantStore } from '@/lib/stores/consultant'
 
 import { CreateAccountSchema } from 'src/features/create-account/form'
@@ -59,7 +60,7 @@ export const ConsultantCheckbox = ({ disabled = false, isChecked }: ConsultantCh
         />
         <label
           className={clsx(
-            'ml-2 mb-0 cursor-pointer font-medium text-gray-900',
+            'mb-0 ml-2 cursor-pointer font-medium text-gray-900',
             isDisabled && 'cursor-not-allowed'
           )}
           htmlFor="shoppingWithConsultant"
@@ -90,12 +91,12 @@ export const ConsultantCheckbox = ({ disabled = false, isChecked }: ConsultantCh
             errors.consultant?.message && '!max-h-12 opacity-100'
           )}
         >
-          <span className=" text-red-700">
+          <Typography className=" text-error">
             {errors.consultant?.message ? (
               <ExclamationTriangleIcon className="h-6 w-6" />
             ) : undefined}
-          </span>
-          <span className="text-red-700">{errors.consultant?.message}</span>
+          </Typography>
+          <Typography className="text-error">{errors.consultant?.message}</Typography>
         </div>
       </div>
     </div>

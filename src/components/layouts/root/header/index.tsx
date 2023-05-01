@@ -22,7 +22,7 @@ export const Header = () => {
       position: 'fixed',
       right: 0,
       top: 0,
-      transform: `translate3d(0, ${pinned ? 0 : rem(isDesktop ? -126 : -160)}, 0)`,
+      transform: `translateY(${pinned ? 0 : rem(isDesktop ? -130 : -160)})`,
       transition: 'transform 400ms ease',
     }),
     [isDesktop, pinned]
@@ -35,7 +35,7 @@ export const Header = () => {
         <header>
           <div
             className={`
-              relative top-0 left-0 z-20 w-full border-b border-solid border-neutral-200
+              relative left-0 top-0 z-20 w-full border-b border-solid border-neutral-200
               bg-neutral-50 text-neutral-900
             `}
           >

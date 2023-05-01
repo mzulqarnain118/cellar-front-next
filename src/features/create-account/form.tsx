@@ -1,21 +1,19 @@
-import { ChangeEvent, useCallback, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 
 import { ArrowRightIcon } from '@heroicons/react/20/solid'
-import {
-  ExclamationTriangleIcon,
-  EyeIcon,
-  EyeSlashIcon,
-  InformationCircleIcon,
-} from '@heroicons/react/24/outline'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Button } from '@mantine/core'
+import { LoadingOverlay } from '@mantine/core'
 import { clsx } from 'clsx'
 import { FormProvider, SubmitHandler, UseFormProps, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
+import { Button } from '@/core/components/button'
+import { Input } from '@/core/components/input'
+import { PasswordInput } from '@/core/components/password-input'
+import { Typography } from '@/core/components/typogrpahy'
 import { CORPORATE_CONSULTANT_ID } from '@/lib/constants'
 import { CreateAccountOptions, useCreateAccountMutation } from '@/lib/mutations/create-account'
 import { useGuestSignInMutation } from '@/lib/mutations/guest-sign-in'
@@ -24,7 +22,6 @@ import { HOME_PAGE_PATH, SIGN_IN_PAGE_PATH } from '@/lib/paths'
 import { useCartQuery } from '@/lib/queries/cart'
 import { useConsultantStore } from '@/lib/stores/consultant'
 
-import { ConsultantCheckbox } from './consultant/checkbox'
 import { Day } from './dob/day'
 import { Month } from './dob/month'
 import { MAX_DAYS, MONTH_MAP, is21OrOlder, isLeapYear } from './dob/util'
@@ -145,7 +142,7 @@ export type CreateAccountSchema = z.infer<typeof createAccountSchema>
 export const CreateAccountForm = () => {
   const { data: cart } = useCartQuery()
   const { consultant } = useConsultantStore()
-  const { isLoading, mutate: guestSignIn } = useGuestSignInMutation()
+  const { isLoading: _, mutate: guestSignIn } = useGuestSignInMutation()
 
   const defaultValues: Partial<CreateAccountSchema> = useMemo(
     () => ({
@@ -162,7 +159,7 @@ export const CreateAccountForm = () => {
     () => ({
       defaultValues,
       mode: 'onBlur',
-      reValidateMode: 'onBlur',
+      reValidateMode: 'onChange',
       resolver: zodResolver(createAccountSchema),
     }),
     [defaultValues]
@@ -170,24 +167,20 @@ export const CreateAccountForm = () => {
   const methods = useForm<CreateAccountSchema>(options)
   const {
     control,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     getValues,
     handleSubmit,
     register,
     setError,
     setFocus,
     setValue,
-    watch,
   } = methods
-  const watchPassword = watch('password')
   const { mutate: createAccount } = useCreateAccountMutation()
-  const { mutate: validateEmail } = useValidateEmailMutation()
+  const { mutate: validateEmail, isLoading: isValidatingEmail } = useValidateEmailMutation()
   const router = useRouter()
   const [isExistingCustomer, setIsExistingCustomer] = useState(false)
   const [fullName, setFullName] = useState('')
   const [isGuest, setIsGuest] = useState(false)
-  const [isValidatingEmail, setIsValidatingEmail] = useState(false)
-  const [showPassword, setShowPassword] = useState(false)
 
   const onSubmit: SubmitHandler<CreateAccountSchema> = async ({
     day,
@@ -241,47 +234,6 @@ export const CreateAccountForm = () => {
     }
   }
 
-  const emailRegister = register('email')
-
-  const handleEmailBlur = useCallback<(e: ChangeEvent) => Promise<void>>(
-    async event => {
-      await emailRegister.onBlur(event)
-
-      try {
-        setIsValidatingEmail(true)
-        const newEmail = getValues().email
-        if (newEmail.length > 0 && !errors.email?.message) {
-          validateEmail({
-            callback: (response: ValidateEmail) => {
-              const isExisting =
-                response?.result === 1 && response?.data.customer && !response.data.guest
-              setIsExistingCustomer(isExisting)
-              setFullName(
-                response !== undefined
-                  ? response.email_info?.ExistingPersons?.[0]?.PersonFullName || ''
-                  : ''
-              )
-              if (isExisting) {
-                setError('email', {
-                  message: 'You already have an account.',
-                })
-              } else if (response?.result === 1 && response?.data.consultant) {
-                setError('email', {
-                  message: "You're a consultant.",
-                })
-              }
-              setIsGuest(response?.result === 1 && response.data.guest)
-            },
-            email: newEmail,
-          })
-        }
-      } finally {
-        setIsValidatingEmail(false)
-      }
-    },
-    [emailRegister, errors.email?.message, getValues, setError, validateEmail]
-  )
-
   const dobError = errors.month?.message || errors.day?.message || errors.year?.message
 
   const signInHref = useMemo(
@@ -291,140 +243,81 @@ export const CreateAccountForm = () => {
 
   return (
     <>
+      <LoadingOverlay visible={isSubmitting} />
       <FormProvider {...methods}>
         <form
-          className="flex flex-col md:grid md:auto-rows-auto md:grid-cols-2 md:gap-x-11"
+          className="flex flex-col md:grid md:auto-rows-auto md:grid-cols-2 md:gap-x-11 md:gap-y-4"
           onSubmit={handleSubmit(onSubmit)}
         >
-          <div>
-            <label className="m-0" htmlFor="firstName">
-              First Name
-            </label>
-            <input
-              className={clsx(
-                `
-                  h-10 w-full rounded-lg border border-neutral-300
-                  bg-neutral-100 px-3 outline-brand-300 transition-all
-                  duration-500 placeholder:text-neutral-700 focus:!outline
-                  focus:outline-1 focus:outline-offset-0 focus:outline-brand-300
-                `,
-                errors.firstName?.message && '!border-red-700 focus:!outline-red-700'
-              )}
-              id="firstName"
-              type="firstName"
-              {...register('firstName')}
-            />
-            <div
-              className={clsx(
-                'flex max-h-0 items-center gap-2 py-2 pb-2 opacity-0 transition-all duration-500',
-                errors.firstName?.message && '!max-h-12 opacity-100'
-              )}
-            >
-              <span className="text-red-700">
-                <ExclamationTriangleIcon className="h-6 w-6" />
-              </span>
-              <span className="text-red-700">{errors.firstName?.message}</span>
-            </div>
-          </div>
-          <div>
-            <label className="m-0" htmlFor="lastName">
-              Last Name
-            </label>
-            <input
-              className={clsx(
-                `
-                  h-10 w-full rounded-lg border border-neutral-300
-                  bg-neutral-100 px-3 outline-brand-300 transition-all
-                  duration-500 placeholder:text-neutral-700 focus:!outline
-                  focus:outline-1 focus:outline-offset-0 focus:outline-brand-300
-                `,
-                errors.lastName?.message && '!border-red-700 focus:!outline-red-700'
-              )}
-              id="lastName"
-              type="text"
-              {...register('lastName')}
-            />
-            <div
-              className={clsx(
-                'flex max-h-0 items-center gap-2 py-2 pb-2 opacity-0 transition-all duration-500',
-                errors.lastName?.message && '!max-h-12 opacity-100'
-              )}
-            >
-              <span className="text-red-700">
-                <ExclamationTriangleIcon className="h-6 w-6" />
-              </span>
-              <span className="text-red-700">{errors.lastName?.message}</span>
-            </div>
-          </div>
-          <div>
-            <label className="m-0" htmlFor="email">
-              Email
-            </label>
-            <input
-              className={clsx(
-                `
-                h-10 w-full rounded-lg border border-neutral-300
-                bg-neutral-100 px-3 outline-brand-300 transition-all
-                duration-500 placeholder:text-neutral-700 focus:!outline
-                focus:outline-1 focus:outline-offset-0 focus:outline-brand-300
-              `,
-                errors.email?.message && '!border-red-700 focus:!outline-red-700'
-              )}
-              id="email"
-              type="email"
-              {...emailRegister}
-              onBlur={handleEmailBlur}
-            />
-            <div
-              className={clsx(
-                'flex max-h-0 items-center gap-2 py-2 pb-2 opacity-0 transition-all duration-500',
-                errors.email?.message && '!max-h-12 opacity-100'
-              )}
-            >
-              <span className="text-red-700">
-                <ExclamationTriangleIcon className="h-6 w-6" />
-              </span>
-              <span className="text-red-700">{errors.email?.message}</span>
-            </div>
-          </div>
+          <Input
+            error={errors.firstName?.message}
+            id="firstName"
+            label="First name"
+            {...register('firstName')}
+          />
+          <Input
+            error={errors.lastName?.message}
+            id="lastName"
+            label="Last name"
+            {...register('lastName')}
+          />
+          <Input
+            error={errors.email?.message}
+            id="email"
+            label="Email"
+            loading={isValidatingEmail}
+            type="email"
+            {...register('email', {
+              onBlur: event => {
+                const newEmail = event.target.value
+                if (newEmail.length > 0 && !errors.email?.message) {
+                  validateEmail({
+                    callback: (response: ValidateEmail) => {
+                      const isExisting =
+                        response?.result === 1 && response?.data.customer && !response.data.guest
+                      setIsExistingCustomer(isExisting)
+                      setFullName(
+                        response !== undefined
+                          ? response.email_info?.ExistingPersons?.[0]?.PersonFullName || ''
+                          : ''
+                      )
+                      if (isExisting) {
+                        setError('email', {
+                          message: 'You already have an account.',
+                        })
+                      } else if (response?.result === 1 && response?.data.consultant) {
+                        setError('email', {
+                          message: "You're a consultant.",
+                        })
+                      }
+                      setIsGuest(response?.result === 1 && response.data.guest)
+                    },
+                    email: newEmail,
+                  })
+                }
+              },
+            })}
+          />
           <div>
             <div className="flex items-center justify-between">
-              <label className="m-0" htmlFor="month">
-                Date of Birth
+              <label className="text-[1.125rem] text-neutral-800" htmlFor="month">
+                Date of birth
               </label>
-              <div
-                className="tooltip tooltip-left  z-20"
-                data-tip="We need your date of birth to confirm that you are at least 21 years old."
-              >
-                <Button className="p-0">
-                  <InformationCircleIcon className="h-6 w-6" />
-                </Button>
-              </div>
             </div>
             <div
               className={clsx(
                 `
-                  grid grid-cols-5 items-center justify-between rounded-lg border
-                  border-neutral-200 bg-neutral transition-all
+                  grid grid-cols-5 items-center justify-between rounded border
+                  border-solid border-neutral-300 bg-neutral transition-all
                 `,
-                !!dobError && '!border-red-700'
+                !!dobError && '!border-error'
               )}
             >
               <Month<CreateAccountSchema> control={control} name="month" setFocus={setFocus} />
               <Day<CreateAccountSchema> control={control} name="day" setFocus={setFocus} />
               <Year<CreateAccountSchema> control={control} name="year" setFocus={setFocus} />
             </div>
-            <div
-              className={clsx(
-                'flex max-h-0 items-center gap-2 py-2 pb-2 opacity-0 transition-all duration-500',
-                dobError && '!max-h-12 opacity-100'
-              )}
-            >
-              <span className="text-red-700">
-                <ExclamationTriangleIcon className="h-6 w-6" />
-              </span>
-              <span className="text-red-700">{dobError}</span>
-            </div>
+            {/* <Input.Error className="mt-1 text-[0.875rem] text-error">{dobError}</Input.Error> */}
           </div>
           {isExistingCustomer ? (
             <Link
@@ -439,150 +332,26 @@ export const CreateAccountForm = () => {
             </Link>
           ) : (
             <>
-              <div>
-                <label className="m-0" htmlFor="password">
-                  Password
-                </label>
-                <div className="relative">
-                  <input
-                    className={clsx(
-                      `
-                        h-10 w-full rounded-lg border border-neutral-300
-                        bg-neutral-100 px-3 outline-brand-300 transition-all
-                        duration-500 placeholder:text-neutral-700 focus:!outline
-                        focus:outline-1 focus:outline-offset-0 focus:outline-brand-300
-                      `,
-                      errors.password?.message && '!border-red-700 focus:!outline-red-700'
-                    )}
-                    id="password"
-                    type={showPassword ? 'type' : 'password'}
-                    {...register('password')}
-                  />
-                  <button
-                    aria-label={showPassword ? 'Hide password' : 'Show password'}
-                    className={`
-                absolute right-4 top-[20%] h-6 w-6 border-0 bg-transparent p-0
-                text-neutral-600
-              `}
-                    type="button"
-                    onClick={() => setShowPassword(prev => !prev)}
-                  >
-                    {showPassword ? (
-                      <EyeSlashIcon className="h-6 w-6" />
-                    ) : (
-                      <EyeIcon className="h-6 w-6" />
-                    )}
-                  </button>
-                </div>
-                <div
-                  className={clsx(
-                    'flex max-h-0 items-center gap-2 py-2 pb-2 opacity-0 transition-all duration-500',
-                    (errors.password?.message || errors.confirmPassword?.message) &&
-                      '!max-h-12 opacity-100'
-                  )}
-                >
-                  <span className="text-red-700">
-                    {errors.password?.message || errors.confirmPassword?.message ? (
-                      <ExclamationTriangleIcon className="h-6 w-6" />
-                    ) : undefined}
-                  </span>
-
-                  <span className="text-red-700">
-                    {errors.password?.message || errors.confirmPassword?.message}
-                  </span>
-                </div>
-              </div>
-              <div>
-                <label className="m-0" htmlFor="confirmPassword">
-                  Confirm Password
-                </label>
-                <div className="relative">
-                  <input
-                    className={clsx(
-                      `
-                        h-10 w-full rounded-lg border border-neutral-300
-                        bg-neutral-100 px-3 outline-brand-300 transition-all
-                        duration-500 placeholder:text-neutral-700 focus:!outline
-                        focus:outline-1 focus:outline-offset-0 focus:outline-brand-300
-                      `,
-                      errors.confirmPassword?.message && '!border-red-700 focus:!outline-red-700'
-                    )}
-                    id="confirmPassword"
-                    type={showPassword ? 'text' : 'password'}
-                    {...register('confirmPassword', {
-                      validate: (value: string) => {
-                        if (value !== watchPassword) {
-                          return 'Your passwords do not match.'
-                        }
-                      },
-                    })}
-                  />
-                  <button
-                    aria-label={showPassword ? 'Hide password' : 'Show password'}
-                    className={`
-                      absolute right-4 top-[20%] h-6 w-6 border-0 bg-transparent p-0
-                      text-neutral-600
-                    `}
-                    type="button"
-                    onClick={() => setShowPassword(prev => !prev)}
-                  >
-                    {showPassword ? (
-                      <EyeSlashIcon className="h-6 w-6" />
-                    ) : (
-                      <EyeIcon className="h-6 w-6" />
-                    )}
-                  </button>
-                </div>
-                <div
-                  className={clsx(
-                    'flex max-h-0 items-center gap-2 py-2 pb-2 opacity-0 transition-all duration-500',
-                    errors.confirmPassword?.message && '!max-h-12 opacity-100'
-                  )}
-                >
-                  <span className="text-red-700">
-                    <ExclamationTriangleIcon className="h-6 w-6" />
-                  </span>
-                  <span className="text-red-700">{errors.confirmPassword?.message}</span>
-                </div>
-              </div>
-              <div className="col-span-2 grid">
-                <ConsultantCheckbox isChecked={!!defaultValues.shoppingWithConsultant} />
-              </div>
-              <div className="col-span-2 grid grid-cols-[1rem_auto] items-center gap-2 pb-3">
-                <input
-                  aria-describedby="receivePromoMessages"
-                  className="checkbox-primary checkbox checkbox-xs rounded"
-                  id="receivePromoMessages"
-                  type="checkbox"
-                  // {...register('receivePromoMessages')}
-                />
-                <label
-                  className="z-20 mb-0 cursor-pointer font-medium text-gray-900 md:ml-2"
-                  htmlFor="receivePromoMessages"
-                >
-                  Yes, I would like to receive promotional marketing messages.
-                </label>
-              </div>
-              <div
-                className={`
-                  col-span-2 flex flex-col items-center justify-between gap-4 pt-2 pb-3 md:flex-row
-                  md:gap-0
-                `}
-              >
-                <button
-                  className="btn-primary btn z-10"
-                  disabled={isValidatingEmail || isLoading || !!errors.email}
-                  type="submit"
-                >
-                  Create my account
-                </button>
-              </div>
-              <div className="col-span-2">
+              <PasswordInput
+                error={errors.password?.message}
+                label="Password"
+                {...register('password')}
+              />
+              <PasswordInput
+                error={errors.password?.message}
+                label="Confirm password"
+                {...register('confirmPassword')}
+              />
+              <Button className="my-4" type="submit">
+                Create my account
+              </Button>
+              <div className="col-span-2 flex items-center gap-1 text-neutral-900">
                 Already have an account?{' '}
-                <Link className="btn-link btn p-0 text-base" href={SIGN_IN_PAGE_PATH}>
-                  Sign in
+                <Link href={SIGN_IN_PAGE_PATH}>
+                  <Typography className="inline" color="brand">
+                    Sign in
+                  </Typography>
                 </Link>
-                .
               </div>
             </>
           )}

@@ -5,12 +5,9 @@ import { useQueryClient } from '@tanstack/react-query'
 import { UseControllerProps, useController } from 'react-hook-form'
 import { useHits, useSearchBox } from 'react-instantsearch-hooks-web'
 
-import { ConsultantSchema } from '@/features/cart/checkout-drawer'
 import { CORPORATE_CONSULTANT_ID } from '@/lib/constants'
 import { CONSULTANT_QUERY_KEY, getConsultantData } from '@/lib/queries/consultant'
 import { useConsultantStore } from '@/lib/stores/consultant'
-
-type Form = ConsultantSchema
 
 interface ConsultantHit extends Record<string, string | object> {
   Address: { City: string; PostalCode: string; ProvinceAbbreviation: string }
@@ -32,15 +29,15 @@ export const ConsultantSearch = ({
   disabled = false,
   handleSelect,
   ...rest
-}: UseControllerProps<Form> & {
+}: UseControllerProps & {
   disabled?: boolean
   handleSelect: () => void
 }) => {
   const { refine } = useSearchBox()
   const {
     field,
-    formState: { errors },
-  } = useController<Form>(rest)
+    formState: { errors: _ },
+  } = useController(rest)
   const { hits } = useHits<ConsultantHit>()
   const [value, setValue] = useState('')
   const { consultant } = useConsultantStore()
@@ -112,7 +109,7 @@ export const ConsultantSearch = ({
     <>
       <Autocomplete
         data={data}
-        error={errors.consultant?.message}
+        // error={errors.consultant?.message}
         onItemSubmit={handleConsultantSelect}
         {...field}
         disabled={disabled}

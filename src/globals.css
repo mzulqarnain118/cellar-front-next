@@ -1,3 +1,4 @@
+@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
@@ -24,31 +25,37 @@
   .h3,
   .h4,
   .h5,
-  .h6 {
-    @apply !font-heading !font-normal !tracking-wide;
+  .h6,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply !font-heading !font-normal;
   }
 
   .h1 {
-    @apply !text-5xl lg:!text-6xl;
+    @apply !mb-[0.8333333em] !mt-0 !text-5xl !leading-4 !tracking-[0.9px];
   }
 
   .h2 {
-    @apply !text-3xl lg:!text-5xl;
+    @apply !mb-[1.0666667em] !pt-[1.8666667em] !text-3xl !leading-[1.3333333] !tracking-[0.9px];
   }
 
   .h3 {
-    @apply !text-3xl lg:!text-4xl;
+    @apply !mb-[0.6666667em] !pt-[1.6666667em] !text-2xl !leading-6 !tracking-[0.9px];
   }
 
   .h4 {
-    @apply !text-[1.75em] lg:!text-3xl;
+    @apply !mb-2 !pt-8 !text-2xl !leading-7 !tracking-[0.5px];
   }
 
   .h5 {
-    @apply !text-2xl lg:!text-2xl;
+    @apply !text-2xl !tracking-[0.5px];
   }
 
   .h6 {
-    @apply !text-[1.25em] lg:!text-xl;
+    @apply !text-[1.25em] !tracking-[0.5px];
   }
 }

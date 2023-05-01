@@ -1,18 +1,20 @@
-import { ChangeEvent, Fragment, useCallback, useMemo, useState } from 'react'
+import { ChangeEvent, useCallback, useMemo, useState } from 'react'
 
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
 
-import { Button } from '@mantine/core'
+import { Select, SelectProps } from '@mantine/core'
 import { useMediaQuery } from '@mantine/hooks'
 import { UseMediaQueryOptions } from '@mantine/hooks/lib/use-media-query/use-media-query'
 
+import { Button } from '@/core/components/button'
 import { NumberPicker } from '@/core/components/number-picker'
+import { Typography } from '@/core/components/typogrpahy'
 import { useAddToCartMutation } from '@/lib/mutations/cart/add-to-cart'
 import { useUpdateQuantityMutation } from '@/lib/mutations/cart/update-quantity'
 import { useCartQuery } from '@/lib/queries/cart'
 import { useProcessStore } from '@/lib/stores/process'
-import { AutoSipProduct, CartProduct } from '@/lib/types'
+import { AutoSipProduct, CartItem } from '@/lib/types'
 
 import { Price } from '../price'
 import { Rating } from '../rating'
@@ -28,13 +30,24 @@ const MAX = 24
 
 interface ProductCardProps {
   priority?: boolean
-  product: AutoSipProduct | CartProduct
+  product: AutoSipProduct | CartItem
 }
-const gradient = { deg: 90, from: 'brand.5', to: 'brand.6' }
 
-const isCartProduct = (product: AutoSipProduct | CartProduct): product is CartProduct =>
+const isCartProduct = (product: AutoSipProduct | CartItem): product is CartItem =>
   'orderLineId' in product && 'orderId' in product && 'quantity' in product
 const mediaQueryOptions: UseMediaQueryOptions = { getInitialValueInEffect: false }
+
+const selectStyles: SelectProps['styles'] = theme => ({
+  item: {
+    '&[data-hovered]': {},
+    '&[data-selected]': {
+      '&, &:hover': {
+        backgroundColor: theme.colors.gray['9'],
+        color: theme.colors.white,
+      },
+    },
+  },
+})
 
 export const ProductCard = ({ priority = false, product }: ProductCardProps) => {
   const isDesktop = useMediaQuery('(min-width: 64em)', true, mediaQueryOptions)
@@ -51,7 +64,7 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
   const numberPickerDisabled = isAddingToCart || isUpdatingQuantity
 
   const handleQuantityChange = useCallback(
-    (item: CartProduct, newQuantity?: number) => {
+    (item: CartItem, newQuantity?: number) => {
       const quantityToSend = newQuantity || quantity
       if (cart?.items.find(product => product.sku === item.sku) && quantityToSend >= 1) {
         updateQuantity({
@@ -77,7 +90,7 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
   const badges = useMemo(
     () =>
       selectedProduct.badges !== undefined ? (
-        <div className="absolute top-4 left-4 flex flex-col space-y-1 lg:space-y-2">
+        <div className="absolute left-4 top-4 flex flex-col space-y-1 lg:space-y-2">
           {selectedProduct.badges.map(badge => (
             <div
               key={badge.name}
@@ -101,32 +114,23 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
   const variationOptions = useMemo(
     () =>
       product.autoSipProduct?.variations !== undefined
-        ? product.autoSipProduct.variations
-            .map(variation =>
-              variation.active ? (
-                variation.variations
-                  ?.map(innerVariation => {
-                    setVariationType(innerVariation.type)
-
-                    return (
-                      <option key={innerVariation.option} value={variation.sku}>
-                        {innerVariation.option}
-                      </option>
-                    )
-                  })
-                  .filter((element): element is JSX.Element => !!element)
-              ) : (
-                <Fragment key={variation.sku}></Fragment>
-              )
+        ? product.autoSipProduct?.variations
+            .filter(variation => variation.active)
+            .flatMap(variation =>
+              variation.variations?.map(innerVariation => ({
+                group: innerVariation.type,
+                label: innerVariation.option,
+                value: variation.sku,
+              }))
             )
-            .filter((element): element is JSX.Element => !!element)
-        : undefined,
-    [product?.autoSipProduct?.variations]
+            .filter(Boolean)
+        : [],
+    [product.autoSipProduct?.variations]
   )
 
-  const handleDropdownChange = useCallback(
-    (event: ChangeEvent<HTMLSelectElement>) => {
-      const newValue = event.target.value
+  const handleDropdownChange: SelectProps['onChange'] = useCallback(
+    (newValue: string) => {
+      setVariationType(newValue)
       if (newValue !== product.sku && product.autoSipProduct !== undefined) {
         setSelectedProduct(product.autoSipProduct)
         setChangedVariation(true)
@@ -151,6 +155,11 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
 
   const handleRemove = useCallback(() => setQuantity(prev => (prev === 1 ? 1 : prev - 1)), [])
 
+  const variationOptionsDropwdown = useMemo(
+    () => [{ label: 'One-time', value: product.sku }, ...variationOptions],
+    [product.sku, variationOptions]
+  )
+
   const dropdownOrNumberPicker = useMemo(
     () =>
       product.autoSipProduct !== undefined || changedVariation ? (
@@ -162,16 +171,14 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
           >
             {variationType}
           </label>
-          <select
-            className="select-bordered select select-sm h-12"
+          <Select
+            data={variationOptionsDropwdown}
             id="selected-sku"
             name="selected-sku"
+            styles={selectStyles}
             value={selectedSku}
             onChange={handleDropdownChange}
-          >
-            <option value={product.sku}>One-time</option>
-            <optgroup label={variationType}>{variationOptions}</optgroup>
-          </select>
+          />
         </div>
       ) : (
         <NumberPicker
@@ -195,10 +202,9 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
       isDesktop,
       numberPickerDisabled,
       product.autoSipProduct,
-      product.sku,
       quantity,
       selectedSku,
-      variationOptions,
+      variationOptionsDropwdown,
       variationType,
     ]
   )
@@ -225,7 +231,12 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
   )
 
   return (
-    <div className="relative grid grid-rows-[1fr_auto_auto] rounded-lg p-6 shadow md:gap-6">
+    <div
+      className={`
+        relative grid grid-rows-[1fr_auto_auto] rounded-lg border border-solid border-base-dark
+        bg-base-light p-6 shadow md:gap-6
+      `}
+    >
       <div className="flex items-center justify-center justify-self-center">
         {badges}
         {productImageLink}
@@ -239,13 +250,13 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
                   grid grid-cols-2 items-center justify-between text-sm text-neutral-500
                 `}
               >
-                <span>{selectedProduct.attributes?.Varietal}</span>
-                <span className="justify-self-end text-right">
+                <Typography>{selectedProduct.attributes?.Varietal}</Typography>
+                <Typography wrapperClassName="justify-self-end text-right">
                   {selectedProduct.attributes?.['Container Size']}
-                </span>
+                </Typography>
               </div>
               <Link
-                className="card-title text-base font-semibold leading-normal !text-neutral-900"
+                className="card-title font-semibold leading-normal !text-neutral-900 text-base"
                 href={`/product/${selectedProduct.cartUrl}`}
               >
                 {selectedProduct.displayName}
@@ -263,14 +274,7 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
         </div>
         <div className="flex items-center justify-between lg:mt-auto">
           {dropdownOrNumberPicker}
-          <Button
-            color="brand"
-            disabled={numberPickerDisabled}
-            gradient={gradient}
-            size={isDesktop ? 'md' : 'sm'}
-            variant="gradient"
-            onClick={onClick}
-          >
+          <Button disabled={numberPickerDisabled} size={isDesktop ? 'md' : 'sm'} onClick={onClick}>
             Add to Cart
           </Button>
         </div>

@@ -1,19 +1,20 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { replaceItemByUniqueId } from '@/core/utils'
+import { useCartActions } from '@/lib/stores/cart'
 
 import { api } from '../../api'
 import { CART_QUERY_KEY, useCartQuery } from '../../queries/cart'
 import { useProcessStore } from '../../stores/process'
-import { Cart, CartProduct, DEFAULT_CART_STATE } from '../../types'
+import { Cart, CartItem, DEFAULT_CART_STATE } from '../../types'
 import { fetchSubtotalAndUpdateCart, getNewCartItems } from '../helpers'
 import { CartModificationResponse } from '../types'
 
 export interface AddToCartOptions {
   cartId?: string
   fetchSubtotal?: boolean
-  originalCartItems: CartProduct[]
-  item: Omit<CartProduct, 'orderLineId' | 'orderId' | 'quantity'>
+  originalCartItems: CartItem[]
+  item: Omit<CartItem, 'orderLineId' | 'orderId' | 'quantity'>
   quantity: number
 }
 
@@ -34,9 +35,9 @@ export const addToCart = async (options: AddToCartOptions) => {
       options.item
     )
     const itemAdded = newItems.find(item => item.sku === options.item.sku)
-    let modifiedItems: CartProduct[] = newItems
+    let modifiedItems: CartItem[] = newItems
     if (itemAdded) {
-      modifiedItems = replaceItemByUniqueId<CartProduct>(
+      modifiedItems = replaceItemByUniqueId<CartItem>(
         newItems,
         { field: 'sku', value: itemAdded.sku },
         {
@@ -66,6 +67,7 @@ export const addToCart = async (options: AddToCartOptions) => {
 export const useAddToCartMutation = () => {
   const { data } = useCartQuery()
   const queryClient = useQueryClient()
+  const { setCart } = useCartActions()
   const { setIsMutatingCart } = useProcessStore()
 
   return useMutation<
@@ -123,6 +125,10 @@ export const useAddToCartMutation = () => {
       },
       onSuccess: data => {
         queryClient.setQueryData<Cart>(CART_QUERY_KEY, data)
+
+        if (data !== undefined) {
+          setCart(data)
+        }
       },
     }
   )

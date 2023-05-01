@@ -1,28 +1,35 @@
 import { useCallback, useMemo } from 'react'
 
-import { ChevronDownIcon, HeartIcon, ShoppingCartIcon, UserIcon } from '@heroicons/react/24/outline'
+import { useRouter } from 'next/router'
+
+import { ChevronDownIcon, ShoppingCartIcon, UserIcon } from '@heroicons/react/24/outline'
 import {
   ActionIcon,
   Burger,
-  Button,
   Divider,
   Drawer,
-  Indicator,
   Menu,
   ModalBaseCloseButtonProps,
   NavLink,
 } from '@mantine/core'
 import { useDisclosure, useMediaQuery } from '@mantine/hooks'
 import { UseMediaQueryOptions } from '@mantine/hooks/lib/use-media-query/use-media-query'
-import { asText } from '@prismicio/helpers'
+import { asLink, asText } from '@prismicio/helpers'
 import { PrismicLink } from '@prismicio/react'
+import { useSession } from 'next-auth/react'
+import { Indicator } from 'react-daisyui'
 
 import { CompanyLogo } from '@/components/company-logo'
 import { Link } from '@/components/link'
 import { Search } from '@/components/search'
-import { CART_PAGE_PATH, HOME_PAGE_PATH } from '@/lib/paths'
+import { Button } from '@/core/components/button'
+import { Typography } from '@/core/components/typogrpahy'
+import { HOME_PAGE_PATH, SIGN_IN_PAGE_PATH } from '@/lib/paths'
 import { useCartQuery } from '@/lib/queries/cart'
 import { useNavigationQuery } from '@/lib/queries/header'
+import { useCartOpen } from '@/lib/stores/process'
+
+import { CartDrawer } from '../cart-drawer'
 
 const drawerCloseButtonProps: ModalBaseCloseButtonProps = {
   size: 'md',
@@ -30,11 +37,23 @@ const drawerCloseButtonProps: ModalBaseCloseButtonProps = {
 const navLinkStyles = { label: { fontWeight: 400, letterSpacing: '0.05em' } }
 const mediaQueryOptions: UseMediaQueryOptions = { getInitialValueInEffect: false }
 
+const endIcon = <ChevronDownIcon className="h-3 w-3" />
+
 export const Navigation = () => {
+  const router = useRouter()
+  const { data: session } = useSession()
   const isDesktop = useMediaQuery('(min-width: 64em)', true, mediaQueryOptions)
   const { data: cart } = useCartQuery()
+  const { toggleCartOpen } = useCartOpen()
   const [menuOpened, { close: closeMenu, toggle: toggleMenu }] = useDisclosure(false)
   const { data: menu, isError: _, isFetching: _f, isLoading: _l } = useNavigationQuery()
+
+  const onButtonClick = useCallback(
+    (path: string) => {
+      router.push(path)
+    },
+    [router]
+  )
 
   const handleNavLinkClick = useCallback(() => {
     closeMenu()
@@ -54,9 +73,12 @@ export const Navigation = () => {
             return (
               <Menu key={link.id} withArrow closeDelay={400} openDelay={100} trigger="hover">
                 <Menu.Target>
-                  <Button className="py-0" size="md" variant="subtle">
+                  <Button
+                    className="text-neutral-dark no-underline"
+                    endIcon={endIcon}
+                    variant="link"
+                  >
                     {asText(link.primary.name)}
-                    <ChevronDownIcon className="ml-1 h-4 w-4" />
                   </Button>
                 </Menu.Target>
 
@@ -86,12 +108,10 @@ export const Navigation = () => {
             return (
               <Button
                 key={link.id}
-                component={PrismicLink}
-                // * NOTE: Error with type definition.
-                // @ts-ignore
-                field={link.primary.link}
-                size="md"
-                variant="subtle"
+                className="text-neutral-dark no-underline"
+                variant="link"
+                // eslint-disable-next-line @arthurgeron/react-usememo/require-usememo
+                onClick={() => onButtonClick(asLink(link.primary.link) as string)}
               >
                 {asText(link.primary.name)}
               </Button>
@@ -131,13 +151,19 @@ export const Navigation = () => {
           </div>
         )
       }),
-    [handleNavLinkClick, isDesktop, menu?.data.body]
+    [handleNavLinkClick, isDesktop, menu?.data.body, onButtonClick]
   )
 
   const cartQuantity = useMemo(
     () => cart?.items.reduce((prev, product) => prev + product.quantity, 0),
     [cart?.items]
   )
+
+  const onUserClick = useCallback(() => {
+    if (session?.user === undefined) {
+      router.push(SIGN_IN_PAGE_PATH)
+    }
+  }, [router, session?.user])
 
   return (
     <div
@@ -147,13 +173,7 @@ export const Navigation = () => {
     >
       {isDesktop ? undefined : (
         <div>
-          <div className="flex gap-1.5">
-            <Burger opened={menuOpened} size="sm" onClick={toggleMenu} />
-            <ActionIcon className="text-neutral-900">
-              <HeartIcon className="h-5 w-5" />
-            </ActionIcon>
-          </div>
-
+          <Burger opened={menuOpened} size="sm" onClick={toggleMenu} />
           <Drawer closeButtonProps={drawerCloseButtonProps} opened={menuOpened} onClose={closeMenu}>
             <nav>{menuItems}</nav>
             <Divider className="my-6" />
@@ -176,25 +196,25 @@ export const Navigation = () => {
         {isDesktop ? (
           <>
             <Search className="!p-0" id="header-search-desktop" />
-            <ActionIcon className="text-neutral-900">
-              <HeartIcon className="h-5 w-5" />
-            </ActionIcon>
           </>
         ) : undefined}
-        <ActionIcon className="text-neutral-900">
-          <UserIcon className="h-5 w-5" />
+        <ActionIcon className="text-neutral-900" onClick={onUserClick}>
+          <UserIcon className="h-6 w-6" />
         </ActionIcon>
-        <ActionIcon className="text-neutral-900" component={Link} href={CART_PAGE_PATH}>
-          <Indicator
-            inline
-            color={cartQuantity === 0 ? 'transparent' : 'brand'}
-            label={cartQuantity || 0}
-            size={16}
-          >
-            <ShoppingCartIcon className="h-5 w-5" />
+        <ActionIcon className="text-neutral-900" onClick={toggleCartOpen}>
+          <Indicator>
+            {cartQuantity ? (
+              <Typography className="badge-info badge badge-sm indicator-item text-14 font-bold">
+                {cartQuantity}
+              </Typography>
+            ) : undefined}
+            <div className="grid h-5 w-5 place-items-end">
+              <ShoppingCartIcon className="h-6 w-6" />
+            </div>
           </Indicator>
         </ActionIcon>
       </div>
+      <CartDrawer />
     </div>
   )
 }

@@ -1,5 +1,10 @@
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline'
-import { MantineThemeOverride, rem } from '@mantine/core'
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  EyeIcon,
+  EyeSlashIcon,
+} from '@heroicons/react/24/outline'
+import { MantineThemeOverride, PasswordInputProps, rem } from '@mantine/core'
 
 export const theme: MantineThemeOverride = {
   breakpoints: {
@@ -61,16 +66,16 @@ export const theme: MantineThemeOverride = {
       '#021202',
     ],
     error: [
-      '#e84e48',
-      '#e84e48',
-      '#e84e48',
-      '#e84e48',
-      '#e84e48',
-      '#e84e48',
-      '#e84e48',
-      '#e84e48',
-      '#e84e48',
-      '#e84e48',
+      '#F87272',
+      '#F87272',
+      '#F87272',
+      '#F87272',
+      '#F87272',
+      '#F87272',
+      '#F87272',
+      '#F87272',
+      '#F87272',
+      '#F87272',
     ],
     ghost: [
       '#f5f5f5',
@@ -96,6 +101,18 @@ export const theme: MantineThemeOverride = {
       '#3176bd',
       '#3176bd',
     ],
+    // neutral: [
+    //   '#F5F5F5',
+    //   '#EFEFEF',
+    //   '#DCDCDC',
+    //   '#BDBDBD',
+    //   '#989898',
+    //   '#7C7C7C',
+    //   '#656565',
+    //   '#525252',
+    //   '#464646',
+    //   '#3D3D3D',
+    // ],
     neutral: [
       '#F5F5F5',
       '#EFEFEF',
@@ -132,6 +149,18 @@ export const theme: MantineThemeOverride = {
     //   '#372020',
     //   '#2C1A1A',
     // ],
+    red: [
+      '#F87272',
+      '#F87272',
+      '#F87272',
+      '#F87272',
+      '#F87272',
+      '#F87272',
+      '#F87272',
+      '#F87272',
+      '#F87272',
+      '#F87272',
+    ],
     success: [
       '#6e9f5e',
       '#6e9f5e',
@@ -170,10 +199,15 @@ export const theme: MantineThemeOverride = {
     },
     Input: {
       styles: theme => ({
+        error: {
+          color: '#F87272',
+        },
         input: {
           backgroundColor: theme.colors.neutral[1],
           borderColor: theme.colors.neutral[3],
-          letterSpacing: '0.08em',
+          letterSpacing: '0.02em',
+          paddingLeft: rem(16),
+          paddingRight: rem(16),
         },
       }),
     },
@@ -194,9 +228,46 @@ export const theme: MantineThemeOverride = {
         label: { fontSize: rem(18), fontWeight: 600, letterSpacing: '0.1em' },
       }),
     },
+    PasswordInput: {
+      defaultProps: {
+        size: 'md',
+        visibilityToggleIcon: ({ reveal }) =>
+          reveal ? (
+            <EyeSlashIcon className="h-6 w-6 text-neutral-900" />
+          ) : (
+            <EyeIcon className="h-6 w-6 text-neutral-900" />
+          ),
+      } satisfies PasswordInputProps,
+      styles: theme => ({
+        error: {
+          color: '#F87272',
+        },
+        innerInput: {
+          paddingLeft: rem(16),
+        },
+        input: {
+          backgroundColor: theme.colors.neutral[1],
+          borderColor: theme.colors.neutral[3],
+          letterSpacing: '0.02em',
+        },
+        label: { fontSize: rem(18) },
+        rightSection: { marginRight: rem(8) },
+      }),
+    },
+    TextInput: {
+      defaultProps: {
+        size: 'md',
+      },
+      styles: () => ({
+        error: {
+          color: '#F87272',
+        },
+        label: { fontSize: rem(18) },
+      }),
+    },
   },
   cursorType: 'pointer',
-  defaultRadius: 4,
+  defaultRadius: 'sm',
   fontFamily: 'Proxima Nova, sans-serif',
   fontSizes: {
     lg: rem(18),
@@ -210,19 +281,24 @@ export const theme: MantineThemeOverride = {
     sizes: {
       h1: {
         fontSize: '3.5rem',
+        fontWeight: 400,
       },
       h2: {
         fontSize: '3rem',
+        fontWeight: 400,
       },
       h3: {
         fontSize: '2.5rem',
+        fontWeight: 400,
       },
       h4: {
         fontSize: '2rem',
+        fontWeight: 400,
       },
-      h5: { fontSize: '1.75rem' },
+      h5: { fontSize: '1.75rem', fontWeight: 400 },
       h6: {
         fontSize: '1.5rem',
+        fontWeight: 400,
       },
     },
   },

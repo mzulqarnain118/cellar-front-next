@@ -3,6 +3,7 @@ import { NextSeo } from 'next-seo'
 
 import { dehydrate } from '@tanstack/react-query'
 
+import { Typography } from '@/core/components/typogrpahy'
 import { getStaticNavigation } from '@/lib/queries/header'
 
 import { CreateAccountForm } from 'src/features/create-account/form'
@@ -21,14 +22,16 @@ type PageProps = InferGetStaticPropsType<typeof getStaticProps>
 const CreateAccountPage: NextPage<PageProps> = () => (
   <>
     <NextSeo />
-    <div className="container mx-auto my-16 flex items-center justify-center">
+    <div className="container mx-auto flex items-center justify-center py-16">
       <div
         className={`
-          max-w-3xl space-y-4 rounded-lg border border-neutral-300 bg-neutral-50 py-10 px-10
-          md:px-20
+          relative max-w-3xl space-y-4 rounded border border-solid border-base-dark
+          bg-base-light px-10 py-10 md:px-20
         `}
       >
-        <h3>Create Account</h3>
+        <Typography as="h1" displayAs="h2">
+          Create Account
+        </Typography>
         <CreateAccountForm />
       </div>
     </div>

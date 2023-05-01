@@ -2,6 +2,8 @@ import * as prismicT from '@prismicio/types'
 import { clsx } from 'clsx'
 import parse, { domToReact, Element, HTMLReactParserOptions } from 'html-react-parser'
 
+import { Typography } from '@/core/components/typogrpahy'
+
 const importantClasses = [
   'font-body',
   'font-bold',
@@ -21,7 +23,7 @@ const options: HTMLReactParserOptions = {
     if (domNode instanceof Element && domNode.attribs) {
       const { children, name: htmlTagName } = domNode
       const isImportant = importantClasses.includes(htmlTagName)
-      const Element = !isImportant ? (htmlTagName as keyof JSX.IntrinsicElements) : 'span'
+      const element = !isImportant ? (htmlTagName as keyof JSX.IntrinsicElements) : 'span'
       const attributes = domNode.attribs
       const className = Object.getOwnPropertyDescriptor(attributes, 'class')
 
@@ -31,7 +33,8 @@ const options: HTMLReactParserOptions = {
       }
 
       return (
-        <Element
+        <Typography
+          as={element}
           {...attributes}
           className={clsx(
             !isImportant ? htmlTagName : `!${htmlTagName} ${htmlTagName}`,
@@ -39,7 +42,7 @@ const options: HTMLReactParserOptions = {
           )}
         >
           {domToReact(children, options)}
-        </Element>
+        </Typography>
       )
     }
   },

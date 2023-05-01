@@ -1,3 +1,5 @@
+import { useCallback } from 'react'
+
 import { create } from 'zustand'
 
 interface Error {
@@ -5,10 +7,9 @@ interface Error {
 }
 
 interface ProcessStore {
-  cartTriggerRef?: HTMLLabelElement
+  cartOpen: boolean
   error?: Error
   isMutatingCart: boolean
-  setCartTriggerRef: (ref: HTMLLabelElement) => void
   setError: (error: Error | undefined) => void
   setIsMutatingCart: (isMutatingCart: boolean) => void
   setShaderVisible: (shaderVisible: boolean) => void
@@ -16,17 +17,21 @@ interface ProcessStore {
   toggleCartOpen: () => void
 }
 
-export const useProcessStore = create<ProcessStore>((set, get) => ({
+export const useProcessStore = create<ProcessStore>(set => ({
+  cartOpen: false,
   isMutatingCart: false,
-  setCartTriggerRef: ref => set({ cartTriggerRef: ref }),
   setError: (error: Error | undefined) => set({ error }),
   setIsMutatingCart: (isMutatingCart: boolean) => set({ isMutatingCart }),
   setShaderVisible: (shaderVisible: boolean) => set({ shaderVisible }),
   shaderVisible: false,
-  toggleCartOpen: () => {
-    const ref = get().cartTriggerRef
-    if (ref !== undefined) {
-      ref.click()
-    }
-  },
+  toggleCartOpen: () => set(state => ({ cartOpen: !state.cartOpen })),
 }))
+
+export const useCartOpen = () => {
+  const selector = useCallback(
+    (state: ProcessStore) => ({ cartOpen: state.cartOpen, toggleCartOpen: state.toggleCartOpen }),
+    []
+  )
+
+  return useProcessStore(selector)
+}

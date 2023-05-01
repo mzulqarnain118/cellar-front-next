@@ -29,13 +29,11 @@ export const RootLayout = ({ children }: RootLayoutProps) => {
       </div>
     </div>
   ) : (
-    <div className="h-[100svh]" id="root-element">
+    <div className="min-h-[100svh mt-[7.875rem]" id="root-element">
       <SkipLink />
       <Header />
 
-      <main className="mt-[7.875rem]" tabIndex={-1}>
-        {children}
-      </main>
+      <main tabIndex={-1}>{children}</main>
       <Footer />
     </div>
   )

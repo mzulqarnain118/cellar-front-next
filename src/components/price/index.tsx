@@ -1,5 +1,7 @@
 import { clsx } from 'clsx'
 
+import { Typography } from '@/core/components/typogrpahy'
+
 interface PriceProps {
   className?: string
   onSalePrice?: number
@@ -12,7 +14,7 @@ export const Price = ({ className, onSalePrice, price, subtext = true }: PricePr
 
   return (
     <div className="flex items-center gap-1">
-      <span className={clsx('text-lg font-bold', onSale && 'text-brand', className)}>
+      <Typography className={clsx('text-lg font-bold', onSale && 'text-brand', className)}>
         $
         {new Intl.NumberFormat('en-US', {
           maximumFractionDigits: 2,
@@ -29,8 +31,8 @@ export const Price = ({ className, onSalePrice, price, subtext = true }: PricePr
             </del>
           </sup>
         )}
-      </span>
-      {subtext && <span className="text-sm text-neutral-500">each</span>}
+      </Typography>
+      {subtext && <Typography className="text-sm text-neutral-500">each</Typography>}
     </div>
   )
 }

@@ -11,6 +11,7 @@ import { clsx } from 'clsx'
 import { FormProvider, SubmitHandler, UseFormProps, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
+import { Typography } from '@/core/components/typogrpahy'
 import { CORPORATE_CONSULTANT_ID } from '@/lib/constants'
 import { useValidateEmailMutation } from '@/lib/mutations/validate-email'
 import { CHECKOUT_PAGE_PATH, SIGN_IN_PAGE_PATH } from '@/lib/paths'
@@ -202,11 +203,13 @@ export const GuestCheckout = () => {
       <div className="container mx-auto my-16 flex items-center justify-center">
         <div
           className={`
-            max-w-3xl rounded-lg border border-neutral-300 bg-neutral-50 py-10 px-10 md:px-20
+            max-w-3xl rounded-lg border border-neutral-300 bg-neutral-50 px-10 py-10 md:px-20
           `}
         >
-          <h3>Checkout as guest</h3>
-          <h6>Before you proceed, we need some information to complete your order.</h6>
+          <Typography as="h3">Checkout as guest</Typography>
+          <Typography as="h6">
+            Before you proceed, we need some information to complete your order.
+          </Typography>
           <FormProvider {...methods}>
             <form
               className="flex flex-col md:grid md:auto-rows-auto md:grid-cols-2 md:gap-x-11"
@@ -235,12 +238,12 @@ export const GuestCheckout = () => {
                     errors.firstName?.message && '!max-h-12 opacity-100'
                   )}
                 >
-                  <span className=" text-red-700">
+                  <Typography className=" text-error">
                     {errors.firstName?.message ? (
                       <ExclamationTriangleIcon className="h-6 w-6" />
                     ) : undefined}
-                  </span>
-                  <span className="text-red-700">{errors.firstName?.message}</span>
+                  </Typography>
+                  <Typography className="text-error">{errors.firstName?.message}</Typography>
                 </div>
               </div>
               <div>
@@ -266,12 +269,12 @@ export const GuestCheckout = () => {
                     errors.lastName?.message && '!max-h-12 opacity-100'
                   )}
                 >
-                  <span className=" text-red-700">
+                  <Typography className=" text-error">
                     {errors.lastName?.message ? (
                       <ExclamationTriangleIcon className="h-6 w-6" />
                     ) : undefined}
-                  </span>
-                  <span className="text-red-700">{errors.lastName?.message}</span>
+                  </Typography>
+                  <Typography className="text-error">{errors.lastName?.message}</Typography>
                 </div>
               </div>
               <div>
@@ -299,12 +302,12 @@ export const GuestCheckout = () => {
                     errors.email?.message && '!max-h-12 opacity-100'
                   )}
                 >
-                  <span className=" text-red-700">
+                  <Typography className=" text-error">
                     {errors.email?.message ? (
                       <ExclamationTriangleIcon className="h-6 w-6" />
                     ) : undefined}
-                  </span>
-                  <span className="text-red-700">{errors.email?.message}</span>
+                  </Typography>
+                  <Typography className="text-error">{errors.email?.message}</Typography>
                 </div>
                 {isExistingCustomer && (
                   <Link
@@ -315,7 +318,7 @@ export const GuestCheckout = () => {
                     href={signInHref}
                   >
                     Take me to sign in
-                    <span className=" md-18">arrow_forward</span>
+                    <Typography className=" md-18">arrow_forward</Typography>
                   </Link>
                 )}
               </div>
@@ -331,7 +334,7 @@ export const GuestCheckout = () => {
                     `}
                   >
                     <Button className="btn-ghost p-0">
-                      <span className="md-18">info</span>
+                      <Typography className="md-18">info</Typography>
                     </Button>
                   </div>
                 </div>
@@ -354,20 +357,20 @@ export const GuestCheckout = () => {
                     dobError && '!max-h-12 opacity-100'
                   )}
                 >
-                  <span className=" text-red-700">
+                  <Typography className=" text-error">
                     {dobError ? <ExclamationTriangleIcon className="h-6 w-6" /> : undefined}
-                  </span>
-                  <span className="text-red-700">{dobError}</span>
+                  </Typography>
+                  <Typography className="text-error">{dobError}</Typography>
                 </div>
               </div>
               {!isExistingCustomer && (
                 <>
-                  <div className="col-span-2 grid">
+                  <div className="col-Typography-2 grid">
                     <ConsultantCheckbox disabled={!!defaultValues.shoppingWithConsultant} />
                   </div>
                   <div
                     className={`
-                        col-span-2 flex flex-col items-center justify-between gap-4 pt-2 pb-3
+                        col-Typography-2 flex flex-col items-center justify-between gap-4 pb-3 pt-2
                         md:flex-row md:gap-0
                       `}
                   >

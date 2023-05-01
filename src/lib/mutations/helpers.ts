@@ -1,5 +1,5 @@
 import { api } from '../api'
-import { Cart, CartProduct, Failure } from '../types'
+import { Cart, CartItem, Failure } from '../types'
 
 import { CartProductOrderLine } from './types'
 
@@ -35,7 +35,7 @@ type GetSubtotalInfoResponse = GetSubtotalInfoSuccess | Failure
 
 export const fetchSubtotalAndUpdateCart = async (
   cartId: string,
-  originalCartItems: CartProduct[],
+  originalCartItems: CartItem[],
   otherCartData?: Omit<Cart, 'prices' | 'discounts' | 'id'>,
   fetchSubtotal = true
 ) => {
@@ -84,9 +84,9 @@ export const fetchSubtotalAndUpdateCart = async (
 
 export const getNewCartItems = (
   items: CartProductOrderLine[],
-  originalCartItems: CartProduct[],
-  cartItem: Omit<CartProduct, 'orderLineId' | 'orderId' | 'quantity'>
-): CartProduct[] =>
+  originalCartItems: CartItem[],
+  cartItem: Omit<CartItem, 'orderLineId' | 'orderId' | 'quantity'>
+): CartItem[] =>
   items
     .map(
       ({
@@ -129,17 +129,17 @@ export const getNewCartItems = (
           return {
             ...correspondingItem,
             ...item,
-          } satisfies CartProduct
+          } satisfies CartItem
         }
 
         if (cartItem.sku === ProductSKU) {
           return {
             ...item,
             ...cartItem,
-          } satisfies CartProduct
+          } satisfies CartItem
         }
 
-        return { ...item, ...fallbackValues } satisfies CartProduct
+        return { ...item, ...fallbackValues } satisfies CartItem
       }
     )
-    .filter((value?: object): value is CartProduct => !!value && 'sku' in value) as CartProduct[]
+    .filter((value?: object): value is CartItem => !!value && 'sku' in value) as CartItem[]

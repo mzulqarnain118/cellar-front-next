@@ -6,7 +6,7 @@ import algoliasearch from 'algoliasearch/lite'
 import { useFormContext } from 'react-hook-form'
 import { InstantSearch } from 'react-instantsearch-hooks-web'
 
-import { ConsultantSchema } from '@/features/cart/checkout-drawer'
+// import { ConsultantSchema } from '@/features/cart/checkout-drawer'
 import { ConsultantSearch } from '@/features/create-account/consultant/search'
 import { CORPORATE_CONSULTANT_ID } from '@/lib/constants'
 import { useConsultantStore } from '@/lib/stores/consultant'
@@ -22,7 +22,7 @@ interface ConsultantCheckboxProps {
 }
 
 export const ConsultantCheckbox = ({ disabled = false }: ConsultantCheckboxProps) => {
-  const { control, register } = useFormContext<ConsultantSchema>()
+  const { control, register } = useFormContext()
   const { consultant, resetConsultant } = useConsultantStore()
 
   const disclosureOptions = useMemo(

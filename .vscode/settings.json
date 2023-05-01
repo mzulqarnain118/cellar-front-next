@@ -16,7 +16,13 @@
     "*.env.template": "env",
     ".env.local": "env"
   },
+  "files.exclude": {
+    "**/node_modules": true
+  },
   "[env]": {
     "editor.defaultFormatter": "IronGeek.vscode-env"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
   }
 }

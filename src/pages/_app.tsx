@@ -7,7 +7,7 @@ import type { AppProps } from 'next/app'
 import dynamic from 'next/dynamic'
 import { Merriweather } from 'next/font/google'
 
-import { MantineProvider, TypographyStylesProvider } from '@mantine/core'
+import { MantineProvider } from '@mantine/core'
 import { useMediaQuery } from '@mantine/hooks'
 import { ModalsProvider } from '@mantine/modals'
 import { Notifications } from '@mantine/notifications'
@@ -21,6 +21,7 @@ import {
   PersistQueryClientProvider,
 } from '@tanstack/react-query-persist-client'
 import { SessionProvider } from 'next-auth/react'
+import { Theme } from 'react-daisyui'
 
 import { RootLayout } from '@/components/layouts/root'
 
@@ -69,8 +70,8 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
       <PersistQueryClientProvider client={queryClient} persistOptions={persistOptions}>
         <Hydrate state={pageProps.dehydratedState}>
           <MantineProvider withGlobalStyles withNormalizeCSS theme={theme}>
-            <ModalsProvider>
-              <TypographyStylesProvider>
+            <Theme dataTheme="garden">
+              <ModalsProvider>
                 <Notifications position={isDesktop ? 'top-center' : 'bottom-center'} />
                 <PrismicProvider
                   internalLinkComponent={InternalLink}
@@ -88,12 +89,12 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
                           }
 
                           #nprogress .bar {
-                            background: #464c2c !important;
+                            background: #5c7f67 !important;
                             height: 0.25rem !important;
                           }
 
                           #nprogress .peg {
-                            box-shadow: 0 0 10px #464c2c, 0 0 5px #464c2c !important;
+                            box-shadow: 0 0 10px #5c7f67, 0 0 5px #5c7f67 !important;
                           }
                         `}
                       </style>
@@ -102,8 +103,8 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
                     </RootLayout>
                   </PrismicPreview>
                 </PrismicProvider>
-              </TypographyStylesProvider>
-            </ModalsProvider>
+              </ModalsProvider>
+            </Theme>
           </MantineProvider>
           <ReactQueryDevtools />
         </Hydrate>
