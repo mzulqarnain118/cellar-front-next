@@ -88,7 +88,7 @@ export const CartDrawer = () => {
       <div className="h-[inherit] overflow-y-hidden">
         <CloseButton className="absolute right-4 top-4 z-10" size="lg" onClick={toggleCartOpen} />
         <div className="sticky left-0 top-0 flex w-full flex-col border-b border-base-dark bg-base-light">
-          <Typography as="h1" className="h3 m-0 text-center">
+          <Typography as="h1" className="h4 text-center">
             Your Cart ({cartQuantity || <Loader className="inline-block" size="sm" />})
           </Typography>
           <div
@@ -100,16 +100,12 @@ export const CartDrawer = () => {
               {difference > 0 ? (
                 <Typography>
                   You are {formatCurrency(difference)} away from{' '}
-                  <Typography className="font-bold" wrapperClassName="inline">
-                    FREE SHIPPING
-                  </Typography>
+                  <Typography className="font-bold">FREE SHIPPING</Typography>
                 </Typography>
               ) : (
                 <Typography>
                   🎉 Cheers! You&apos;ve unlocked{' '}
-                  <Typography className="font-bold" wrapperClassName="inline">
-                    FREE SHIPPING
-                  </Typography>
+                  <Typography className="font-bold">FREE SHIPPING</Typography>
                 </Typography>
               )}
 
@@ -125,7 +121,7 @@ export const CartDrawer = () => {
         <>
           {cartItems !== undefined ? (
             <div className="h-[stretch] overflow-y-scroll pb-[6.25rem]">
-              <div className="mb-[6.25rem] divide-y divide-neutral-200 bg-neutral-50 px-4 pb-[6.25rem]">
+              <div className="mb-[6.25rem] divide-y divide-neutral-200 bg-neutral-50 px-4">
                 {cartItems}
               </div>
             </div>

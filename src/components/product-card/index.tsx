@@ -251,7 +251,7 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
                 `}
               >
                 <Typography>{selectedProduct.attributes?.Varietal}</Typography>
-                <Typography wrapperClassName="justify-self-end text-right">
+                <Typography className="justify-self-end text-right">
                   {selectedProduct.attributes?.['Container Size']}
                 </Typography>
               </div>

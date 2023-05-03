@@ -20,6 +20,10 @@
     color: var(--highlight);
   }
 
+  body {
+    letter-spacing: 1px;
+  }
+
   .h1,
   .h2,
   .h3,
@@ -35,27 +39,33 @@
     @apply !font-heading !font-normal;
   }
 
+  h1,
   .h1 {
-    @apply !mb-[0.8333333em] !mt-0 !text-5xl !leading-4 !tracking-[0.9px];
+    @apply !text-5xl lg:!text-[3.75rem];
   }
 
+  h2,
   .h2 {
-    @apply !mb-[1.0666667em] !pt-[1.8666667em] !text-3xl !leading-[1.3333333] !tracking-[0.9px];
+    @apply !text-[2.5rem] lg:!text-5xl;
   }
 
+  h3,
   .h3 {
-    @apply !mb-[0.6666667em] !pt-[1.6666667em] !text-2xl !leading-6 !tracking-[0.9px];
+    @apply !text-[2rem] lg:!text-[2.5rem];
   }
 
+  h4,
   .h4 {
-    @apply !mb-2 !pt-8 !text-2xl !leading-7 !tracking-[0.5px];
+    @apply !text-[1.75rem] lg:!text-3xl;
   }
 
+  h5,
   .h5 {
-    @apply !text-2xl !tracking-[0.5px];
+    @apply !text-2xl;
   }
 
+  h6,
   .h6 {
-    @apply !text-[1.25em] !tracking-[0.5px];
+    @apply !text-xl;
   }
 }

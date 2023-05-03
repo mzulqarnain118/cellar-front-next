@@ -250,7 +250,6 @@ export const theme: MantineThemeOverride = {
           borderColor: theme.colors.neutral[3],
           letterSpacing: '0.02em',
         },
-        label: { fontSize: rem(18) },
         rightSection: { marginRight: rem(8) },
       }),
     },
@@ -262,7 +261,6 @@ export const theme: MantineThemeOverride = {
         error: {
           color: '#F87272',
         },
-        label: { fontSize: rem(18) },
       }),
     },
   },

@@ -19,7 +19,14 @@ module.exports = {
     'node_modules/react-daisyui/dist/**/*.js',
   ],
   daisyui: {
-    themes: ['garden'],
+    themes: [
+      {
+        light: {
+          ...require('daisyui/src/colors/themes')['[data-theme=garden]'],
+          brown: '#eeddcd',
+        },
+      },
+    ],
     // themes: [
     //   {
     //     theme: {
@@ -68,6 +75,11 @@ module.exports = {
           DEFAULT: '#d3cfcf',
           dark: '#d3cfcf',
           light: '#efefef',
+        },
+        brown: {
+          DEFAULT: '#eeddcd',
+          light: '#eeddcd',
+          text: '#333333',
         },
         error: '#F87272',
         info: '#3ABFF8',

@@ -1,5 +1,7 @@
 import { DefaultMantineColor, Tuple } from '@mantine/core'
 
+import { modals } from '@/core/components/modals'
+
 type ExtendedCustomColors =
   | 'accent'
   | 'brand'
@@ -14,6 +16,10 @@ type ExtendedCustomColors =
 declare module '@mantine/core' {
   export interface MantineThemeColorsOverride {
     colors: Record<ExtendedCustomColors, Tuple<string, 10>>
+  }
+
+  export interface MantineModalsOverride {
+    modals: typeof modals
   }
 
   // export interface ButtonProps<T> extends DefaultProps<ButtonStylesNames, ButtonStylesParams> {

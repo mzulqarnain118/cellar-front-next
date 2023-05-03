@@ -2,15 +2,22 @@ import { useCallback, useMemo, useState } from 'react'
 
 import { CheckCircleIcon } from '@heroicons/react/24/outline'
 import { Select, SelectProps } from '@mantine/core'
-import { UseControllerProps, useController } from 'react-hook-form'
+import { FieldValues, UseControllerProps, useController } from 'react-hook-form'
 
-// import { DeliverySchema } from '@/features/checkout/delivery'
 import { useStatesQuery } from '@/lib/queries/state'
 import { State } from '@/lib/types'
 
-// type Schema = DeliverySchema
+const classNames = {
+  error: 'text-14',
+  input: 'h-10 placeholder:text-14',
+  item: 'text-14',
+  label: 'text-md',
+}
 
-export const StateDropdown = (props: UseControllerProps) => {
+export const StateDropdown = <Schema extends FieldValues>({
+  className,
+  ...props
+}: UseControllerProps<Schema> & { className: string }) => {
   const {
     field,
     fieldState: { error, isDirty },
@@ -47,6 +54,8 @@ export const StateDropdown = (props: UseControllerProps) => {
   return (
     <Select
       searchable
+      className={className}
+      classNames={classNames}
       data={data}
       filter={filter}
       label="State"

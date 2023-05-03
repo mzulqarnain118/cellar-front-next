@@ -24,6 +24,7 @@ import { SessionProvider } from 'next-auth/react'
 import { Theme } from 'react-daisyui'
 
 import { RootLayout } from '@/components/layouts/root'
+import { modals } from '@/core/components/modals'
 
 import { InternalLink } from 'prismic/internal-link'
 import { richTextComponents } from 'prismic/rich-text-components'
@@ -71,7 +72,7 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
         <Hydrate state={pageProps.dehydratedState}>
           <MantineProvider withGlobalStyles withNormalizeCSS theme={theme}>
             <Theme dataTheme="garden">
-              <ModalsProvider>
+              <ModalsProvider modals={modals}>
                 <Notifications position={isDesktop ? 'top-center' : 'bottom-center'} />
                 <PrismicProvider
                   internalLinkComponent={InternalLink}

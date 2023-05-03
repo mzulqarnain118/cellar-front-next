@@ -45,7 +45,7 @@ type PolymorphicComponentProps<
 interface Props {
   displayAs?: string
   children: ReactNode
-  wrapperClassName?: string
+  noSpacing?: boolean
 }
 
 type TypographyProps<T extends ElementType> = PolymorphicComponentProps<T, Props>
@@ -55,28 +55,21 @@ export const Typography = <T extends ElementType = 'span'>({
   children,
   className,
   displayAs,
-  wrapperClassName,
+  noSpacing = false,
   ...rest
 }: TypographyProps<T>) => {
   const Component = as || 'span'
 
   return (
-    <div
-      className={clsx(
-        'prose-lg prose max-w-none prose-headings:font-heading prose-headings:leading-[inherit]',
-        wrapperClassName
-      )}
+    <Component
+      {...rest}
+      className={
+        displayAs !== undefined || className !== undefined
+          ? clsx(displayAs, className, noSpacing && '!m-0 !p-0')
+          : clsx(noSpacing && '!m-0 !p-0')
+      }
     >
-      <Component
-        {...rest}
-        className={
-          displayAs !== undefined || className !== undefined
-            ? clsx(displayAs, className)
-            : undefined
-        }
-      >
-        {children}
-      </Component>
-    </div>
+      {children}
+    </Component>
   )
 }

@@ -1,8 +1,14 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 
 import { api } from '@/lib/api'
 import { useCartQuery } from '@/lib/queries/cart'
+import {
+  ADDRESS_CREDIT_CARDS_QUERY_KEY,
+  ShippingAddressesAndCreditCards,
+  getShippingAddressesAndCreditCards,
+} from '@/lib/queries/checkout/addreses-and-credit-cards'
+import { useCheckoutActions } from '@/lib/stores/checkout'
 import { Failure } from '@/lib/types'
 
 export const APPLY_CHECKOUT_SELECTIONS_MUTATION_KEY = ['apply-checkout-selections']
@@ -42,16 +48,32 @@ export const applyCheckoutSelections = async ({
 }
 
 export const useApplyCheckoutSelectionsMutation = () => {
+  const queryClient = useQueryClient()
   const { data: cart } = useCartQuery()
   const { data: session } = useSession()
+  const { setActiveShippingAddress } = useCheckoutActions()
 
   return useMutation<Response, Error, ApplyCheckoutSelectionsOptions>(
-    APPLY_CHECKOUT_SELECTIONS_MUTATION_KEY,
+    [...APPLY_CHECKOUT_SELECTIONS_MUTATION_KEY],
     data =>
       applyCheckoutSelections({
         ...data,
         cartId: data.cartId || cart?.id,
         userDisplayId: data.userDisplayId || session?.user.displayId,
-      })
+      }),
+    {
+      onSuccess: async (response, data) => {
+        if (response.Success) {
+          const { addresses } = await queryClient.ensureQueryData<ShippingAddressesAndCreditCards>({
+            queryFn: getShippingAddressesAndCreditCards,
+            queryKey: [ADDRESS_CREDIT_CARDS_QUERY_KEY, cart?.id, null],
+          })
+          const correspondingAddress = addresses.find(
+            address => address.AddressID === data.addressId
+          )
+          setActiveShippingAddress(correspondingAddress)
+        }
+      },
+    }
   )
 }

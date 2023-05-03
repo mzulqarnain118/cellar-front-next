@@ -9,7 +9,13 @@ interface CompanyLogoProps {
 }
 
 export const CompanyLogo = ({ className, size = 'md', white = false }: CompanyLogoProps) => (
-  <div className={clsx('relative h-8 w-32', size === 'lg' && '!h-10 !w-36', className)}>
+  <div
+    className={clsx(
+      'relative h-10 w-[10.25rem] lg:h-[5.25rem] lg:w-[15.5rem]',
+      size === 'lg' && '!w-[21.75rem]',
+      className
+    )}
+  >
     <Image
       fill
       priority

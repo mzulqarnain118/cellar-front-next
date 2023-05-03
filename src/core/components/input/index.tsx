@@ -12,6 +12,7 @@ interface Props extends InputProps {
   dirty?: boolean
   error?: string | boolean
   id: string
+  instructionLabel?: string
   label?: string
   loading?: boolean
   touched?: boolean
@@ -22,8 +23,10 @@ export const Input = forwardRef<HTMLInputElement, Props>(
   (
     {
       altLabel,
+      className,
       dirty = false,
       error = false,
+      instructionLabel,
       label,
       loading = false,
       color: selectedColor = 'primary',
@@ -39,11 +42,20 @@ export const Input = forwardRef<HTMLInputElement, Props>(
     }
 
     return (
-      <div className="grid">
+      <div className={clsx('grid', className)}>
         <div className="flex w-full items-center justify-center gap-2 px-0 pb-1 pt-4">
           <div className="form-control w-full">
-            <label className="grid" htmlFor={props.id}>
+            <label
+              className={clsx(
+                'grid',
+                instructionLabel !== undefined && '!flex !items-center !justify-between'
+              )}
+              htmlFor={props.id}
+            >
               <Typography className="text-md">{label}</Typography>
+              {instructionLabel !== undefined ? (
+                <Typography className="text-sm">{instructionLabel}</Typography>
+              ) : undefined}
             </label>
             <div className="relative">
               <DaisyInput
@@ -74,9 +86,7 @@ export const Input = forwardRef<HTMLInputElement, Props>(
         </div>
         <Collapse in={error !== undefined && typeof error === 'string'}>
           <label className="label m-0 p-0" htmlFor={props.id}>
-            <Typography className="text-14 text-error" wrapperClassName="leading-none">
-              {error}
-            </Typography>
+            <Typography className="text-14 text-error">{error}</Typography>
           </label>
         </Collapse>
       </div>

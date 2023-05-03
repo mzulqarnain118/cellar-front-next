@@ -5,6 +5,8 @@ import { useCartQuery } from '@/lib/queries/cart'
 import { Failure } from '@/lib/types'
 import { Address } from '@/lib/types/address'
 
+import { useApplyCheckoutSelectionsMutation } from '../checkout/apply-selections'
+
 export const CREATE_ADDRESS_MUTATION_KEY = ['create-address']
 
 export interface CreateAddressOptions {
@@ -67,6 +69,7 @@ const createAddress = async (data: CreateAddressOptions) => {
 }
 
 export const useCreateAddressMutation = () => {
+  const { mutate: applyCheckoutSelections } = useApplyCheckoutSelectionsMutation()
   const { data: cart } = useCartQuery()
 
   return useMutation<CreateAddressResponse, Error, CreateAddressOptions>(
@@ -74,8 +77,12 @@ export const useCreateAddressMutation = () => {
     data => createAddress({ ...data, cartId: data.cartId || cart?.id }),
     {
       onSuccess: (response, data) => {
-        if (data.callback !== undefined) {
-          data.callback(response)
+        if (response.Success) {
+          applyCheckoutSelections({ addressId: response.Data.Value.AddressID })
+
+          if (data.callback !== undefined) {
+            data.callback(response)
+          }
         }
       },
     }
