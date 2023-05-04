@@ -4,7 +4,6 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
 import { Address } from '../types/address'
-import { ShippingMethod } from '../types/shipping-method'
 
 import { Setter } from './types'
 
@@ -28,7 +27,6 @@ interface CheckoutStoreState {
   completedTabs: CheckoutTab[]
   contactInformation: ContactInformation
   giftMessage: GiftMessage
-  shippingMethod?: ShippingMethod
 }
 
 interface CheckoutStoreActions {
@@ -39,7 +37,6 @@ interface CheckoutStoreActions {
   setActiveShippingAddress: (address: Address | undefined) => void
   setCompletedTabs: Setter<CheckoutTab[]>
   setGiftMessage: Setter<GiftMessage>
-  setShippingMethod: (shippingMethod: ShippingMethod | undefined) => void
 }
 
 export type CheckoutStore = CheckoutStoreState & { actions: CheckoutStoreActions }
@@ -81,7 +78,6 @@ const useCheckoutStore = create<CheckoutStore>()(
           typeof update === 'function'
             ? set(state => ({ giftMessage: update(state.giftMessage) }))
             : set(() => ({ giftMessage: update })),
-        setShippingMethod: shippingMethod => set(() => ({ shippingMethod })),
       },
     }),
     {
@@ -96,11 +92,6 @@ export const useCheckoutActiveShippingAddress = () => {
     ({ activeShippingAddress }: CheckoutStore) => ({ activeShippingAddress }),
     []
   )
-  return useCheckoutStore(selector)
-}
-
-export const useCheckoutShippingMethod = () => {
-  const selector = useCallback(({ shippingMethod }: CheckoutStore) => ({ shippingMethod }), [])
   return useCheckoutStore(selector)
 }
 

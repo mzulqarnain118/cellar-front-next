@@ -7,6 +7,7 @@ import { NextSeo } from 'next-seo'
 import { useSession } from 'next-auth/react'
 
 import { Typography } from '@/core/components/typogrpahy'
+import { CartSummary } from '@/features/checkout/cart-summary'
 import { ContactInformation } from '@/features/checkout/contact-information'
 import { Delivery } from '@/features/checkout/delivery'
 import { Payment } from '@/features/checkout/payment'
@@ -78,6 +79,7 @@ const CheckoutPage: NextPage<PageProps> = () => {
             >
               Your cart
             </Typography>
+            <CartSummary />
           </div>
         </div>
       </div>

@@ -7,13 +7,11 @@ import { useDisclosure } from '@mantine/hooks'
 import { Button } from '@/core/components/button'
 import { formatCurrency } from '@/core/utils'
 import { useApplyCheckoutSelectionsMutation } from '@/lib/mutations/checkout/apply-selections'
+import { useUpdateShippingMethodMutation } from '@/lib/mutations/checkout/update-shipping-method'
 import { useAddressesAndCreditCardsQuery } from '@/lib/queries/checkout/addreses-and-credit-cards'
+import { useGetSubtotalQuery } from '@/lib/queries/checkout/get-subtotal'
 import { useShippingMethodsQuery } from '@/lib/queries/checkout/shipping-methods'
-import {
-  useCheckoutActions,
-  useCheckoutActiveShippingAddress,
-  useCheckoutShippingMethod,
-} from '@/lib/stores/checkout'
+import { useCheckoutActiveShippingAddress } from '@/lib/stores/checkout'
 import { isPickUpShippingMethodId } from '@/lib/utils/checkout'
 
 import { AddressForm } from './address-form'
@@ -22,17 +20,19 @@ const dropdownClassNames = { input: 'h-10', item: 'text-14', label: 'text-14' }
 
 export const ShipToHome = () => {
   const { data } = useAddressesAndCreditCardsQuery()
-  const { mutate: applyCheckoutSelections } = useApplyCheckoutSelectionsMutation()
+  const { mutate: applyCheckoutSelections, isLoading: isApplyingSelections } =
+    useApplyCheckoutSelectionsMutation()
   const { activeShippingAddress } = useCheckoutActiveShippingAddress()
   const { data: shippingMethodsData } = useShippingMethodsQuery()
-  const { setShippingMethod } = useCheckoutActions()
+  const { data: cartTotalData } = useGetSubtotalQuery()
+  const { mutate: updateShippingMethod, isLoading: isUpdatingShippingMethod } =
+    useUpdateShippingMethodMutation()
   const [addressFormOpen, { close: closeAddressForm, toggle: toggleAddressForm }] =
     useDisclosure(false)
-  const { shippingMethod } = useCheckoutShippingMethod()
 
   const handleAddressChange: SelectProps['onChange'] = useCallback(
-    (addressId: string) => {
-      if (data !== undefined && data.addresses.length > 0) {
+    (addressId: string | null) => {
+      if (!!addressId && data !== undefined && data.addresses.length > 0) {
         const correspondingAddress = data.addresses.find(
           address => address.AddressID.toString() === addressId.toLowerCase()
         )
@@ -45,22 +45,16 @@ export const ShipToHome = () => {
   )
 
   const handleShippingMethodChange: SelectProps['onChange'] = useCallback(
-    (shippingMethodId: string) => {
-      if (shippingMethodsData !== undefined) {
-        const correspondingShippingMethod = shippingMethodsData.find(
-          method => method.shippingMethodId.toString() === shippingMethodId
-        )
-
-        if (correspondingShippingMethod !== undefined) {
-          setShippingMethod({
-            displayName: correspondingShippingMethod.displayName,
-            id: correspondingShippingMethod.shippingMethodId,
-            price: correspondingShippingMethod.shippingPrice,
-          })
-        }
+    (shippingMethodId: string | null) => {
+      if (
+        !!shippingMethodId &&
+        shippingMethodsData !== undefined &&
+        shippingMethodsData.length > 0
+      ) {
+        updateShippingMethod({ shippingMethodId: parseInt(shippingMethodId) })
       }
     },
-    [setShippingMethod, shippingMethodsData]
+    [shippingMethodsData, updateShippingMethod]
   )
 
   const shippingAddresses = useMemo(
@@ -93,6 +87,8 @@ export const ShipToHome = () => {
     [shippingMethodsData]
   )
 
+  const disabled = isUpdatingShippingMethod || isApplyingSelections
+
   return (
     <div className="space-y-4">
       <Collapse in={true}>
@@ -105,6 +101,7 @@ export const ShipToHome = () => {
           <Select
             classNames={dropdownClassNames}
             data={shippingAddresses}
+            disabled={disabled}
             label="Shipping address"
             value={activeShippingAddress?.AddressID.toString()}
             onChange={handleAddressChange}
@@ -138,8 +135,9 @@ export const ShipToHome = () => {
             <Select
               classNames={dropdownClassNames}
               data={shippingMethods}
+              disabled={disabled}
               label="Shipping method"
-              value={shippingMethod?.id?.toString()}
+              value={cartTotalData?.shipping.methodId.toString()}
               onChange={handleShippingMethodChange}
             />
           )}

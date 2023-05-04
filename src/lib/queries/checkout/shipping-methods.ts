@@ -2,7 +2,7 @@ import { QueryFunction, useQuery } from '@tanstack/react-query'
 
 import { api } from '@/lib/api'
 import { CORPORATE_GIFTING_SHIPPING_METHOD_ID } from '@/lib/constants/shipping-method'
-import { useCheckoutActions, useCheckoutActiveShippingAddress } from '@/lib/stores/checkout'
+import { useCheckoutActiveShippingAddress } from '@/lib/stores/checkout'
 import { Failure } from '@/lib/types'
 
 import { useCartQuery } from '../cart'
@@ -12,6 +12,12 @@ interface ShippingMethod {
   ShippingMethodID: number
   ShippingPrice: number
 }
+
+export type ShippingMethods = {
+  displayName: string
+  shippingMethodId: number
+  shippingPrice: number
+}[]
 
 interface GetShippingMethodsSuccess {
   Success: true
@@ -50,21 +56,10 @@ export const SHIPPING_METHODS_QUERY_KEY = 'shipping-methods'
 
 export const useShippingMethodsQuery = () => {
   const { activeShippingAddress } = useCheckoutActiveShippingAddress()
-  const { setShippingMethod } = useCheckoutActions()
   const { data: cart } = useCartQuery()
 
   return useQuery({
     enabled: !!activeShippingAddress,
-    onSuccess: data => {
-      if (data !== undefined) {
-        const newMethod = data[0]
-        setShippingMethod({
-          displayName: newMethod.displayName,
-          id: newMethod.shippingMethodId,
-          price: newMethod.shippingPrice,
-        })
-      }
-    },
     queryFn: getShippingMethods,
     queryKey: [SHIPPING_METHODS_QUERY_KEY, cart?.orderDisplayId, activeShippingAddress?.AddressID],
   })

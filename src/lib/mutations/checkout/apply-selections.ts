@@ -68,9 +68,17 @@ export const useApplyCheckoutSelectionsMutation = () => {
             queryFn: getShippingAddressesAndCreditCards,
             queryKey: [ADDRESS_CREDIT_CARDS_QUERY_KEY, cart?.id, null],
           })
-          const correspondingAddress = addresses.find(
-            address => address.AddressID === data.addressId
-          )
+          let correspondingAddress = addresses.find(address => address.AddressID === data.addressId)
+          if (correspondingAddress === undefined) {
+            const { addresses: altAddresses } =
+              await queryClient.ensureQueryData<ShippingAddressesAndCreditCards>({
+                queryFn: getShippingAddressesAndCreditCards,
+                queryKey: [ADDRESS_CREDIT_CARDS_QUERY_KEY, cart?.id, data.addressId],
+              })
+            correspondingAddress = altAddresses.find(
+              address => address.AddressID === data.addressId
+            )
+          }
           setActiveShippingAddress(correspondingAddress)
         }
       },

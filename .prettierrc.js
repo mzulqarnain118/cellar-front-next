@@ -7,8 +7,8 @@ module.exports = {
 module.exports = {
   arrowParens: 'avoid',
   bracketSpacing: false,
+  bracketSameLine: false,
   endOfLine: 'lf',
-  jsxBracketSameLine: false,
   printWidth: 100,
   quoteProps: 'as-needed',
   semi: false,
