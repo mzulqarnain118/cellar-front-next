@@ -62,60 +62,58 @@ export const useCreateGuestAccountMutation = () => {
   const { consultant } = useConsultantStore()
   const { setUser } = useUserStore()
 
-  return useMutation<CreateGuestAccountResponse, Error, CreateGuestAccountOptions>(
-    ['create-guest-account'],
-    options =>
+  return useMutation<CreateGuestAccountResponse, Error, CreateGuestAccountOptions>({
+    mutationFn: options =>
       createGuestAccount({
         ...options,
         cartId: options.cartId || cart?.id,
         consultantDisplayId: options.consultantDisplayId || consultant.displayId,
       }),
-    {
-      onSuccess: async (
-        createGuestAccountData,
-        { callback, dateOfBirth: { day, month, year }, email, firstName, lastName, redirection }
-      ) => {
-        if (!createGuestAccountData?.data) {
-          // showErrorNotification('There was an error creating your account.')
-          return
+    mutationKey: ['create-guest-account'],
+    onSuccess: async (
+      createGuestAccountData,
+      { callback, dateOfBirth: { day, month, year }, email, firstName, lastName, redirection }
+    ) => {
+      if (!createGuestAccountData?.data) {
+        // showErrorNotification('There was an error creating your account.')
+        return
+      }
+      const token = { Authorization: `bearer ${createGuestAccountData.data.token}` }
+
+      if (!createGuestAccountData.result || createGuestAccountData.data.ExceptionMessage) {
+        // showErrorNotification(signUpData.error || 'There was an error creating your account.')
+        return
+      } else {
+        await api(SET_ORDER_PERSON_URL, {
+          headers: token,
+          json: { cartId: cart?.id || '' },
+          method: 'post',
+        }).json()
+        const userStateData = {
+          dateOfBirth: new Date(parseInt(year), parseInt(month) - 1, parseInt(day)),
+          displayId: createGuestAccountData.data.user.DisplayID,
+          email,
+          isClubMember: false,
+          isGuest: true,
+          name: { first: firstName, last: lastName },
+          token: createGuestAccountData.data.token,
+          username: email,
         }
-        const token = { Authorization: `bearer ${createGuestAccountData.data.token}` }
 
-        if (!createGuestAccountData.result || createGuestAccountData.data.ExceptionMessage) {
-          // showErrorNotification(signUpData.error || 'There was an error creating your account.')
-          return
-        } else {
-          await api(SET_ORDER_PERSON_URL, {
-            headers: token,
-            json: { cartId: cart?.id || '' },
-            method: 'post',
-          }).json()
-          const userStateData = {
-            dateOfBirth: new Date(parseInt(year), parseInt(month) - 1, parseInt(day)),
-            displayId: createGuestAccountData.data.user.DisplayID,
-            email,
-            isClubMember: false,
-            isGuest: true,
-            name: { first: firstName, last: lastName },
-            token: createGuestAccountData.data.token,
-            username: email,
-          }
+        setUser(prev => ({ ...prev, ...userStateData, shippingState: prev.shippingState }))
 
-          setUser(prev => ({ ...prev, ...userStateData, shippingState: prev.shippingState }))
+        await signIn('sign-in', {
+          callbackUrl: redirection,
+          email,
+          // ! TODO: Password?
+          password: '',
+          redirect: false,
+        })
 
-          await signIn('sign-in', {
-            callbackUrl: redirection,
-            email,
-            // ! TODO: Password?
-            password: '',
-            redirect: false,
-          })
-
-          if (callback !== undefined) {
-            callback()
-          }
+        if (callback !== undefined) {
+          callback()
         }
-      },
-    }
-  )
+      }
+    },
+  })
 }

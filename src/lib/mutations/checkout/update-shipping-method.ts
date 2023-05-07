@@ -103,13 +103,11 @@ export const useUpdateShippingMethodMutation = () => {
   // const { activeShippingAddress } = useCheckoutActiveShippingAddress()
   // const { setShippingMethod } = useCheckoutActions()
 
-  return useMutation<UpdateShippingMethodResponse, Error, UpdateShippingMethodOptions>(
-    ['update-shipping-method'],
-    data => updateShippingMethod({ ...data, cartId: cart?.id }),
-    {
-      onSettled: () => {
-        queryClient.invalidateQueries([GET_SUBTOTAL_QUERY, cart?.id])
-      },
-    }
-  )
+  return useMutation<UpdateShippingMethodResponse, Error, UpdateShippingMethodOptions>({
+    mutationFn: data => updateShippingMethod({ ...data, cartId: cart?.id }),
+    mutationKey: ['update-shipping-method'],
+    onSettled: () => {
+      queryClient.invalidateQueries([GET_SUBTOTAL_QUERY, cart?.id])
+    },
+  })
 }

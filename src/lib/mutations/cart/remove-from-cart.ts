@@ -1,6 +1,9 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMemo } from 'react'
 
-import { useCartActions } from '@/lib/stores/cart'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useSession } from 'next-auth/react'
+
+import { useCartStorage } from '@/lib/hooks/use-cart-storage'
 
 import { api } from '../../api'
 import { CART_QUERY_KEY, useCartQuery } from '../../queries/cart'
@@ -62,57 +65,60 @@ export const removeFromCart = async (options: RemoveFromCartOptions) => {
 
 export const useRemoveFromCartMutation = () => {
   const { data } = useCartQuery()
-  const { setCart } = useCartActions()
+  const [_, setCartStorage] = useCartStorage()
   const queryClient = useQueryClient()
   const { setIsMutatingCart } = useProcessStore()
+  const { data: session } = useSession()
+  const cartQueryKey = useMemo(
+    () => [...CART_QUERY_KEY, { isLoggedIn: !!session?.user, provinceId: 48 }],
+    [session?.user]
+  )
 
   return useMutation<
     Cart | undefined,
     Error,
     Pick<RemoveFromCartOptions, 'fetchSubtotal' | 'item' | 'sku'>,
     { previousCart?: Cart }
-  >(
-    ['removeFromCart'],
-    options =>
+  >({
+    mutationFn: options =>
       removeFromCart({
         ...options,
         cartId: data?.id || '',
         fetchSubtotal: options.fetchSubtotal || false,
         originalCartItems: data?.items || [],
       }),
-    {
-      onError: (_err, _product, context) => {
-        queryClient.setQueryData(CART_QUERY_KEY, context?.previousCart)
-      },
-      onMutate: async product => {
-        setIsMutatingCart(true)
-        // Cancel any outgoing fetches.
-        await queryClient.cancelQueries({ queryKey: CART_QUERY_KEY })
+    mutationKey: ['removeFromCart'],
+    onError: (_err, _product, context) => {
+      queryClient.setQueryData(cartQueryKey, context?.previousCart)
+      setCartStorage(context?.previousCart)
+    },
+    onMutate: async product => {
+      setIsMutatingCart(true)
+      // Cancel any outgoing fetches.
+      await queryClient.cancelQueries({ queryKey: cartQueryKey })
 
-        // Snapshot the previous value.
-        const previousCart = queryClient.getQueryData<Cart | undefined>(CART_QUERY_KEY)
+      // Snapshot the previous value.
+      const previousCart = queryClient.getQueryData<Cart | undefined>(cartQueryKey)
 
-        // Optimistically update to the new value.
-        queryClient.setQueryData<Cart>(CART_QUERY_KEY, () => {
-          const newCart =
-            previousCart !== undefined
-              ? {
-                  ...previousCart,
-                  items: previousCart.items.filter(item => item.sku !== product.sku),
-                }
-              : DEFAULT_CART_STATE
+      // Optimistically update to the new value.
+      queryClient.setQueryData<Cart>(cartQueryKey, () => {
+        const newCart =
+          previousCart !== undefined
+            ? {
+                ...previousCart,
+                items: previousCart.items.filter(item => item.sku !== product.sku),
+              }
+            : DEFAULT_CART_STATE
 
-          return newCart
-        })
+        return newCart
+      })
 
-        return { previousCart }
-      },
-      onSettled: data => {
-        if (data !== undefined) {
-          setCart(data)
-        }
-        setIsMutatingCart(false)
-      },
-    }
-  )
+      return { previousCart }
+    },
+    onSettled: data => {
+      queryClient.setQueryData<Cart>(cartQueryKey, data)
+      setCartStorage(data)
+      setIsMutatingCart(false)
+    },
+  })
 }

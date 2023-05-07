@@ -41,15 +41,14 @@ export const useValidateEmailMutation = () => {
   const { data: cart } = useCartQuery()
   const { data: consultant } = useConsultantQuery()
 
-  return useMutation<ValidateEmail, Error, ValidateEmailOptions>(
-    VALIDATE_EMAIL_QUERY_KEY,
-    data => validateEmail({ ...data, cartId: cart?.id || '', sponsorId: consultant.displayId }),
-    {
-      onSuccess: (response, data) => {
-        if (data.callback) {
-          data.callback(response)
-        }
-      },
-    }
-  )
+  return useMutation<ValidateEmail, Error, ValidateEmailOptions>({
+    mutationFn: data =>
+      validateEmail({ ...data, cartId: cart?.id || '', sponsorId: consultant.displayId }),
+    mutationKey: VALIDATE_EMAIL_QUERY_KEY,
+    onSuccess: (response, data) => {
+      if (data.callback) {
+        data.callback(response)
+      }
+    },
+  })
 }

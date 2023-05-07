@@ -58,15 +58,13 @@ const validateAddress = async (data: ValidateAddressOptions) => {
 export const useValidateAddressMutation = () => {
   const { data: cart } = useCartQuery()
 
-  return useMutation<ValidateAddressResponse, Error, ValidateAddressOptions>(
-    VALIDATE_ADDRESS_QUERY_KEY,
-    data => validateAddress({ ...data, cartId: data.cartId || cart?.id }),
-    {
-      onSuccess: (response, data) => {
-        if (data.callback !== undefined) {
-          data.callback(response)
-        }
-      },
-    }
-  )
+  return useMutation<ValidateAddressResponse, Error, ValidateAddressOptions>({
+    mutationFn: data => validateAddress({ ...data, cartId: data.cartId || cart?.id }),
+    mutationKey: VALIDATE_ADDRESS_QUERY_KEY,
+    onSuccess: (response, data) => {
+      if (data.callback !== undefined) {
+        data.callback(response)
+      }
+    },
+  })
 }

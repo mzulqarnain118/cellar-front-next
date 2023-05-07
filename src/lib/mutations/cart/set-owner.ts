@@ -21,5 +21,8 @@ export const setCartOwner = async ({ cartId }: SetCartOwnerOptions) => {
 export const useSetCartOwnerMutation = () => {
   const { data: cart } = useCartQuery()
 
-  return useMutation(SET_CART_OWNER_MUTATION_KEY, () => setCartOwner({ cartId: cart?.id || '' }))
+  return useMutation({
+    mutationFn: () => setCartOwner({ cartId: cart?.id || '' }),
+    mutationKey: SET_CART_OWNER_MUTATION_KEY,
+  })
 }

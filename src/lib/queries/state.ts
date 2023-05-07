@@ -16,11 +16,10 @@ export const fetchFlightStates = async () => {
 }
 
 export const useStatesQuery = () =>
-  useQuery(STATES_QUERY_KEY, fetchFlightStates, {
-    // * NOTE: This data changes VERY RARELY.
-    // cacheTime: Infinity,
+  useQuery({
     meta: {
       persist: true,
     },
-    // staleTime: Infinity,
+    queryFn: fetchFlightStates,
+    queryKey: STATES_QUERY_KEY,
   })

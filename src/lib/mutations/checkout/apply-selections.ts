@@ -53,35 +53,31 @@ export const useApplyCheckoutSelectionsMutation = () => {
   const { data: session } = useSession()
   const { setActiveShippingAddress } = useCheckoutActions()
 
-  return useMutation<Response, Error, ApplyCheckoutSelectionsOptions>(
-    [...APPLY_CHECKOUT_SELECTIONS_MUTATION_KEY],
-    data =>
+  return useMutation<Response, Error, ApplyCheckoutSelectionsOptions>({
+    mutationFn: data =>
       applyCheckoutSelections({
         ...data,
         cartId: data.cartId || cart?.id,
         userDisplayId: data.userDisplayId || session?.user.displayId,
       }),
-    {
-      onSuccess: async (response, data) => {
-        if (response.Success) {
-          const { addresses } = await queryClient.ensureQueryData<ShippingAddressesAndCreditCards>({
-            queryFn: getShippingAddressesAndCreditCards,
-            queryKey: [ADDRESS_CREDIT_CARDS_QUERY_KEY, cart?.id, null],
-          })
-          let correspondingAddress = addresses.find(address => address.AddressID === data.addressId)
-          if (correspondingAddress === undefined) {
-            const { addresses: altAddresses } =
-              await queryClient.ensureQueryData<ShippingAddressesAndCreditCards>({
-                queryFn: getShippingAddressesAndCreditCards,
-                queryKey: [ADDRESS_CREDIT_CARDS_QUERY_KEY, cart?.id, data.addressId],
-              })
-            correspondingAddress = altAddresses.find(
-              address => address.AddressID === data.addressId
-            )
-          }
-          setActiveShippingAddress(correspondingAddress)
+    mutationKey: [...APPLY_CHECKOUT_SELECTIONS_MUTATION_KEY],
+    onSuccess: async (response, data) => {
+      if (response.Success) {
+        const { addresses } = await queryClient.ensureQueryData<ShippingAddressesAndCreditCards>({
+          queryFn: getShippingAddressesAndCreditCards,
+          queryKey: [ADDRESS_CREDIT_CARDS_QUERY_KEY, cart?.id, null],
+        })
+        let correspondingAddress = addresses.find(address => address.AddressID === data.addressId)
+        if (correspondingAddress === undefined) {
+          const { addresses: altAddresses } =
+            await queryClient.ensureQueryData<ShippingAddressesAndCreditCards>({
+              queryFn: getShippingAddressesAndCreditCards,
+              queryKey: [ADDRESS_CREDIT_CARDS_QUERY_KEY, cart?.id, data.addressId],
+            })
+          correspondingAddress = altAddresses.find(address => address.AddressID === data.addressId)
         }
-      },
-    }
-  )
+        setActiveShippingAddress(correspondingAddress)
+      }
+    },
+  })
 }

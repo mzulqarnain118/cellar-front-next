@@ -72,27 +72,25 @@ export const useAddGiftMessageMutation = (
   const { data: cart } = useCartQuery()
   const { setGiftMessage } = useCheckoutActions()
 
-  return useMutation<AddGiftMessageSuccess | undefined, Error, AddGiftMessageOptions>(
-    ['addGiftMessage'],
-    options => addGiftMessage({ ...options, orderDisplayId: cart?.orderDisplayId }),
-    {
-      ...options,
-      onSettled: (apiResponse, error, variables, context) => {
-        const { message, recipientEmail } = variables
-        setGiftMessage({
-          message,
-          recipientEmail,
-        })
+  return useMutation<AddGiftMessageSuccess | undefined, Error, AddGiftMessageOptions>({
+    mutationFn: options => addGiftMessage({ ...options, orderDisplayId: cart?.orderDisplayId }),
+    mutationKey: ['addGiftMessage'],
+    ...options,
+    onSettled: (apiResponse, error, variables, context) => {
+      const { message, recipientEmail } = variables
+      setGiftMessage({
+        message,
+        recipientEmail,
+      })
 
-        toastSuccess({
-          icon: <CheckIcon className="h-4 w-4" />,
-          message: 'Your gift message was successfully added.',
-        })
+      toastSuccess({
+        icon: <CheckIcon className="h-4 w-4" />,
+        message: 'Your gift message was successfully added.',
+      })
 
-        if (options?.onSettled !== undefined) {
-          options.onSettled(apiResponse, error, variables, context)
-        }
-      },
-    }
-  )
+      if (options?.onSettled !== undefined) {
+        options.onSettled(apiResponse, error, variables, context)
+      }
+    },
+  })
 }

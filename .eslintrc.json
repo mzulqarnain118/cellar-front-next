@@ -6,6 +6,7 @@
     "plugin:react/jsx-runtime",
     "plugin:react-hooks/recommended",
     "plugin:jsx-a11y/recommended",
+    "plugin:@tanstack/eslint-plugin-query/recommended",
     "next/core-web-vitals",
     "prettier"
   ],
@@ -20,7 +21,7 @@
       "parser": "@typescript-eslint/parser"
     }
   ],
-  "plugins": ["eslint-plugin-import", "@arthurgeron/react-usememo"],
+  "plugins": ["eslint-plugin-import", "@arthurgeron/react-usememo", "@tanstack/query"],
   "rules": {
     "@arthurgeron/react-usememo/require-usememo": [2],
     "@typescript-eslint/ban-ts-comment": [
@@ -47,19 +48,48 @@
     "default-param-last": "error",
     "dot-notation": "error",
     "import/no-duplicates": "off",
-    "sort-keys": ["error", "asc", { "natural": true }],
+    "sort-keys": [
+      "error",
+      "asc",
+      {
+        "natural": true
+      }
+    ],
     "import/order": [
       "error",
       {
-        "alphabetize": { "order": "asc", "orderImportKind": "asc" },
+        "alphabetize": {
+          "order": "asc",
+          "orderImportKind": "asc"
+        },
         "groups": ["builtin", "external", "internal", "parent", "sibling", "index"],
         "newlines-between": "always",
         "pathGroups": [
-          { "group": "internal", "pattern": "@/**", "position": "before" },
-          { "group": "internal", "pattern": "prismic-io", "position": "after" },
-          { "group": "external", "pattern": "react", "position": "before" },
-          { "group": "external", "pattern": "next**", "position": "before" },
-          { "group": "external", "pattern": "next/**/*", "position": "before" }
+          {
+            "group": "internal",
+            "pattern": "@/**",
+            "position": "before"
+          },
+          {
+            "group": "internal",
+            "pattern": "prismic-io",
+            "position": "after"
+          },
+          {
+            "group": "external",
+            "pattern": "react",
+            "position": "before"
+          },
+          {
+            "group": "external",
+            "pattern": "next**",
+            "position": "before"
+          },
+          {
+            "group": "external",
+            "pattern": "next/**/*",
+            "position": "before"
+          }
         ],
         "pathGroupsExcludedImportTypes": ["react"]
       }

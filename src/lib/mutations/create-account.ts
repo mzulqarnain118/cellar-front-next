@@ -74,93 +74,91 @@ export const useCreateAccountMutation = () => {
   const { consultant, setConsultant } = useConsultantStore()
   const { setUser } = useUserStore()
 
-  return useMutation<SignUpResponse, Error, CreateAccountOptions>(
-    ['create-account'],
-    options =>
+  return useMutation<SignUpResponse, Error, CreateAccountOptions>({
+    mutationFn: options =>
       createAccount({ ...options, cartId: cart?.id, consultantDisplayId: consultant.displayId }),
-    {
-      onSuccess: async (signUpData, { callback, email, password, redirection }) => {
-        if (!signUpData?.data) {
-          // showErrorNotification('There was an error creating your account.')
-          return
+    mutationKey: ['create-account'],
+    onSuccess: async (signUpData, { callback, email, password, redirection }) => {
+      if (!signUpData?.data) {
+        // showErrorNotification('There was an error creating your account.')
+        return
+      }
+      const token = { Authorization: `bearer ${signUpData.data.token}` }
+
+      if (!signUpData.result || signUpData.data.ExceptionMessage) {
+        // showErrorNotification(signUpData.error || 'There was an error creating your account.')
+      } else {
+        await api(SET_ORDER_PERSON_URL, {
+          headers: token,
+          json: { cartId: cart?.id || '' },
+          method: 'post',
+        }).json()
+        const personPortalInfo = await noHooksApi('Person/GetPersonPortalInfo', {
+          headers: token,
+          method: 'get',
+        }).json<GetPersonPortalInfoResponse>()
+        const consultantDisplayId = signUpData.data.sponsor?.DisplayID || consultant.displayId
+        const clubInfo = await api(`clubs/${personPortalInfo.DisplayID}`, {
+          headers: token,
+          method: 'get',
+        }).json<GetClubInfoResponse>()
+
+        const userStateData = {
+          displayId: personPortalInfo.DisplayID,
+          email: personPortalInfo.Username,
+          isClubMember: clubInfo.is_club_member,
+          name: {
+            first: personPortalInfo.FirstName,
+            last: personPortalInfo.LastName,
+          },
+          token: signUpData.data.token,
         }
-        const token = { Authorization: `bearer ${signUpData.data.token}` }
 
-        if (!signUpData.result || signUpData.data.ExceptionMessage) {
-          // showErrorNotification(signUpData.error || 'There was an error creating your account.')
-        } else {
-          await api(SET_ORDER_PERSON_URL, {
-            headers: token,
-            json: { cartId: cart?.id || '' },
-            method: 'post',
-          }).json()
-          const personPortalInfo = await noHooksApi('Person/GetPersonPortalInfo', {
-            headers: token,
-            method: 'get',
-          }).json<GetPersonPortalInfoResponse>()
-          const consultantDisplayId = signUpData.data.sponsor?.DisplayID || consultant.displayId
-          const clubInfo = await api(`clubs/${personPortalInfo.DisplayID}`, {
-            headers: token,
-            method: 'get',
-          }).json<GetClubInfoResponse>()
-
-          const userStateData = {
-            displayId: personPortalInfo.DisplayID,
-            email: personPortalInfo.Username,
-            isClubMember: clubInfo.is_club_member,
-            name: {
-              first: personPortalInfo.FirstName,
-              last: personPortalInfo.LastName,
-            },
-            token: signUpData.data.token,
-          }
-
-          let consultantStateData: Consultant = {
-            displayId: signUpData.data.sponsor?.DisplayID || consultant.displayId,
-            displayName: signUpData.data.sponsor?.DisplayName || consultant.displayName,
-            url: signUpData.data.sponsor?.Url || consultant.url,
-          }
-
-          // Set user consultant if their sponsor is the corporate sponsor.
-          if (
-            signUpData.data.sponsor?.DisplayID === CORPORATE_CONSULTANT_ID &&
-            consultantDisplayId !== CORPORATE_CONSULTANT_ID
-          ) {
-            consultantStateData = consultant
-          }
-
-          // Update atoms.
-          setUser(prev => ({ ...prev, ...userStateData, shippingState: prev.shippingState }))
-          setConsultant(consultantStateData)
-
-          // const curatedCartInfo = await getCuratedCartInfo({
-          //   consultantDisplayId,
-          //   userDisplayId: signUpData.data.user.DisplayID,
-          // })
-
-          // if (curatedCartInfo.result && curatedCartInfo.data?.CartID) {
-          //   // Update curated cart atom.
-          //   setCuratedCartState({
-          //     messageDismissed: false,
-          //     cartAccepted: false,
-          //     cartId: curatedCartInfo.data.CartID,
-          //     recommendedByPersonDisplayId: curatedCartInfo.data.RecommendedByPersonDisplayID || '',
-          //   })
-          // }
-
-          // Tell FullStory who you are.
-          // identify(userStateData.displayId, {
-          //   displayName: `${userStateData.name.first} ${userStateData.name.last}`,
-          //   email: userStateData.email,
-          // })
-
-          await signIn('sign-in', { callbackUrl: redirection, email, password, redirect: false })
-
-          if (callback !== undefined) {
-            callback()
-          }
+        let consultantStateData: Consultant = {
+          displayId: signUpData.data.sponsor?.DisplayID || consultant.displayId,
+          displayName: signUpData.data.sponsor?.DisplayName || consultant.displayName,
+          url: signUpData.data.sponsor?.Url || consultant.url,
         }
-      },
-    }
-  )
+
+        // Set user consultant if their sponsor is the corporate sponsor.
+        if (
+          signUpData.data.sponsor?.DisplayID === CORPORATE_CONSULTANT_ID &&
+          consultantDisplayId !== CORPORATE_CONSULTANT_ID
+        ) {
+          consultantStateData = consultant
+        }
+
+        // Update atoms.
+        setUser(prev => ({ ...prev, ...userStateData, shippingState: prev.shippingState }))
+        setConsultant(consultantStateData)
+
+        // const curatedCartInfo = await getCuratedCartInfo({
+        //   consultantDisplayId,
+        //   userDisplayId: signUpData.data.user.DisplayID,
+        // })
+
+        // if (curatedCartInfo.result && curatedCartInfo.data?.CartID) {
+        //   // Update curated cart atom.
+        //   setCuratedCartState({
+        //     messageDismissed: false,
+        //     cartAccepted: false,
+        //     cartId: curatedCartInfo.data.CartID,
+        //     recommendedByPersonDisplayId: curatedCartInfo.data.RecommendedByPersonDisplayID || '',
+        //   })
+        // }
+
+        // Tell FullStory who you are.
+        // identify(userStateData.displayId, {
+        //   displayName: `${userStateData.name.first} ${userStateData.name.last}`,
+        //   email: userStateData.email,
+        // })
+
+        await signIn('sign-in', { callbackUrl: redirection, email, password, redirect: false })
+
+        if (callback !== undefined) {
+          callback()
+        }
+      }
+    },
+  })
 }

@@ -1,10 +1,14 @@
+import { useMemo } from 'react'
+
+import { showNotification } from '@mantine/notifications'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useSession } from 'next-auth/react'
 
 import { replaceItemByUniqueId } from '@/core/utils'
-import { useCartActions } from '@/lib/stores/cart'
+import { useCartStorage } from '@/lib/hooks/use-cart-storage'
+import { CART_QUERY_KEY, useCartQuery } from '@/lib/queries/cart'
 
 import { api } from '../../api'
-import { CART_QUERY_KEY, useCartQuery } from '../../queries/cart'
 import { useProcessStore } from '../../stores/process'
 import { Cart, CartItem, DEFAULT_CART_STATE } from '../../types'
 import { fetchSubtotalAndUpdateCart, getNewCartItems } from '../helpers'
@@ -60,76 +64,80 @@ export const addToCart = async (options: AddToCartOptions) => {
       throw new Error('There was an issue calculating the total of your cart.')
     }
   } else {
-    throw new Error(response.Error.Message)
+    throw new Error(response.Error.Traceback?.Notifications?.[0]?.Message)
   }
 }
 
 export const useAddToCartMutation = () => {
-  const { data } = useCartQuery()
+  const [_, setCartStorage] = useCartStorage()
+  const { data: cart } = useCartQuery()
   const queryClient = useQueryClient()
-  const { setCart } = useCartActions()
   const { setIsMutatingCart } = useProcessStore()
+  const { data: session } = useSession()
+  const cartQueryKey = useMemo(
+    () => [...CART_QUERY_KEY, { isLoggedIn: !!session?.user, provinceId: 48 }],
+    [session?.user]
+  )
 
   return useMutation<
     Cart | undefined,
     Error,
     Pick<AddToCartOptions, 'fetchSubtotal' | 'item' | 'quantity'>,
     { previousCart?: Cart }
-  >(
-    ['addToCart'],
-    options =>
+  >({
+    mutationFn: options =>
       addToCart({
         ...options,
-        cartId: data?.id,
+        cartId: cart?.id,
         fetchSubtotal: options.fetchSubtotal || false,
         item: options.item,
-        originalCartItems: data?.items || [],
+        originalCartItems: cart?.items || [],
         quantity: options.quantity,
       }),
-    {
-      onError: (_err, _product, context) => {
-        queryClient.setQueryData(CART_QUERY_KEY, context?.previousCart)
-      },
-      onMutate: async product => {
-        setIsMutatingCart(true)
+    mutationKey: ['addToCart'],
+    onError: (error, _product, context) => {
+      queryClient.setQueryData(cartQueryKey, context?.previousCart)
+      setCartStorage(context?.previousCart)
+      showNotification({ message: error.message })
+    },
+    onMutate: async product => {
+      setIsMutatingCart(true)
 
-        // Cancel any outgoing fetches.
-        await queryClient.cancelQueries({ queryKey: CART_QUERY_KEY })
+      // Cancel any outgoing fetches.
+      await queryClient.cancelQueries({
+        queryKey: cartQueryKey,
+      })
 
-        // Snapshot the previous value.
-        const previousCart = queryClient.getQueryData<Cart | undefined>(CART_QUERY_KEY)
+      // Snapshot the previous value.
+      const previousCart = queryClient.getQueryData<Cart | undefined>(cartQueryKey)
 
-        // Optimistically update to the new value.
-        queryClient.setQueryData(CART_QUERY_KEY, () => {
-          const existingItem = previousCart?.items.find(item => item.sku === product.item.sku)
+      // Optimistically update to the new value.
+      queryClient.setQueryData(cartQueryKey, () => {
+        const existingItem = previousCart?.items.find(item => item.sku === product.item.sku)
 
-          return previousCart !== undefined
-            ? {
-                ...previousCart,
-                items:
-                  existingItem !== undefined
-                    ? replaceItemByUniqueId(
-                        previousCart.items,
-                        { field: 'sku', value: existingItem.sku },
-                        { ...existingItem, quantity: product.quantity || existingItem.quantity + 1 }
-                      )
-                    : [...previousCart.items, product.item],
-              }
-            : DEFAULT_CART_STATE
-        })
+        return previousCart !== undefined
+          ? {
+              ...previousCart,
+              items:
+                existingItem !== undefined
+                  ? replaceItemByUniqueId(
+                      previousCart.items,
+                      { field: 'sku', value: existingItem.sku },
+                      { ...existingItem, quantity: product.quantity || existingItem.quantity + 1 }
+                    )
+                  : [...previousCart.items, product.item],
+            }
+          : DEFAULT_CART_STATE
+      })
 
-        return { previousCart }
-      },
-      onSettled: () => {
-        setIsMutatingCart(false)
-      },
-      onSuccess: data => {
-        queryClient.setQueryData<Cart>(CART_QUERY_KEY, data)
-
-        if (data !== undefined) {
-          setCart(data)
-        }
-      },
-    }
-  )
+      return { previousCart }
+    },
+    onSettled: () => {
+      setIsMutatingCart(false)
+    },
+    onSuccess: data => {
+      queryClient.setQueryData<Cart>(cartQueryKey, data)
+      setCartStorage(data)
+    },
+  })
 }

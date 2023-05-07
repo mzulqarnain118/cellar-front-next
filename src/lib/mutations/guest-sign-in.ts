@@ -38,73 +38,71 @@ export const guestSignIn = async ({ email, firstName }: GuestSignInOptions) =>
   }).json<GuestResponse>()
 
 export const useGuestSignInMutation = () =>
-  useMutation<GuestResponse | undefined, Error, GuestSignInOptions>(
-    ['guest-sign-in'],
-    options => guestSignIn(options),
-    {
-      onSuccess: async (
-        response,
-        {
-          callback,
-          createAccount,
-          dateOfBirth: { day, month, year },
+  useMutation<GuestResponse | undefined, Error, GuestSignInOptions>({
+    mutationFn: options => guestSignIn(options),
+    mutationKey: ['guest-sign-in'],
+    onSuccess: async (
+      response,
+      {
+        callback,
+        createAccount,
+        dateOfBirth: { day, month, year },
+        email,
+        firstName,
+        lastName,
+        password,
+        redirection = CHECKOUT_PAGE_PATH,
+      }
+    ) => {
+      if (response?.Success) {
+        const token = { Authorization: `Bearer ${response.Data.data.token}` }
+
+        const queryClient = new QueryClient()
+        const cart = queryClient.getQueryData<Cart>(CART_QUERY_KEY)
+
+        await api('v2/SetOrderOwner', {
+          json: { cartId: cart?.id || '' },
+          method: 'post',
+        })
+
+        const { setUser } = useUserStore.getState()
+
+        setUser(prev => ({
+          ...prev,
+          dateOfBirth: new Date(parseInt(year), parseInt(month) - 1, parseInt(day)),
+          displayId: response.Data.data.user.DisplayID,
           email,
-          firstName,
-          lastName,
-          password,
-          redirection = CHECKOUT_PAGE_PATH,
-        }
-      ) => {
-        if (response?.Success) {
-          const token = { Authorization: `Bearer ${response.Data.data.token}` }
+          isClubMember: false,
+          isGuest: !createAccount,
+          name: { first: firstName, last: lastName },
+          token: response.Data.data.token,
+          username: email,
+        }))
 
-          const queryClient = new QueryClient()
-          const cart = queryClient.getQueryData<Cart>(CART_QUERY_KEY)
+        // identify(response.Data.data.user.DisplayID, {
+        //   displayName: `${firstName} ${lastName}`,
+        //   email,
+        // })
 
-          await api('v2/SetOrderOwner', {
-            json: { cartId: cart?.id || '' },
+        if (createAccount) {
+          return await api('v2/UpdateGuestAccount', {
+            headers: token,
+            json: {
+              ConvertToCustomer: true,
+              DOB: `${year}-${month}-${day}`,
+              FirstName: firstName,
+              LastName: lastName,
+              Password: password,
+            },
             method: 'post',
-          })
-
-          const { setUser } = useUserStore.getState()
-
-          setUser(prev => ({
-            ...prev,
-            dateOfBirth: new Date(parseInt(year), parseInt(month) - 1, parseInt(day)),
-            displayId: response.Data.data.user.DisplayID,
-            email,
-            isClubMember: false,
-            isGuest: !createAccount,
-            name: { first: firstName, last: lastName },
-            token: response.Data.data.token,
-            username: email,
-          }))
-
-          // identify(response.Data.data.user.DisplayID, {
-          //   displayName: `${firstName} ${lastName}`,
-          //   email,
-          // })
-
-          if (createAccount) {
-            return await api('v2/UpdateGuestAccount', {
-              headers: token,
-              json: {
-                ConvertToCustomer: true,
-                DOB: `${year}-${month}-${day}`,
-                FirstName: firstName,
-                LastName: lastName,
-                Password: password,
-              },
-              method: 'post',
-            }).json<GuestResponse>()
-          }
-
-          await signIn('sign-in', { callbackUrl: redirection, email, password, redirect: false })
-
-          if (callback) {
-            callback()
-          }
+          }).json<GuestResponse>()
         }
-      },
-    }
-  )
+
+        await signIn('sign-in', { callbackUrl: redirection, email, password, redirect: false })
+
+        if (callback) {
+          callback()
+        }
+      }
+    },
+  })

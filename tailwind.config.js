@@ -48,7 +48,6 @@ module.exports = {
     require('tailwindcss/plugin')(({ addVariant }) => {
       addVariant('search-cancel', '&::-webkit-search-cancel-button')
     }),
-    require('@headlessui/tailwindcss'),
     require('@tailwindcss/forms')({
       strategy: 'class',
     }),

@@ -1,7 +1,10 @@
+import { useMemo } from 'react'
+
 import { useQuery } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 
 import { api } from '../api'
+import { useCartStorage } from '../hooks/use-cart-storage'
 import { useShippingStateStore } from '../stores/shipping-state'
 import { Cart } from '../types'
 
@@ -46,19 +49,24 @@ export const CART_QUERY_KEY = ['cart']
 export const useCartQuery = () => {
   const { data: session } = useSession()
   const { shippingState } = useShippingStateStore()
+  const [cartStorage] = useCartStorage()
 
-  const options = {
-    isLoggedIn: !!session?.user?.tokenDetails?.accessToken,
-    provinceId: shippingState?.provinceID,
-  }
+  const options = useMemo(
+    () => ({
+      isLoggedIn: !!session?.user?.tokenDetails?.accessToken,
+      provinceId: shippingState?.provinceID,
+    }),
+    [session?.user?.tokenDetails?.accessToken, shippingState?.provinceID]
+  )
 
   return useQuery({
     cacheTime: Infinity,
+    initialData: cartStorage,
     meta: {
       persist: true,
     },
     queryFn: () => createCart(options),
-    queryKey: CART_QUERY_KEY,
+    queryKey: [...CART_QUERY_KEY, options],
     refetchOnWindowFocus: false,
     staleTime: Infinity,
   })

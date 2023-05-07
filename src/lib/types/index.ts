@@ -3,7 +3,11 @@ export interface Failure {
   Error: {
     Code: string
     Message: string
-    Traceback?: Record<string, unknown>
+    Traceback?: Record<string, unknown> & {
+      Notifications?: {
+        Message?: string
+      }[]
+    }
   }
 }
 

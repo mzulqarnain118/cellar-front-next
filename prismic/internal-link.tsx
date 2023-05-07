@@ -1,4 +1,4 @@
-import { ElementType, forwardRef } from 'react'
+import { ComponentType, forwardRef } from 'react'
 
 import dynamic from 'next/dynamic'
 
@@ -8,7 +8,7 @@ const Link = dynamic(() => import('src/components/link').then(module => module.L
   ssr: false,
 })
 
-export const InternalLink: ElementType<LinkProps> = forwardRef<HTMLAnchorElement, LinkProps>(
+export const InternalLink: ComponentType<LinkProps> = forwardRef<HTMLAnchorElement, LinkProps>(
   (props, ref) => <Link ref={ref} {...props} />
 )
 

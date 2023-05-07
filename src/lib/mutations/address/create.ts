@@ -74,20 +74,18 @@ export const useCreateAddressMutation = () => {
   const { mutate: applyCheckoutSelections } = useApplyCheckoutSelectionsMutation()
   const { data: cart } = useCartQuery()
 
-  return useMutation<CreateAddressResponse, Error, CreateAddressOptions>(
-    CREATE_ADDRESS_MUTATION_KEY,
-    data => createAddress({ ...data, cartId: data.cartId || cart?.id }),
-    {
-      onSuccess: (response, data) => {
-        if (response.Success) {
-          queryClient.invalidateQueries([ADDRESS_CREDIT_CARDS_QUERY_KEY])
-          applyCheckoutSelections({ addressId: response.Data.Value.AddressID })
+  return useMutation<CreateAddressResponse, Error, CreateAddressOptions>({
+    mutationFn: data => createAddress({ ...data, cartId: data.cartId || cart?.id }),
+    mutationKey: CREATE_ADDRESS_MUTATION_KEY,
+    onSuccess: (response, data) => {
+      if (response.Success) {
+        queryClient.invalidateQueries([ADDRESS_CREDIT_CARDS_QUERY_KEY])
+        applyCheckoutSelections({ addressId: response.Data.Value.AddressID })
 
-          if (data.callback !== undefined) {
-            data.callback(response)
-          }
+        if (data.callback !== undefined) {
+          data.callback(response)
         }
-      },
-    }
-  )
+      }
+    },
+  })
 }

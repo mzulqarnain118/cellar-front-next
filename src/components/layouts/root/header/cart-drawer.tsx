@@ -42,7 +42,7 @@ export const CartDrawer = () => {
       cart?.items.length
         ? cart.items.map(product => <CartItem key={product.sku} product={product} />)
         : undefined,
-    [cart?.items]
+    [cart]
   )
 
   const subtotal =
