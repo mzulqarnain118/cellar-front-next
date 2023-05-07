@@ -45,7 +45,7 @@
     "embla-carousel-react": "^7.1.0",
     "html-react-parser": "^3.0.16",
     "ky": "^0.33.3",
-    "next": "^13.4.1",
+    "next": "^13.3.4",
     "next-auth": "^4.22.1",
     "next-seo": "^6.0.0",
     "nprogress": "^0.2.0",
