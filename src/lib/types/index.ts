@@ -1,3 +1,7 @@
+export interface Success {
+  Success: true
+}
+
 export interface Failure {
   Success: false
   Error: {

@@ -1,7 +1,7 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 
-import { MinusIcon, PlusIcon } from '@heroicons/react/24/outline'
-import { Collapse, Select, SelectProps, Skeleton } from '@mantine/core'
+import { PlusIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Collapse, LoadingOverlay, Select, SelectProps, Skeleton } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 
 import { Button } from '@/core/components/button'
@@ -11,24 +11,36 @@ import { useUpdateShippingMethodMutation } from '@/lib/mutations/checkout/update
 import { useAddressesAndCreditCardsQuery } from '@/lib/queries/checkout/addreses-and-credit-cards'
 import { useGetSubtotalQuery } from '@/lib/queries/checkout/get-subtotal'
 import { useShippingMethodsQuery } from '@/lib/queries/checkout/shipping-methods'
-import { useCheckoutActiveShippingAddress } from '@/lib/stores/checkout'
+import {
+  useCheckoutActions,
+  useCheckoutActiveCreditCard,
+  useCheckoutActiveShippingAddress,
+} from '@/lib/stores/checkout'
 import { isPickUpShippingMethodId } from '@/lib/utils/checkout'
 
 import { AddressForm } from './address-form'
 
+import { DeliveryRefs } from '.'
+
 const dropdownClassNames = { input: 'h-10', item: 'text-14', label: 'text-14' }
 
-export const ShipToHome = () => {
+interface ShipToHomeProps {
+  refs: DeliveryRefs
+}
+
+export const ShipToHome = ({ refs }: ShipToHomeProps) => {
   const { data } = useAddressesAndCreditCardsQuery()
   const { mutate: applyCheckoutSelections, isLoading: isApplyingSelections } =
     useApplyCheckoutSelectionsMutation()
-  const { activeShippingAddress } = useCheckoutActiveShippingAddress()
+  const activeCreditCard = useCheckoutActiveCreditCard()
+  const activeShippingAddress = useCheckoutActiveShippingAddress()
   const { data: shippingMethodsData } = useShippingMethodsQuery()
   const { data: cartTotalData } = useGetSubtotalQuery()
   const { mutate: updateShippingMethod, isLoading: isUpdatingShippingMethod } =
     useUpdateShippingMethodMutation()
   const [addressFormOpen, { close: closeAddressForm, toggle: toggleAddressForm }] =
     useDisclosure(false)
+  const { setIsAddingAddress } = useCheckoutActions()
 
   const handleAddressChange: SelectProps['onChange'] = useCallback(
     (addressId: string | null) => {
@@ -37,11 +49,14 @@ export const ShipToHome = () => {
           address => address.AddressID.toString() === addressId.toLowerCase()
         )
         if (correspondingAddress !== undefined) {
-          applyCheckoutSelections({ addressId: correspondingAddress?.AddressID })
+          applyCheckoutSelections({
+            addressId: correspondingAddress?.AddressID,
+            paymentToken: activeCreditCard?.PaymentToken,
+          })
         }
       }
     },
-    [applyCheckoutSelections, data]
+    [activeCreditCard?.PaymentToken, applyCheckoutSelections, data]
   )
 
   const handleShippingMethodChange: SelectProps['onChange'] = useCallback(
@@ -89,9 +104,14 @@ export const ShipToHome = () => {
 
   const disabled = isUpdatingShippingMethod || isApplyingSelections
 
+  useEffect(() => {
+    setIsAddingAddress(addressFormOpen)
+  }, [addressFormOpen, setIsAddingAddress])
+
   return (
     <div className="space-y-4">
-      <Collapse in={true}>
+      <LoadingOverlay visible={disabled} />
+      <Collapse in={!addressFormOpen}>
         {data === undefined ? (
           <>
             <Skeleton className="mb-1 h-6" width={120} />
@@ -101,7 +121,6 @@ export const ShipToHome = () => {
           <Select
             classNames={dropdownClassNames}
             data={shippingAddresses}
-            disabled={disabled}
             label="Shipping address"
             value={activeShippingAddress?.AddressID.toString()}
             onChange={handleAddressChange}
@@ -113,36 +132,35 @@ export const ShipToHome = () => {
         color="ghost"
         size="sm"
         startIcon={
-          addressFormOpen ? <MinusIcon className="h-4 w-4" /> : <PlusIcon className="h-4 w-4" />
+          addressFormOpen ? <XMarkIcon className="h-4 w-4" /> : <PlusIcon className="h-4 w-4" />
         }
         onClick={toggleAddressForm}
       >
-        {addressFormOpen ? 'Remove address' : 'Add address'}
+        {addressFormOpen ? 'Cancel' : 'Add address'}
       </Button>
 
       <Collapse in={addressFormOpen}>
-        <AddressForm onCreateAddress={closeAddressForm} />
+        <AddressForm ref={refs.shippingAddressRef} onCreateAddress={closeAddressForm} />
       </Collapse>
 
-      {
-        <Collapse in={!!activeShippingAddress?.AddressID && !addressFormOpen}>
-          {shippingMethodsData === undefined ? (
-            <>
-              <Skeleton className="mb-1 h-6" width={120} />
-              <Skeleton className="h-10" />
-            </>
-          ) : (
-            <Select
-              classNames={dropdownClassNames}
-              data={shippingMethods}
-              disabled={disabled}
-              label="Shipping method"
-              value={cartTotalData?.shipping.methodId.toString()}
-              onChange={handleShippingMethodChange}
-            />
-          )}
-        </Collapse>
-      }
+      <Collapse in={!addressFormOpen}>
+        {shippingMethodsData === undefined ? (
+          <>
+            <Skeleton className="mb-1 h-6" width={120} />
+            <Skeleton className="h-10" />
+          </>
+        ) : (
+          <Select
+            ref={refs.shippingMethodRef}
+            classNames={dropdownClassNames}
+            data={shippingMethods}
+            disabled={disabled}
+            label="Shipping method"
+            value={cartTotalData?.shipping.methodId.toString()}
+            onChange={handleShippingMethodChange}
+          />
+        )}
+      </Collapse>
     </div>
   )
 }

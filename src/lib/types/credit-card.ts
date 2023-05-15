@@ -12,4 +12,5 @@ export interface CreditCard {
   DefaultPaymentMethod: boolean
   CVV: string | null
   Address: Address
+  FriendlyDescription: string
 }

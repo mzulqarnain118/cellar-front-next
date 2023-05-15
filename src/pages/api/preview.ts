@@ -1,6 +1,5 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
-
 import { redirectToPreviewURL, setPreviewData } from '@prismicio/next'
+import type { NextApiRequest, NextApiResponse } from 'next'
 
 import { createClient } from 'prismic-io'
 

@@ -1,10 +1,8 @@
+import { dehydrate } from '@tanstack/react-query'
 import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next'
-import { NextSeo } from 'next-seo'
-
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
-
-import { dehydrate } from '@tanstack/react-query'
+import { NextSeo } from 'next-seo'
 
 import {
   DEFAULT_CATEGORIES,

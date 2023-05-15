@@ -39,7 +39,7 @@ export const schema = z.object({
   displayCategories: z.array(z.number()),
   displayCategoriesSortData: z.array(z.object({ id: z.number(), order: z.number() })).optional(),
   displayName: z.string(),
-  isAutoShip: z.boolean(),
+  isAutoSip: z.boolean(),
   isClubOnly: z.boolean(),
   isGift: z.boolean(),
   isGiftCard: z.boolean(),

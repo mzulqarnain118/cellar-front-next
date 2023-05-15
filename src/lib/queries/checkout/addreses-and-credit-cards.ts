@@ -7,7 +7,10 @@ import {
   LOCAL_PICK_UP_SHIPPING_METHOD_ID,
 } from '@/lib/constants/shipping-method'
 import { useApplyCheckoutSelectionsMutation } from '@/lib/mutations/checkout/apply-selections'
-import { useCheckoutActiveShippingAddress } from '@/lib/stores/checkout'
+import {
+  useCheckoutActiveCreditCard,
+  useCheckoutActiveShippingAddress,
+} from '@/lib/stores/checkout'
 import { Failure } from '@/lib/types'
 import { Address } from '@/lib/types/address'
 import { CreditCard } from '@/lib/types/credit-card'
@@ -108,15 +111,25 @@ export const getShippingAddressesAndCreditCards: QueryFunction<
 export const useAddressesAndCreditCardsQuery = () => {
   const { data: cart } = useCartQuery()
   const { data: session } = useSession()
-  const { activeShippingAddress } = useCheckoutActiveShippingAddress()
+  const activeCreditCard = useCheckoutActiveCreditCard()
+  const activeShippingAddress = useCheckoutActiveShippingAddress()
   const { mutate: applyCheckoutSelections } = useApplyCheckoutSelectionsMutation()
 
   return useQuery({
     enabled: !session?.user?.isGuest,
     onSuccess: data => {
-      if (activeShippingAddress === undefined) {
-        const address = data.primaryAddress || data.addresses[0]
-        applyCheckoutSelections({ addressId: address.AddressID })
+      if (activeShippingAddress === undefined || activeCreditCard === undefined) {
+        const address: Address | undefined =
+          activeShippingAddress || data.primaryAddress || data.addresses[0]
+        const creditCard: CreditCard | undefined =
+          activeCreditCard || data.primaryCreditCard || data.creditCards[0]
+
+        if (address !== undefined) {
+          applyCheckoutSelections({
+            addressId: address.AddressID,
+            paymentToken: creditCard?.PaymentToken,
+          })
+        }
       }
     },
     queryFn: getShippingAddressesAndCreditCards,

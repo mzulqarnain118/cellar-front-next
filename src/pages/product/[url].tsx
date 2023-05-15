@@ -1,10 +1,8 @@
-import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next'
-import { NextSeo } from 'next-seo'
-
-import { useRouter } from 'next/router'
-
 import { asText } from '@prismicio/helpers'
 import { dehydrate } from '@tanstack/react-query'
+import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next'
+import { useRouter } from 'next/router'
+import { NextSeo } from 'next-seo'
 
 import { getStaticNavigation } from '@/lib/queries/header'
 import { getProductByCartUrl, PRODUCTS_QUERY_KEY, useProductQuery } from '@/lib/queries/products'

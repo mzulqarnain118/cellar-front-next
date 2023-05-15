@@ -105,7 +105,7 @@ export const getNewCartItems = (
         const fallbackValues = {
           catalogId: 0,
           displayCategories: [],
-          isAutoShip: false,
+          isAutoSip: false,
           isClubOnly: false,
           isGift: false,
           isGiftCard: false,

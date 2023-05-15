@@ -33,20 +33,20 @@ export const CartDrawer = () => {
   const footerRef = useRef<HTMLDivElement | null>(null)
 
   const cartQuantity = useMemo(
-    () => cart?.items.reduce((prev, product) => prev + product.quantity, 0),
+    () => cart?.items?.reduce((prev, product) => prev + product.quantity, 0),
     [cart?.items]
   )
 
   const cartItems = useMemo(
     () =>
-      cart?.items.length
+      cart?.items?.length
         ? cart.items.map(product => <CartItem key={product.sku} product={product} />)
         : undefined,
     [cart]
   )
 
   const subtotal =
-    cart?.items.reduce((total, item) => {
+    cart?.items?.reduce((total, item) => {
       const price = item.onSalePrice || item.price
       return price * (item.quantity || 1) + total
     }, 0) || 0

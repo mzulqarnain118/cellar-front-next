@@ -22,7 +22,7 @@ export const Footer = () => (
           <CompanyLogo white />
         </div>
         <div className="flex w-full flex-col space-y-4">
-          <Typography className="font-bold text-base text-base-light">Shop</Typography>
+          <Typography className="text-base font-bold text-base-light">Shop</Typography>
           <div className="space-y-2 [&>*]:block">
             <Link href="/">Wine</Link>
             <Link href="/">Wine Club</Link>
@@ -33,7 +33,7 @@ export const Footer = () => (
           </div>
         </div>
         <div className="flex w-full flex-col space-y-4">
-          <Typography className="font-bold text-base text-base-light">Services</Typography>
+          <Typography className="text-base font-bold text-base-light">Services</Typography>
           <div className="space-y-2 [&>*]:block">
             <Link href="/">FAQ</Link>
             <Link href="/">Find a Consultant</Link>
@@ -44,7 +44,7 @@ export const Footer = () => (
           </div>
         </div>
         <div className="flex w-full flex-col space-y-4">
-          <Typography className="font-bold text-base text-base-light">Legal</Typography>
+          <Typography className="text-base font-bold text-base-light">Legal</Typography>
           <div className="space-y-2 [&>*]:block">
             <Link href="/">Income Disclosure</Link>
             <Link href="/">Satisfaction Guarantee</Link>
@@ -89,7 +89,7 @@ export const Footer = () => (
             </svg>
           </Link>
         </div>
-        <Typography className="text-sm text-base">
+        <Typography className="text-base text-sm">
           © {new Date().getFullYear()} Scout & Cellar | Clean-Crafted Commitment®
         </Typography>
         <address className="text-sm not-italic">

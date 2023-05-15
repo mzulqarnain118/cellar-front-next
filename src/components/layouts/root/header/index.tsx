@@ -1,21 +1,22 @@
 import { useCallback, useMemo } from 'react'
 
-import { useRouter } from 'next/router'
-
 import { ShoppingCartIcon, UserIcon } from '@heroicons/react/20/solid'
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline'
 import { Burger, Collapse } from '@mantine/core'
-import { useDisclosure, useMediaQuery } from '@mantine/hooks'
-import { UseMediaQueryOptions } from '@mantine/hooks/lib/use-media-query/use-media-query'
+import { useDisclosure } from '@mantine/hooks'
 import { asText } from '@prismicio/helpers'
 import { PrismicLink, PrismicRichText } from '@prismicio/react'
-import { signOut, useSession } from 'next-auth/react'
+import { useQueryClient } from '@tanstack/react-query'
+import { useSession } from 'next-auth/react'
+// eslint-disable-next-line import/order
+import { useRouter } from 'next/router'
 import { Badge, Indicator, Menu } from 'react-daisyui'
 
 import { CompanyLogo } from '@/components/company-logo'
 import { Search } from '@/components/search'
 import { Button } from '@/core/components/button'
 import { Typography } from '@/core/components/typogrpahy'
+import { useIsDesktop } from '@/core/hooks/use-is-desktop'
 import { SIGN_IN_PAGE_PATH } from '@/lib/paths'
 import { useCartQuery } from '@/lib/queries/cart'
 import {
@@ -24,13 +25,12 @@ import {
   useNavigationQuery,
 } from '@/lib/queries/header'
 import { useCartOpen } from '@/lib/stores/process'
+import { signOut } from '@/lib/utils/sign-out'
 
 import { StatePicker } from '../state-picker'
 
 import { CartDrawer } from './cart-drawer'
 import { NavigationItem } from './navigation/item'
-
-const mediaQueryOptions: UseMediaQueryOptions = { getInitialValueInEffect: false }
 
 export const Header = () => {
   const router = useRouter()
@@ -42,7 +42,8 @@ export const Header = () => {
   const { data: session } = useSession()
   const [navOpen, { toggle: toggleNavOpen }] = useDisclosure(false)
   const burgerLabel = navOpen ? 'Close navigation' : 'Open navigation'
-  const isDesktop = useMediaQuery('(min-width: 64em)', true, mediaQueryOptions)
+  const isDesktop = useIsDesktop()
+  const queryClient = useQueryClient()
 
   const menu = useMemo(
     () =>
@@ -56,7 +57,14 @@ export const Header = () => {
               )
 
             if (hasChildren) {
-              return <NavigationItem key={link.id} data={link} isDesktop={isDesktop} />
+              return (
+                <NavigationItem
+                  key={link.id}
+                  data={link}
+                  isDesktop={isDesktop}
+                  onLinkClick={toggleNavOpen}
+                />
+              )
             }
 
             return (
@@ -72,7 +80,7 @@ export const Header = () => {
       ) : (
         <></>
       ),
-    [isDesktop, navigation?.data.body]
+    [isDesktop, navigation?.data.body, toggleNavOpen]
   )
 
   const ctaButton = useMemo(
@@ -112,7 +120,7 @@ export const Header = () => {
                 <button className="!rounded">My Account</button>
               </Menu.Item>
               <Menu.Item>
-                <button className="!rounded" onClick={() => signOut()}>
+                <button className="!rounded" onClick={() => signOut(queryClient)}>
                   Sign out
                 </button>
               </Menu.Item>
@@ -121,7 +129,7 @@ export const Header = () => {
         </Menu.Item>
       </Menu>
     ),
-    [handleUserClick, session?.user]
+    [handleUserClick, queryClient, session?.user]
   )
 
   const cartQuantity =

@@ -7,17 +7,11 @@ import { FieldValues, UseControllerProps, useController } from 'react-hook-form'
 import { useStatesQuery } from '@/lib/queries/state'
 import { State } from '@/lib/types'
 
-const classNames = {
-  error: 'text-14',
-  input: 'h-10 placeholder:text-14',
-  item: 'text-14',
-  label: 'text-md',
-}
-
 export const StateDropdown = <Schema extends FieldValues>({
   className,
+  size = 'md',
   ...props
-}: UseControllerProps<Schema> & { className: string }) => {
+}: UseControllerProps<Schema> & { className?: string; size?: 'sm' | 'md' }) => {
   const {
     field,
     fieldState: { error, isDirty },
@@ -34,6 +28,16 @@ export const StateDropdown = <Schema extends FieldValues>({
           }))
         : [],
     [states]
+  )
+
+  const classNames = useMemo(
+    () => ({
+      error: 'text-14',
+      input: 'h-10 placeholder:text-14',
+      item: 'text-14',
+      label: size === 'md' ? '!text-md' : '!text-14',
+    }),
+    [size]
   )
 
   const filter: SelectProps['filter'] = useCallback(
@@ -59,7 +63,6 @@ export const StateDropdown = <Schema extends FieldValues>({
       data={data}
       filter={filter}
       label="State"
-      placeholder="Select your shipping state"
       {...field}
       error={error?.message}
       rightSection={

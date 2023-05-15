@@ -1,8 +1,7 @@
 import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react'
 
-import dynamic from 'next/dynamic'
-
 import { CloseButton } from '@mantine/core'
+import dynamic from 'next/dynamic'
 
 import { BlurImage } from '@/components/blur-image'
 import { Price } from '@/components/price'
@@ -45,7 +44,7 @@ export const CartItem = ({ product }: CartItemProps) => {
       return prev
     })
 
-    if (cart?.items.find(item => product.sku === item.sku)) {
+    if (cart?.items?.find(item => product.sku === item.sku)) {
       updateQuantity({
         item: product,
         orderId: product.orderId,
@@ -132,7 +131,7 @@ export const CartItem = ({ product }: CartItemProps) => {
   return (
     <div className="border-0 border-b border-solid border-neutral-300 pb-4">
       <div className="grid grid-cols-[auto_1fr] gap-3 pt-3">
-        {product.pictureUrl !== undefined && (
+        {!!product.pictureUrl && (
           <Link href={`/product/${product.cartUrl || ''}`}>
             <BlurImage
               alt={product.displayName || 'Product'}

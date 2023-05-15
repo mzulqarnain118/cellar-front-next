@@ -55,7 +55,7 @@ const getShippingMethods: QueryFunction<
 export const SHIPPING_METHODS_QUERY_KEY = 'shipping-methods'
 
 export const useShippingMethodsQuery = () => {
-  const { activeShippingAddress } = useCheckoutActiveShippingAddress()
+  const activeShippingAddress = useCheckoutActiveShippingAddress()
   const { data: cart } = useCartQuery()
 
   return useQuery({

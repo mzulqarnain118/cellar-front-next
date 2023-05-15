@@ -1,15 +1,13 @@
 import { ChangeEvent, useCallback, useMemo, useState } from 'react'
 
+import { Select, SelectProps } from '@mantine/core'
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
-
-import { Select, SelectProps } from '@mantine/core'
-import { useMediaQuery } from '@mantine/hooks'
-import { UseMediaQueryOptions } from '@mantine/hooks/lib/use-media-query/use-media-query'
 
 import { Button } from '@/core/components/button'
 import { NumberPicker } from '@/core/components/number-picker'
 import { Typography } from '@/core/components/typogrpahy'
+import { useIsDesktop } from '@/core/hooks/use-is-desktop'
 import { useAddToCartMutation } from '@/lib/mutations/cart/add-to-cart'
 import { useUpdateQuantityMutation } from '@/lib/mutations/cart/update-quantity'
 import { useCartQuery } from '@/lib/queries/cart'
@@ -35,7 +33,6 @@ interface ProductCardProps {
 
 const isCartProduct = (product: AutoSipProduct | CartItem): product is CartItem =>
   'orderLineId' in product && 'orderId' in product && 'quantity' in product
-const mediaQueryOptions: UseMediaQueryOptions = { getInitialValueInEffect: false }
 
 const selectStyles: SelectProps['styles'] = theme => ({
   item: {
@@ -50,7 +47,7 @@ const selectStyles: SelectProps['styles'] = theme => ({
 })
 
 export const ProductCard = ({ priority = false, product }: ProductCardProps) => {
-  const isDesktop = useMediaQuery('(min-width: 64em)', true, mediaQueryOptions)
+  const isDesktop = useIsDesktop()
   const [selectedProduct, setSelectedProduct] = useState(product)
   const [selectedSku, setSelectedSku] = useState(selectedProduct.sku)
   const [changedVariation, setChangedVariation] = useState(false)
@@ -256,7 +253,7 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
                 </Typography>
               </div>
               <Link
-                className="card-title font-semibold leading-normal !text-neutral-900 text-base"
+                className="card-title text-base font-semibold leading-normal !text-neutral-900"
                 href={`/product/${selectedProduct.cartUrl}`}
               >
                 {selectedProduct.displayName}

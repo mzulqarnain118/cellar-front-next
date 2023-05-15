@@ -1,14 +1,6 @@
 import { useState } from 'react'
 
-import { DefaultSeo } from 'next-seo'
-import defaultSEOConfig from 'next-seo.config'
-
-import type { AppProps } from 'next/app'
-import dynamic from 'next/dynamic'
-import { Merriweather } from 'next/font/google'
-
 import { MantineProvider } from '@mantine/core'
-import { useMediaQuery } from '@mantine/hooks'
 import { ModalsProvider } from '@mantine/modals'
 import { Notifications } from '@mantine/notifications'
 import { PrismicPreview } from '@prismicio/next'
@@ -20,12 +12,20 @@ import {
   PersistQueryClientOptions,
   PersistQueryClientProvider,
 } from '@tanstack/react-query-persist-client'
+// eslint-disable-next-line import/order
+import { DefaultSeo } from 'next-seo'
+// eslint-disable-next-line import/order
 import { SessionProvider } from 'next-auth/react'
+import type { AppProps } from 'next/app'
+import dynamic from 'next/dynamic'
+import { Merriweather } from 'next/font/google'
 import { Theme } from 'react-daisyui'
 
 import { RootLayout } from '@/components/layouts/root'
 import { modals } from '@/core/components/modals'
+import { useIsDesktop } from '@/core/hooks/use-is-desktop'
 
+import defaultSEOConfig from 'next-seo.config'
 import { InternalLink } from 'prismic/internal-link'
 import { richTextComponents } from 'prismic/rich-text-components'
 import { theme } from 'theme'
@@ -56,7 +56,7 @@ const persistOptions: Omit<PersistQueryClientOptions, 'queryClient'> = {
 }
 
 const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
-  const isDesktop = useMediaQuery('(min-width: 1024px)')
+  const isDesktop = useIsDesktop()
   const [queryClient] = useState(
     () =>
       new QueryClient({

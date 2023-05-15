@@ -1,9 +1,8 @@
-import type { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType } from 'next'
-import { NextSeo } from 'next-seo'
-
 import { asLink, asText } from '@prismicio/helpers'
 import { SliceZone } from '@prismicio/react'
 import { dehydrate } from '@tanstack/react-query'
+import type { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType } from 'next'
+import { NextSeo } from 'next-seo'
 
 import { components } from '@/components/slices'
 import { HOME_PAGE_PATH } from '@/lib/paths'

@@ -1,7 +1,6 @@
 import { memo } from 'react'
 
-import { useMediaQuery } from '@mantine/hooks'
-import { UseMediaQueryOptions } from '@mantine/hooks/lib/use-media-query/use-media-query'
+import { useIsDesktop } from '@/core/hooks/use-is-desktop'
 
 import { BlurImage } from '../blur-image'
 import { Link } from '../link'
@@ -13,11 +12,9 @@ interface ProductImageLinkProps {
   priority?: boolean
 }
 
-const mediaQueryOptions: UseMediaQueryOptions = { getInitialValueInEffect: false }
-
 export const ProductImageLink = memo(
   ({ cartUrl, displayName, pictureUrl, priority = false }: ProductImageLinkProps) => {
-    const isDesktop = useMediaQuery('(min-width: 64em)', true, mediaQueryOptions)
+    const isDesktop = useIsDesktop()
 
     return (
       <figure className="relative flex items-center self-center justify-self-center">

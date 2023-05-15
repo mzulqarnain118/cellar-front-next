@@ -1,6 +1,7 @@
 import ky, { BeforeRequestHook } from 'ky'
 import { getSession, signOut } from 'next-auth/react'
 
+import { useCheckoutStore } from './stores/checkout'
 import { useGuestStore } from './stores/guest'
 
 const baseApiUrl = process.env.NEXT_PUBLIC_TOWER_API_URL
@@ -50,6 +51,9 @@ interface RefreshTokenResponse {
 const updateTokenIfNecessary: BeforeRequestHook = async (request, _options) => {
   const session = await getSession()
   const tokenExpiration = session?.user.tokenDetails?.expires
+  const {
+    actions: { reset },
+  } = useCheckoutStore.getState()
 
   if (tokenExpiration !== undefined) {
     const tokenExpirationDate = new Date(tokenExpiration)
@@ -74,8 +78,9 @@ const updateTokenIfNecessary: BeforeRequestHook = async (request, _options) => {
 
         if (nowUTC > refreshTokenExpirationDate.getTime()) {
           await signOut()
+          reset()
         } else {
-          const response = await ky(`${baseApiUrl}/v2/token`, {
+          const response = await ky(`${baseApiUrl}/api/v2/token`, {
             headers: {
               Authorization: `bearer ${token}`,
             },
@@ -84,6 +89,7 @@ const updateTokenIfNecessary: BeforeRequestHook = async (request, _options) => {
               refresh_token: refreshToken,
             },
             method: 'post',
+            timeout: 45000,
           }).json<RefreshTokenResponse>()
 
           if (!!response.access_token && !!response.refresh_token) {
@@ -94,6 +100,7 @@ const updateTokenIfNecessary: BeforeRequestHook = async (request, _options) => {
         }
       } else {
         await signOut()
+        reset()
       }
     }
   }

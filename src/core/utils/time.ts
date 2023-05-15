@@ -1,1 +1,1 @@
-export const delay = (timeInMs: number) => new Promise(response => setTimeout(response, timeInMs))
+export const wait = (timeInMs: number) => new Promise(response => setTimeout(response, timeInMs))

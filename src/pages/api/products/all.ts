@@ -109,7 +109,7 @@ const handler = async (req: NextRequest) => {
             order: category.displayOrder,
           })),
           displayName: product.displayName,
-          isAutoShip: product.CategoriesIDs?.includes(DISPLAY_CATEGORY['Auto-Ship']) || false,
+          isAutoSip: product.CategoriesIDs?.includes(DISPLAY_CATEGORY['Auto-Sip']) || false,
           isClubOnly:
             product.CategoriesIDs?.includes(DISPLAY_CATEGORY['Circle Exclusives']) || false,
           isGift:

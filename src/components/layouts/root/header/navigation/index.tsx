@@ -1,7 +1,5 @@
 import { useCallback, useMemo } from 'react'
 
-import { useRouter } from 'next/router'
-
 import { ChevronDownIcon, ShoppingCartIcon, UserIcon } from '@heroicons/react/24/outline'
 import {
   ActionIcon,
@@ -12,11 +10,12 @@ import {
   ModalBaseCloseButtonProps,
   NavLink,
 } from '@mantine/core'
-import { useDisclosure, useMediaQuery } from '@mantine/hooks'
-import { UseMediaQueryOptions } from '@mantine/hooks/lib/use-media-query/use-media-query'
+import { useDisclosure } from '@mantine/hooks'
 import { asLink, asText } from '@prismicio/helpers'
 import { PrismicLink } from '@prismicio/react'
 import { useSession } from 'next-auth/react'
+// eslint-disable-next-line import/order
+import { useRouter } from 'next/router'
 import { Indicator } from 'react-daisyui'
 
 import { CompanyLogo } from '@/components/company-logo'
@@ -24,6 +23,7 @@ import { Link } from '@/components/link'
 import { Search } from '@/components/search'
 import { Button } from '@/core/components/button'
 import { Typography } from '@/core/components/typogrpahy'
+import { useIsDesktop } from '@/core/hooks/use-is-desktop'
 import { HOME_PAGE_PATH, SIGN_IN_PAGE_PATH } from '@/lib/paths'
 import { useCartQuery } from '@/lib/queries/cart'
 import { useNavigationQuery } from '@/lib/queries/header'
@@ -35,14 +35,13 @@ const drawerCloseButtonProps: ModalBaseCloseButtonProps = {
   size: 'md',
 }
 const navLinkStyles = { label: { fontWeight: 400, letterSpacing: '0.05em' } }
-const mediaQueryOptions: UseMediaQueryOptions = { getInitialValueInEffect: false }
 
 const endIcon = <ChevronDownIcon className="h-3 w-3" />
 
 export const Navigation = () => {
   const router = useRouter()
   const { data: session } = useSession()
-  const isDesktop = useMediaQuery('(min-width: 64em)', true, mediaQueryOptions)
+  const isDesktop = useIsDesktop()
   const { data: cart } = useCartQuery()
   const { toggleCartOpen } = useCartOpen()
   const [menuOpened, { close: closeMenu, toggle: toggleMenu }] = useDisclosure(false)

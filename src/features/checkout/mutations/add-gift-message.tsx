@@ -1,5 +1,5 @@
 import { CheckIcon } from '@heroicons/react/24/outline'
-import { UseMutationOptions, useMutation } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 
 import { api } from '@/lib/api'
 import { useCartQuery } from '@/lib/queries/cart'
@@ -25,15 +25,11 @@ const fallbackErrorMessage =
   'There was an error adding your gift message. Please review and try again.'
 
 interface AddGiftMessageOptions {
+  callback?: () => void
   message: string
   orderDisplayId?: string
   recipientEmail: string
 }
-
-// const sleep = (ms: number) =>
-//   new Promise(resolve => {
-//     setTimeout(resolve, ms)
-//   })
 
 export const addGiftMessage = async ({
   message,
@@ -58,25 +54,20 @@ export const addGiftMessage = async ({
       throw new Error(response.Error.Message || fallbackErrorMessage)
     }
 
-    // await sleep(500)
-
     return undefined
   } catch (error) {
     throw new Error(fallbackErrorMessage)
   }
 }
 
-export const useAddGiftMessageMutation = (
-  options?: UseMutationOptions<AddGiftMessageSuccess | undefined, Error, AddGiftMessageOptions>
-) => {
+export const useAddGiftMessageMutation = () => {
   const { data: cart } = useCartQuery()
   const { setGiftMessage } = useCheckoutActions()
 
   return useMutation<AddGiftMessageSuccess | undefined, Error, AddGiftMessageOptions>({
     mutationFn: options => addGiftMessage({ ...options, orderDisplayId: cart?.orderDisplayId }),
     mutationKey: ['addGiftMessage'],
-    ...options,
-    onSettled: (apiResponse, error, variables, context) => {
+    onSettled: (_apiResponse, _error, variables) => {
       const { message, recipientEmail } = variables
       setGiftMessage({
         message,
@@ -87,10 +78,6 @@ export const useAddGiftMessageMutation = (
         icon: <CheckIcon className="h-4 w-4" />,
         message: 'Your gift message was successfully added.',
       })
-
-      if (options?.onSettled !== undefined) {
-        options.onSettled(apiResponse, error, variables, context)
-      }
     },
   })
 }

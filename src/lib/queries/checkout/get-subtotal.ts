@@ -36,7 +36,7 @@ interface GetSubtotalInfoSuccess {
 
 type GetSubtotalInfoResponse = GetSubtotalInfoSuccess | Failure
 
-interface OrderPrice {
+export interface OrderPrice {
   discountTotals: {
     description: string
     amount: number

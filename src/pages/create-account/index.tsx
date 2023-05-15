@@ -1,7 +1,6 @@
+import { dehydrate } from '@tanstack/react-query'
 import { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next'
 import { NextSeo } from 'next-seo'
-
-import { dehydrate } from '@tanstack/react-query'
 
 import { Typography } from '@/core/components/typogrpahy'
 import { getStaticNavigation } from '@/lib/queries/header'

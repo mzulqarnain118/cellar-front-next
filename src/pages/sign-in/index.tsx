@@ -1,16 +1,14 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next'
-import { NextSeo } from 'next-seo'
-
-import dynamic from 'next/dynamic'
-import { useRouter } from 'next/router'
-
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LoadingOverlay } from '@mantine/core'
 import { dehydrate } from '@tanstack/react-query'
 import { clsx } from 'clsx'
+import { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next'
+import dynamic from 'next/dynamic'
+import { useRouter } from 'next/router'
 import { signIn, useSession } from 'next-auth/react'
+import { NextSeo } from 'next-seo'
 import { SubmitHandler, UseFormProps, useForm } from 'react-hook-form'
 import { z } from 'zod'
 

@@ -1,8 +1,7 @@
-import { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType, NextPage } from 'next'
-import { NextSeo } from 'next-seo'
-
 import { asLink } from '@prismicio/helpers'
 import { dehydrate } from '@tanstack/react-query'
+import { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType, NextPage } from 'next'
+import { NextSeo } from 'next-seo'
 
 import { WINE_PAGE_PATH } from '@/lib/paths'
 import { getStaticNavigation } from '@/lib/queries/header'

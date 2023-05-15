@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { api } from '@/lib/api'
 import { useCartQuery } from '@/lib/queries/cart'
 import { ADDRESS_CREDIT_CARDS_QUERY_KEY } from '@/lib/queries/checkout/addreses-and-credit-cards'
+import { useCheckoutActiveCreditCard } from '@/lib/stores/checkout'
 import { Failure } from '@/lib/types'
 import { Address } from '@/lib/types/address'
 
@@ -71,6 +72,7 @@ const createAddress = async (data: CreateAddressOptions) => {
 
 export const useCreateAddressMutation = () => {
   const queryClient = useQueryClient()
+  const activeCreditCard = useCheckoutActiveCreditCard()
   const { mutate: applyCheckoutSelections } = useApplyCheckoutSelectionsMutation()
   const { data: cart } = useCartQuery()
 
@@ -80,7 +82,10 @@ export const useCreateAddressMutation = () => {
     onSuccess: (response, data) => {
       if (response.Success) {
         queryClient.invalidateQueries([ADDRESS_CREDIT_CARDS_QUERY_KEY])
-        applyCheckoutSelections({ addressId: response.Data.Value.AddressID })
+        applyCheckoutSelections({
+          addressId: response.Data.Value.AddressID,
+          paymentToken: activeCreditCard?.PaymentToken,
+        })
 
         if (data.callback !== undefined) {
           data.callback(response)

@@ -1,10 +1,9 @@
-import { GetStaticPropsContext, InferGetStaticPropsType, NextPage } from 'next'
-import { NextSeo } from 'next-seo'
-
 import type { Content } from '@prismicio/client'
 import { asText } from '@prismicio/helpers'
 import { SliceZone } from '@prismicio/react'
 import { dehydrate } from '@tanstack/react-query'
+import { GetStaticPropsContext, InferGetStaticPropsType, NextPage } from 'next'
+import { NextSeo } from 'next-seo'
 
 import { components } from '@/components/slices'
 import { getStaticNavigation } from '@/lib/queries/header'

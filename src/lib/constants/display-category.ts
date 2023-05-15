@@ -1,6 +1,6 @@
 export const DISPLAY_CATEGORY = {
   'All Products': 1,
-  'Auto-Ship': 46,
+  'Auto-Sip': 46,
   'Cellar Sweep': 41,
   'Circle Exclusives': 33,
   Coffee: 54,

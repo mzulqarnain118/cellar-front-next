@@ -1,6 +1,5 @@
 /* eslint-disable import/no-named-as-default */
 import Router from 'next/router'
-
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 

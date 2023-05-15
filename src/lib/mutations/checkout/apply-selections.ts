@@ -8,7 +8,12 @@ import {
   ShippingAddressesAndCreditCards,
   getShippingAddressesAndCreditCards,
 } from '@/lib/queries/checkout/addreses-and-credit-cards'
-import { useCheckoutActions } from '@/lib/stores/checkout'
+import { GET_SUBTOTAL_QUERY } from '@/lib/queries/checkout/get-subtotal'
+import {
+  useCheckoutActions,
+  useCheckoutActiveCreditCard,
+  useCheckoutActiveShippingAddress,
+} from '@/lib/stores/checkout'
 import { Failure } from '@/lib/types'
 
 export const APPLY_CHECKOUT_SELECTIONS_MUTATION_KEY = ['apply-checkout-selections']
@@ -41,6 +46,11 @@ export const applyCheckoutSelections = async ({
       method: 'post',
       searchParams: { cartId: cartId || '' },
     }).json<Response>()
+
+    if (!response.Success) {
+      throw new Error(response.Error.Message)
+    }
+
     return response
   } catch {
     throw new Error('')
@@ -51,32 +61,45 @@ export const useApplyCheckoutSelectionsMutation = () => {
   const queryClient = useQueryClient()
   const { data: cart } = useCartQuery()
   const { data: session } = useSession()
-  const { setActiveShippingAddress } = useCheckoutActions()
+  const activeCreditCard = useCheckoutActiveCreditCard()
+  const activeShippingAddress = useCheckoutActiveShippingAddress()
+  const { setActiveCreditCard, setActiveShippingAddress } = useCheckoutActions()
 
-  return useMutation<Response, Error, ApplyCheckoutSelectionsOptions>({
+  return useMutation<Response, Error, Partial<ApplyCheckoutSelectionsOptions>>({
     mutationFn: data =>
       applyCheckoutSelections({
         ...data,
+        addressId: data.addressId || activeShippingAddress?.AddressID || 0,
         cartId: data.cartId || cart?.id,
-        userDisplayId: data.userDisplayId || session?.user.displayId,
+        paymentToken: data.paymentToken || activeCreditCard?.PaymentToken,
+        userDisplayId: data.userDisplayId || session?.user?.displayId,
       }),
     mutationKey: [...APPLY_CHECKOUT_SELECTIONS_MUTATION_KEY],
     onSuccess: async (response, data) => {
       if (response.Success) {
-        const { addresses } = await queryClient.ensureQueryData<ShippingAddressesAndCreditCards>({
-          queryFn: getShippingAddressesAndCreditCards,
-          queryKey: [ADDRESS_CREDIT_CARDS_QUERY_KEY, cart?.id, null],
-        })
+        const { addresses, creditCards } =
+          await queryClient.ensureQueryData<ShippingAddressesAndCreditCards>({
+            queryFn: getShippingAddressesAndCreditCards,
+            queryKey: [ADDRESS_CREDIT_CARDS_QUERY_KEY, cart?.id],
+          })
         let correspondingAddress = addresses.find(address => address.AddressID === data.addressId)
-        if (correspondingAddress === undefined) {
-          const { addresses: altAddresses } =
+        let correspondingCreditCard = creditCards.find(
+          creditCard => creditCard.PaymentToken === data.paymentToken
+        )
+        if (correspondingAddress === undefined || correspondingCreditCard === undefined) {
+          const { addresses: altAddresses, creditCards: altCreditCards } =
             await queryClient.ensureQueryData<ShippingAddressesAndCreditCards>({
               queryFn: getShippingAddressesAndCreditCards,
-              queryKey: [ADDRESS_CREDIT_CARDS_QUERY_KEY, cart?.id, data.addressId],
+              queryKey: [ADDRESS_CREDIT_CARDS_QUERY_KEY, cart?.id],
             })
           correspondingAddress = altAddresses.find(address => address.AddressID === data.addressId)
+          correspondingCreditCard = altCreditCards.find(
+            creditCard => creditCard.PaymentToken === data.paymentToken
+          )
         }
         setActiveShippingAddress(correspondingAddress)
+        setActiveCreditCard(correspondingCreditCard)
+        await queryClient.invalidateQueries([GET_SUBTOTAL_QUERY, cart?.id])
       }
     },
   })
