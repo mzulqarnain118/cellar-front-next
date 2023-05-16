@@ -36,6 +36,7 @@ export const getStaticProps = async ({
   if (page === undefined) {
     return {
       redirect: {
+        // ! TODO: Set to 404 page.
         destination: HOME_PAGE_PATH,
         permanent: false,
       },
@@ -49,6 +50,7 @@ export const getStaticProps = async ({
       dehydratedState: dehydrate(queryClient),
       page,
     },
+    revalidate: 120,
   }
 }
 

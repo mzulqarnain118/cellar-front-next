@@ -2,7 +2,7 @@ import type { Content } from '@prismicio/client'
 import { asText } from '@prismicio/helpers'
 import { SliceZone } from '@prismicio/react'
 import { dehydrate } from '@tanstack/react-query'
-import { GetStaticPropsContext, InferGetStaticPropsType, NextPage } from 'next'
+import { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next'
 import { NextSeo } from 'next-seo'
 
 import { components } from '@/components/slices'
@@ -12,7 +12,7 @@ import { createClient } from 'prismic-io'
 
 type PageProps = InferGetStaticPropsType<typeof getStaticProps>
 
-export const getStaticProps = async ({ previewData }: GetStaticPropsContext) => {
+export const getStaticProps: GetStaticProps = async ({ previewData }) => {
   const client = createClient({ previewData })
   const [queryClient, page] = await Promise.all([
     getStaticNavigation(client),
@@ -24,14 +24,15 @@ export const getStaticProps = async ({ previewData }: GetStaticPropsContext) => 
       dehydratedState: dehydrate(queryClient),
       page,
     },
+    revalidate: 120,
   }
 }
 
 const HomePage: NextPage<PageProps> = ({ page }: PageProps) => (
   <>
     <NextSeo
-      description={asText(page?.data.meta_description)}
-      title={asText(page?.data.meta_title)}
+      description={asText(page?.data.meta_description) || undefined}
+      title={asText(page?.data.meta_title) || undefined}
     />
     <SliceZone components={components} slices={page?.data.body} />
   </>

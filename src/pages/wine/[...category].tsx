@@ -34,6 +34,7 @@ export const getStaticProps = async ({ params, previewData }: GetStaticPropsCont
       dehydratedState: dehydrate(queryClient),
       page,
     },
+    revalidate: 120,
   }
 }
 
