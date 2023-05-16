@@ -1,8 +1,9 @@
 import { ChangeEvent, useCallback, useMemo, useState } from 'react'
 
-import { Select, SelectProps } from '@mantine/core'
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
+
+import { Select, SelectProps } from '@mantine/core'
 
 import { Button } from '@/core/components/button'
 import { NumberPicker } from '@/core/components/number-picker'

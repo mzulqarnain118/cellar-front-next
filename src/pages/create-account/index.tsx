@@ -4,10 +4,9 @@ import { NextSeo } from 'next-seo'
 
 import { Typography } from '@/core/components/typogrpahy'
 import { getStaticNavigation } from '@/lib/queries/header'
+import { createClient } from '@/prismic-io'
 
 import { CreateAccountForm } from 'src/features/create-account/form'
-
-import { createClient } from 'prismic-io'
 
 export const getStaticProps: GetStaticProps = async ({ previewData }) => {
   const client = createClient({ previewData })

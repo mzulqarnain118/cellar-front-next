@@ -1,5 +1,9 @@
 import { Suspense, lazy, useEffect, useState } from 'react'
 
+import type { AppProps } from 'next/app'
+import dynamic from 'next/dynamic'
+import { Merriweather } from 'next/font/google'
+
 import { MantineProvider } from '@mantine/core'
 import { ModalsProvider } from '@mantine/modals'
 import { Notifications } from '@mantine/notifications'
@@ -11,25 +15,19 @@ import {
   PersistQueryClientOptions,
   PersistQueryClientProvider,
 } from '@tanstack/react-query-persist-client'
-// eslint-disable-next-line import/order
-import { DefaultSeo } from 'next-seo'
-// eslint-disable-next-line import/order
 import { SessionProvider } from 'next-auth/react'
-import type { AppProps } from 'next/app'
-import dynamic from 'next/dynamic'
-import { Merriweather } from 'next/font/google'
+import { DefaultSeo } from 'next-seo'
 import { Theme } from 'react-daisyui'
 
 import { RootLayout } from '@/components/layouts/root'
 import { modals } from '@/core/components/modals'
 import { useIsDesktop } from '@/core/hooks/use-is-desktop'
+import { linkResolver, repositoryName } from '@/prismic-io'
 
 import defaultSEOConfig from 'next-seo.config'
 import { InternalLink } from 'prismic/internal-link'
 import { richTextComponents } from 'prismic/rich-text-components'
 import { theme } from 'theme'
-
-import { linkResolver, repositoryName } from 'prismic-io'
 
 import '../globals.css'
 

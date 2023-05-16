@@ -71,13 +71,13 @@
             "position": "before"
           },
           {
-            "group": "internal",
-            "pattern": "prismic-io",
-            "position": "after"
+            "group": "external",
+            "pattern": "react",
+            "position": "before"
           },
           {
             "group": "external",
-            "pattern": "react",
+            "pattern": "next/**",
             "position": "before"
           }
         ],

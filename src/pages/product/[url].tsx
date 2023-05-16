@@ -1,13 +1,12 @@
+import Image from 'next/image'
+import { useRouter } from 'next/router'
+
 import { Content } from '@prismicio/client'
 import { asText } from '@prismicio/helpers'
 import { PrismicText } from '@prismicio/react'
 import { dehydrate } from '@tanstack/react-query'
 import { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType, NextPage } from 'next'
-// eslint-disable-next-line import/order
 import { NextSeo } from 'next-seo'
-import Image from 'next/image'
-// eslint-disable-next-line import/order
-import { useRouter } from 'next/router'
 import { Breadcrumbs } from 'react-daisyui'
 
 import { Link } from '@/components/link'
@@ -15,8 +14,7 @@ import { Typography } from '@/core/components/typogrpahy'
 import { HOME_PAGE_PATH, WINE_PAGE_PATH } from '@/lib/paths'
 import { getStaticNavigation } from '@/lib/queries/header'
 import { PRODUCTS_QUERY_KEY, getProductByCartUrl, useProductQuery } from '@/lib/queries/products'
-
-import { createClient } from 'prismic-io'
+import { createClient } from '@/prismic-io'
 
 export const getStaticProps = async ({ params, previewData }: GetStaticPropsContext) => {
   const client = createClient({ previewData })

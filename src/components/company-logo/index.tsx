@@ -1,8 +1,9 @@
 import { useCallback } from 'react'
 
-import { clsx } from 'clsx'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
+
+import { clsx } from 'clsx'
 
 import { HOME_PAGE_PATH } from '@/lib/paths'
 

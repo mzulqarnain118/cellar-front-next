@@ -1,5 +1,7 @@
 import { useCallback, useMemo } from 'react'
 
+import { useRouter } from 'next/router'
+
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline'
 import { Collapse, HoverCard } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
@@ -7,7 +9,6 @@ import type { Content } from '@prismicio/client'
 import { asLink, asText } from '@prismicio/helpers'
 import { PrismicLink } from '@prismicio/react'
 import { clsx } from 'clsx'
-import { useRouter } from 'next/router'
 
 interface NavigationItemProps {
   data: Content.NavigationMenuDocumentDataBodyNavigationLinkSlice

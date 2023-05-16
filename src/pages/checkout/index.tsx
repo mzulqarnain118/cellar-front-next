@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 
+import dynamic from 'next/dynamic'
+
 import { useDisclosure, useReducedMotion, useScrollIntoView, useWindowScroll } from '@mantine/hooks'
 import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next'
-import dynamic from 'next/dynamic'
 import { getServerSession } from 'next-auth'
 import { NextSeo } from 'next-seo'
 import { Badge } from 'react-daisyui'

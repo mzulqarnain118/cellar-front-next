@@ -1,5 +1,6 @@
-import { QueryFunction, useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
+
+import { QueryFunction, useQuery } from '@tanstack/react-query'
 
 import { api } from '../api'
 import { CORPORATE_CONSULTANT_ID } from '../constants'

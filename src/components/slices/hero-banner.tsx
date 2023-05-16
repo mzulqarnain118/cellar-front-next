@@ -1,11 +1,12 @@
 import { CSSProperties, useCallback, useMemo } from 'react'
 
+import { useRouter } from 'next/router'
+
 import type { Content } from '@prismicio/client'
 import { asText } from '@prismicio/helpers'
 import { PrismicNextImage } from '@prismicio/next'
 import { PrismicRichText, PrismicText, SliceComponentProps } from '@prismicio/react'
 import { clsx } from 'clsx'
-import { useRouter } from 'next/router'
 
 import { Button } from '@/core/components/button'
 

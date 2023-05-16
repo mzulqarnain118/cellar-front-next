@@ -7,8 +7,7 @@ import { NextSeo } from 'next-seo'
 
 import { components } from '@/components/slices'
 import { getStaticNavigation } from '@/lib/queries/header'
-
-import { createClient } from 'prismic-io'
+import { createClient } from '@/prismic-io'
 
 type PageProps = InferGetStaticPropsType<typeof getStaticProps>
 

@@ -2,10 +2,11 @@ import { ParsedUrlQueryInput } from 'querystring'
 
 import { useMemo } from 'react'
 
-import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline'
-import { clsx } from 'clsx'
 import { Url } from 'next/dist/shared/lib/router/router'
 import NextLink, { LinkProps } from 'next/link'
+
+import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline'
+import { clsx } from 'clsx'
 
 import { useConsultantStore } from '@/lib/stores/consultant'
 

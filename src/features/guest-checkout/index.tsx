@@ -1,10 +1,11 @@
 import { ChangeEvent, useCallback, useMemo, useState } from 'react'
 
+import dynamic from 'next/dynamic'
+
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@mantine/core'
 import { clsx } from 'clsx'
-import dynamic from 'next/dynamic'
 import { NextSeo } from 'next-seo'
 import { FormProvider, SubmitHandler, UseFormProps, useForm } from 'react-hook-form'
 import { z } from 'zod'

@@ -1,5 +1,7 @@
 import { useCallback, useMemo } from 'react'
 
+import { useRouter } from 'next/router'
+
 import { ChevronDownIcon, ShoppingCartIcon, UserIcon } from '@heroicons/react/24/outline'
 import {
   ActionIcon,
@@ -14,8 +16,6 @@ import { useDisclosure } from '@mantine/hooks'
 import { asLink, asText } from '@prismicio/helpers'
 import { PrismicLink } from '@prismicio/react'
 import { useSession } from 'next-auth/react'
-// eslint-disable-next-line import/order
-import { useRouter } from 'next/router'
 import { Indicator } from 'react-daisyui'
 
 import { CompanyLogo } from '@/components/company-logo'

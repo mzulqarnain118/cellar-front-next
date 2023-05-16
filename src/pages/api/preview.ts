@@ -1,7 +1,7 @@
 import { redirectToPreviewURL, setPreviewData } from '@prismicio/next'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-import { createClient } from 'prismic-io'
+import { createClient } from '@/prismic-io'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const client = createClient({ req })

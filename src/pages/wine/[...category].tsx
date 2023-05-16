@@ -5,8 +5,7 @@ import { NextSeo } from 'next-seo'
 
 import { WINE_PAGE_PATH } from '@/lib/paths'
 import { getStaticNavigation } from '@/lib/queries/header'
-
-import { createClient, linkResolver } from 'prismic-io'
+import { createClient, linkResolver } from '@/prismic-io'
 
 export const getStaticProps = async ({ params, previewData }: GetStaticPropsContext) => {
   const client = createClient({ previewData })

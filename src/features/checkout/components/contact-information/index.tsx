@@ -1,11 +1,11 @@
 import { MutableRefObject, memo } from 'react'
 
+import dynamic from 'next/dynamic'
+
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline'
 import { Collapse } from '@mantine/core'
 import { clsx } from 'clsx'
 import { useSession } from 'next-auth/react'
-// eslint-disable-next-line import/order
-import dynamic from 'next/dynamic'
 
 import { Typography } from '@/core/components/typogrpahy'
 import { CORPORATE_CONSULTANT_ID } from '@/lib/constants'

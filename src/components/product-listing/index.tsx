@@ -1,9 +1,10 @@
 import { useCallback, useMemo, useState } from 'react'
 
-import { AdjustmentsHorizontalIcon } from '@heroicons/react/24/outline'
-import { Pagination, PaginationProps, Select, SelectProps } from '@mantine/core'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+
+import { AdjustmentsHorizontalIcon } from '@heroicons/react/24/outline'
+import { Pagination, PaginationProps, Select, SelectProps } from '@mantine/core'
 
 import { Button } from '@/core/components/button'
 import { Typography } from '@/core/components/typogrpahy'

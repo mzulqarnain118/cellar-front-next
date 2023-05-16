@@ -6,6 +6,7 @@
       "@/core/*": ["./src/core/*"],
       "@/features/*": ["./src/features/*"],
       "@/lib/*": ["./src/lib/*"],
+      "@/prismic-io": ["./prismic-io"],
       "@/ui/*": ["./src/core/components/*"]
     },
     "target": "es5",

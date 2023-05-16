@@ -1,8 +1,9 @@
 import { useCallback } from 'react'
 
+import dynamic from 'next/dynamic'
+
 import { Collapse, Radio } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import dynamic from 'next/dynamic'
 
 import { Button } from '@/core/components/button'
 import { Typography } from '@/core/components/typogrpahy'

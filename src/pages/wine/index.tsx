@@ -1,9 +1,9 @@
-import { dehydrate } from '@tanstack/react-query'
-import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next'
-// eslint-disable-next-line import/order
-import { NextSeo } from 'next-seo'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
+
+import { dehydrate } from '@tanstack/react-query'
+import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next'
+import { NextSeo } from 'next-seo'
 
 import {
   DEFAULT_CATEGORIES,
@@ -14,8 +14,7 @@ import {
 } from '@/components/product-listing'
 import { getStaticNavigation } from '@/lib/queries/header'
 import { PAGINATED_PRODUCTS_QUERY_KEY, getPaginatedProducts } from '@/lib/queries/products'
-
-import { createClient } from 'prismic-io'
+import { createClient } from '@/prismic-io'
 
 const ProductListing = dynamic(
   import('@/components/product-listing').then(module => module.ProductListing),

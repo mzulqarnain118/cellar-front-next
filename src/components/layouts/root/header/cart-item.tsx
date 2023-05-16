@@ -1,7 +1,8 @@
 import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react'
 
-import { CloseButton } from '@mantine/core'
 import dynamic from 'next/dynamic'
+
+import { CloseButton } from '@mantine/core'
 
 import { BlurImage } from '@/components/blur-image'
 import { Price } from '@/components/price'

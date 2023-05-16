@@ -1,12 +1,13 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import dynamic from 'next/dynamic'
+import { useRouter } from 'next/router'
+
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LoadingOverlay } from '@mantine/core'
 import { dehydrate } from '@tanstack/react-query'
 import { clsx } from 'clsx'
 import { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next'
-import dynamic from 'next/dynamic'
-import { useRouter } from 'next/router'
 import { signIn, useSession } from 'next-auth/react'
 import { NextSeo } from 'next-seo'
 import { SubmitHandler, UseFormProps, useForm } from 'react-hook-form'
@@ -20,8 +21,7 @@ import { useValidateEmailMutation } from '@/lib/mutations/validate-email'
 import { CREATE_ACCOUNT_PAGE_PATH, HOME_PAGE_PATH } from '@/lib/paths'
 import { getStaticNavigation } from '@/lib/queries/header'
 import { useUserStore } from '@/lib/stores/user'
-
-import { createClient } from 'prismic-io'
+import { createClient } from '@/prismic-io'
 
 const Link = dynamic(() => import('src/components/link').then(module => module.Link), {
   ssr: false,

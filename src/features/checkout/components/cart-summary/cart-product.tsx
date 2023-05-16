@@ -1,7 +1,8 @@
 import { ChangeEvent, useCallback, useState } from 'react'
 
-import { CloseButton } from '@mantine/core'
 import Image from 'next/image'
+
+import { CloseButton } from '@mantine/core'
 
 import { Price } from '@/components/price'
 import { NumberPicker } from '@/core/components/number-picker'

@@ -1,7 +1,7 @@
 import type { Client, Content } from '@prismicio/client'
 import { QueryClient, useQuery } from '@tanstack/react-query'
 
-import { createClient } from 'prismic-io'
+import { createClient } from '@/prismic-io'
 
 export const HEADER_NAVIGATION_KEY = ['header-navigation']
 export const HEADER_NAVIGATION_PROMO_MESSAGE_KEY = ['header-navigation-promo-message']

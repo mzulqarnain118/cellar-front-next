@@ -1,5 +1,7 @@
 import { useCallback, useMemo } from 'react'
 
+import { useRouter } from 'next/router'
+
 import { ShoppingCartIcon, UserIcon } from '@heroicons/react/20/solid'
 import { ChevronDownIcon } from '@heroicons/react/24/outline'
 import { Burger, Collapse } from '@mantine/core'
@@ -8,8 +10,6 @@ import { asText } from '@prismicio/helpers'
 import { PrismicLink, PrismicRichText } from '@prismicio/react'
 import { useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
-// eslint-disable-next-line import/order
-import { useRouter } from 'next/router'
 import { Badge, Indicator, Menu } from 'react-daisyui'
 
 import { CompanyLogo } from '@/components/company-logo'

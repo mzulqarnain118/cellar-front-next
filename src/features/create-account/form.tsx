@@ -1,11 +1,12 @@
 import { useMemo, useState } from 'react'
 
+import dynamic from 'next/dynamic'
+import { useRouter } from 'next/router'
+
 import { ArrowRightIcon } from '@heroicons/react/20/solid'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LoadingOverlay } from '@mantine/core'
 import { clsx } from 'clsx'
-import dynamic from 'next/dynamic'
-import { useRouter } from 'next/router'
 import { FormProvider, SubmitHandler, UseFormProps, useForm } from 'react-hook-form'
 import { z } from 'zod'
 

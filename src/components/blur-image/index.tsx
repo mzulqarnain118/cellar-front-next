@@ -1,7 +1,8 @@
 import { useCallback, useState } from 'react'
 
-import { clsx } from 'clsx'
 import Image, { ImageProps } from 'next/image'
+
+import { clsx } from 'clsx'
 
 export const BlurImage = ({ alt, className, ...rest }: ImageProps) => {
   const [isLoading, setIsLoading] = useState(true)
