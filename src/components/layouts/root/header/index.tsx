@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react'
 
 import { ShoppingCartIcon, UserIcon } from '@heroicons/react/20/solid'
-import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline'
+import { ChevronDownIcon } from '@heroicons/react/24/outline'
 import { Burger, Collapse } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { asText } from '@prismicio/helpers'
@@ -31,6 +31,7 @@ import { StatePicker } from '../state-picker'
 
 import { CartDrawer } from './cart-drawer'
 import { NavigationItem } from './navigation/item'
+import { SearchNew } from './search'
 
 export const Header = () => {
   const router = useRouter()
@@ -172,7 +173,7 @@ export const Header = () => {
                 <div className="flex flex-1">
                   {menu}
                   <div className="grid grid-cols-[auto_1fr] items-center gap-4">
-                    <MagnifyingGlassIcon className="h-6 w-6 stroke-[3]" />
+                    <SearchNew />
                     {ctaButton}
                   </div>
                 </div>

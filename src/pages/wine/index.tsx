@@ -1,8 +1,9 @@
 import { dehydrate } from '@tanstack/react-query'
 import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next'
+// eslint-disable-next-line import/order
+import { NextSeo } from 'next-seo'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
-import { NextSeo } from 'next-seo'
 
 import {
   DEFAULT_CATEGORIES,
@@ -21,7 +22,7 @@ const ProductListing = dynamic(
   { ssr: false }
 )
 
-export const getServerSideProps: GetServerSideProps = async ({ previewData, query }) => {
+export const getServerSideProps: GetServerSideProps = async ({ previewData, query, res: _ }) => {
   let categories: number[] = DEFAULT_CATEGORIES
   let limit = DEFAULT_LIMIT
   let page = DEFAULT_PAGE
@@ -45,9 +46,11 @@ export const getServerSideProps: GetServerSideProps = async ({ previewData, quer
   ])
 
   await queryClient.prefetchQuery(
-    [...PAGINATED_PRODUCTS_QUERY_KEY, JSON.stringify({ categories, limit, page, sort })],
+    [...PAGINATED_PRODUCTS_QUERY_KEY, { categories, limit, page, sort }],
     getPaginatedProducts
   )
+
+  // res.setHeader('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=120')
 
   return {
     props: {

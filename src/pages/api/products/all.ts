@@ -144,7 +144,7 @@ const handler = async (req: NextRequest) => {
 
       return new Response(
         JSON.stringify({
-          data: uniqueBy(data.slice(1), 'sku')
+          data: uniqueBy(data.slice(0), 'sku')
             .reduce<ProductsSchema[]>((array, product) => {
               const subscriptionSku = product.attributes?.['AutoSip Base SKU']
               if (subscriptionSku !== undefined) {
@@ -152,9 +152,16 @@ const handler = async (req: NextRequest) => {
                 product.autoSipProduct = autoSipProduct
               }
               array.push(product)
+
               return array
             }, [])
-            .filter(product => !product.displayCategories?.includes(53))
+            .filter(
+              product =>
+                !!product.displayCategories &&
+                !!product.sku &&
+                !product.displayCategories?.includes(53) &&
+                !product.displayCategories?.includes(33)
+            )
             .sort((left, right) => {
               const leftCategoryId = left.displayCategoriesSortData?.[0]?.id || undefined
               const rightCategoryId = right.displayCategoriesSortData?.[0]?.id || undefined
@@ -181,7 +188,16 @@ const handler = async (req: NextRequest) => {
               } else {
                 return -1
               }
-            }),
+            })
+            .reduce<ProductsSchema[]>((array, product) => {
+              if (
+                array.find(item => item.sku.toLowerCase() === product.sku.toLowerCase()) ===
+                undefined
+              ) {
+                array.push(product)
+              }
+              return array
+            }, []),
           success: true,
         }),
         {

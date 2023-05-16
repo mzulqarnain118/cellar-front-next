@@ -8966,6 +8966,69 @@ type PdpDocumentDataBodySlice = PdpDocumentDataBodyAccordionSlice
  */
 export type PdpDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismicT.PrismicDocumentWithUID<Simplify<PdpDocumentData>, 'pdp', Lang>
+/** Content for PDP Auto-Sip Promo Message documents */
+interface PdpAutoSipPromoMessageDocumentData {
+  /**
+   * Wine Message field in *PDP Auto-Sip Promo Message*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pdp_auto-sip_promo_message.wine_message
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  wine_message: prismicT.RichTextField
+  /**
+   * Wine CTA Text field in *PDP Auto-Sip Promo Message*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pdp_auto-sip_promo_message.wine_cta_text
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  wine_cta_text: prismicT.RichTextField
+  /**
+   * Coffee Message field in *PDP Auto-Sip Promo Message*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pdp_auto-sip_promo_message.coffee_message
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  coffee_message: prismicT.RichTextField
+  /**
+   * Coffee CTA Text field in *PDP Auto-Sip Promo Message*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pdp_auto-sip_promo_message.coffee_cta_text
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  coffee_cta_text: prismicT.RichTextField
+}
+/**
+ * PDP Auto-Sip Promo Message document from Prismic
+ *
+ * - **API ID**: `pdp_auto-sip_promo_message`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type PdpAutoSipPromoMessageDocument<
+  Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'
+> = prismicT.PrismicDocumentWithoutUID<
+  Simplify<PdpAutoSipPromoMessageDocumentData>,
+  'pdp_auto-sip_promo_message',
+  Lang
+>
 /** Content for PLP documents */
 type PlpDocumentData = Record<string, never>
 /**
@@ -9962,6 +10025,26 @@ interface RichContentPageDocumentData {
  *
  */
 interface RichContentPageDocumentDataBodyHeroBannerSlicePrimary {
+  /**
+   * Background Video field in *Rich Content Page → Slice zone → `hero_banner` → Primary*
+   *
+   * - **Field Type**: Link to Media
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].hero_banner.primary.background_video
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  background_video: prismicT.LinkToMediaField
+  /**
+   * Background Video Opacity field in *Rich Content Page → Slice zone → `hero_banner` → Primary*
+   *
+   * - **Field Type**: Number
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_content_page.body[].hero_banner.primary.background_video_opacity
+   * - **Documentation**: https://prismic.io/docs/core-concepts/number
+   *
+   */
+  background_video_opacity: prismicT.NumberField
   /**
    * Center Content field in *Rich Content Page → Slice zone → `hero_banner` → Primary*
    *
@@ -12874,6 +12957,7 @@ export type AllDocumentTypes =
   | NotFoundMessageDocument
   | PairingIconDocument
   | PdpDocument
+  | PdpAutoSipPromoMessageDocument
   | PlpDocument
   | PlpBottomBannerDocument
   | PlpTopBannerDocument
@@ -13286,6 +13370,8 @@ declare module '@prismicio/client' {
       PdpDocumentDataBodyAccordionSlice,
       PdpDocumentDataBodySlice,
       PdpDocument,
+      PdpAutoSipPromoMessageDocumentData,
+      PdpAutoSipPromoMessageDocument,
       PlpDocumentData,
       PlpDocument,
       PlpBottomBannerDocumentData,

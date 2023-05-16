@@ -30,6 +30,7 @@ const handler = async (req: NextRequest) => {
   const displayCategoryIds = searchParams.get('categories')?.split('-').map(Number) || []
   const sort: 'relevant' | 'price-low-high' | 'price-high-low' =
     (searchParams.get('sort') as 'relevant' | 'price-low-high' | 'price-high-low') || 'relevant'
+  const provinceId = parseInt(searchParams.get('provinceId') || '48')
 
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/products/all`)
@@ -45,35 +46,40 @@ const handler = async (req: NextRequest) => {
                 product.displayCategories.some(category => displayCategoryIds.includes(category))
               )
             : productsData
-        filteredProducts = filteredProducts.sort((left, right) => {
-          const leftPrice = left.onSalePrice !== undefined ? left.onSalePrice : left.price || 0
-          const rightPrice = right.onSalePrice !== undefined ? right.onSalePrice : right.price || 0
+        filteredProducts = filteredProducts
+          .sort((left, right) => {
+            const leftPrice = left.onSalePrice !== undefined ? left.onSalePrice : left.price || 0
+            const rightPrice =
+              right.onSalePrice !== undefined ? right.onSalePrice : right.price || 0
 
-          if (sort === 'price-high-low') {
-            return rightPrice - leftPrice
-          } else if (sort === 'price-low-high') {
-            return leftPrice - rightPrice
-          }
+            if (sort === 'price-high-low') {
+              return rightPrice - leftPrice
+            } else if (sort === 'price-low-high') {
+              return leftPrice - rightPrice
+            }
 
-          const leftCategoryId = left.displayCategoriesSortData?.[0]?.id || undefined
-          const rightCategoryId = right.displayCategoriesSortData?.[0]?.id || undefined
-          const leftDisplayOrder = left.displayCategoriesSortData?.[0]?.order || 100000
-          const rightDisplayOrder = right.displayCategoriesSortData?.[0]?.order || 100000
+            const leftCategoryId = left.displayCategoriesSortData?.[0]?.id || undefined
+            const rightCategoryId = right.displayCategoriesSortData?.[0]?.id || undefined
+            const leftDisplayOrder = left.displayCategoriesSortData?.[0]?.order || 100000
+            const rightDisplayOrder = right.displayCategoriesSortData?.[0]?.order || 100000
 
-          if (leftCategoryId && rightCategoryId && leftCategoryId - rightCategoryId > 0) {
-            return 1
-          } else if (leftCategoryId && rightCategoryId && leftCategoryId - rightCategoryId < 0) {
+            if (leftCategoryId && rightCategoryId && leftCategoryId - rightCategoryId > 0) {
+              return 1
+            } else if (leftCategoryId && rightCategoryId && leftCategoryId - rightCategoryId < 0) {
+              return -1
+            } else if (leftDisplayOrder - rightDisplayOrder > 0) {
+              return 1
+            } else if (leftDisplayOrder - rightDisplayOrder < 0) {
+              return -1
+            } else if (leftPrice - rightPrice > 0) {
+              return 1
+            }
+
             return -1
-          } else if (leftDisplayOrder - rightDisplayOrder > 0) {
-            return 1
-          } else if (leftDisplayOrder - rightDisplayOrder < 0) {
-            return -1
-          } else if (leftPrice - rightPrice > 0) {
-            return 1
-          }
-
-          return -1
-        })
+          })
+          .filter(product =>
+            product.availability?.some(state => state.enabled && state.provinceId === provinceId)
+          )
         const indexOfLastRecord = page * perPage
         const indexOfFirstRecord = indexOfLastRecord - perPage
         const products = filteredProducts.slice(indexOfFirstRecord, indexOfLastRecord)

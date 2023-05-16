@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { Suspense, lazy, useEffect, useState } from 'react'
 
 import { MantineProvider } from '@mantine/core'
 import { ModalsProvider } from '@mantine/modals'
@@ -7,7 +7,6 @@ import { PrismicPreview } from '@prismicio/next'
 import { PrismicProvider } from '@prismicio/react'
 import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister'
 import { Hydrate, QueryClient } from '@tanstack/react-query'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import {
   PersistQueryClientOptions,
   PersistQueryClientProvider,
@@ -55,8 +54,15 @@ const persistOptions: Omit<PersistQueryClientOptions, 'queryClient'> = {
   persister,
 }
 
+const ReactQueryDevtoolsProduction = lazy(() =>
+  import('@tanstack/react-query-devtools/build/lib/index.prod.js').then(d => ({
+    default: d.ReactQueryDevtools,
+  }))
+)
+
 const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
   const isDesktop = useIsDesktop()
+  const [showDevtools, setShowDevtools] = useState(false)
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -65,6 +71,13 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
         },
       })
   )
+
+  useEffect(() => {
+    if (process.env.NEXT_PUBLIC_IS_PRODUCTION === 'false') {
+      window.toggleDevtools = () => setShowDevtools(prev => !prev)
+      setShowDevtools(true)
+    }
+  }, [])
 
   return (
     <SessionProvider session={session}>
@@ -107,7 +120,11 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
               </ModalsProvider>
             </Theme>
           </MantineProvider>
-          <ReactQueryDevtools />
+          {showDevtools ? (
+            <Suspense fallback={<></>}>
+              <ReactQueryDevtoolsProduction />
+            </Suspense>
+          ) : undefined}
         </Hydrate>
       </PersistQueryClientProvider>
     </SessionProvider>

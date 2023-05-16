@@ -38,7 +38,7 @@ const options: HTMLReactParserOptions = {
           {...attributes}
           className={clsx(
             !isImportant ? htmlTagName : `!${htmlTagName} ${htmlTagName}`,
-            attributes.className
+            attributes.className || ''
           )}
         >
           {domToReact(children, options)}

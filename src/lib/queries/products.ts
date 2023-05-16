@@ -1,6 +1,7 @@
 import { QueryFunction, useQuery } from '@tanstack/react-query'
 
 import { localApi } from '../api'
+import { useUserShippingState } from '../stores/user'
 import {
   PaginatedProductsResponse,
   PaginatedProductsSchema,
@@ -14,6 +15,7 @@ interface Data {
   categories: number[]
   limit?: number
   page: number
+  provinceId?: number
   sort: 'relevant' | 'price-low-high' | 'price-high-low'
 }
 
@@ -39,9 +41,9 @@ export const getProductByCartUrl: QueryFunction<ProductsSchema | undefined> = as
 
 export const getPaginatedProducts: QueryFunction<
   PaginatedProductsSchema | undefined,
-  string[]
+  (string | number | Data | Record<string, string>)[]
 > = async ({ queryKey }) => {
-  const data = JSON.parse(queryKey[1]) as Record<string, string>
+  const data = queryKey[1] as Record<string, string>
   const params = new URLSearchParams(data).toString()
   const response = await localApi(`products${params ? `?${params}` : ''}`)
 
@@ -69,14 +71,17 @@ export const useProductQuery = (cartUrl: string) =>
   })
 
 export const PAGINATED_PRODUCTS_QUERY_KEY = ['paginated-products']
-export const usePaginatedProducts = (data: Data) =>
-  useQuery({
+export const usePaginatedProducts = (data: Data) => {
+  const { provinceID } = useUserShippingState()
+
+  return useQuery({
     keepPreviousData: true,
     queryFn: getPaginatedProducts,
-    queryKey: [...PAGINATED_PRODUCTS_QUERY_KEY, JSON.stringify(data)],
+    queryKey: [...PAGINATED_PRODUCTS_QUERY_KEY, { ...data, provinceID }],
     refetchOnMount: false,
     refetchOnWindowFocus: false,
   })
+}
 
 export const useInfiniteProducts = (data: { categories?: number[]; page: number }) =>
   useQuery({

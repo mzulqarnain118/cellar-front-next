@@ -245,6 +245,7 @@ export const ProductListing = ({
       <Pagination
         withEdges
         className="pt-12"
+        color="dark"
         disabled={isFetching || isLoading}
         getControlProps={getControlProps}
         getItemProps={getItemProps}

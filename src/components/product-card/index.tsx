@@ -48,10 +48,10 @@ const selectStyles: SelectProps['styles'] = theme => ({
 
 export const ProductCard = ({ priority = false, product }: ProductCardProps) => {
   const isDesktop = useIsDesktop()
-  const [selectedProduct, setSelectedProduct] = useState(product)
-  const [selectedSku, setSelectedSku] = useState(selectedProduct.sku)
   const [changedVariation, setChangedVariation] = useState(false)
   const [quantity, setQuantity] = useState(1)
+  const [selectedProduct, setSelectedProduct] = useState(product)
+  const [selectedSku, setSelectedSku] = useState(selectedProduct.sku)
   const [variationType, setVariationType] = useState<string>()
   const { toggleCartOpen } = useProcessStore()
 

@@ -1,3 +1,5 @@
+import { useCallback } from 'react'
+
 import { create } from 'zustand'
 
 import { User } from '../types'
@@ -41,3 +43,8 @@ export const useUserStore = create<UserStore>()(set => ({
   },
   user: DEFAULT_USER_STATE,
 }))
+
+export const useUserShippingState = () => {
+  const selector = useCallback(({ user: { shippingState } }: UserStore) => shippingState, [])
+  return useUserStore(selector)
+}
