@@ -3,7 +3,6 @@ import { ReactNode } from 'react'
 
 import { useRouter } from 'next/router'
 
-import { SkipLink } from '@/components/skip-link'
 import { CHECKOUT_PAGE_PATH } from '@/lib/paths'
 import { useCartQuery } from '@/lib/queries/cart'
 
@@ -24,7 +23,8 @@ export const RootLayout = ({ children }: RootLayoutProps) => {
     <CheckoutLayout>{children}</CheckoutLayout>
   ) : (
     <div className="min-h-[100svh]" id="root-element">
-      <SkipLink />
+      {/* ! TODO: Add skip link. */}
+      {/* <SkipLink /> */}
       <Header />
 
       <main tabIndex={-1}>{children}</main>
