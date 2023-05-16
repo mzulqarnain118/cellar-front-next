@@ -38,6 +38,10 @@ const routes: ClientConfig['routes'] = [
     path: '/brands/:uid',
     type: 'brand_page',
   },
+  {
+    path: '/product/:uid',
+    type: 'pdp',
+  },
 ]
 
 /**

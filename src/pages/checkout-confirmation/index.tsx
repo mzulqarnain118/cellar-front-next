@@ -5,8 +5,8 @@ import { NextSeo } from 'next-seo'
 import { useReceiptData } from '@/lib/stores/receipt'
 
 const CheckoutConfirmationPage: NextPage = () => {
-  const data = useReceiptData()
-  console.log('data', data)
+  const _data = useReceiptData()
+
   return (
     <>
       <NextSeo />
