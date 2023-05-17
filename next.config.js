@@ -4,6 +4,11 @@ const nextConfig = {
     formats: ['image/avif', 'image/webp'],
     remotePatterns: [
       {
+        hostname: 'i.ytimg.com',
+        pathname: '**',
+        protocol: 'https',
+      },
+      {
         hostname: 'images.prismic.io',
         pathname: '**',
         protocol: 'https',

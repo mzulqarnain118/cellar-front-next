@@ -8908,6 +8908,16 @@ export interface PdpDocumentDataVideosItem {
    *
    */
   video: prismicT.EmbedField
+  /**
+   * Video Link field in *PDP V1 → Videos*
+   *
+   * - **Field Type**: Link to Media
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pdp.videos[].video_link
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  video_link: prismicT.LinkToMediaField
 }
 /**
  * Primary content in PDP V1 → Slice zone → `accordion` → Primary

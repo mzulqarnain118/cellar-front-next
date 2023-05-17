@@ -392,6 +392,11 @@
     "@babel/helper-validator-identifier" "^7.19.1"
     to-fast-properties "^2.0.0"
 
+"@blacklab/react-image-magnify@^4.1.1":
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/@blacklab/react-image-magnify/-/react-image-magnify-4.1.1.tgz#e0fb99d0cf6c84079d1c6b3d8d324886ee5ace06"
+  integrity sha512-sfDCusRVeAPEfsRLjyPuBmj7Ai4p6Cq9oD/i6LAuIljzDNvQ56w80LbRXSlZtoe62cI2tjBDddudYJGx10wiog==
+
 "@commitlint/cli@^17.6.3":
   version "17.6.3"
   resolved "https://registry.yarnpkg.com/@commitlint/cli/-/cli-17.6.3.tgz#a02194a2bb6efe4e681eda2addd072a8d02c9497"
@@ -941,6 +946,11 @@
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
 
+"@juggle/resize-observer@^3.3.1":
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/@juggle/resize-observer/-/resize-observer-3.4.0.tgz#08d6c5e20cf7e4cc02fd181c4b0c225cd31dbb60"
+  integrity sha512-dfLbk+PwWvFzSxwk3n5ySL0hfBog779o8h68wK/7/APo/7cgyWp5jcXockbxdk5kFRkbeXWm4Fbi9FrdN381sA==
+
 "@linaria/core@4.2.9":
   version "4.2.9"
   resolved "https://registry.yarnpkg.com/@linaria/core/-/core-4.2.9.tgz#4917bde18d064a29cff4fd86aa99621f953a2a2c"
@@ -1161,7 +1171,7 @@
     picocolors "^1.0.0"
     tslib "^2.5.0"
 
-"@popperjs/core@^2.9.0":
+"@popperjs/core@^2.11.4", "@popperjs/core@^2.9.0":
   version "2.11.7"
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.7.tgz#ccab5c8f7dc557a52ca3288c10075c9ccd37fff7"
   integrity sha512-Cr4OjIkipTtcXKjAsm8agyleBuDHvxzeBoa1v543lbv1YaIwQjESsVcmjiWiPEbC1FIeHOG/Op9kdCmAmiS3Kw==
@@ -1987,6 +1997,25 @@
     "@react-types/shared" "^3.18.0"
     "@swc/helpers" "^0.4.14"
     clsx "^1.1.1"
+
+"@react-hook/latest@^1.0.2":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@react-hook/latest/-/latest-1.0.3.tgz#c2d1d0b0af8b69ec6e2b3a2412ba0768ac82db80"
+  integrity sha512-dy6duzl+JnAZcDbNTfmaP3xHiKtbXYOaz3G51MGVljh548Y8MWzTr+PHLOfvpypEVW9zwvl+VyKjbWKEVbV1Rg==
+
+"@react-hook/passive-layout-effect@^1.2.0":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@react-hook/passive-layout-effect/-/passive-layout-effect-1.2.1.tgz#c06dac2d011f36d61259aa1c6df4f0d5e28bc55e"
+  integrity sha512-IwEphTD75liO8g+6taS+4oqz+nnroocNfWVHWz7j+N+ZO2vYrc6PV1q7GQhuahL0IOR7JccFTsFKQ/mb6iZWAg==
+
+"@react-hook/resize-observer@^1.2.5":
+  version "1.2.6"
+  resolved "https://registry.yarnpkg.com/@react-hook/resize-observer/-/resize-observer-1.2.6.tgz#9a8cf4c5abb09becd60d1d65f6bf10eec211e291"
+  integrity sha512-DlBXtLSW0DqYYTW3Ft1/GQFZlTdKY5VAFIC4+km6IK5NiPPDFchGbEJm1j6pSgMqPRHbUQgHJX7RaR76ic1LWA==
+  dependencies:
+    "@juggle/resize-observer" "^3.3.1"
+    "@react-hook/latest" "^1.0.2"
+    "@react-hook/passive-layout-effect" "^1.2.0"
 
 "@react-stately/calendar@3.1.0":
   version "3.1.0"
@@ -4122,6 +4151,11 @@ destroy@~1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/destroy/-/destroy-1.0.4.tgz#978857442c44749e4206613e37946205826abd80"
   integrity sha512-3NdhDuEXnfun/z7x9GOElY49LoqVHoGScmOKwmxhsS8N5Y+Z8KyPPDnaSzqWgYt/ji4mqwfTS34Htrk0zPIXVg==
+
+detect-it@4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/detect-it/-/detect-it-4.0.1.tgz#3f8de6b8330f5086270571251bedf10aec049e18"
+  integrity sha512-dg5YBTJYvogK1+dA2mBUDKzOWfYZtHVba89SyZUhc4+e3i2tzgjANFg5lDRCd3UOtRcw00vUTMK8LELcMdicug==
 
 detect-node-es@^1.1.0:
   version "1.1.0"
@@ -8276,6 +8310,11 @@ react-easy-crop@4.6.1:
     normalize-wheel "^1.0.1"
     tslib "2.0.1"
 
+react-fast-compare@^3.0.1:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-3.2.1.tgz#53933d9e14f364281d6cba24bfed7a4afb808b5f"
+  integrity sha512-xTYf9zFim2pEif/Fw16dBiXpe0hoy5PxcD8+OwBnTtNLfIm3g6WxhKNurY+6OmdH1u6Ta/W/Vl6vjbYP1MFnDg==
+
 react-hook-form@^7.43.9:
   version "7.43.9"
   resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.43.9.tgz#84b56ac2f38f8e946c6032ccb760e13a1037c66d"
@@ -8309,6 +8348,14 @@ react-multi-carousel@^2.8.3:
   version "2.8.3"
   resolved "https://registry.yarnpkg.com/react-multi-carousel/-/react-multi-carousel-2.8.3.tgz#bd9817bd49469afa1809db105b1f77501eca549b"
   integrity sha512-wpHwq9Y/ydX+5yxpW8250jMOtg8NuBVlFrDTuS5/MdN0uD0zFIHxVbXhzzc4WFeQl6bn9ZLo8Fef2Ik5aBRgmw==
+
+react-popper@^2.2.5:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/react-popper/-/react-popper-2.3.0.tgz#17891c620e1320dce318bad9fede46a5f71c70ba"
+  integrity sha512-e1hj8lL3uM+sgSR4Lxzn5h1GxBlpa4CQz0XLF8kx4MDrDRWY0Ena4c97PUeSX9i5W3UAfDP0z0FXCTQkoXUl3Q==
+  dependencies:
+    react-fast-compare "^3.0.1"
+    warning "^4.0.2"
 
 react-property@2.0.0:
   version "2.0.0"
@@ -9906,6 +9953,13 @@ w3c-keyname@^2.2.0:
   version "2.2.6"
   resolved "https://registry.yarnpkg.com/w3c-keyname/-/w3c-keyname-2.2.6.tgz#8412046116bc16c5d73d4e612053ea10a189c85f"
   integrity sha512-f+fciywl1SJEniZHD6H+kUO8gOnwIr7f4ijKA6+ZvJFjeGi1r4PDLl53Ayud9O/rk64RqgoQine0feoeOU0kXg==
+
+warning@^4.0.2:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/warning/-/warning-4.0.3.tgz#16e9e077eb8a86d6af7d64aa1e05fd85b4678ca3"
+  integrity sha512-rpJyN222KWIvHJ/F53XSZv0Zl/accqHR8et1kpaMTD/fLCRxtV8iX8czMzY7sVZupTI3zcUTg8eycS2kNF9l6w==
+  dependencies:
+    loose-envify "^1.0.0"
 
 web-namespaces@^2.0.0:
   version "2.0.1"
