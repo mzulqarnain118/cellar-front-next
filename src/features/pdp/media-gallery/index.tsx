@@ -241,8 +241,18 @@ export const MediaGallery = ({ hasTastingVideo = false, images, videos }: MediaG
     children = (
       <>
         <div className="inline-flex h-[21.75rem] w-auto lg:h-[33rem]">
-          <video controls className="rounded">
+          <video controls playsInline className="rounded" controlsList="nodownload">
             <source src={activeMediaItem.video_link.url} type="video/mp4" />
+            {activeMediaItem.video_captions.link_type === 'Media' &&
+            'url' in activeMediaItem.video_captions ? (
+              <track
+                default
+                kind="subtitles"
+                label="English"
+                src={activeMediaItem.video_captions.url}
+                srcLang="en"
+              />
+            ) : undefined}
           </video>
         </div>
         {mediaItemElements.length > 1 ? thumbnails : undefined}
