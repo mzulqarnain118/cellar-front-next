@@ -125,14 +125,14 @@ const handler = async (req: NextRequest) => {
           pictureUrl: product.pictureUrl || undefined,
           price: product.price,
           quantityAvailable: product.quantityAvailable || 0,
-          sku: product.sku,
+          sku: product.sku.toLowerCase(),
           subscribable: product.subscribable || false,
           variations:
             (!!product.variations?.length &&
               product.variations?.map(variation => ({
                 active: variation.Active,
                 primary: variation.Primary,
-                sku: variation.SKU,
+                sku: variation.SKU.toLowerCase(),
                 variations:
                   variation.ProductVariations?.map(pVar => ({
                     option: pVar.VariationTypeOptionName,
@@ -144,12 +144,14 @@ const handler = async (req: NextRequest) => {
 
       return new Response(
         JSON.stringify({
-          data: uniqueBy(data.slice(0), 'sku')
+          data: uniqueBy(data, 'sku')
             .reduce<ProductsSchema[]>((array, product) => {
               const subscriptionSku = product.attributes?.['AutoSip Base SKU']
               if (subscriptionSku !== undefined) {
-                const autoSipProduct = array.find(item => item.sku === subscriptionSku)
-                product.autoSipProduct = autoSipProduct
+                const autoSipProduct = array.find(
+                  item => item.sku.toLowerCase() === subscriptionSku.toLowerCase()
+                )
+                product = { ...product, autoSipProduct }
               }
               array.push(product)
 

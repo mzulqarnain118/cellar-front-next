@@ -52,8 +52,8 @@ export const NumberPicker = ({
         className={clsx(
           `
             flex h-10 w-8 items-center justify-center rounded rounded-r-none border-solid
-            border-neutral-400 bg-neutral-50 text-neutral-600 transition
-            enabled:hover:bg-neutral-600 enabled:hover:text-neutral-50
+            border-neutral-400 bg-neutral-50 text-neutral-700 transition
+            enabled:hover:bg-neutral-700 enabled:hover:text-neutral-50
             disabled:cursor-not-allowed
           `,
           value === min && 'cursor-not-allowed',
@@ -94,8 +94,8 @@ export const NumberPicker = ({
         className={clsx(
           `
             flex h-10 w-8 items-center justify-center rounded rounded-l-none border-solid
-            border-neutral-400 bg-neutral-50 text-neutral-600 transition
-            enabled:hover:bg-neutral-600 enabled:hover:text-neutral-50
+            border-neutral-400 bg-neutral-50 text-neutral-700 transition
+            enabled:hover:bg-neutral-700 enabled:hover:text-neutral-50
             disabled:cursor-not-allowed
           `,
           size === 'sm' && 'h-8 w-6'

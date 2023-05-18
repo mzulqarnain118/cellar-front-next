@@ -11,6 +11,7 @@ import { Typography } from '@/core/components/typogrpahy'
 import { useProductQuery } from '@/lib/queries/products'
 import { Simplify } from '@/lib/types/prismic'
 
+import { CTA } from '../cta'
 import { Heading } from '../heading'
 
 const Accordions = dynamic(() => import('../accordions').then(({ Accordions }) => Accordions), {
@@ -32,12 +33,7 @@ export const Description = memo(({ cartUrl, prismicData }: DescriptionProps) => 
   return (
     <div>
       <Heading cartUrl={cartUrl} />
-      <div className="my-4 grid auto-rows-auto grid-cols-2 border-y border-neutral-light py-6">
-        <div>One-time purchase</div>
-        <div>Auto-Sip™</div>
-        <div>Number picker</div>
-        <div>Add to cart</div>
-      </div>
+      <CTA cartUrl={cartUrl} />
       <div className="flex items-center justify-between">
         <Typography>{flightData?.attributes?.Brand}</Typography>
         <Typography>{flightData?.attributes?.Origin}</Typography>

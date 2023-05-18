@@ -102,7 +102,7 @@ const PDP: NextPage<PageProps> = ({ page }) => {
   return (
     <div className="bg-[#f7f3f4]">
       <NextSeo />
-      <div className="container mx-auto">
+      <div className="container mx-auto py-10">
         <Breadcrumbs cartUrl={cartUrl} />
         <div className="grid gap-10 lg:grid-cols-2">
           <MediaGallery className="self-start" images={images} videos={page?.data.videos} />

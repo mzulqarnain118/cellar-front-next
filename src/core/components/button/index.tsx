@@ -21,8 +21,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           'rounded',
           'normal-case',
           dark &&
-            `!enabled:border-neutral-dark cursor-not-allowed bg-neutral-dark text-neutral-50
-          hover:bg-neutral-dark hover:brightness-90`,
+            `text-neutral-50 hover:bg-neutral-dark hover:brightness-90 enabled:border-neutral-dark
+          enabled:bg-neutral-dark disabled:cursor-not-allowed`,
           className
         )}
         color={dark ? 'ghost' : color || 'primary'}
