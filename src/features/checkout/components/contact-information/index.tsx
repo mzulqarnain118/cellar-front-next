@@ -54,10 +54,14 @@ export const ContactInformation = memo(({ opened, refs, toggle }: ContactInforma
       <Collapse className="!m-0 p-4" in={opened} transitionDuration={300}>
         <div className="relative space-y-4">
           <div>
-            <Typography as="p">{session?.user?.fullName}</Typography>
-            <Typography as="p">{session?.user?.email}</Typography>
+            <Typography noSpacing as="p">
+              {session?.user?.fullName}
+            </Typography>
+            <Typography noSpacing as="p">
+              {session?.user?.email}
+            </Typography>
             {consultant.displayId !== CORPORATE_CONSULTANT_ID ? (
-              <Typography as="p">
+              <Typography noSpacing as="p">
                 You&apos;re shopping with:{' '}
                 <strong>{consultant.displayName || consultant.url}</strong>
               </Typography>

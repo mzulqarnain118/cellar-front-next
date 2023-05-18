@@ -1,8 +1,11 @@
-import { SliceSimulator } from '@prismicio/slice-simulator-react'
+import { SliceZone } from '@prismicio/react'
+import { SliceSimulator } from '@slicemachine/adapter-next/simulator'
 
-import state from '.slicemachine/libraries-state.json'
-import { SliceZoneSimulator } from 'prismic/slice-zone-simulator'
+import { components } from '@/components/slices'
 
-const SliceSimulatorPage = () => <SliceSimulator sliceZone={SliceZoneSimulator} state={state} />
+const SliceSimulatorPage = () => (
+  // eslint-disable-next-line @arthurgeron/react-usememo/require-usememo
+  <SliceSimulator sliceZone={props => <SliceZone {...props} components={components} />} />
+)
 
 export default SliceSimulatorPage

@@ -253,6 +253,9 @@ export const theme: MantineThemeOverride = {
         rightSection: { marginRight: rem(8) },
       }),
     },
+    Skeleton: {
+      classNames: { root: 'after:bg-neutral-light w-full' },
+    },
     TextInput: {
       defaultProps: {
         size: 'md',

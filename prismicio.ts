@@ -1,18 +1,22 @@
-import { ClientConfig, createClient, getRepositoryName } from '@prismicio/client'
-import { LinkResolverFunction } from '@prismicio/helpers'
-import { CreateClientConfig, enableAutoPreviews } from '@prismicio/next'
+import * as prismic from '@prismicio/client'
+import * as prismicNext from '@prismicio/next'
 
 import { HOME_PAGE_PATH } from '@/lib/paths'
 
-import sm from './sm.json'
+import config from './slicemachine.config.json'
 
 /**
  * The project's Prismic repository name.
  */
-export const repositoryName = getRepositoryName(sm.apiEndpoint)
+export const repositoryName = config.repositoryName
 
-// Update the routes array to match your project's route structure
-const routes: ClientConfig['routes'] = [
+/**
+ * A list of Route Resolver objects that define how a document's `url` field
+ * is resolved.
+ *
+ * {@link https://prismic.io/docs/route-resolver#route-resolver}
+ */
+const routes: prismic.ClientConfig['routes'] = [
   {
     path: '/',
     type: 'rich_content_page',
@@ -47,16 +51,15 @@ const routes: ClientConfig['routes'] = [
 /**
  * Tells Prismic how to navigate the site from PrismicLink and PrismicRichText components.
  */
-export const linkResolver: LinkResolverFunction = document => document.url || HOME_PAGE_PATH
-
+export const linkResolver: prismic.LinkResolverFunction = document => document.url || HOME_PAGE_PATH
 /**
  * Creates a Prismic client for the project's repository. The client is used to
  * query content from the Prismic API.
  *
- * @param config {prismicNext.CreateClientConfig} - Configuration for the Prismic client.
+ * @param config - Configuration for the Prismic client.
  */
-export const createLocalClient = (config: CreateClientConfig = {}) => {
-  const client = createClient(sm.apiEndpoint, {
+export const createClient = (config: prismicNext.CreateClientConfig = {}) => {
+  const client = prismic.createClient(repositoryName, {
     defaultParams: {
       lang: process.env.NEXT_PUBLIC_PRISMIC_LANGUAGE,
     },
@@ -64,7 +67,7 @@ export const createLocalClient = (config: CreateClientConfig = {}) => {
     ...config,
   })
 
-  enableAutoPreviews({
+  prismicNext.enableAutoPreviews({
     client,
     previewData: config.previewData,
     req: config.req,
@@ -72,5 +75,3 @@ export const createLocalClient = (config: CreateClientConfig = {}) => {
 
   return client
 }
-
-export { createLocalClient as createClient }

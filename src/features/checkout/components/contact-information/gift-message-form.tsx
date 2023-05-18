@@ -105,14 +105,18 @@ export const GiftMessageForm = ({ refs }: GiftMessageFormProps) => {
             </Form>
           ) : (
             <>
-              <Typography as="p" className="text-14 font-bold">
+              <Typography noSpacing as="p" className="text-14 font-bold">
                 Recipient email
               </Typography>
-              <Typography as="p">{giftMessage.recipientEmail}</Typography>
-              <Typography as="p" className="mt-2 text-14 font-bold">
+              <Typography noSpacing as="p">
+                {giftMessage.recipientEmail}
+              </Typography>
+              <Typography noSpacing as="p" className="mt-2 text-14 font-bold">
                 Gift message
               </Typography>
-              <Typography as="p">{giftMessage.message}</Typography>
+              <Typography noSpacing as="p">
+                {giftMessage.message}
+              </Typography>
             </>
           )}
           {giftMessage.message.length ? (

@@ -32,42 +32,44 @@ export const CartSummary = () => {
     () => (
       <div className="grid text-14">
         <div className="grid grid-cols-2 items-center">
-          <Typography as="p" className="text-neutral-500">
+          <Typography noSpacing as="p" className="text-neutral-500">
             Subtotal
           </Typography>
-          <Typography as="p" className="text-right">
+          <Typography noSpacing as="p" className="text-right">
             {subtotal ? formatCurrency(subtotal) : '$--.--'}
           </Typography>
         </div>
         <div className="grid grid-cols-2 items-center">
-          <Typography as="p" className="text-neutral-500">
+          <Typography noSpacing as="p" className="text-neutral-500">
             Shipping
           </Typography>
-          <Typography as="p" className="text-right">
+          <Typography noSpacing as="p" className="text-right">
             {formatCurrency(shippingPrice)}
           </Typography>
         </div>
         {retailDeliveryFee ? (
           <div className="grid grid-cols-2 items-center">
-            <Typography as="p" className="text-neutral-500">
+            <Typography noSpacing as="p" className="text-neutral-500">
               Retail Delivery Fee
             </Typography>
-            <Typography as="p" className="text-right">
+            <Typography noSpacing as="p" className="text-right">
               {formatCurrency(retailDeliveryFee)}
             </Typography>
           </div>
         ) : undefined}
         <div className="grid grid-cols-2 items-center">
-          <Typography as="p" className="text-neutral-500">
+          <Typography noSpacing as="p" className="text-neutral-500">
             Tax
           </Typography>
-          <Typography as="p" className="text-right">
+          <Typography noSpacing as="p" className="text-right">
             {tax ? formatCurrency(tax) : '$--.--'}
           </Typography>
         </div>
         <div className="mt-4 grid grid-cols-2 items-center text-base font-bold">
-          <Typography as="p">TOTAL</Typography>
-          <Typography as="p" className="text-right">
+          <Typography noSpacing as="p">
+            TOTAL
+          </Typography>
+          <Typography noSpacing as="p" className="text-right">
             {orderTotal ? formatCurrency(orderTotal) : '$--.--'}
           </Typography>
         </div>

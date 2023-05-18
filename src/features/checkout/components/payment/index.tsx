@@ -233,7 +233,7 @@ export const Payment = memo(({ opened, refs, toggle }: PaymentProps) => {
                 />
                 <div>
                   <Typography className="text-sm">Please confirm the CVV for your card:</Typography>
-                  <Typography as="p" className="text-14 font-bold text-neutral-dark">
+                  <Typography noSpacing as="p" className="text-14 font-bold text-neutral-dark">
                     {activeCreditCard?.FriendlyDescription}
                   </Typography>
                 </div>

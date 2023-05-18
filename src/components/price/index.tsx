@@ -20,7 +20,7 @@ export const Price = ({ className, onSalePrice, price, subtext = true }: PricePr
           maximumFractionDigits: 2,
           minimumFractionDigits: 2,
         }).format(onSale ? onSalePrice : price || 0)}
-        {onSale && (
+        {onSale ? (
           <sup className="ml-1 font-medium text-neutral-500">
             <del>
               $
@@ -30,9 +30,9 @@ export const Price = ({ className, onSalePrice, price, subtext = true }: PricePr
               }).format(price)}
             </del>
           </sup>
-        )}
+        ) : undefined}
       </Typography>
-      {subtext && <Typography className="text-sm text-neutral-500">each</Typography>}
+      {subtext ? <Typography className="text-sm text-neutral-600">each</Typography> : undefined}
     </div>
   )
 }

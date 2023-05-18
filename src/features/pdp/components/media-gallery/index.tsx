@@ -6,10 +6,12 @@ import { Fragment, useCallback, useMemo, useRef, useState } from 'react'
 
 import ReactImageMagnify, { ImageProps, MagnifiedImageProps } from '@blacklab/react-image-magnify'
 import { PlayIcon } from '@heroicons/react/20/solid'
-import { Carousel } from '@mantine/carousel'
+import { Carousel, CarouselProps } from '@mantine/carousel'
+import { Skeleton } from '@mantine/core'
 import { Content } from '@prismicio/client'
 import { GroupField, LinkType } from '@prismicio/types'
 import { clsx } from 'clsx'
+import { useIsClient } from 'usehooks-ts'
 
 import { BlurImage } from '@/components/blur-image'
 import { useIsDesktop } from '@/core/hooks/use-is-desktop'
@@ -28,6 +30,7 @@ interface ImageSchema {
 }
 
 interface MediaGalleryProps {
+  className?: string
   hasTastingVideo?: boolean
   images: ImageSchema[]
   videos?: GroupField<Simplify<Content.PdpDocumentDataVideosItem>>
@@ -38,8 +41,19 @@ type ImageOrVideo = ImageSchema | Simplify<Content.PdpDocumentDataVideosItem>
 const isImage = (item: unknown): item is ImageSchema =>
   !!item && typeof item === 'object' && 'src' in item
 
-export const MediaGallery = ({ hasTastingVideo = false, images, videos }: MediaGalleryProps) => {
+const thumbnailClassNames: CarouselProps['classNames'] = {
+  control: 'bg-neutral-dark',
+  indicator: 'bg-neutral-dark',
+}
+
+export const MediaGallery = ({
+  className,
+  hasTastingVideo = false,
+  images,
+  videos,
+}: MediaGalleryProps) => {
   const isDesktop = useIsDesktop()
+  const isClient = useIsClient()
   const mediaRefs = useRef<HTMLDivElement[]>([])
   const videoMediaItems: Simplify<Content.PdpDocumentDataVideosItem>[] = useMemo(
     () => videos || [],
@@ -183,7 +197,11 @@ export const MediaGallery = ({ hasTastingVideo = false, images, videos }: MediaG
             onKeyDown={() => handleKeyboardPress(item, index)}
           >
             {!isImage(item) ? (
-              <PlayIcon className="absolute top-12 z-10 h-6 w-6 rounded-full border border-neutral-dark bg-white" />
+              <PlayIcon
+                className={`
+                  absolute top-12 z-10 h-6 w-6 rounded-full border border-neutral-dark bg-white
+                `}
+              />
             ) : undefined}
             <div className="relative h-28 w-28">
               <BlurImage fill priority alt={alt} className="object-contain" src={src} />
@@ -197,10 +215,11 @@ export const MediaGallery = ({ hasTastingVideo = false, images, videos }: MediaG
   const thumbnails = useMemo(
     () => (
       <Carousel
-        loop
+        withControls
         withIndicators
         align="start"
-        className="py-10"
+        className="w-full py-10"
+        classNames={thumbnailClassNames}
         slideGap="md"
         slideSize="25%"
         slidesToScroll={3}
@@ -212,6 +231,19 @@ export const MediaGallery = ({ hasTastingVideo = false, images, videos }: MediaG
     ),
     [mediaItemElements]
   )
+
+  if (!isClient) {
+    return (
+      <>
+        <Skeleton className="mx-auto h-[21.75rem] w-[16.5rem]" />
+        <div className="flex space-x-4">
+          <Skeleton className="h-28 w-28" />
+          <Skeleton className="h-28 w-28" />
+          <Skeleton className="h-28 w-28" />
+        </div>
+      </>
+    )
+  }
 
   let children = <></>
   if (isImage(activeMediaItem) && imageProps !== undefined && magnifiedImageProps !== undefined) {
@@ -260,5 +292,9 @@ export const MediaGallery = ({ hasTastingVideo = false, images, videos }: MediaG
     )
   }
 
-  return <div className="inline-flex flex-col items-center justify-center">{children}</div>
+  return (
+    <div className={clsx('inline-flex flex-col items-center justify-center', className)}>
+      {children}
+    </div>
+  )
 }
