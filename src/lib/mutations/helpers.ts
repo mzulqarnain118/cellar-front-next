@@ -96,12 +96,12 @@ export const getNewCartItems = (
         OrderLineID,
         Price,
         ProductCartUrl,
-        ProductDisplayName,
         ProductImage,
         ProductSKU,
         Quantity,
       }) => {
-        const correspondingItem = originalCartItems.find(item => item.sku === ProductSKU)
+        const productSku = ProductSKU.toLowerCase()
+        const correspondingItem = originalCartItems.find(item => item.sku === productSku)
         const fallbackValues = {
           catalogId: 0,
           displayCategories: [],
@@ -115,14 +115,14 @@ export const getNewCartItems = (
         }
         const item = {
           cartUrl: ProductCartUrl,
-          displayName: ProductDisplayName,
+          displayName: cartItem.displayName,
           onSalePrice: DisplayPrice || ComparePrice,
           orderId: OrderID,
           orderLineId: OrderLineID,
           pictureUrl: ProductImage,
           price: Price,
           quantity: Quantity,
-          sku: ProductSKU,
+          sku: productSku,
         }
 
         if (correspondingItem !== undefined) {
@@ -132,7 +132,7 @@ export const getNewCartItems = (
           } satisfies CartItem
         }
 
-        if (cartItem.sku === ProductSKU) {
+        if (cartItem.sku === productSku) {
           return {
             ...item,
             ...cartItem,

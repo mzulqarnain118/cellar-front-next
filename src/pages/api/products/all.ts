@@ -148,10 +148,15 @@ const handler = async (req: NextRequest) => {
             .reduce<ProductsSchema[]>((array, product) => {
               const subscriptionSku = product.attributes?.['AutoSip Base SKU']
               if (subscriptionSku !== undefined) {
-                const autoSipProduct = array.find(
+                const subscriptionProduct = data.find(
                   item => item.sku.toLowerCase() === subscriptionSku.toLowerCase()
                 )
-                product = { ...product, autoSipProduct }
+                if (subscriptionProduct !== undefined) {
+                  product = {
+                    ...product,
+                    subscriptionProduct,
+                  }
+                }
               }
               array.push(product)
 

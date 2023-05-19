@@ -62,7 +62,7 @@ export const schema = z.object({
     .optional(),
 })
 
-const productSchema = schema.merge(z.object({ autoSipProduct: schema.optional() }))
+const productSchema = schema.merge(z.object({ subscriptionProduct: schema.optional() }))
 
 export type ProductsSchema = z.infer<typeof productSchema>
 

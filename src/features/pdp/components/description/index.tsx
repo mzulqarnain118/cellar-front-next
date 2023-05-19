@@ -32,7 +32,7 @@ export const Description = memo(({ cartUrl, prismicData }: DescriptionProps) => 
 
   return (
     <div>
-      <Heading cartUrl={cartUrl} />
+      <Heading />
       <CTA cartUrl={cartUrl} />
       <div className="flex items-center justify-between">
         <Typography>{flightData?.attributes?.Brand}</Typography>

@@ -2,16 +2,13 @@ import { Skeleton } from '@mantine/core'
 
 import { Price } from '@/components/price'
 import { Typography } from '@/core/components/typogrpahy'
-import { useProductQuery } from '@/lib/queries/products'
 
-interface HeadingProps {
-  cartUrl: string
-}
+import { usePdpSelectedProduct } from '../../store'
 
-export const Heading = ({ cartUrl }: HeadingProps) => {
-  const { data: flightData, isError, isFetching, isLoading } = useProductQuery(cartUrl)
+export const Heading = () => {
+  const selectedProduct = usePdpSelectedProduct()
 
-  if (isFetching || isLoading) {
+  if (selectedProduct === undefined) {
     return (
       <>
         <Skeleton className="h-14 lg:h-9" />
@@ -21,30 +18,22 @@ export const Heading = ({ cartUrl }: HeadingProps) => {
     )
   }
 
-  if (isError) {
-    // ! TODO: do something
-  }
-
-  if (!flightData) {
-    return <></>
-  }
-
   return (
     <div className="space-y-4">
       <div className="space-y-1">
         <Typography as="h1" displayAs="h4">
-          {flightData?.displayName}
+          {selectedProduct.displayName}
         </Typography>
         <Typography as="p">
-          {flightData?.attributes?.SubType} - {flightData?.attributes?.Varietal} -{' '}
-          {flightData?.attributes?.['Container Size']}
+          {selectedProduct.attributes?.SubType} - {selectedProduct.attributes?.Varietal} -{' '}
+          {selectedProduct.attributes?.['Container Size']}
         </Typography>
       </div>
-      {flightData?.price !== undefined ? (
+      {selectedProduct.price !== undefined ? (
         <Price
           className="!text-3xl"
-          price={flightData?.price}
-          onSalePrice={flightData?.onSalePrice}
+          price={selectedProduct.price}
+          onSalePrice={selectedProduct.onSalePrice}
         />
       ) : undefined}
     </div>

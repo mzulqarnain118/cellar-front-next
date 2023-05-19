@@ -131,8 +131,9 @@ export const CartDrawer = () => {
                 <Typography className="pb-2 text-lg">Your cart is empty!</Typography>
                 <Link
                   className={`
-                  btn-outline btn-secondary btn-sm btn inline-flex items-center justify-center gap-1
-                `}
+                    btn-outline btn-secondary btn-sm btn inline-flex items-center justify-center
+                    gap-1
+                  `}
                   href={WINE_PAGE_PATH}
                   onClick={handleGoShoppingClick}
                 >
@@ -147,8 +148,9 @@ export const CartDrawer = () => {
       <div
         ref={footerRef}
         className={`
-            sticky bottom-0 left-0 flex w-full items-center justify-between gap-10 border-t border-base-dark bg-base-light p-4
-          `}
+          sticky bottom-0 left-0 flex w-full items-center justify-between gap-10 border-t
+          border-base-dark bg-base-light p-4
+        `}
       >
         <div className="flex flex-col">
           <Typography>Subtotal</Typography>

@@ -13,7 +13,7 @@ import { useAddToCartMutation } from '@/lib/mutations/cart/add-to-cart'
 import { useUpdateQuantityMutation } from '@/lib/mutations/cart/update-quantity'
 import { useCartQuery } from '@/lib/queries/cart'
 import { useProcessStore } from '@/lib/stores/process'
-import { AutoSipProduct, CartItem } from '@/lib/types'
+import { CartItem, SubscriptionProduct } from '@/lib/types'
 
 import { Price } from '../price'
 import { Rating } from '../rating'
@@ -29,10 +29,10 @@ const MAX = 24
 
 interface ProductCardProps {
   priority?: boolean
-  product: AutoSipProduct | CartItem
+  product: SubscriptionProduct | CartItem
 }
 
-const isCartProduct = (product: AutoSipProduct | CartItem): product is CartItem =>
+const isCartProduct = (product: SubscriptionProduct | CartItem): product is CartItem =>
   'orderLineId' in product && 'orderId' in product && 'quantity' in product
 
 const selectStyles: SelectProps['styles'] = theme => ({
@@ -60,6 +60,7 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
   const { mutate: addToCart, isLoading: isAddingToCart } = useAddToCartMutation()
   const { mutate: updateQuantity, isLoading: isUpdatingQuantity } = useUpdateQuantityMutation()
   const numberPickerDisabled = isAddingToCart || isUpdatingQuantity
+  console.log(product)
 
   const handleQuantityChange = useCallback(
     (item: CartItem, newQuantity?: number) => {
@@ -111,8 +112,8 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
 
   const variationOptions = useMemo(
     () =>
-      product.autoSipProduct?.variations !== undefined
-        ? product.autoSipProduct?.variations
+      product.subscriptionProduct?.variations !== undefined
+        ? product.subscriptionProduct?.variations
             .filter(variation => variation.active)
             .flatMap(variation =>
               variation.variations?.map(innerVariation => ({
@@ -123,14 +124,14 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
             )
             .filter(Boolean)
         : [],
-    [product.autoSipProduct?.variations]
+    [product.subscriptionProduct?.variations]
   )
 
   const handleDropdownChange: SelectProps['onChange'] = useCallback(
     (newValue: string) => {
       setVariationType(newValue)
-      if (newValue !== product.sku && product.autoSipProduct !== undefined) {
-        setSelectedProduct(product.autoSipProduct)
+      if (newValue !== product.sku && product.subscriptionProduct !== undefined) {
+        setSelectedProduct(product.subscriptionProduct)
         setChangedVariation(true)
       } else {
         setSelectedProduct(product)
@@ -160,8 +161,8 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
 
   const dropdownOrNumberPicker = useMemo(
     () =>
-      product.autoSipProduct !== undefined || changedVariation ? (
-        <div className="grid gap-1">
+      product.subscriptionProduct !== undefined || changedVariation ? (
+        <div className="grid">
           <label
             aria-label={variationType}
             className="invisible h-0 w-0 text-sm"
@@ -170,9 +171,11 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
             {variationType}
           </label>
           <Select
+            className="mr-8"
             data={variationOptionsDropwdown}
             id="selected-sku"
             name="selected-sku"
+            size="md"
             styles={selectStyles}
             value={selectedSku}
             onChange={handleDropdownChange}
@@ -199,7 +202,7 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
       handleRemove,
       isDesktop,
       numberPickerDisabled,
-      product.autoSipProduct,
+      product.subscriptionProduct,
       quantity,
       selectedSku,
       variationOptionsDropwdown,
@@ -255,7 +258,7 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
               </div>
               <Link
                 className="card-title text-base font-semibold leading-normal !text-neutral-900"
-                href={`/product/${selectedProduct.cartUrl}`}
+                href={`/product/${product.cartUrl}`}
               >
                 {selectedProduct.displayName}
               </Link>
