@@ -12,11 +12,8 @@ import { BlurImage } from '@/components/blur-image'
 import { Typography } from '@/core/components/typogrpahy'
 import { ProductsSchema } from '@/lib/types/schemas/product'
 
-import { usePrismicProductQuery } from '../../queries/prismic-product'
-
 interface AccordionsProps {
   attributes: ProductsSchema['attributes']
-  cartUrl: string
   data: SliceZone<Content.PdpDocumentDataBodyAccordionSlice>
 }
 
@@ -32,8 +29,7 @@ const isCustomAccordion = (data: unknown): data is CustomAccordion =>
   'id' in data &&
   (data.id === 'tasting-notes' || data.id === 'pairing-notes')
 
-export const Accordions = ({ attributes, cartUrl, data }: AccordionsProps) => {
-  const { data: _prismicData } = usePrismicProductQuery(cartUrl)
+export const Accordions = ({ attributes, data }: AccordionsProps) => {
   const tastingNotes = useMemo(
     () =>
       attributes?.['Tasting Notes']?.map(note => (

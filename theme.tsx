@@ -188,6 +188,10 @@ export const theme: MantineThemeOverride = {
   },
   components: {
     Carousel: {
+      classNames: {
+        control: 'bg-neutral-dark',
+        indicator: 'bg-neutral-dark',
+      },
       defaultProps: {
         align: 'center',
         nextControlIcon: <ChevronRightIcon className="h-5 w-5 text-neutral-50" />,

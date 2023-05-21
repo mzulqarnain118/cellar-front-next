@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import dynamic from 'next/dynamic'
 import Error from 'next/error'
 import { useRouter } from 'next/router'
 
@@ -14,6 +15,10 @@ import { MediaGallery } from '@/features/pdp/components/media-gallery'
 import { getStaticNavigation } from '@/lib/queries/header'
 import { PRODUCTS_QUERY_KEY, getProductByCartUrl, useProductQuery } from '@/lib/queries/products'
 import { createClient } from '@/prismic-io'
+
+const Brand = dynamic(() => import('@/features/pdp/components/brand').then(({ Brand }) => Brand), {
+  ssr: false,
+})
 
 const graphQuery = `{
   pdp {
@@ -108,6 +113,7 @@ const PDP: NextPage<PageProps> = ({ page }) => {
           <MediaGallery className="self-start" images={images} videos={page?.data.videos} />
           <Description cartUrl={cartUrl} prismicData={page?.data} />
         </div>
+        <Brand cartUrl={cartUrl} className="py-4" />
       </div>
     </div>
   )

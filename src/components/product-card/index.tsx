@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic'
 import Image from 'next/image'
 
 import { Select, SelectProps } from '@mantine/core'
+import { clsx } from 'clsx'
 
 import { Button } from '@/core/components/button'
 import { NumberPicker } from '@/core/components/number-picker'
@@ -28,6 +29,7 @@ const MIN = 1
 const MAX = 24
 
 interface ProductCardProps {
+  className?: string
   priority?: boolean
   product: SubscriptionProduct | CartItem
 }
@@ -47,7 +49,7 @@ const selectStyles: SelectProps['styles'] = theme => ({
   },
 })
 
-export const ProductCard = ({ priority = false, product }: ProductCardProps) => {
+export const ProductCard = ({ className, priority = false, product }: ProductCardProps) => {
   const isDesktop = useIsDesktop()
   const [changedVariation, setChangedVariation] = useState(false)
   const [quantity, setQuantity] = useState(1)
@@ -60,7 +62,6 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
   const { mutate: addToCart, isLoading: isAddingToCart } = useAddToCartMutation()
   const { mutate: updateQuantity, isLoading: isUpdatingQuantity } = useUpdateQuantityMutation()
   const numberPickerDisabled = isAddingToCart || isUpdatingQuantity
-  console.log(product)
 
   const handleQuantityChange = useCallback(
     (item: CartItem, newQuantity?: number) => {
@@ -233,10 +234,13 @@ export const ProductCard = ({ priority = false, product }: ProductCardProps) => 
 
   return (
     <div
-      className={`
+      className={clsx(
+        `
         relative grid grid-rows-[1fr_auto_auto] rounded-lg border border-solid border-base-dark
         bg-base-light p-6 shadow md:gap-6
-      `}
+      `,
+        className
+      )}
     >
       <div className="flex items-center justify-center justify-self-center">
         {badges}

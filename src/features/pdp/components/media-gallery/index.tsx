@@ -6,7 +6,7 @@ import { Fragment, useCallback, useMemo, useRef, useState } from 'react'
 
 import ReactImageMagnify, { ImageProps, MagnifiedImageProps } from '@blacklab/react-image-magnify'
 import { PlayIcon } from '@heroicons/react/20/solid'
-import { Carousel, CarouselProps } from '@mantine/carousel'
+import { Carousel } from '@mantine/carousel'
 import { Skeleton } from '@mantine/core'
 import { Content } from '@prismicio/client'
 import { GroupField, LinkType } from '@prismicio/types'
@@ -40,11 +40,6 @@ type ImageOrVideo = ImageSchema | Simplify<Content.PdpDocumentDataVideosItem>
 
 const isImage = (item: unknown): item is ImageSchema =>
   !!item && typeof item === 'object' && 'src' in item
-
-const thumbnailClassNames: CarouselProps['classNames'] = {
-  control: 'bg-neutral-dark',
-  indicator: 'bg-neutral-dark',
-}
 
 export const MediaGallery = ({
   className,
@@ -219,7 +214,6 @@ export const MediaGallery = ({
         withIndicators
         align="start"
         className="w-full py-10"
-        classNames={thumbnailClassNames}
         slideGap="md"
         slideSize="25%"
         slidesToScroll={3}

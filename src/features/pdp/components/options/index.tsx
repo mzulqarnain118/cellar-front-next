@@ -50,8 +50,6 @@ export const Options = ({ cartUrl }: OptionsProps) => {
     }
   }, [flightData, setSelectedOption, setSelectedProduct])
 
-  console.log('selectedProduct', selectedProduct)
-
   const variationMap = useMemo(
     () =>
       selectedProduct?.variations

@@ -64,7 +64,7 @@ const handler = async (req: NextRequest) => {
             error: { message: `The product with cartUrl: ${cartUrl}, could not be found` },
             success: false,
           }),
-          { status: 404 }
+          { status: 204 }
         )
       }
     }
