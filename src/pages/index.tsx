@@ -33,7 +33,9 @@ const HomePage: NextPage<PageProps> = ({ page }: PageProps) => (
       description={asText(page?.data.meta_description) || undefined}
       title={asText(page?.data.meta_title) || undefined}
     />
-    <SliceZone components={components} slices={page?.data.body} />
+    <main>
+      <SliceZone components={components} slices={page?.data.body} />
+    </main>
   </>
 )
 

@@ -6,7 +6,9 @@ import { Typography } from '@/core/components/typogrpahy'
 const ForgotPasswordPage: NextPage = () => (
   <>
     <NextSeo />
-    <Typography as="h1">Forgot Password</Typography>
+    <main>
+      <Typography as="h1">Forgot Password</Typography>
+    </main>
   </>
 )
 

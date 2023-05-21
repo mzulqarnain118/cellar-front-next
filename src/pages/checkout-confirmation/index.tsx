@@ -9,6 +9,7 @@ const CheckoutConfirmationPage: NextPage = () => {
   return (
     <>
       <NextSeo />
+      <main></main>
     </>
   )
 }

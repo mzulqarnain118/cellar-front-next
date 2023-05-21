@@ -3,6 +3,7 @@ import { Suspense, lazy, useEffect, useState } from 'react'
 import type { AppProps } from 'next/app'
 import dynamic from 'next/dynamic'
 import { Merriweather } from 'next/font/google'
+import Head from 'next/head'
 
 import { MantineProvider } from '@mantine/core'
 import { ModalsProvider } from '@mantine/modals'
@@ -93,7 +94,9 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
                   <PrismicPreview repositoryName={repositoryName}>
                     <DefaultSeo {...defaultSEOConfig} />
                     <RootLayout>
-                      <meta content="width=device-width, initial-scale=1" name="viewport" />
+                      <Head>
+                        <meta content="width=device-width, initial-scale=1" name="viewport" />
+                      </Head>
                       <style global jsx>
                         {`
                           :root {

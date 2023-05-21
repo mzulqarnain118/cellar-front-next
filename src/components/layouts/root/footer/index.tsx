@@ -1,3 +1,5 @@
+'use client'
+
 import dynamic from 'next/dynamic'
 
 import { CompanyLogo } from '@/components/company-logo'

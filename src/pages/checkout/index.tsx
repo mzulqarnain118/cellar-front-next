@@ -335,42 +335,44 @@ const CheckoutPage: NextPage<PageProps> = () => {
   return (
     <>
       <NextSeo title="Checkout" />
-      <div className="mt-8 flex h-full flex-col-reverse rounded lg:flex-row">
-        <div className="h-full flex-1 space-y-6 rounded">
-          <ContactInformation
-            opened={contactInformationOpened}
-            refs={contactInformationRefs}
-            toggle={toggleContactInformation}
-          />
-          <Delivery opened={deliveryOpened} refs={deliveryRefs} toggle={toggleDelivery} />
-          <Payment opened={paymentOpened} refs={paymentRefs} toggle={togglePayment} />
-          <PayForOrder refs={payForOrderRefs} validate={validate} />
-        </div>
-        <div className="flex-1">
-          <div
-            className={`
+      <main>
+        <div className="mt-8 flex h-full flex-col-reverse rounded lg:flex-row">
+          <div className="h-full flex-1 space-y-6 rounded">
+            <ContactInformation
+              opened={contactInformationOpened}
+              refs={contactInformationRefs}
+              toggle={toggleContactInformation}
+            />
+            <Delivery opened={deliveryOpened} refs={deliveryRefs} toggle={toggleDelivery} />
+            <Payment opened={paymentOpened} refs={paymentRefs} toggle={togglePayment} />
+            <PayForOrder refs={payForOrderRefs} validate={validate} />
+          </div>
+          <div className="flex-1">
+            <div
+              className={`
               m-auto max-w-[28.5rem] rounded border border-base-dark bg-neutral-50 p-4 lg:relative
               lg:shadow-xl lg:transition-[top] lg:duration-500
             `}
-            style={{ top: scroll.y }}
-          >
-            <div className="flex items-center justify-between">
-              <Typography
-                noSpacing
-                as="h2"
-                className="!font-body !text-lg !font-bold lg:!text-3xl"
-                displayAs="h4"
-              >
-                Your cart
-              </Typography>
-              <Badge className="text-lg" color="info" size="lg">
-                {quantity}
-              </Badge>
+              style={{ top: scroll.y }}
+            >
+              <div className="flex items-center justify-between">
+                <Typography
+                  noSpacing
+                  as="h2"
+                  className="!font-body !text-lg !font-bold lg:!text-3xl"
+                  displayAs="h4"
+                >
+                  Your cart
+                </Typography>
+                <Badge className="text-lg" color="info" size="lg">
+                  {quantity}
+                </Badge>
+              </div>
+              <CartSummary />
             </div>
-            <CartSummary />
           </div>
         </div>
-      </div>
+      </main>
     </>
   )
 }

@@ -20,7 +20,7 @@ type PageProps = InferGetStaticPropsType<typeof getStaticProps>
 const CreateAccountPage: NextPage<PageProps> = () => (
   <>
     <NextSeo />
-    <div className="container mx-auto flex items-center justify-center py-16">
+    <main className="container mx-auto flex items-center justify-center py-16">
       <div
         className={`
           relative max-w-3xl space-y-4 rounded border border-solid border-base-dark
@@ -32,7 +32,7 @@ const CreateAccountPage: NextPage<PageProps> = () => (
         </Typography>
         <CreateAccountForm />
       </div>
-    </div>
+    </main>
   </>
 )
 

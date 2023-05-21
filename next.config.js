@@ -1,8 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    typedRoutes: true,
-  },
   images: {
     formats: ['image/avif', 'image/webp'],
     remotePatterns: [
@@ -29,6 +26,13 @@ const nextConfig = {
     ],
   },
   reactStrictMode: true,
+  redirects: async () => [
+    {
+      destination: '/my-account/profile',
+      permanent: true,
+      source: '/my-account',
+    },
+  ],
 }
 
 module.exports = nextConfig

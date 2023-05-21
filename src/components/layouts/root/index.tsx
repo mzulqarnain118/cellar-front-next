@@ -26,8 +26,7 @@ export const RootLayout = ({ children }: RootLayoutProps) => {
       {/* ! TODO: Add skip link. */}
       {/* <SkipLink /> */}
       <Header />
-
-      <main tabIndex={-1}>{children}</main>
+      {children}
       <Footer />
     </div>
   )

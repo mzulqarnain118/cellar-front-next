@@ -132,96 +132,98 @@ const SignInPage: NextPage<PageProps> = () => {
   }
 
   return (
-    <div className="py-16">
+    <>
       <NextSeo />
-      <div className="container mx-auto">
-        <div className="container">
-          <div
-            className={clsx(
-              `
+      <main className="py-16">
+        <div className="container mx-auto">
+          <div className="container">
+            <div
+              className={clsx(
+                `
                 relative grid gap-12 divide-y divide-solid divide-neutral-200 rounded border
                 border-solid border-neutral-200 bg-neutral-50 p-10 md:mx-auto
                 md:max-w-6xl md:grid-cols-2 md:gap-0 md:divide-x
               `,
-              fullName !== undefined && !!fullName.length && 'md:max-w-xl md:grid-cols-1'
-            )}
-          >
-            <LoadingOverlay visible={isSubmitting} />
-            <div className={clsx('md:pr-16', fullName && 'md:pr-0')}>
-              <div className="mb-3">
-                {fullName !== undefined && !!fullName.length ? (
-                  <Typography as="h4">Welcome back, {fullName}</Typography>
-                ) : (
-                  <Typography as="h3" className="!m-0">
-                    Returning Customers
-                  </Typography>
-                )}
-              </div>
-              <form className="grid auto-rows-auto gap-4" onSubmit={handleSubmit(onSubmit)}>
-                <Input
-                  id="email"
-                  label="Email"
-                  // rightSection={isValidatingEmail ? <Loader size="sm" /> : undefined}
-                  type="email"
-                  {...register('email', {
-                    onBlur: event => {
-                      const newEmail = event.target.value
-                      if (newEmail.trim().length > 0) {
-                        validateEmail({
-                          callback: _resopnse => {
-                            // console.log()
-                          },
-                          email: newEmail.trim(),
-                        })
-                      }
-                    },
-                  })}
-                />
-                <PasswordInput
-                  error={errors.password?.message}
-                  label="Password"
-                  {...passwordRegister}
-                  ref={passwordFormRef}
-                />
-                <div className="flex items-center justify-between pt-2">
-                  <Button type="submit">Sign in</Button>
-                  <Link href="/forgot-password">Forgot password?</Link>
+                fullName !== undefined && !!fullName.length && 'md:max-w-xl md:grid-cols-1'
+              )}
+            >
+              <LoadingOverlay visible={isSubmitting} />
+              <div className={clsx('md:pr-16', fullName && 'md:pr-0')}>
+                <div className="mb-3">
+                  {fullName !== undefined && !!fullName.length ? (
+                    <Typography as="h4">Welcome back, {fullName}</Typography>
+                  ) : (
+                    <Typography as="h3" className="!m-0">
+                      Returning Customers
+                    </Typography>
+                  )}
                 </div>
-              </form>
-            </div>
-            {!fullName && (
-              <div className="space-y-3 border-x-0 pt-4 md:!border-y-0 md:border-x md:!pt-0 md:pl-16">
-                <Typography as="h3" className="!m-0">
-                  New to Scout & Cellar?
-                </Typography>
-                {/* {redirectTo === CHECKOUT_URL && !hasSubscriptionInCart && (
-                  <div className="pb-4">
-                    <h6>Are you ready to checkout?</h6>
-                    <button
-                      className="btn-primary btn"
-                      onClick={async () => {
-                        await navigate(CHECKOUT_URL, { state: { method: 'guest' } })
-                      }}
-                    >
-                      Proceed as guest
-                    </button>
+                <form className="grid auto-rows-auto gap-4" onSubmit={handleSubmit(onSubmit)}>
+                  <Input
+                    id="email"
+                    label="Email"
+                    // rightSection={isValidatingEmail ? <Loader size="sm" /> : undefined}
+                    type="email"
+                    {...register('email', {
+                      onBlur: event => {
+                        const newEmail = event.target.value
+                        if (newEmail.trim().length > 0) {
+                          validateEmail({
+                            callback: _resopnse => {
+                              // console.log()
+                            },
+                            email: newEmail.trim(),
+                          })
+                        }
+                      },
+                    })}
+                  />
+                  <PasswordInput
+                    error={errors.password?.message}
+                    label="Password"
+                    {...passwordRegister}
+                    ref={passwordFormRef}
+                  />
+                  <div className="flex items-center justify-between pt-2">
+                    <Button type="submit">Sign in</Button>
+                    <Link href="/forgot-password">Forgot password?</Link>
                   </div>
-                )} */}
-                <Typography as="h6" className="!text-lg">
-                  Create an account. Here&apos;s why you should:
-                </Typography>
-                <ul className="ml-4 list-disc">
-                  <li>Keep track of your orders.</li>
-                  <li>Earn rewards and credits for qualifying purchases.</li>
-                  <li>Keep up to date on new products and promotions.</li>
-                </ul>
-                <Button onClick={handleCreateAccount}>Create my account</Button>
+                </form>
               </div>
-            )}
+              {!fullName && (
+                <div className="space-y-3 border-x-0 pt-4 md:!border-y-0 md:border-x md:!pt-0 md:pl-16">
+                  <Typography as="h3" className="!m-0">
+                    New to Scout & Cellar?
+                  </Typography>
+                  {/* {redirectTo === CHECKOUT_URL && !hasSubscriptionInCart && (
+                    <div className="pb-4">
+                      <h6>Are you ready to checkout?</h6>
+                      <button
+                        className="btn-primary btn"
+                        onClick={async () => {
+                          await navigate(CHECKOUT_URL, { state: { method: 'guest' } })
+                        }}
+                      >
+                        Proceed as guest
+                      </button>
+                    </div>
+                  )} */}
+                  <Typography as="h6" className="!text-lg">
+                    Create an account. Here&apos;s why you should:
+                  </Typography>
+                  <ul className="ml-4 list-disc">
+                    <li>Keep track of your orders.</li>
+                    <li>Earn rewards and credits for qualifying purchases.</li>
+                    <li>Keep up to date on new products and promotions.</li>
+                  </ul>
+                  <Button onClick={handleCreateAccount}>Create my account</Button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      </main>
+    </>
   )
 }
 

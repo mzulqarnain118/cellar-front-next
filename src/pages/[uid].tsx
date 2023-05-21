@@ -72,7 +72,9 @@ const RichContentPage = ({ page }: PageProps) => (
       description={asText(page?.data.meta_description)}
       title={asText(page?.data.meta_title)}
     />
-    <SliceZone components={components} slices={page?.data.body} />
+    <main>
+      <SliceZone components={components} slices={page?.data.body} />
+    </main>
   </>
 )
 

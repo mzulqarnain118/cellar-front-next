@@ -53,7 +53,7 @@ type PageProps = InferGetStaticPropsType<typeof getStaticProps>
 const CategoryPage: NextPage<PageProps> = () => (
   <>
     <NextSeo />
-    Hi, there
+    <main>Hi, there</main>
   </>
 )
 

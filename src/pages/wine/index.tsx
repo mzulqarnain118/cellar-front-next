@@ -73,11 +73,11 @@ const PLP: NextPage<PageProps> = () => {
   return (
     <>
       <NextSeo />
-      <div className="py-10">
+      <main className="py-10">
         <div className="container mx-auto">
           <ProductListing categories={categories} limit={limit} page={currentPage} sort={sort} />
         </div>
-      </div>
+      </main>
     </>
   )
 }
