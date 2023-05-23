@@ -101,11 +101,11 @@ export const MediaGallery = ({
     (mediaItem: ImageOrVideo, index: number) => {
       if (mediaItems && mediaItem) {
         setActiveMediaItem(mediaItem)
-        mediaRefs.current[index].classList.add('active')
+        mediaRefs.current[index]?.classList.add('active')
 
         for (let imgIndex = 0; imgIndex < mediaItems.length; imgIndex++) {
           if (index !== imgIndex) {
-            mediaRefs.current[imgIndex].classList.remove('active')
+            mediaRefs.current[imgIndex]?.classList.remove('active')
           }
         }
       }

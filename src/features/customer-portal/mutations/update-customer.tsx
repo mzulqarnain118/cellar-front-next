@@ -1,9 +1,11 @@
 import { showNotification } from '@mantine/notifications'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 
 import { useCustomerPortalActions } from '@/features/store'
 import { api } from '@/lib/api'
+
+import { CUSTOMER_QUERY_KEY } from '../queries/get-customer'
 
 interface Response {
   status: boolean
@@ -65,6 +67,7 @@ export const updateCustomer = async ({
 export const useUpdateCustomerMutation = () => {
   const { data: session } = useSession()
   const { setIsLoading } = useCustomerPortalActions()
+  const queryClient = useQueryClient()
 
   return useMutation<Response, Error, Omit<CustomerData, 'displayId' | 'personId' | 'phoneNumber'>>(
     {
@@ -76,8 +79,16 @@ export const useUpdateCustomerMutation = () => {
           phoneNumber: '',
         }),
       mutationKey: ['update-customer'],
-      onMutate: () => setIsLoading(true),
-      onSettled: () => setIsLoading(false),
+      onError: error => {
+        showNotification({ message: error.message })
+      },
+      onMutate: () => {
+        setIsLoading(true)
+      },
+      onSettled: () => {
+        queryClient.invalidateQueries([CUSTOMER_QUERY_KEY, session?.user?.displayId])
+        setIsLoading(false)
+      },
       onSuccess: () => {
         showNotification({ message: 'Your profile changes are saved!' })
       },

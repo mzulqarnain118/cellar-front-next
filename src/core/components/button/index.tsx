@@ -4,7 +4,7 @@ import { useReducedMotion } from '@mantine/hooks'
 import { clsx } from 'clsx'
 import { Button as DaisyButton, ButtonProps as DaisyButtonProps } from 'react-daisyui'
 
-interface ButtonProps extends DaisyButtonProps {
+export interface ButtonProps extends DaisyButtonProps {
   dark?: boolean
 }
 

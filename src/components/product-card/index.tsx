@@ -17,7 +17,6 @@ import { useProcessStore } from '@/lib/stores/process'
 import { CartItem, SubscriptionProduct } from '@/lib/types'
 
 import { Price } from '../price'
-import { Rating } from '../rating'
 
 import { ProductImageLink } from './product-image-link'
 
@@ -272,7 +271,6 @@ export const ProductCard = ({ className, priority = false, product }: ProductCar
                 flex items-center justify-between md:flex-col md:items-start md:gap-2 md:pt-2
               `}
             >
-              <Rating rating={Math.floor(Math.random() * 5) + 1} />
               <Price price={selectedProduct.price} onSalePrice={selectedProduct.onSalePrice} />
             </div>
           </div>

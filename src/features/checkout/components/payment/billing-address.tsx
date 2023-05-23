@@ -6,7 +6,11 @@ import { Input } from '@/core/components/input'
 
 import { CreditCardFormSchema } from './credit-card-form'
 
-export const BillingAddress = () => {
+interface BillingAddressProps {
+  noCheckbox?: boolean
+}
+
+export const BillingAddress = ({ noCheckbox = false }: BillingAddressProps) => {
   const {
     control,
     formState: { errors },
@@ -18,23 +22,25 @@ export const BillingAddress = () => {
 
   return (
     <>
-      <Checkbox
-        color="dark"
-        error={errors.sameAsShipping?.message}
-        label="Billing address same as shipping address"
-        {...register('sameAsShipping', {
-          onChange: () => {
-            resetField('addressOne')
-            resetField('addressTwo')
-            resetField('city')
-            resetField('company')
-            resetField('firstName')
-            resetField('lastName')
-            resetField('state')
-            resetField('zipCode')
-          },
-        })}
-      />
+      {noCheckbox ? undefined : (
+        <Checkbox
+          color="dark"
+          error={errors.sameAsShipping?.message}
+          label="Billing address same as shipping address"
+          {...register('sameAsShipping', {
+            onChange: () => {
+              resetField('addressOne')
+              resetField('addressTwo')
+              resetField('city')
+              resetField('company')
+              resetField('firstName')
+              resetField('lastName')
+              resetField('state')
+              resetField('zipCode')
+            },
+          })}
+        />
+      )}
 
       <Collapse in={!sameAsShipping}>
         <div className="auto-grid-rows grid grid-cols-12 items-start gap-x-8">

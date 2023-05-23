@@ -62,9 +62,9 @@ export const camelizePascalKeys = <T>(
   return obj
 }
 
-export const formatCurrency = (amount: number) =>
+export const formatCurrency = (amount?: number) =>
   `$${new Intl.NumberFormat('en-US', { maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(
-    amount
+    amount || 0
   )}`
 
 interface UniqueId {

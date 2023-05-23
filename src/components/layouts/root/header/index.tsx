@@ -19,7 +19,7 @@ import { Search } from '@/components/search'
 import { Button } from '@/core/components/button'
 import { Typography } from '@/core/components/typogrpahy'
 import { useIsDesktop } from '@/core/hooks/use-is-desktop'
-import { SIGN_IN_PAGE_PATH } from '@/lib/paths'
+import { MY_ACCOUNT_PAGE_PATH, SIGN_IN_PAGE_PATH } from '@/lib/paths'
 import { useCartQuery } from '@/lib/queries/cart'
 import {
   useNavigationCTAQuery,
@@ -120,7 +120,9 @@ export const Header = () => {
           {session?.user !== undefined ? (
             <Menu className="rounded border border-[#e6e0dd] bg-[#f5f3f2] p-2 shadow">
               <Menu.Item>
-                <button className="!rounded">My Account</button>
+                <button className="!rounded" onClick={() => router.push(MY_ACCOUNT_PAGE_PATH)}>
+                  My Account
+                </button>
               </Menu.Item>
               <Menu.Item>
                 <button className="!rounded" onClick={() => signOut(queryClient)}>
@@ -132,7 +134,7 @@ export const Header = () => {
         </Menu.Item>
       </Menu>
     ),
-    [handleUserClick, queryClient, session?.user]
+    [handleUserClick, queryClient, router, session?.user]
   )
 
   const cartQuantity =

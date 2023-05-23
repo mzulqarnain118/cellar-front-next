@@ -11,9 +11,8 @@ import { Input } from '@/core/components/input'
 import { Typography } from '@/core/components/typogrpahy'
 import { ValidateEmail, useValidateEmailMutation } from '@/lib/mutations/validate-email'
 
+import { useUpdateCustomerMutation } from '../../mutations/update-customer'
 import { useCustomerQuery } from '../../queries/get-customer'
-
-import { useUpdateCustomerMutation } from './mutations/update-customer'
 
 const profileSchema = z.object({
   company: z.string().optional(),

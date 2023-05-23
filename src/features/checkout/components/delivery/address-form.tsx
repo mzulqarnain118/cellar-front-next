@@ -32,6 +32,7 @@ export type NewAddressFormSchema = z.infer<typeof newAddressFormSchema>
 
 interface AddressFormProps {
   onCreateAddress?: () => void
+  size?: 'sm' | 'md'
 }
 
 const defaultValues: NewAddressFormSchema = {
@@ -44,7 +45,7 @@ const defaultValues: NewAddressFormSchema = {
 }
 
 export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
-  ({ onCreateAddress }, ref) => {
+  ({ onCreateAddress, size = 'sm' }, ref) => {
     const errors = useCheckoutErrors()
     const { mutate: validateAddress, isLoading: isValidatingAddress } = useValidateAddressMutation()
     const { mutate: createAddress, isLoading: isCreatingAddress } = useCreateAddressMutation()
@@ -139,6 +140,7 @@ export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
         <Form
           className="auto-grid-rows grid grid-cols-12 items-start gap-x-8"
           defaultValues={defaultValues}
+          id="address-form"
           schema={newAddressFormSchema}
           onSubmit={onSubmit}
         >
@@ -147,50 +149,50 @@ export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
             instructionLabel="optional"
             label="Company"
             name="company"
-            size="sm"
+            size={size}
           />
           <Input
             ref={ref}
             className="col-span-6 [&>div:first-child]:!pt-1"
             label="First name"
             name="firstName"
-            size="sm"
+            size={size}
           />
           <Input
             className="col-span-6 [&>div:first-child]:!pt-1"
             label="Last name"
             name="lastName"
-            size="sm"
+            size={size}
           />
           <Input
             className="col-span-6 [&>div:first-child]:!pt-1"
             label="Address 1"
             name="addressOne"
-            size="sm"
+            size={size}
           />
           <Input
             className="col-span-6 [&>div:first-child]:!pt-1"
             instructionLabel="optional"
             label="Address 2"
             name="addressTwo"
-            size="sm"
+            size={size}
           />
           <Input
             className="col-span-4 [&>div:first-child]:!pt-1"
             label="City"
             name="city"
-            size="sm"
+            size={size}
           />
-          <StateDropdown className="col-span-4" name="state" size="sm" />
+          <StateDropdown className="col-span-4 pt-1" name="state" size={size} />
           <Input
             className="col-span-4 [&>div:first-child]:!pt-1"
             label="Zip code"
             name="zipCode"
-            size="sm"
+            size={size}
           />
         </Form>
         <div className="flex justify-end lg:justify-start">
-          <Button dark type="submit">
+          <Button dark form="address-form" type="submit">
             Save address
           </Button>
         </div>

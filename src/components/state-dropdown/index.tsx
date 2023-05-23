@@ -16,7 +16,7 @@ export const StateDropdown = <Schema extends FieldValues>({
     field,
     fieldState: { error, isDirty },
   } = useController(props)
-  const [value, setValue] = useState<string | null>('')
+  const [value, setValue] = useState<string | null>(props.defaultValue || '')
   const { data: states } = useStatesQuery()
   const data = useMemo(
     () =>

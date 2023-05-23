@@ -20,7 +20,7 @@ const Accordions = dynamic(() => import('../accordions').then(({ Accordions }) =
 
 interface DescriptionProps {
   cartUrl: string
-  prismicData: Simplify<Content.PdpDocumentData>
+  prismicData?: Simplify<Content.PdpDocumentData>
 }
 
 export const Description = memo(({ cartUrl, prismicData }: DescriptionProps) => {
@@ -36,10 +36,10 @@ export const Description = memo(({ cartUrl, prismicData }: DescriptionProps) => 
       <CTA cartUrl={cartUrl} />
       <BrandOrigin cartUrl={cartUrl} />
       <div className="py-4 [&>p]:my-4">
-        <PrismicRichText field={prismicData.summary} />
+        <PrismicRichText field={prismicData?.summary} />
       </div>
-      {prismicData.body.length > 0 ? (
-        <Accordions attributes={flightData?.attributes} data={prismicData.body} />
+      {prismicData?.body !== undefined && prismicData.body.length > 0 ? (
+        <Accordions attributes={flightData?.attributes} data={prismicData?.body} />
       ) : undefined}
     </div>
   )

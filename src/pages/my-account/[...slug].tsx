@@ -1,5 +1,6 @@
 import { ElementType, useCallback } from 'react'
 
+import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 
@@ -19,7 +20,9 @@ import { getServerSession } from 'next-auth'
 
 import { Typography } from '@/core/components/typogrpahy'
 import { useIsDesktop } from '@/core/hooks/use-is-desktop'
+import { PaymentMethods } from '@/features/customer-portal/components/payment-methods'
 import { Profile } from '@/features/customer-portal/components/profile'
+import { ShippingAddresses } from '@/features/customer-portal/components/shipping-addresses'
 import {
   CUSTOMER_PORTAL_BANNER_QUERY_KEY,
   getCustomerPortalBanner,
@@ -29,6 +32,16 @@ import { useCustomerPortalIsLoading } from '@/features/store'
 import { MY_ACCOUNT_PAGE_PATH, SIGN_IN_PAGE_PATH } from '@/lib/paths'
 
 import { authOptions } from '../api/auth/[...nextauth]'
+
+const OrderInvoicePanel = dynamic(() =>
+  import('@/features/customer-portal/components/orders/invoice').then(
+    ({ OrderInvoicePanel }) => OrderInvoicePanel
+  )
+)
+
+const Orders = dynamic(() =>
+  import('@/features/customer-portal/components/orders').then(({ Orders }) => Orders)
+)
 
 const SLUGS = [
   'profile',
@@ -63,10 +76,10 @@ const iconMap: Record<string, ElementType> = {
 const panelMap: Record<string, ElementType> = {
   'auto-sips': Profile,
   clubs: Profile,
-  orders: Profile,
-  'payment-methods': Profile,
+  orders: Orders,
+  'payment-methods': PaymentMethods,
   profile: Profile,
-  'shipping-addresses': Profile,
+  'shipping-addresses': ShippingAddresses,
   wallet: Profile,
 }
 
@@ -126,14 +139,18 @@ const MyAccountPage: NextPage<PageProps> = () => {
     <main className="bg-[#f7f3f4]">
       <LoadingOverlay visible={isLoading} />
       <div className="container mx-auto py-20">
-        <div className="grid pb-4 lg:grid-cols-[1fr_auto] lg:items-center">
-          <Typography as="h1" className="hidden !leading-tight lg:block" displayAs="h3">
+        <div className="grid pb-4 lg:grid-cols-12 lg:items-center">
+          <Typography
+            as="h1"
+            className="hidden !leading-tight lg:col-span-3 lg:block"
+            displayAs="h3"
+          >
             {friendlyName}
           </Typography>
           {banner?.imageUrl ? (
             <Image
               alt={banner.title || 'Customer portal banner'}
-              className="object-contain"
+              className="object-contain lg:col-span-9"
               height={isDesktop ? 146 : 88}
               src={banner.imageUrl}
               width={isDesktop ? 1012 : 609}
@@ -148,14 +165,14 @@ const MyAccountPage: NextPage<PageProps> = () => {
           variant="pills"
           onTabChange={handleTabChange}
         >
-          <Tabs.List position="center">
+          <Tabs.List position={isDesktop ? undefined : 'center'}>
             {SLUGS.map(url => {
               const Icon = iconMap[url]
 
               return (
                 <Tabs.Tab
                   key={url}
-                  className="h-14"
+                  className="h-14 w-[17.5rem]"
                   color="dark"
                   icon={<Icon className="mr-3 h-5 w-5" />}
                   value={url}
@@ -168,8 +185,17 @@ const MyAccountPage: NextPage<PageProps> = () => {
 
           {SLUGS.map(url => {
             const Panel = panelMap[url]
+
+            if (url === 'orders' && query.slug !== undefined && query.slug.length > 1) {
+              return (
+                <OrderInvoicePanel key="orders-invoice" className="lg:px-20" value="orders">
+                  {url}
+                </OrderInvoicePanel>
+              )
+            }
+
             return (
-              <Panel key={url} className="px-6" value={url}>
+              <Panel key={url} className="lg:px-20" value={url}>
                 {url}
               </Panel>
             )

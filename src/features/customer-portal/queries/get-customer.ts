@@ -72,7 +72,7 @@ interface CustomField {
     | null
 }
 
-interface CustomerAddress {
+export interface CustomerAddress {
   AddressID: number
   FirstName: string | null
   LastName: string | null
@@ -114,7 +114,7 @@ interface CustomerAddress {
   DisplayLastName2?: boolean
 }
 
-interface CustomerCreditCard {
+export interface CustomerCreditCard {
   PersonDisplayID: string | null
   PaymentToken: string | null
   CreditCardTypeID: number
@@ -285,8 +285,13 @@ export const getCustomer: QueryFunction<Response, string[]> = async ({ queryKey 
   }
 }
 
+export const CUSTOMER_QUERY_KEY = 'customer'
+
 export const useCustomerQuery = () => {
   const { data: session } = useSession()
 
-  return useQuery({ queryFn: getCustomer, queryKey: ['customer', session?.user?.displayId || ''] })
+  return useQuery({
+    queryFn: getCustomer,
+    queryKey: [CUSTOMER_QUERY_KEY, session?.user?.displayId || ''],
+  })
 }

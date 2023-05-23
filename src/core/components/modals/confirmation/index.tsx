@@ -2,15 +2,16 @@ import { ReactNode, useCallback } from 'react'
 
 import { ContextModalProps } from '@mantine/modals'
 
-import { Button } from '../../button'
+import { Button, ButtonProps } from '../../button'
 
 export const ConfirmationModal = ({
   context,
   id,
-  innerProps: { body, cancelText, confirmText, onCancel, onConfirm },
+  innerProps: { body, cancelText, confirmProps, confirmText, onCancel, onConfirm },
 }: ContextModalProps<{
   body: ReactNode
   cancelText: string
+  confirmProps: ButtonProps
   confirmText: string
   onCancel: () => void | Promise<void>
   onConfirm: () => void | Promise<void>
@@ -29,7 +30,9 @@ export const ConfirmationModal = ({
     <>
       {body}
       <div className="mt-4 grid gap-4 lg:flex lg:flex-row-reverse">
-        <Button onClick={handleConfirm}>{confirmText}</Button>
+        <Button onClick={handleConfirm} {...confirmProps}>
+          {confirmText}
+        </Button>
         <Button color="ghost" variant="outline" onClick={handleCancel}>
           {cancelText}
         </Button>

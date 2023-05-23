@@ -1,3 +1,4 @@
+import { showNotification } from '@mantine/notifications'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { api } from '@/lib/api'
@@ -79,6 +80,9 @@ export const useCreateAddressMutation = () => {
   return useMutation<CreateAddressResponse, Error, CreateAddressOptions>({
     mutationFn: data => createAddress({ ...data, cartId: data.cartId || cart?.id }),
     mutationKey: CREATE_ADDRESS_MUTATION_KEY,
+    onError: error => {
+      showNotification({ message: error.message })
+    },
     onSuccess: (response, data) => {
       if (response.Success) {
         queryClient.invalidateQueries([ADDRESS_CREDIT_CARDS_QUERY_KEY])
@@ -86,6 +90,7 @@ export const useCreateAddressMutation = () => {
           addressId: response.Data.Value.AddressID,
           paymentToken: activeCreditCard?.PaymentToken,
         })
+        showNotification({ message: 'Address saved successfully.' })
 
         if (data.callback !== undefined) {
           data.callback(response)
