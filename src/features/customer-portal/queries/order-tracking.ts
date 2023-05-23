@@ -25,7 +25,7 @@ export const getOrderTracking: QueryFunction<OrderTrackingInfo, string[]> = asyn
     const orderDisplayId = queryKey[1]
     const response = await api('v2/order/trackinginfo', {
       json: { OrderDisplayId: orderDisplayId },
-      method: 'get',
+      method: 'post',
     }).json<GetOrderTrackingInfoResponse>()
 
     if (!response.Success) {
@@ -33,13 +33,14 @@ export const getOrderTracking: QueryFunction<OrderTrackingInfo, string[]> = asyn
     }
 
     return response.Data
-  } catch {
+  } catch (error) {
     throw new Error('')
   }
 }
 
-export const useOrderTrackingQuery = (orderDisplayId: string) =>
+export const useOrderTrackingQuery = (orderDisplayId: string, enabled = true) =>
   useQuery({
+    enabled,
     queryFn: getOrderTracking,
     queryKey: ['order-tracking', orderDisplayId],
   })

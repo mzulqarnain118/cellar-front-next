@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 
 import { ShoppingCartIcon, UserIcon } from '@heroicons/react/20/solid'
 import { ChevronDownIcon } from '@heroicons/react/24/outline'
-import { Burger, Collapse } from '@mantine/core'
+import { Burger, Collapse, Skeleton } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { asText } from '@prismicio/helpers'
 import { PrismicLink, PrismicRichText } from '@prismicio/react'
@@ -39,9 +39,17 @@ export const Header = () => {
   const router = useRouter()
   const { toggleCartOpen } = useCartOpen()
   const { data: cart } = useCartQuery()
-  const { data: navigation } = useNavigationQuery()
-  const { data: promoMessage } = useNavigationPromoMessageQuery()
-  const { data: cta } = useNavigationCTAQuery()
+  const {
+    data: navigation,
+    isFetching: isFetchingNavigation,
+    isLoading: isLoadingNavigation,
+  } = useNavigationQuery()
+  const {
+    data: promoMessage,
+    isFetching: isFetchingPromoMessage,
+    isLoading: isLoadingPromoMessage,
+  } = useNavigationPromoMessageQuery()
+  const { data: cta, isFetching: isFetchingCTA, isLoading: isLoadingCTA } = useNavigationCTAQuery()
   const { data: session } = useSession()
   const [navOpen, { toggle: toggleNavOpen }] = useDisclosure(false)
   const burgerLabel = navOpen ? 'Close navigation' : 'Open navigation'
@@ -50,7 +58,7 @@ export const Header = () => {
 
   const menu = useMemo(
     () =>
-      navigation?.data.body !== undefined ? (
+      !isFetchingNavigation && !isLoadingNavigation ? (
         <div className="flex flex-1 flex-col items-center text-lg lg:w-full lg:flex-row">
           {navigation?.data.body?.map(link => {
             const hasChildren =
@@ -81,22 +89,32 @@ export const Header = () => {
           })}
         </div>
       ) : (
-        <></>
+        <div className="flex flex-1 flex-col items-center text-lg lg:w-full lg:flex-row">
+          <Skeleton className="h-10" />
+          <Skeleton className="h-10" />
+          <Skeleton className="h-10" />
+          <Skeleton className="h-10" />
+          <Skeleton className="h-10" />
+          <Skeleton className="h-10" />
+        </div>
       ),
-    [isDesktop, navigation?.data.body, toggleNavOpen]
+    [isDesktop, isFetchingNavigation, isLoadingNavigation, navigation?.data.body, toggleNavOpen]
   )
 
   const ctaButton = useMemo(
-    () => (
-      <Button
-        className="mb-2 !bg-[#231f20] text-lg text-[#f5f3f2] lg:mb-0"
-        color="ghost"
-        fullWidth={!isDesktop}
-      >
-        {asText(cta?.data.button_text)}
-      </Button>
-    ),
-    [cta?.data.button_text, isDesktop]
+    () =>
+      !isFetchingCTA && !isLoadingCTA ? (
+        <Button
+          className="mb-2 !bg-[#231f20] text-lg text-[#f5f3f2] lg:mb-0"
+          color="ghost"
+          fullWidth={!isDesktop}
+        >
+          {asText(cta?.data.button_text)}
+        </Button>
+      ) : (
+        <Skeleton className="h-12 w-[13.75rem]" />
+      ),
+    [cta?.data.button_text, isDesktop, isFetchingCTA, isLoadingCTA]
   )
 
   const handleUserClick = useCallback(() => {
@@ -106,35 +124,38 @@ export const Header = () => {
   }, [router, session?.user])
 
   const userButton = useMemo(
-    () => (
-      <Menu horizontal className="p-0">
-        <Menu.Item tabIndex={0}>
-          <button className="flex items-center gap-1 p-0" onClick={handleUserClick}>
-            <UserIcon className="h-5 w-5 lg:h-6 lg:w-6" />
-            <Typography>
-              {session?.user !== undefined ? `Hi, ${session.user.name.first}` : 'Sign in'}
-            </Typography>
-            {session?.user !== undefined ? <ChevronDownIcon className="h-4 w-4" /> : undefined}
-          </button>
+    () =>
+      !isFetchingNavigation && !isLoadingNavigation ? (
+        <Menu horizontal className="p-0">
+          <Menu.Item tabIndex={0}>
+            <button className="flex items-center gap-1 p-0" onClick={handleUserClick}>
+              <UserIcon className="h-5 w-5 lg:h-6 lg:w-6" />
+              <Typography>
+                {session?.user !== undefined ? `Hi, ${session.user.name.first}` : 'Sign in'}
+              </Typography>
+              {session?.user !== undefined ? <ChevronDownIcon className="h-4 w-4" /> : undefined}
+            </button>
 
-          {session?.user !== undefined ? (
-            <Menu className="rounded border border-[#e6e0dd] bg-[#f5f3f2] p-2 shadow">
-              <Menu.Item>
-                <button className="!rounded" onClick={() => router.push(MY_ACCOUNT_PAGE_PATH)}>
-                  My Account
-                </button>
-              </Menu.Item>
-              <Menu.Item>
-                <button className="!rounded" onClick={() => signOut(queryClient)}>
-                  Sign out
-                </button>
-              </Menu.Item>
-            </Menu>
-          ) : undefined}
-        </Menu.Item>
-      </Menu>
-    ),
-    [handleUserClick, queryClient, router, session?.user]
+            {session?.user !== undefined ? (
+              <Menu className="rounded border border-[#e6e0dd] bg-[#f5f3f2] p-2 shadow">
+                <Menu.Item>
+                  <button className="!rounded" onClick={() => router.push(MY_ACCOUNT_PAGE_PATH)}>
+                    My Account
+                  </button>
+                </Menu.Item>
+                <Menu.Item>
+                  <button className="!rounded" onClick={() => signOut(queryClient)}>
+                    Sign out
+                  </button>
+                </Menu.Item>
+              </Menu>
+            ) : undefined}
+          </Menu.Item>
+        </Menu>
+      ) : (
+        <Skeleton className="h-3 w-36" />
+      ),
+    [handleUserClick, isFetchingNavigation, isLoadingNavigation, queryClient, router, session?.user]
   )
 
   const cartQuantity =
@@ -154,7 +175,11 @@ export const Header = () => {
       <div className="container mx-auto flex flex-col items-center justify-between space-y-1 py-2 lg:flex-row">
         <StatePicker />
         <div className="text-14">
-          <PrismicRichText field={promoMessage?.data.feature_bar} />
+          {isFetchingPromoMessage || isLoadingPromoMessage ? (
+            <Skeleton className="h-11 w-80 lg:h-5" />
+          ) : (
+            <PrismicRichText field={promoMessage?.data.feature_bar} />
+          )}
         </div>
         <div className="flex items-center justify-between gap-4">
           <Typography>Shopping with a consultant?</Typography>
@@ -177,7 +202,11 @@ export const Header = () => {
                 <div className="flex flex-1">
                   {menu}
                   <div className="grid grid-cols-[auto_1fr] items-center gap-4">
-                    <SearchNew />
+                    {!isFetchingNavigation && !isLoadingNavigation ? (
+                      <SearchNew />
+                    ) : (
+                      <Skeleton className="h-8 w-8" />
+                    )}
                     {ctaButton}
                   </div>
                 </div>

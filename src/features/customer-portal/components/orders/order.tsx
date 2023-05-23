@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useRouter } from 'next/router'
 
@@ -23,15 +23,13 @@ const NON_CANCELABLE_ORDER_STATUSES = [3, 4, 5, 6]
 
 export const Order = ({ data }: OrderProps) => {
   const router = useRouter()
-  const { data: tracking } = useOrderTrackingQuery(data.DisplayID)
+  const [enabled, setEnabled] = useState(false)
+  const { data: tracking, isFetching, isLoading } = useOrderTrackingQuery(data.DisplayID, enabled)
+  const disableTrackButton = (isFetching || isLoading) && enabled
 
   const handleTrackPackage = useCallback(() => {
-    if (tracking?.TrackingUrl) {
-      router.push(tracking.TrackingUrl)
-    } else {
-      showNotification({ message: 'There is no tracking data for this order.' })
-    }
-  }, [router, tracking?.TrackingUrl])
+    setEnabled(true)
+  }, [])
 
   const handleViewInvoice = useCallback(() => {
     router.push(`${MY_ACCOUNT_PAGE_PATH}/orders/${data.DisplayID}`)
@@ -70,6 +68,16 @@ export const Order = ({ data }: OrderProps) => {
       )),
     [data.OrderLines]
   )
+
+  useEffect(() => {
+    if (enabled && !(isFetching || isLoading)) {
+      if (tracking?.TrackingUrl) {
+        router.push(tracking.TrackingUrl)
+      } else {
+        showNotification({ message: 'There is no tracking data for this order.' })
+      }
+    }
+  }, [enabled, isFetching, isLoading, router, tracking?.TrackingUrl])
 
   return (
     <div className="border border-neutral-light">
@@ -120,11 +128,21 @@ export const Order = ({ data }: OrderProps) => {
         <Button
           color="error"
           disabled={NON_CANCELABLE_ORDER_STATUSES.includes(data.OrderStatusID)}
+          title={
+            NON_CANCELABLE_ORDER_STATUSES.includes(data.OrderStatusID)
+              ? 'You are not able to cancel this order anymore.'
+              : 'Cancel this order.'
+          }
           variant="outline"
         >
           Cancel order
         </Button>
-        <Button color="info" onClick={handleTrackPackage}>
+        <Button
+          color="info"
+          disabled={disableTrackButton}
+          loading={disableTrackButton}
+          onClick={handleTrackPackage}
+        >
           Track package
         </Button>
         <Button dark onClick={handleViewInvoice}>

@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react'
 
-import { Select, SelectProps } from '@mantine/core'
+import { Select, SelectProps, Skeleton } from '@mantine/core'
 import { useQueryClient } from '@tanstack/react-query'
 
 import { CART_QUERY_KEY } from '@/lib/queries/cart'
@@ -50,8 +50,9 @@ export const StatePicker = () => {
 
   if (isFetching || isLoading) {
     return (
-      <div className="flex animate-pulse flex-col space-y-2">
-        <div className="h-6 w-28 rounded bg-neutral-200" />
+      <div className="flex items-center lg:grid">
+        <Skeleton className="h-4 w-[3.625rem] lg:w-[10.3125rem]" />
+        <Skeleton className="h-[1.875rem] w-[10.3125rem]" />
       </div>
     )
   }
