@@ -69,7 +69,7 @@ export const Link = ({ href: initialHref, ...rest }: Props) => {
       ) : (
         <NextLink
           as={href.pathname?.startsWith('/wine') ? href.pathname : undefined}
-          className={clsx('flex gap-1', rest.className)}
+          className={clsx('inline-flex gap-1', rest.className)}
           href={href}
         >
           {rest.children}
