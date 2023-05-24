@@ -10,11 +10,13 @@ import { showNotification } from '@mantine/notifications'
 import { Divider } from 'react-daisyui'
 
 import { BlurImage } from '@/components/blur-image'
+import { Link } from '@/components/link'
 import { Button } from '@/core/components/button'
 import { Checkbox } from '@/core/components/checkbox'
+import { NumberPicker } from '@/core/components/number-picker'
 import { Typography } from '@/core/components/typogrpahy'
 import { formatCurrency } from '@/core/utils'
-import { MY_ACCOUNT_PAGE_PATH } from '@/lib/paths'
+import { MY_ACCOUNT_PAGE_PATH, TERMS_AND_CONDITIONS_PAGE_PATH } from '@/lib/paths'
 
 import { useChargebeeQuery } from '../../queries/chargebee'
 import { CustomerSubscription, useEditSubscriptionQuery } from '../../queries/edit-subscription'
@@ -27,13 +29,16 @@ import { Cancel } from './cancel'
 import { DeliveryAddress } from './delivery-address'
 import { PaymentMethod } from './payment-method'
 
-export const ClubsEdit = (props: TabsPanelProps) => {
+export const ClubsEdit = ({
+  autoSip = false,
+  ...props
+}: TabsPanelProps & { autoSip?: boolean }) => {
   const router = useRouter()
   const {
     data: subscriptions,
     isFetching: isFetchingSubscriptions,
     isLoading: isLoadingSubscriptions,
-  } = useSubscriptionsQuery('AutoShip')
+  } = useSubscriptionsQuery(autoSip ? 'AutoShip' : 'Club-Subscription')
   const subscriptionId = parseInt(router.query.slug?.[1] || '0')
 
   const queryProps = useMemo(
@@ -58,7 +63,7 @@ export const ClubsEdit = (props: TabsPanelProps) => {
     data: chargebeeData,
     isFetching: isFetchingChargebee,
     isLoading: isLoadingChargebee,
-  } = useChargebeeQuery(subscriptionId)
+  } = useChargebeeQuery(subscriptionId, !autoSip)
 
   const loading =
     isFetchingSubscription ||
@@ -68,6 +73,7 @@ export const ClubsEdit = (props: TabsPanelProps) => {
     isFetchingChargebee ||
     isLoadingChargebee
 
+  const [newQuantity, setNewQuantity] = useState(subscription?.Quantity || 1)
   const [newFrequency, setNewFrequency] = useState<string | null>(
     subscription?.Frequencies?.[0].Key.toString() || null
   )
@@ -103,6 +109,7 @@ export const ClubsEdit = (props: TabsPanelProps) => {
       Key: subscription?.ShippingMethodID,
       Value: subscription?.ShippingMethod,
     })
+    setNewQuantity(subscription?.Quantity || 1)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [subscription])
 
@@ -118,21 +125,50 @@ export const ClubsEdit = (props: TabsPanelProps) => {
     setSubscriptionAccepted(prev => !prev)
   }, [])
 
+  const handleQuantityChange: ChangeEventHandler<HTMLInputElement> = useCallback(event => {
+    setNewQuantity(parseInt(event.target.value))
+  }, [])
+
+  const handleQuantityAdd = useCallback(() => {
+    setNewQuantity(prev => prev + 1)
+  }, [])
+
+  const handleQuantityRemove = useCallback(() => {
+    setNewQuantity(prev => prev - 1)
+  }, [])
+
   const membershipInfo = useMemo(
     () =>
       subscription?.EstimatedPrice ? (
         <div className="grid w-full grid-cols-2 text-sm lg:text-base">
           <div className="grid">
             <Typography className="font-bold">Price</Typography>
-            <span>{formatCurrency(subscription.EstimatedPrice)}</span>
+            <Typography>{formatCurrency(subscription.EstimatedPrice)}</Typography>
           </div>
           <div className="grid">
-            <strong>Quantity</strong>
-            <span>{subscription.Quantity}</span>
+            <Typography>Quantity</Typography>
+            {autoSip ? (
+              <NumberPicker
+                handleAdd={handleQuantityAdd}
+                handleChange={handleQuantityChange}
+                handleMinus={handleQuantityRemove}
+                value={newQuantity}
+              />
+            ) : (
+              <Typography>{subscription.Quantity}</Typography>
+            )}
           </div>
         </div>
       ) : undefined,
-    [subscription?.EstimatedPrice, subscription?.Quantity]
+    [
+      autoSip,
+      handleQuantityAdd,
+      handleQuantityChange,
+      handleQuantityRemove,
+      newQuantity,
+      subscription?.EstimatedPrice,
+      subscription?.Quantity,
+    ]
   )
 
   const frequencies = useMemo(
@@ -223,6 +259,7 @@ export const ClubsEdit = (props: TabsPanelProps) => {
             Frequency: frequency?.value || subscription.Frequency,
             NextProcessingDate: newNextOrderDate?.toISOString() || subscription.NextProcessingDate,
             PaymentToken: creditCardUsedForMembership || subscription.PaymentToken,
+            Quantity: newQuantity || subscription.Quantity,
             ShippingMethod: newShippingData.Value || subscription.ShippingMethod,
             ShippingMethodID: newShippingData.Key || subscription.ShippingMethodID,
             SubscriptionFrequencyID:
@@ -237,6 +274,7 @@ export const ClubsEdit = (props: TabsPanelProps) => {
       frequency?.label,
       newNextOrderDate,
       creditCardUsedForMembership,
+      newQuantity,
       newShippingData.Value,
       newShippingData.Key,
       subscriptionId,
@@ -340,42 +378,30 @@ export const ClubsEdit = (props: TabsPanelProps) => {
               <Typography as="h6" className="mb-0">
                 Manage Membership
               </Typography>
-              <div className="space-x-4">
-                {!subscription?.SKU?.toLowerCase().startsWith('promo') ? (
+              {autoSip ? undefined : (
+                <div className="space-x-4">
+                  {!subscription?.SKU?.toLowerCase().startsWith('promo') ? (
+                    <Button
+                      className="gap-1 border-neutral-50 text-neutral-50"
+                      color="ghost"
+                      variant="outline"
+                      onClick={handleSkipClick}
+                    >
+                      <ForwardIcon className="h-4 w-4" />
+                      <Typography className="group-hover:underline">Skip next shipment</Typography>
+                    </Button>
+                  ) : undefined}
                   <Button
                     className="gap-1 border-neutral-50 text-neutral-50"
                     color="ghost"
                     variant="outline"
-                    onClick={handleSkipClick}
-                    // onClick={() => {
-                    //   setIsLoading(true)
-                    //   setShowSkipNextModal(true)
-                    //   setShowCancelModal(true)
-                    //   setIsLoading(false)
-                    // }}
+                    onClick={handleCancelClick}
                   >
-                    <ForwardIcon className="h-4 w-4" />
-                    <Typography className="group-hover:underline">Skip next shipment</Typography>
+                    <XCircleIcon className="h-4 w-4" />
+                    <Typography className="group-hover:underline">Cancel Club</Typography>
                   </Button>
-                ) : undefined}
-                <Button
-                  className="gap-1 border-neutral-50 text-neutral-50"
-                  color="ghost"
-                  variant="outline"
-                  onClick={handleCancelClick}
-                  // onClick={() => {
-                  //   if (customChargebeeData !== undefined) {
-                  //     setIsLoading(true)
-                  //     setShowSkipNextModal(false)
-                  //     setShowCancelModal(true)
-                  //     setIsLoading(false)
-                  //   }
-                  // }}
-                >
-                  <XCircleIcon className="h-4 w-4" />
-                  <Typography className="group-hover:underline">Cancel Club</Typography>
-                </Button>
-              </div>
+                </div>
+              )}
             </div>
             <div
               className={`
@@ -467,7 +493,6 @@ export const ClubsEdit = (props: TabsPanelProps) => {
                 color="ghost"
                 variant="outline"
                 onClick={handleAddAddress}
-                // onClick={() => setShowAddAddressModal(true)}
               >
                 <HomeIcon className="h-4 w-4" />
                 Add address
@@ -516,7 +541,10 @@ export const ClubsEdit = (props: TabsPanelProps) => {
                   These Terms of Use apply to your use of the Scout & Cellar site at
                   ScoutandCellar.com (the “Site”), and to content, information, products, services
                   and materials on the Site (collectively, “Content”). Read the full Terms and
-                  Conditions here
+                  Conditions{' '}
+                  <Link href={TERMS_AND_CONDITIONS_PAGE_PATH} target="_blank">
+                    here
+                  </Link>
                 </Typography>
                 <Checkbox
                   checked={termsAccepted}
@@ -528,31 +556,33 @@ export const ClubsEdit = (props: TabsPanelProps) => {
 
               <div className="grid gap-1">
                 <Typography as="h6">Subscription Agreement</Typography>
-                <Typography as="p">
-                  By purchasing a membership on ScoutandCellar.com you understand that you are
-                  joining one of our Wine Clubs and that you will be billed immediately and every
-                  subsequent month, every other month, or every quarter, depending on the frequency
-                  of the specific club you selected, until you cancel your membership. The exact
-                  amount of the charges will depend upon the specific club you selected. You will be
-                  billed on or around the same day each month. You can cancel your membership at any
-                  time by logging into your account and cancelling your membership. If you cannot or
-                  do not wish to access your account online, you can cancel at any time by calling
-                  customer support at (972) 638-9918 or by sending an email to
-                  support@scoutandcellar.com. Your membership will begin immediately. All charges
-                  will be identified as Scout & Cellar or Wine Retriever LLC on your credit card
-                  statement. If your card issuing financial institution participates in the Card
-                  Account Updater program, we may receive an updated card account number and/or
-                  expiration date for your card on file. Unless you opt out of the program with your
-                  card issuer, we will update our files and use the new information for any
-                  automatic payment option in which you have enrolled, including Scout Circle and
-                  Auto-Sip as applicable. We will not receive updated information if your account
-                  has been closed.
-                </Typography>
                 <Checkbox
                   checked={subscriptionAccepted}
                   color="dark"
-                  label="If I join the Club, I agree to buy wine today and then upon future shipments,
-                  unless I change or cancel"
+                  label={
+                    autoSip
+                      ? `By clicking on "Save Membership", you understand and agree that you are enrolled in the
+                  Auto-Sip™ program, which will automatically initiate and ship orders to you, and that you will
+                  be billed immediately and every subsequent month, every other month, or every quarter
+                  (“Delivery Frequency”), depending on the frequency of the delivery you select, until you
+                  cancel your enrollment. The exact amount of the charges will depend upon the Delivery
+                  Frequency, the specific program you selected and the offering therein. You will be billed on
+                  or around the same day each Delivery Frequency. You can cancel your enrollment or modify your
+                  Delivery Frequency at any time by logging into your account and managing your enrollment. Any
+                  such cancellation or modification must be completed at least twenty-four (24) hours prior to
+                  the next Delivery Frequency processing date. If you cannot or do not wish to access your
+                  account online, you may cancel or modify at any time by contacting customer support using the
+                  chat functionality or contact form at https://scoutandcellar.com/contact. Your subscription will begin immediately, and you will
+                  be notified with an order confirmation email after purchase. All charges will be identified as
+                  Scout & Cellar or Wine Retriever LLC on your credit card statement. If your card issuing
+                  financial institution participates in the Card Account Updater program, we may receive an
+                  updated card account number and/or expiration date for your card on file. Unless you opt out
+                  of the program with your card issuer, we will update our files and use the new information for
+                  any automatic payment option in which you have enrolled, including Scout Circle and Auto-Sip
+                  as applicable. We will not receive updated information if your account has been closed.`
+                      : `If I join the Club, I agree to buy wine today and then upon future shipments,
+                  unless I change or cancel`
+                  }
                   onChange={handleSubscriptionAcceptedChange}
                 />
               </div>

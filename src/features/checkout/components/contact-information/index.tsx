@@ -63,7 +63,7 @@ export const ContactInformation = memo(({ opened, refs, toggle }: ContactInforma
             {consultant.displayId !== CORPORATE_CONSULTANT_ID ? (
               <Typography noSpacing as="p">
                 You&apos;re shopping with:{' '}
-                <strong>{consultant.displayName || consultant.url}</strong>
+                <Typography as="strong">{consultant.displayName || consultant.url}</Typography>
               </Typography>
             ) : undefined}
           </div>

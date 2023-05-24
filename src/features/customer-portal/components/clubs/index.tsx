@@ -6,18 +6,18 @@ import { useSubscriptionsQuery } from '../../queries/subscriptions'
 
 import { Subscription } from './subscription'
 
-export const Clubs = (props: TabsPanelProps) => {
-  const { data: subscriptions } = useSubscriptionsQuery('Club-Subscription')
+export const Clubs = ({ autoSip = false, ...props }: TabsPanelProps & { autoSip?: boolean }) => {
+  const { data: subscriptions } = useSubscriptionsQuery(autoSip ? 'AutoShip' : 'Club-Subscription')
 
   const clubs = useMemo(
     () => (
       <div className="space-y-8">
         {subscriptions?.map(subscription => (
-          <Subscription key={subscription.SubscriptionID} data={subscription} />
+          <Subscription key={subscription.SubscriptionID} autoSip={autoSip} data={subscription} />
         ))}
       </div>
     ),
-    [subscriptions]
+    [autoSip, subscriptions]
   )
 
   return <Tabs.Panel {...props}>{clubs}</Tabs.Panel>

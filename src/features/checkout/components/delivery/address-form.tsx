@@ -76,7 +76,7 @@ export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
                   body: (
                     <div className="grid gap-2">
                       <div className="grid">
-                        <strong>Suggested address</strong>
+                        <Typography as="strong">Suggested address</Typography>
                         <Typography>{suggested.Street1}</Typography>
                         {suggested.Street2 ? (
                           <Typography>{suggested.Street2}</Typography>
@@ -86,7 +86,7 @@ export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
                         </Typography>
                       </div>
                       <div className="grid">
-                        <strong>Entered address</strong>
+                        <Typography as="strong">Entered address</Typography>
                         <Typography>{entered.Street1}</Typography>
                         {entered.Street2 ? <Typography>{entered.Street2}</Typography> : undefined}
                         <Typography>

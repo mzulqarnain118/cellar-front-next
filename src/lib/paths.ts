@@ -15,3 +15,5 @@ export const CLUBS_PAGE_PATH = '/clubs'
 
 /** Consultant paths. */
 export const CONSULTANTS_PAGE_PATH = '/consultants'
+
+export const TERMS_AND_CONDITIONS_PAGE_PATH = '/terms-and-conditions'

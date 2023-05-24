@@ -109,10 +109,10 @@ export const PickUp = ({ refs }: PickUpProps) => {
       <Collapse in={lpuOpened}>
         <div className="ml-9 space-y-4">
           <p className="text-14">
-            <strong>
+            <Typography as="strong">
               HEADS UP! Orders will be ready for pick-up in 2 business days if placed before 11 AM
               CST today, and in 3 business days if placed after 11 AM CST today.
-            </strong>
+            </Typography>
           </p>
           <div className="rounded border border-base-dark bg-[#fafafa] p-5">
             <Typography as="h3" className="!font-body !font-semibold" displayAs="h6">

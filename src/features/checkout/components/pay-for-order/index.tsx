@@ -5,6 +5,7 @@ import { Button } from '@/core/components/button'
 import { Checkbox } from '@/core/components/checkbox'
 import { Typography } from '@/core/components/typogrpahy'
 import { formatCurrency } from '@/core/utils'
+import { TERMS_AND_CONDITIONS_PAGE_PATH } from '@/lib/paths'
 import { useGetSubtotalQuery } from '@/lib/queries/checkout/get-subtotal'
 import { useCheckoutActions, useCheckoutErrors } from '@/lib/stores/checkout'
 
@@ -56,7 +57,7 @@ export const PayForOrder = ({ refs, validate }: PayForOrderProps) => {
               I have read and agree to the{' '}
               <Link
                 className="text-primary hover:underline"
-                href="/terms-and-conditions"
+                href={TERMS_AND_CONDITIONS_PAGE_PATH}
                 target="_blank"
               >
                 Terms of Use

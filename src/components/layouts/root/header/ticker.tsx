@@ -3,6 +3,8 @@ import { useMemo, useRef } from 'react'
 import { Carousel } from '@mantine/carousel'
 import Autoplay from 'embla-carousel-autoplay'
 
+import { Typography } from '@/core/components/typogrpahy'
+
 export const Ticker = () => {
   const autoplay = useRef(Autoplay({ delay: 10000 }))
   const plugins = useMemo(() => [autoplay.current], [])
@@ -17,10 +19,10 @@ export const Ticker = () => {
       <div className="container mx-auto text-center">
         <Carousel loop withControls plugins={plugins}>
           <Carousel.Slide>
-            <strong>FREE SHIPPING</strong> all weekend
+            <Typography as="strong">FREE SHIPPING</Typography> all weekend
           </Carousel.Slide>
           <Carousel.Slide>
-            <strong>HURRY UP</strong>
+            <Typography as="strong">HURRY UP</Typography>
           </Carousel.Slide>
         </Carousel>
       </div>

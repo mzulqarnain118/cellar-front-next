@@ -44,5 +44,5 @@ export const getChargebeeData: QueryFunction<ChargebeeData, (string | number)[]>
   }
 }
 
-export const useChargebeeQuery = (subscriptionId: number) =>
-  useQuery({ queryFn: getChargebeeData, queryKey: ['chargebee', subscriptionId] })
+export const useChargebeeQuery = (subscriptionId: number, enabled = true) =>
+  useQuery({ enabled, queryFn: getChargebeeData, queryKey: ['chargebee', subscriptionId] })

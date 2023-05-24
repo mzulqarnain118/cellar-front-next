@@ -77,7 +77,7 @@ const iconMap: Record<string, ElementType> = {
 }
 
 const panelMap: Record<string, ElementType> = {
-  'auto-sips': Profile,
+  'auto-sips': Clubs,
   clubs: Clubs,
   orders: Orders,
   'payment-methods': PaymentMethods,
@@ -200,13 +200,26 @@ const MyAccountPage: NextPage<PageProps> = () => {
                     {url}
                   </OrderInvoicePanel>
                 )
-              } else if (url === 'clubs' && query.slug[2] === 'edit') {
+              } else if ((url === 'clubs' || url === 'auto-sips') && query.slug[2] === 'edit') {
                 return (
-                  <ClubsEdit key="clubs-edit" className="lg:px-20" value="clubs">
+                  <ClubsEdit
+                    key={`${url}-edit`}
+                    autoSip={url === 'auto-sips'}
+                    className="lg:px-20"
+                    value={url}
+                  >
                     {url}
                   </ClubsEdit>
                 )
               }
+            }
+
+            if (url === 'auto-sips') {
+              return (
+                <Panel key={url} autoSip className="lg:px-20" value={url}>
+                  {url}
+                </Panel>
+              )
             }
 
             return (

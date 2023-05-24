@@ -75,11 +75,11 @@ export const PaymentMethod = ({
         )}
       >
         <div className="flex items-center justify-between">
-          <h6 className="m-0 !text-base">
+          <Typography as="h6" className="m-0 !text-base">
             {creditCard.CreditCardTypeName} ending in {creditCard.DisplayNumber}
-          </h6>
+          </Typography>
           {creditCard.DefaultPaymentMethod && (
-            <span className="text-sm font-bold">Default Payment Method</span>
+            <Typography className="text-sm font-bold">Default Payment Method</Typography>
           )}
           {creditCard.DefaultPaymentMethod || checked ? undefined : (
             <div className="flex items-center gap-1 text-sm">
@@ -94,7 +94,7 @@ export const PaymentMethod = ({
                 onClick={handleDelete}
               >
                 <TrashIcon className="h-4 w-4" />
-                <span className="group-hover:underline">Delete</span>
+                <Typography className="group-hover:underline">Delete</Typography>
               </button>
             </div>
           )}
@@ -102,23 +102,23 @@ export const PaymentMethod = ({
         <Divider className="my-1" />
         <div className="grid auto-rows-auto grid-cols-2 gap-4">
           <div className="flex flex-col">
-            <strong>Name on Card</strong>
-            <span className="text-sm">{creditCard.NameOnCard}</span>
+            <Typography as="strong">Name on Card</Typography>
+            <Typography className="text-sm">{creditCard.NameOnCard}</Typography>
           </div>
           <div className="flex flex-col">
-            <strong>Expiry Date</strong>
-            <span className="text-sm">
+            <Typography as="strong">Expiry Date</Typography>
+            <Typography className="text-sm">
               {creditCard.ExpirationMonth}/{creditCard.ExpirationYear}
-            </span>
+            </Typography>
           </div>
 
           <div className="grid">
-            <strong>Billing Address</strong>
-            <span className="text-sm">{creditCard.Address.Street1}</span>
-            <span className="text-sm">
+            <Typography as="strong">Billing Address</Typography>
+            <Typography className="text-sm">{creditCard.Address.Street1}</Typography>
+            <Typography className="text-sm">
               {creditCard.Address.City}, {creditCard.Address.ProvinceAbbreviation}{' '}
               {creditCard.Address.PostalCode}
-            </span>
+            </Typography>
           </div>
           <label
             className="m-0 flex cursor-pointer items-center gap-1"

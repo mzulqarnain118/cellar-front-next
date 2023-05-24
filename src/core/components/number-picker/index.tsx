@@ -12,7 +12,7 @@ interface NumberPickerProps {
   /** Callback for when the add button is pressed. */
   handleAdd?: MouseEventHandler<HTMLButtonElement>
   /** Callback for when the value in the text input changes. */
-  handleChange?: ChangeEventHandler
+  handleChange?: ChangeEventHandler<HTMLInputElement>
   /** Callback for when the remove button is pressed. */
   handleMinus?: MouseEventHandler<HTMLButtonElement>
   /** Initial value for the picker. Defaults to 1. Value must be positive. */

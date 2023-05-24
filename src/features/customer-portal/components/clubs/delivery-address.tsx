@@ -67,8 +67,10 @@ export const DeliveryAddress = ({ address, checked, handleChecked }: DeliveryAdd
         )}
       >
         <div className="flex items-center justify-between">
-          <h6 className="m-0 !text-base">{address.DisplayName || address.NickName}</h6>
-          <span
+          <Typography as="h6" className="m-0 !text-base">
+            {address.DisplayName || address.NickName}
+          </Typography>
+          <Typography
             className={clsx(
               `invisible h-6 font-bold`,
               address.Primary && 'visible',
@@ -76,7 +78,7 @@ export const DeliveryAddress = ({ address, checked, handleChecked }: DeliveryAdd
             )}
           >
             Default Address
-          </span>
+          </Typography>
           {!address.Primary && checked ? undefined : (
             <div className="flex items-center gap-4">
               <button
@@ -84,14 +86,14 @@ export const DeliveryAddress = ({ address, checked, handleChecked }: DeliveryAdd
                 onClick={handleEdit}
               >
                 <PencilIcon className="h-4 w-4" />
-                <span className="group-hover:underline">Edit</span>
+                <Typography className="group-hover:underline">Edit</Typography>
               </button>
               <button
                 className="group flex items-center gap-1 border-0 bg-transparent text-red-600"
                 onClick={handleDelete}
               >
                 <TrashIcon className="h-4 w-4" />
-                <span className="group-hover:underline">Delete</span>
+                <Typography className="group-hover:underline">Delete</Typography>
               </button>
             </div>
           )}
@@ -99,13 +101,13 @@ export const DeliveryAddress = ({ address, checked, handleChecked }: DeliveryAdd
         <Divider className="my-1" />
         <div className="grid auto-rows-auto grid-cols-2 gap-4">
           <div className="grid">
-            <strong>
+            <Typography as="strong">
               {address.FirstName} {address.LastName}
-            </strong>
-            <span className="text-sm">{address.Street1}</span>
-            <span className="text-sm">
+            </Typography>
+            <Typography className="text-sm">{address.Street1}</Typography>
+            <Typography className="text-sm">
               {address.City}, {address.ProvinceAbbreviation} {address.PostalCode}
-            </span>
+            </Typography>
           </div>
           <label
             className="m-0 flex cursor-pointer items-center gap-1"

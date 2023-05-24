@@ -38,19 +38,22 @@ const getNextOrderDate = (
 }
 
 interface SubscriptionProps {
+  autoSip?: boolean
   data: SubscriptionType
 }
 
-export const Subscription = ({ data }: SubscriptionProps) => {
+export const Subscription = ({ autoSip = false, data }: SubscriptionProps) => {
   const router = useRouter()
 
   const handleEdit = useCallback(() => {
-    router.push(`${MY_ACCOUNT_PAGE_PATH}/clubs/${data.SubscriptionID}/edit`)
-  }, [data.SubscriptionID, router])
+    router.push(
+      `${MY_ACCOUNT_PAGE_PATH}/${autoSip ? 'auto-sips' : 'clubs'}/${data.SubscriptionID}/edit`
+    )
+  }, [autoSip, data.SubscriptionID, router])
 
   const handleOrderHistory = useCallback(() => {
-    router.push(`${MY_ACCOUNT_PAGE_PATH}/clubs/${data.SubscriptionID}/orders`)
-  }, [data.SubscriptionID, router])
+    router.push(`${MY_ACCOUNT_PAGE_PATH}/orders`)
+  }, [router])
 
   return (
     <div className="rounded">
@@ -71,7 +74,7 @@ export const Subscription = ({ data }: SubscriptionProps) => {
         </div>
         <div className="grid">
           <Typography className="font-bold">Subscription type</Typography>
-          <Typography>Scout Circle Club</Typography>
+          <Typography>{autoSip ? 'Auto-Sip™' : 'Scout Circle Club'}</Typography>
         </div>
         <div className="grid">
           <Typography className="font-bold">Shipping method</Typography>
