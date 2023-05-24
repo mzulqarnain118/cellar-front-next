@@ -3,6 +3,7 @@ import { ElementType, useCallback } from 'react'
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
+import Script from 'next/script'
 
 import {
   CreditCardIcon,
@@ -20,6 +21,8 @@ import { getServerSession } from 'next-auth'
 
 import { Typography } from '@/core/components/typogrpahy'
 import { useIsDesktop } from '@/core/hooks/use-is-desktop'
+import { Clubs } from '@/features/customer-portal/components/clubs'
+import { ClubsEdit } from '@/features/customer-portal/components/clubs/edit'
 import { PaymentMethods } from '@/features/customer-portal/components/payment-methods'
 import { Profile } from '@/features/customer-portal/components/profile'
 import { ShippingAddresses } from '@/features/customer-portal/components/shipping-addresses'
@@ -75,7 +78,7 @@ const iconMap: Record<string, ElementType> = {
 
 const panelMap: Record<string, ElementType> = {
   'auto-sips': Profile,
-  clubs: Profile,
+  clubs: Clubs,
   orders: Orders,
   'payment-methods': PaymentMethods,
   profile: Profile,
@@ -137,6 +140,10 @@ const MyAccountPage: NextPage<PageProps> = () => {
 
   return (
     <main className="bg-[#f7f3f4]">
+      <Script
+        id="brightback"
+        src="https://app.brightback.com/js/current/brightback.js?compiled=true"
+      />
       <LoadingOverlay visible={isLoading} />
       <div className="container mx-auto py-20">
         <div className="grid pb-4 lg:grid-cols-12 lg:items-center">
@@ -186,12 +193,20 @@ const MyAccountPage: NextPage<PageProps> = () => {
           {SLUGS.map(url => {
             const Panel = panelMap[url]
 
-            if (url === 'orders' && query.slug !== undefined && query.slug.length > 1) {
-              return (
-                <OrderInvoicePanel key="orders-invoice" className="lg:px-20" value="orders">
-                  {url}
-                </OrderInvoicePanel>
-              )
+            if (query.slug !== undefined && query.slug.length > 1) {
+              if (url === 'orders' && query.slug[2] === 'invoice') {
+                return (
+                  <OrderInvoicePanel key="orders-invoice" className="lg:px-20" value="orders">
+                    {url}
+                  </OrderInvoicePanel>
+                )
+              } else if (url === 'clubs' && query.slug[2] === 'edit') {
+                return (
+                  <ClubsEdit key="clubs-edit" className="lg:px-20" value="clubs">
+                    {url}
+                  </ClubsEdit>
+                )
+              }
             }
 
             return (

@@ -8,7 +8,7 @@ import { modals } from '@mantine/modals'
 import { Typography } from '@/core/components/typogrpahy'
 
 import { useDeleteAddressMutation } from '../../mutations/delete-address'
-import { CustomerAddress } from '../../queries/get-customer'
+import { CustomerAddress } from '../../queries/customer'
 
 import { EditAddressForm } from './edit-address-form'
 

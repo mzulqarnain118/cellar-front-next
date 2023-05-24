@@ -6,7 +6,7 @@ import { useCustomerPortalActions } from '@/features/store'
 import { api } from '@/lib/api'
 import { Address } from '@/lib/types/address'
 
-import { CUSTOMER_QUERY_KEY } from '../queries/get-customer'
+import { CUSTOMER_QUERY_KEY } from '../queries/customer'
 
 import { Response } from './types'
 

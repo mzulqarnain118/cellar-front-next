@@ -9,7 +9,7 @@ import { Typography } from '@/core/components/typogrpahy'
 
 import { useDeleteCreditCardMutation } from '../../mutations/delete-credit-card'
 import { useUpdateCreditCardMutation } from '../../mutations/update-credit-card'
-import { CustomerCreditCard } from '../../queries/get-customer'
+import { CustomerCreditCard } from '../../queries/customer'
 
 interface CreditCardProps {
   data: CustomerCreditCard

@@ -11,7 +11,7 @@ import { Checkbox } from '@/core/components/checkbox'
 import { Input } from '@/core/components/input'
 
 import { useUpdateAddressMutation } from '../../mutations/update-address'
-import { CustomerAddress } from '../../queries/get-customer'
+import { CustomerAddress } from '../../queries/customer'
 
 const editAddressSchema = z.object({
   city: z.string().min(1, { message: 'Please enter the city.' }),

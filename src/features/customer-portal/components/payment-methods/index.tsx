@@ -6,7 +6,7 @@ import { modals } from '@mantine/modals'
 
 import { Button } from '@/core/components/button'
 
-import { useCustomerQuery } from '../../queries/get-customer'
+import { useCustomerQuery } from '../../queries/customer'
 
 import { AddCreditCardForm } from './add-credit-card-form'
 import { CreditCard } from './credit-card'

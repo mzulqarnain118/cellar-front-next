@@ -5,7 +5,7 @@ import { useSession } from 'next-auth/react'
 import { useCustomerPortalActions } from '@/features/store'
 import { api } from '@/lib/api'
 
-import { CUSTOMER_QUERY_KEY, CustomerAddress } from '../queries/get-customer'
+import { CUSTOMER_QUERY_KEY, CustomerAddress } from '../queries/customer'
 
 import { Response } from './types'
 

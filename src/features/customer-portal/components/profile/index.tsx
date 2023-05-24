@@ -12,7 +12,7 @@ import { Typography } from '@/core/components/typogrpahy'
 import { ValidateEmail, useValidateEmailMutation } from '@/lib/mutations/validate-email'
 
 import { useUpdateCustomerMutation } from '../../mutations/update-customer'
-import { useCustomerQuery } from '../../queries/get-customer'
+import { useCustomerQuery } from '../../queries/customer'
 
 const profileSchema = z.object({
   company: z.string().optional(),

@@ -32,7 +32,7 @@ export const Order = ({ data }: OrderProps) => {
   }, [])
 
   const handleViewInvoice = useCallback(() => {
-    router.push(`${MY_ACCOUNT_PAGE_PATH}/orders/${data.DisplayID}`)
+    router.push(`${MY_ACCOUNT_PAGE_PATH}/orders/${data.DisplayID}/invoice`)
   }, [data.DisplayID, router])
 
   const products = useMemo(

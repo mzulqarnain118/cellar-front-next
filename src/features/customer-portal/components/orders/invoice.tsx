@@ -124,7 +124,7 @@ export const OrderInvoicePanel = (props: TabsPanelProps) => {
           <td>{formatCurrency(item.Amount || 0)}</td>
         </tr>
       )),
-    [invoice?.OrderInfo.Value.Transactions, updateSkyWallet]
+    [invoice?.OrderInfo?.Value?.Transactions, updateSkyWallet]
   )
 
   if (isFetching || isLoading) {

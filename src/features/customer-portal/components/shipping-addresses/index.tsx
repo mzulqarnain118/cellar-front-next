@@ -6,7 +6,7 @@ import { modals } from '@mantine/modals'
 
 import { Button } from '@/core/components/button'
 
-import { useCustomerQuery } from '../../queries/get-customer'
+import { useCustomerQuery } from '../../queries/customer'
 
 import { AddAddressForm } from './add-address-form'
 import { Address } from './address'
