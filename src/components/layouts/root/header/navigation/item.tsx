@@ -44,8 +44,8 @@ export const NavigationItem = ({ data, isDesktop = false, onLinkClick }: Navigat
             <PrismicLink
               key={`${asText(item.child_name)}-${data.id}`}
               className={clsx(
-                `inline-flex h-7 w-full items-center justify-center lg:justify-evenly lg:py-1
-                lg:text-center lg:!text-14 lg:hover:bg-[#f5f3f2] lg:hover:text-[#231f20]`,
+                `inline-flex h-7 w-full items-center justify-center text-[#f5f3f2] hover:no-underline
+                lg:justify-evenly lg:py-1 lg:text-center lg:!text-14 lg:hover:bg-[#f5f3f2] lg:hover:text-[#231f20]`,
                 pathname === asLink(item.child_link) && 'bg-[#f5f3f2] text-[#231f20]'
               )}
               field={item.child_link}
@@ -73,7 +73,7 @@ export const NavigationItem = ({ data, isDesktop = false, onLinkClick }: Navigat
         <HoverCard.Target>
           <Link
             className={clsx(
-              'mb-1 flex h-12 w-[stretch] items-start leading-[31px] transition-all duration-100 hover:border-b-4 hover:border-[#231f20]',
+              'mb-1 flex h-12 w-[stretch] items-start leading-[31px] text-neutral-dark transition-all duration-100 hover:border-b-4 hover:border-[#231f20] hover:no-underline',
               data.primary.bold && 'font-bold'
             )}
             href={asLink(data.primary.link) || ''}

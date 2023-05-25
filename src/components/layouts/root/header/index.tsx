@@ -87,7 +87,11 @@ export const Header = () => {
                   link.primary.bold && 'font-bold'
                 )}
               >
-                <PrismicLink className="w-max" field={link.primary.link} onClick={toggleNavOpen}>
+                <PrismicLink
+                  className="w-max text-neutral-dark hover:no-underline"
+                  field={link.primary.link}
+                  onClick={toggleNavOpen}
+                >
                   {asText(link.primary.name)}
                 </PrismicLink>
               </div>

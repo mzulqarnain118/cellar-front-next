@@ -18,7 +18,7 @@ export const CheckoutLayout = ({ children }: CheckoutLayoutProps) => {
   const isDesktop = useIsDesktop()
 
   return (
-    <div className="h-full min-h-[100svh] bg-[#f7f3f4]">
+    <div className="relative h-full min-h-[100svh] bg-[#f7f3f4]">
       <div className="min-h-[100svh] py-4">
         <header className="container mx-auto flex items-center justify-between">
           <CompanyLogo size="lg" />

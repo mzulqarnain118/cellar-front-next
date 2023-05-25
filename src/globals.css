@@ -69,4 +69,8 @@
   .h6 {
     @apply !text-[1.25em] lg:!text-xl;
   }
+
+  a {
+    @apply text-[#b7725b] hover:underline;
+  }
 }
