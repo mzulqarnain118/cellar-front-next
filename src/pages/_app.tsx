@@ -1,6 +1,6 @@
 import { Suspense, lazy, useEffect, useState } from 'react'
 
-import type { AppProps } from 'next/app'
+import type { AppProps, NextWebVitalsMetric } from 'next/app'
 import dynamic from 'next/dynamic'
 import { Merriweather } from 'next/font/google'
 import Head from 'next/head'
@@ -18,6 +18,7 @@ import {
 } from '@tanstack/react-query-persist-client'
 import { SessionProvider } from 'next-auth/react'
 import { DefaultSeo } from 'next-seo'
+import { GoogleAnalytics, event } from 'nextjs-google-analytics'
 import { Theme } from 'react-daisyui'
 
 import { RootLayout } from '@/components/layouts/root'
@@ -58,6 +59,15 @@ const ReactQueryDevtoolsProduction = lazy(() =>
     default: d.ReactQueryDevtools,
   }))
 )
+
+export const reportWebVitals = ({ id, label, name, value }: NextWebVitalsMetric) => {
+  event(name, {
+    category: label === 'web-vital' ? 'Web Vitals' : 'Next.js custom metric',
+    label: id,
+    nonInteraction: true,
+    value: Math.round(name === 'CLS' ? value * 1000 : value),
+  })
+}
 
 const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
   const isDesktop = useIsDesktop()
@@ -113,6 +123,7 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
                           }
                         `}
                       </style>
+                      <GoogleAnalytics trackPageViews />
                       <Component {...pageProps} />
                       <ProgressBar />
                     </RootLayout>
