@@ -11,6 +11,7 @@ import { useDisclosure } from '@mantine/hooks'
 import { asText } from '@prismicio/helpers'
 import { PrismicLink, PrismicRichText } from '@prismicio/react'
 import { useQueryClient } from '@tanstack/react-query'
+import { clsx } from 'clsx'
 import { useSession } from 'next-auth/react'
 import { Badge, Indicator, Menu } from 'react-daisyui'
 
@@ -59,7 +60,7 @@ export const Header = () => {
   const menu = useMemo(
     () =>
       !isFetchingNavigation && !isLoadingNavigation ? (
-        <div className="flex flex-1 flex-col items-center text-lg lg:w-full lg:flex-row">
+        <div className="flex flex-col items-center gap-2 text-lg lg:flex-row lg:justify-evenly [&>*]:p-2 [&>*]:!tracking-[1px] [&>*]:lg:m-[0.625rem]">
           {navigation?.data.body?.map(link => {
             const hasChildren =
               link.items.length > 0 &&
@@ -81,9 +82,14 @@ export const Header = () => {
             return (
               <div
                 key={link.id}
-                className="inline-flex h-10 w-[stretch] items-center justify-center"
+                className={clsx(
+                  'inline-flex w-[stretch] items-start justify-center transition-all duration-100 hover:border-b-4 hover:border-[#231f20] lg:mb-1 lg:h-12',
+                  link.primary.bold && 'font-bold'
+                )}
               >
-                <PrismicLink field={link.primary.link}>{asText(link.primary.name)}</PrismicLink>
+                <PrismicLink className="w-max" field={link.primary.link} onClick={toggleNavOpen}>
+                  {asText(link.primary.name)}
+                </PrismicLink>
               </div>
             )
           })}
@@ -105,7 +111,7 @@ export const Header = () => {
     () =>
       !isFetchingCTA && !isLoadingCTA ? (
         <Button
-          className="mb-2 !bg-[#231f20] text-lg text-[#f5f3f2] lg:mb-0"
+          className="mb-2 !bg-[#864f4f] text-lg text-[#f5f3f2] lg:mb-0 lg:w-max"
           color="ghost"
           fullWidth={!isDesktop}
         >
@@ -178,7 +184,9 @@ export const Header = () => {
           {isFetchingPromoMessage || isLoadingPromoMessage ? (
             <Skeleton className="h-11 w-80 lg:h-5" />
           ) : (
-            <PrismicRichText field={promoMessage?.data.feature_bar} />
+            <strong>
+              <PrismicRichText field={promoMessage?.data.feature_bar} />
+            </strong>
           )}
         </div>
         <div className="flex items-center justify-between gap-4">
@@ -197,9 +205,9 @@ export const Header = () => {
         <div className="container mx-auto flex items-center justify-between py-3 lg:w-full">
           {isDesktop ? (
             <>
-              <div className="flex w-full items-center">
+              <div className="flex w-full items-center gap-4">
                 <CompanyLogo />
-                <div className="flex flex-1">
+                <div className="flex flex-1 lg:justify-end">
                   {menu}
                   <div className="grid grid-cols-[auto_1fr] items-center gap-4">
                     {!isFetchingNavigation && !isLoadingNavigation ? (

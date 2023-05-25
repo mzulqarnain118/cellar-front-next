@@ -1,4 +1,4 @@
-import { asLink, asText } from '@prismicio/helpers'
+import { asText } from '@prismicio/helpers'
 import { SliceZone } from '@prismicio/react'
 import { dehydrate } from '@tanstack/react-query'
 import type { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType } from 'next'
@@ -29,7 +29,7 @@ export const getStaticProps = async ({
   }
 
   if (uid !== undefined) {
-    page = await client.getByUID('brand_page', uid)
+    page = await client.getByUID('rich_content_page', uid)
   }
 
   if (page === undefined) {
@@ -53,8 +53,10 @@ export const getStaticProps = async ({
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const client = createClient()
-  const pages = await client.getAllByType('brand_page')
-  const paths = pages.map(page => asLink(page) as string)
+  const pages = await client.getAllByType('rich_content_page')
+  const paths = pages
+    .filter(page => page.data.page_type === 'Brand Detail')
+    .map(page => `/brands/${page.uid}`)
 
   return {
     fallback: true,

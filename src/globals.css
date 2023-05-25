@@ -37,36 +37,36 @@
   h4,
   h5,
   h6 {
-    @apply !font-heading !font-normal;
+    @apply !font-heading !font-normal !tracking-wide;
   }
 
   h1,
   .h1 {
-    @apply !text-5xl lg:!text-[3.75rem];
+    @apply !text-5xl lg:!text-6xl;
   }
 
   h2,
   .h2 {
-    @apply !text-[2.5rem] lg:!text-5xl;
+    @apply !text-3xl lg:!text-5xl;
   }
 
   h3,
   .h3 {
-    @apply !text-[2rem] lg:!text-[2.5rem];
+    @apply !text-3xl lg:!text-4xl;
   }
 
   h4,
   .h4 {
-    @apply !text-[1.75rem] lg:!text-3xl;
+    @apply !text-[1.75em] lg:!text-3xl;
   }
 
   h5,
   .h5 {
-    @apply !text-2xl;
+    @apply !text-2xl lg:!text-2xl;
   }
 
   h6,
   .h6 {
-    @apply !text-xl;
+    @apply !text-[1.25em] lg:!text-xl;
   }
 }

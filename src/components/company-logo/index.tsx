@@ -23,7 +23,7 @@ export const CompanyLogo = ({ className, size = 'md', white = false }: CompanyLo
   return (
     <div
       className={clsx(
-        'relative h-10 w-[10.25rem] lg:h-[5.25rem] lg:w-[15.5rem]',
+        'relative h-10 w-[10.25rem] lg:h-[5.25rem] lg:w-56',
         size === 'lg' && '!w-[21.75rem]',
         className
       )}

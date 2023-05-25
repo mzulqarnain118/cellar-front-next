@@ -37,7 +37,12 @@ export const HeroBanner = ({ slice }: HeroBannerProps) => {
 
   const children = useMemo(
     () => (
-      <div className={clsx(!!bgVideoUrl && bgVideoUrl.length > 0 && 'absolute z-10')}>
+      <div
+        className={clsx(
+          'mx-auto flex w-full justify-center p-4 lg:justify-end',
+          !!bgVideoUrl && bgVideoUrl.length > 0 && 'absolute z-10'
+        )}
+      >
         {slice.primary.content ? (
           <div
             className={clsx(
@@ -80,7 +85,7 @@ export const HeroBanner = ({ slice }: HeroBannerProps) => {
     <>
       <div
         className={clsx(
-          'mx-auto flex min-h-[500px] flex-col items-center justify-center bg-cover bg-center bg-no-repeat lg:min-h-[600px]'
+          'relative mx-auto flex min-h-[500px] flex-col items-center justify-center bg-cover bg-center bg-no-repeat lg:min-h-[600px]'
         )}
         style={{
           backgroundColor:

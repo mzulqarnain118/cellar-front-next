@@ -2,8 +2,7 @@ import { useCallback, useMemo } from 'react'
 
 import { useRouter } from 'next/router'
 
-import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline'
-import { Collapse, HoverCard } from '@mantine/core'
+import { Collapse, HoverCard, HoverCardProps } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import type { Content } from '@prismicio/client'
 import { asLink, asText } from '@prismicio/helpers'
@@ -16,7 +15,10 @@ interface NavigationItemProps {
   onLinkClick: () => void
 }
 
-const hoverCardClassNames = { dropdown: 'p-0 w-full items-center border-0' }
+const hoverCardClassNames: HoverCardProps['classNames'] = {
+  arrow: 'bg-[#231f20] -z-10',
+  dropdown: '!p-0 !w-full items-center border-0',
+}
 
 export const NavigationItem = ({ data, isDesktop = false, onLinkClick }: NavigationItemProps) => {
   const { pathname } = useRouter()
@@ -29,18 +31,18 @@ export const NavigationItem = ({ data, isDesktop = false, onLinkClick }: Navigat
 
   const children = useMemo(
     () => (
-      <div className="w-[calc(100svw-1rem)] border border-[#231f20] bg-[#231f20] text-[#f5f3f2]">
+      <div className="border border-[#231f20] bg-[#231f20] p-1 text-[#f5f3f2]">
         <div
           className={`
-            container mx-auto flex flex-col items-center gap-4 text-14 lg:flex-row
-            lg:justify-between
+            container mx-auto flex flex-col items-center gap-4 text-14 font-bold
+            lg:flex-row lg:justify-center
           `}
         >
           {data.items.map(item => (
             <PrismicLink
               key={`${asText(item.child_name)}-${data.id}`}
               className={clsx(
-                `inline-flex h-10 w-full items-center justify-center lg:justify-evenly lg:px-8
+                `inline-flex h-7 w-full items-center justify-center lg:justify-evenly lg:py-1
                 lg:text-center lg:!text-14 lg:hover:bg-[#f5f3f2] lg:hover:text-[#231f20]`,
                 pathname === asLink(item.child_link) && 'bg-[#f5f3f2] text-[#231f20]'
               )}
@@ -58,18 +60,23 @@ export const NavigationItem = ({ data, isDesktop = false, onLinkClick }: Navigat
 
   if (isDesktop) {
     return (
-      <HoverCard classNames={hoverCardClassNames} closeDelay={300} shadow="md">
+      <HoverCard
+        withArrow
+        withinPortal
+        arrowSize={16}
+        classNames={hoverCardClassNames}
+        closeDelay={300}
+        shadow="md"
+      >
         <HoverCard.Target>
           <button
-            className="inline-flex h-10 w-[stretch] items-center justify-center gap-2"
+            className={clsx(
+              'mb-1 inline-flex h-12 w-[stretch] items-start leading-[31px] transition-all duration-100 hover:border-b-4 hover:border-[#231f20]',
+              data.primary.bold && 'font-bold'
+            )}
             onClick={toggle}
           >
             {asText(data.primary.name)}
-            {opened ? (
-              <ChevronUpIcon className="h-5 w-5" />
-            ) : (
-              <ChevronDownIcon className="h-5 w-5" />
-            )}
           </button>
         </HoverCard.Target>
         <HoverCard.Dropdown>{children}</HoverCard.Dropdown>
@@ -80,11 +87,10 @@ export const NavigationItem = ({ data, isDesktop = false, onLinkClick }: Navigat
   return (
     <div className="relative w-full">
       <button
-        className="inline-flex h-10 w-[stretch] items-center justify-center gap-2"
+        className="inline-flex h-fit w-[stretch] items-center justify-center gap-2"
         onClick={toggle}
       >
         {asText(data.primary.name)}
-        {opened ? <ChevronUpIcon className="h-5 w-5" /> : <ChevronDownIcon className="h-5 w-5" />}
       </button>
       <Collapse className="w-[stretch]" in={opened}>
         {children}
