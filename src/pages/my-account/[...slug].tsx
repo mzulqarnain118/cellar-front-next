@@ -26,6 +26,7 @@ import { ClubsEdit } from '@/features/customer-portal/components/clubs/edit'
 import { PaymentMethods } from '@/features/customer-portal/components/payment-methods'
 import { Profile } from '@/features/customer-portal/components/profile'
 import { ShippingAddresses } from '@/features/customer-portal/components/shipping-addresses'
+import { Wallet } from '@/features/customer-portal/components/wallet'
 import {
   CUSTOMER_PORTAL_BANNER_QUERY_KEY,
   getCustomerPortalBanner,
@@ -56,34 +57,48 @@ const SLUGS = [
   'wallet',
 ]
 
-const slugMap: Record<string, string> = {
-  'auto-sips': 'Auto-Sips',
-  clubs: 'Clubs',
-  orders: 'Orders',
-  'payment-methods': 'Payment Methods',
-  profile: 'Profile',
-  'shipping-addresses': 'Shipping Addresses',
-  wallet: 'Wallet',
+interface Slug {
+  friendlyName: string
+  icon: ElementType
+  panel: ElementType
 }
 
-const iconMap: Record<string, ElementType> = {
-  'auto-sips': TruckIcon,
-  clubs: StarIcon,
-  orders: ShoppingBagIcon,
-  'payment-methods': CreditCardIcon,
-  profile: UserIcon,
-  'shipping-addresses': MapPinIcon,
-  wallet: WalletIcon,
-}
-
-const panelMap: Record<string, ElementType> = {
-  'auto-sips': Clubs,
-  clubs: Clubs,
-  orders: Orders,
-  'payment-methods': PaymentMethods,
-  profile: Profile,
-  'shipping-addresses': ShippingAddresses,
-  wallet: Profile,
+const slugMap: Record<string, Slug> = {
+  'auto-sips': {
+    friendlyName: 'Auto-Sips',
+    icon: TruckIcon,
+    panel: Clubs,
+  },
+  clubs: {
+    friendlyName: 'Clubs',
+    icon: StarIcon,
+    panel: Clubs,
+  },
+  orders: {
+    friendlyName: 'Orders',
+    icon: ShoppingBagIcon,
+    panel: Orders,
+  },
+  'payment-methods': {
+    friendlyName: 'Payment Methods',
+    icon: CreditCardIcon,
+    panel: PaymentMethods,
+  },
+  profile: {
+    friendlyName: 'Profile',
+    icon: UserIcon,
+    panel: Profile,
+  },
+  'shipping-addresses': {
+    friendlyName: 'Shipping Addresses',
+    icon: MapPinIcon,
+    panel: ShippingAddresses,
+  },
+  wallet: {
+    friendlyName: 'Wallet',
+    icon: WalletIcon,
+    panel: Wallet,
+  },
 }
 
 const tabsClassNames = {
@@ -130,7 +145,7 @@ const MyAccountPage: NextPage<PageProps> = () => {
   const { data: banner } = useCustomerPortalBanner()
   const { push, query } = useRouter()
   const slug = query.slug?.[0]
-  const friendlyName = slugMap[slug || '']
+  const friendlyName = slugMap[slug || '']?.friendlyName
   const isLoading = useCustomerPortalIsLoading()
 
   const handleTabChange: TabsProps['onTabChange'] = useCallback(
@@ -174,7 +189,7 @@ const MyAccountPage: NextPage<PageProps> = () => {
         >
           <Tabs.List position={isDesktop ? undefined : 'center'}>
             {SLUGS.map(url => {
-              const Icon = iconMap[url]
+              const Icon = slugMap[url].icon
 
               return (
                 <Tabs.Tab
@@ -184,14 +199,14 @@ const MyAccountPage: NextPage<PageProps> = () => {
                   icon={<Icon className="mr-3 h-5 w-5" />}
                   value={url}
                 >
-                  {slugMap[url]}
+                  {slugMap[url].friendlyName}
                 </Tabs.Tab>
               )
             })}
           </Tabs.List>
 
           {SLUGS.map(url => {
-            const Panel = panelMap[url]
+            const Panel = slugMap[url].panel
 
             if (query.slug !== undefined && query.slug.length > 1) {
               if (url === 'orders' && query.slug[2] === 'invoice') {

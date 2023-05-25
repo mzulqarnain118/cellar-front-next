@@ -20,7 +20,7 @@ interface LoginResponse {
       SponsorName: string
       SponsorDisplayID: string
       DisplayID: string
-      UserID: string
+      UserID: number
       Username: string
       Email: string
       DateCreated: string
@@ -178,6 +178,7 @@ export const authOptions: NextAuthOptions = {
                   first: personPortalInfo.FirstName,
                   last: personPortalInfo.LastName,
                 },
+                personId: loginData.data.user.UserID,
                 shippingState,
                 token: loginData.data.token,
                 username: loginData.data.user.Username,

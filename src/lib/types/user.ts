@@ -11,6 +11,7 @@ export interface User {
     last: string
   }
   isGuest: boolean
+  personId: number
   shippingState: State
   token: string
   tokenDetails?: {

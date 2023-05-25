@@ -23,6 +23,7 @@ const DEFAULT_USER_STATE: User = {
     first: '',
     last: '',
   },
+  personId: 0,
   shippingState: {
     abbreviation: 'TX',
     countryID: 1,
