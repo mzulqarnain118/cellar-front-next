@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic'
 import Error from 'next/error'
 import { useRouter } from 'next/router'
 
-import { Content, asText } from '@prismicio/client'
+import { Content, asText, filter } from '@prismicio/client'
 import { asImageWidthSrcSet } from '@prismicio/helpers'
 import { dehydrate } from '@tanstack/react-query'
 import { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType, NextPage } from 'next'
@@ -47,7 +47,10 @@ export const getStaticProps = async ({ params, previewData }: GetStaticPropsCont
 
   // ! TODO: Convert Prismic PDP UID from SKU to Cart URL.
   const queryClient = await getStaticNavigation(client)
-  const pdps = await client.getAllByType<Content.PdpDocument>('pdp', { graphQuery })
+  const pdps = await client.getAllByType<Content.PdpDocument>('pdp', {
+    filters: [filter.fulltext('my.pdp.url', cartUrl.toString())],
+    graphQuery,
+  })
   const page = pdps.find(pdp => asText(pdp.data.url) === cartUrl)
   await queryClient.prefetchQuery([...PRODUCTS_QUERY_KEY, cartUrl], getProductByCartUrl)
 
