@@ -1,6 +1,6 @@
 import { ParsedUrlQueryInput } from 'querystring'
 
-import { useMemo } from 'react'
+import { forwardRef, useMemo } from 'react'
 
 import { Url } from 'next/dist/shared/lib/router/router'
 import NextLink, { LinkProps } from 'next/link'
@@ -20,64 +20,70 @@ const isParsedQueryInput = (
 ): query is ParsedUrlQueryInput =>
   query !== undefined && query !== null && typeof query === 'object' && typeof query !== 'string'
 
-export const Link = ({ href: initialHref, ...rest }: Props) => {
-  const { consultant } = useConsultantStore()
+export const Link = forwardRef<HTMLAnchorElement, Props>(
+  ({ href: initialHref, ...rest }: Props, ref) => {
+    const { consultant } = useConsultantStore()
 
-  const href: Url = useMemo(() => {
-    const pathname = typeof initialHref === 'string' ? initialHref : initialHref.pathname || ''
-    const query = typeof initialHref === 'string' ? undefined : initialHref.query
+    const href: Url = useMemo(() => {
+      const pathname = typeof initialHref === 'string' ? initialHref : initialHref.pathname || ''
+      const query = typeof initialHref === 'string' ? undefined : initialHref.query
 
-    if (pathname.includes('#')) {
+      if (pathname.includes('#')) {
+        return {
+          pathname,
+        }
+      }
+
+      if (isParsedQueryInput(query)) {
+        return {
+          pathname,
+          query: { ...query },
+        }
+      }
+
+      const searchParams = new URLSearchParams()
+      const consultantUrl = searchParams.get('u')
+      if (!consultantUrl && consultant.url) {
+        searchParams.delete('u')
+        searchParams.append('u', consultant.url)
+      }
+      if (pathname.startsWith('/wine')) {
+        searchParams.set('page', '1')
+      } else {
+        searchParams.delete('page')
+      }
+
       return {
         pathname,
+        query: searchParams.toString(),
       }
-    }
+    }, [initialHref, consultant])
 
-    if (isParsedQueryInput(query)) {
-      return {
-        pathname,
-        query: { ...query },
-      }
-    }
+    const link = useMemo(
+      () =>
+        href.pathname?.startsWith('/') ? (
+          <NextLink
+            as={href.pathname?.startsWith('/wine') ? href.pathname : undefined}
+            href={href}
+            {...rest}
+            ref={ref}
+          />
+        ) : (
+          <NextLink
+            ref={ref}
+            as={href.pathname?.startsWith('/wine') ? href.pathname : undefined}
+            className={clsx('inline-flex gap-1', rest.className)}
+            href={href}
+          >
+            {rest.children}
+            <ArrowTopRightOnSquareIcon className="h-4 w-4 cursor-pointer" />
+          </NextLink>
+        ),
+      [href, ref, rest]
+    )
 
-    const searchParams = new URLSearchParams()
-    const consultantUrl = searchParams.get('u')
-    if (!consultantUrl && consultant.url) {
-      searchParams.delete('u')
-      searchParams.append('u', consultant.url)
-    }
-    if (pathname.startsWith('/wine')) {
-      searchParams.set('page', '1')
-    } else {
-      searchParams.delete('page')
-    }
+    return link
+  }
+)
 
-    return {
-      pathname,
-      query: searchParams.toString(),
-    }
-  }, [initialHref, consultant])
-
-  const link = useMemo(
-    () =>
-      href.pathname?.startsWith('/') ? (
-        <NextLink
-          as={href.pathname?.startsWith('/wine') ? href.pathname : undefined}
-          href={href}
-          {...rest}
-        />
-      ) : (
-        <NextLink
-          as={href.pathname?.startsWith('/wine') ? href.pathname : undefined}
-          className={clsx('inline-flex gap-1', rest.className)}
-          href={href}
-        >
-          {rest.children}
-          <ArrowTopRightOnSquareIcon className="h-4 w-4 cursor-pointer" />
-        </NextLink>
-      ),
-    [href, rest]
-  )
-
-  return link
-}
+Link.displayName = 'Link'

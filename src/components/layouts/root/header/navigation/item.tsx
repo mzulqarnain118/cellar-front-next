@@ -9,6 +9,8 @@ import { asLink, asText } from '@prismicio/helpers'
 import { PrismicLink } from '@prismicio/react'
 import { clsx } from 'clsx'
 
+import { Link } from '@/components/link'
+
 interface NavigationItemProps {
   data: Content.NavigationMenuDocumentDataBodyNavigationLinkSlice
   isDesktop: boolean
@@ -69,15 +71,15 @@ export const NavigationItem = ({ data, isDesktop = false, onLinkClick }: Navigat
         shadow="md"
       >
         <HoverCard.Target>
-          <button
+          <Link
             className={clsx(
-              'mb-1 inline-flex h-12 w-[stretch] items-start leading-[31px] transition-all duration-100 hover:border-b-4 hover:border-[#231f20]',
+              'mb-1 flex h-12 w-[stretch] items-start leading-[31px] transition-all duration-100 hover:border-b-4 hover:border-[#231f20]',
               data.primary.bold && 'font-bold'
             )}
-            onClick={toggle}
+            href={asLink(data.primary.link) || ''}
           >
             {asText(data.primary.name)}
-          </button>
+          </Link>
         </HoverCard.Target>
         <HoverCard.Dropdown>{children}</HoverCard.Dropdown>
       </HoverCard>
