@@ -7,6 +7,7 @@ import { AdjustmentsHorizontalIcon } from '@heroicons/react/24/outline'
 import { Pagination, PaginationProps, Select, SelectProps } from '@mantine/core'
 
 import { Button } from '@/core/components/button'
+import { Skeleton } from '@/core/components/skeleton'
 import { Typography } from '@/core/components/typogrpahy'
 import { DISPLAY_CATEGORY } from '@/lib/constants/display-category'
 import { usePaginatedProducts } from '@/lib/queries/products'
@@ -96,7 +97,7 @@ export const ProductListing = ({
     () => (
       <>
         {isFetching || isLoading ? (
-          <div className="mb-4 h-6 w-60 animate-pulse rounded-lg bg-neutral-300" />
+          <div className="mb-4 h-6 w-60 animate-pulse rounded bg-neutral-300" />
         ) : (
           <Typography>
             Showing {data?.resultsShown?.[0]}-{data?.resultsShown?.[1]} results of {data?.results}.
@@ -204,27 +205,27 @@ export const ProductListing = ({
       <>
         {paginationHeader}
         <div className="mt-4 grid grid-cols-1 gap-4 lg:auto-rows-auto lg:grid-cols-4 lg:gap-6">
-          <div className="h-[31rem] animate-pulse rounded-lg bg-neutral-300" />
-          <div className="h-[31rem] animate-pulse rounded-lg bg-neutral-300" />
-          <div className="h-[31rem] animate-pulse rounded-lg bg-neutral-300" />
-          <div className="h-[31rem] animate-pulse rounded-lg bg-neutral-300" />
-          <div className="h-[31rem] animate-pulse rounded-lg bg-neutral-300" />
-          <div className="h-[31rem] animate-pulse rounded-lg bg-neutral-300" />
-          <div className="h-[31rem] animate-pulse rounded-lg bg-neutral-300" />
-          <div className="h-[31rem] animate-pulse rounded-lg bg-neutral-300" />
-          <div className="h-[31rem] animate-pulse rounded-lg bg-neutral-300" />
-          <div className="h-[31rem] animate-pulse rounded-lg bg-neutral-300" />
-          <div className="h-[31rem] animate-pulse rounded-lg bg-neutral-300" />
-          <div className="h-[31rem] animate-pulse rounded-lg bg-neutral-300" />
-          <div className="h-[31rem] animate-pulse rounded-lg bg-neutral-300" />
-          <div className="h-[31rem] animate-pulse rounded-lg bg-neutral-300" />
-          <div className="h-[31rem] animate-pulse rounded-lg bg-neutral-300" />
-          <div className="h-[31rem] animate-pulse rounded-lg bg-neutral-300" />
+          <Skeleton className="h-[30.25rem]" />
+          <Skeleton className="h-[30.25rem]" />
+          <Skeleton className="h-[30.25rem]" />
+          <Skeleton className="h-[30.25rem]" />
+          <Skeleton className="h-[30.25rem]" />
+          <Skeleton className="h-[30.25rem]" />
+          <Skeleton className="h-[30.25rem]" />
+          <Skeleton className="h-[30.25rem]" />
+          <Skeleton className="h-[30.25rem]" />
+          <Skeleton className="h-[30.25rem]" />
+          <Skeleton className="h-[30.25rem]" />
+          <Skeleton className="h-[30.25rem]" />
+          <Skeleton className="h-[30.25rem]" />
+          <Skeleton className="h-[30.25rem]" />
+          <Skeleton className="h-[30.25rem]" />
+          <Skeleton className="h-[30.25rem]" />
         </div>
         <div className="mx-auto mt-6 flex items-center justify-center">
-          <div className="h-[3rem] w-[2.5rem] animate-pulse rounded-lg bg-neutral-300" />
-          <div className="h-[3rem] w-[5rem] animate-pulse rounded-lg bg-neutral-300" />
-          <div className="h-[3rem] w-[2.5rem] animate-pulse rounded-lg bg-neutral-300" />
+          <div className="h-[3rem] w-[2.5rem] animate-pulse rounded bg-neutral-300" />
+          <div className="h-[3rem] w-[5rem] animate-pulse rounded bg-neutral-300" />
+          <div className="h-[3rem] w-[2.5rem] animate-pulse rounded bg-neutral-300" />
         </div>
       </>
     )

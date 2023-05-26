@@ -202,7 +202,7 @@ export const GuestCheckout = () => {
       <div className="container mx-auto my-16 flex items-center justify-center">
         <div
           className={`
-            max-w-3xl rounded-lg border border-neutral-300 bg-neutral-50 px-10 py-10 md:px-20
+            max-w-3xl rounded border border-neutral-300 bg-neutral-50 px-10 py-10 md:px-20
           `}
         >
           <Typography as="h3">Checkout as guest</Typography>
@@ -221,7 +221,7 @@ export const GuestCheckout = () => {
                 <input
                   className={clsx(
                     `
-                      focus:outline-brand z-10 h-10 w-full rounded-lg border border-neutral-200
+                      focus:outline-brand z-10 h-10 w-full rounded border border-neutral-200
                       bg-neutral px-3 transition-all duration-500 placeholder:text-neutral-300
                       focus:!outline focus:outline-1 focus:outline-offset-0
                     `,
@@ -252,7 +252,7 @@ export const GuestCheckout = () => {
                 <input
                   className={clsx(
                     `
-                      focus:outline-brand z-10 h-10 w-full rounded-lg border border-neutral-200
+                      focus:outline-brand z-10 h-10 w-full rounded border border-neutral-200
                       bg-neutral px-3 transition-all duration-500 placeholder:text-neutral-300
                       focus:!outline focus:outline-1 focus:outline-offset-0
                     `,
@@ -283,7 +283,7 @@ export const GuestCheckout = () => {
                 <input
                   className={clsx(
                     `
-                      focus:outline-brand z-10 h-10 w-full rounded-lg border border-neutral-200
+                      focus:outline-brand z-10 h-10 w-full rounded border border-neutral-200
                       bg-neutral px-3 transition-all duration-500
                       placeholder:text-neutral-300 focus:!outline focus:outline-1
                       focus:outline-offset-0
@@ -340,7 +340,7 @@ export const GuestCheckout = () => {
                 <div
                   className={clsx(
                     `
-                        grid grid-cols-5 items-center justify-between rounded-lg border
+                        grid grid-cols-5 items-center justify-between rounded border
                         border-neutral-200 bg-neutral transition-all
                       `,
                     !!dobError && '!border-red-700'

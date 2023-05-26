@@ -46,7 +46,7 @@ export const NumberPicker = ({
   }, [])
 
   return (
-    <div className={clsx('flex items-center rounded-lg', containerClassName)}>
+    <div className={clsx('flex items-center rounded', containerClassName)}>
       <Button
         aria-label="Remove 1"
         className={clsx(

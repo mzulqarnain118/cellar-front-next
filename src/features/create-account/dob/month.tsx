@@ -17,7 +17,7 @@ export const Month = <T extends FieldValues>({ setFocus, ...rest }: DateOfBirthP
     <input
       className={clsx(
         `
-          h-10 rounded-lg !rounded-r-none border-none bg-neutral
+          h-10 rounded !rounded-r-none border-none bg-neutral
           text-center !outline-none transition-all duration-500
           placeholder:text-neutral-300 md:w-16 md:text-center
         `,

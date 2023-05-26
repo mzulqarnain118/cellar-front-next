@@ -35,7 +35,7 @@ export const Day = <T extends FieldValues>({ setFocus, ...rest }: DateOfBirthPro
       <input
         className={clsx(
           `
-            h-10 rounded-lg !rounded-l-none !rounded-r-none border-none bg-neutral
+            h-10 rounded !rounded-l-none !rounded-r-none border-none bg-neutral
             text-center !outline-none transition-all duration-500 placeholder:text-neutral-300
             md:w-14
           `,

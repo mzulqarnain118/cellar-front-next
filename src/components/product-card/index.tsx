@@ -235,7 +235,7 @@ export const ProductCard = ({ className, priority = false, product }: ProductCar
     <div
       className={clsx(
         `
-        relative grid grid-rows-[1fr_auto_auto] rounded-lg border border-solid border-base-dark
+        relative grid grid-rows-[1fr_auto_auto] rounded border border-solid border-base-dark
         bg-base-light p-6 shadow md:gap-6
       `,
         className
