@@ -45,7 +45,6 @@ export const getStaticProps = async ({ params, previewData }: GetStaticPropsCont
   const client = createClient({ previewData })
   const cartUrl = params?.cartUrl || ''
 
-  // ! TODO: Convert Prismic PDP UID from SKU to Cart URL.
   const queryClient = await getStaticNavigation(client)
   const pdps = await client.getAllByType<Content.PdpDocument>('pdp', {
     filters: [filter.fulltext('my.pdp.url', cartUrl.toString())],

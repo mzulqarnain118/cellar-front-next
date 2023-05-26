@@ -2,7 +2,7 @@ import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 
 import { dehydrate } from '@tanstack/react-query'
-import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next'
+import { GetServerSideProps as GetStaticProps, InferGetServerSidePropsType, NextPage } from 'next'
 import { NextSeo } from 'next-seo'
 
 import {
@@ -21,21 +21,22 @@ const ProductListing = dynamic(
   { ssr: false }
 )
 
-export const getServerSideProps: GetServerSideProps = async ({ previewData, query, res: _ }) => {
+export const getStaticProps: GetStaticProps = async ({ previewData, query }) => {
   let categories: number[] = DEFAULT_CATEGORIES
   let limit = DEFAULT_LIMIT
   let page = DEFAULT_PAGE
   let sort: Sort = DEFAULT_SORT
-  if (query.categories) {
+
+  if (query?.categories) {
     categories = query.categories.toString().split(',').map(Number)
   }
-  if (query.limit) {
+  if (query?.limit) {
     limit = parseInt(query.limit.toString())
   }
-  if (query.page) {
+  if (query?.page) {
     page = parseInt(query.page.toString())
   }
-  if (query.sort) {
+  if (query?.sort) {
     sort = query.sort.toString() as Sort
   }
   const client = createClient({ previewData })
@@ -49,17 +50,16 @@ export const getServerSideProps: GetServerSideProps = async ({ previewData, quer
     getPaginatedProducts
   )
 
-  // res.setHeader('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=120')
-
   return {
     props: {
       dehydratedState: dehydrate(queryClient),
       page: pageData,
     },
+    revalidate: 120,
   }
 }
 
-type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>
+type PageProps = InferGetServerSidePropsType<typeof getStaticProps>
 
 const PLP: NextPage<PageProps> = () => {
   const router = useRouter()

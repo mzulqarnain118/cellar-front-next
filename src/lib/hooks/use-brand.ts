@@ -24,10 +24,11 @@ export const useBrand = (brandUid?: string) => {
 
   useEffect(() => {
     const getBrand = async () => {
-      if (brandUid !== undefined) {
-        const response = await Promise.all([
-          client.getByUID<Content.RichContentPageDocument>('rich_content_page', brandUid, {
-            graphQuery: `{
+      if (brandUid !== undefined && brandUid.length > 0) {
+        try {
+          const response = await Promise.all([
+            client.getByUID<Content.RichContentPageDocument>('rich_content_page', brandUid, {
+              graphQuery: `{
               rich_content_page {
                 body {
                   ...on dynamic_product_showcase {
@@ -41,9 +42,9 @@ export const useBrand = (brandUid?: string) => {
                 }
               }
             }`,
-          }),
-          client.getByUID('rich_content_page', brandUid, {
-            graphQuery: `{
+            }),
+            client.getByUID('rich_content_page', brandUid, {
+              graphQuery: `{
               rich_content_page {
                 body {
                   ...on image_and_text {
@@ -55,9 +56,9 @@ export const useBrand = (brandUid?: string) => {
                 }
               }
             }`,
-          }),
-          client.getSingle('brand-landing-temp', {
-            graphQuery: `{
+            }),
+            client.getSingle('brand-landing-temp', {
+              graphQuery: `{
               brand-landing-temp {
                 brands {
                   brand
@@ -66,18 +67,21 @@ export const useBrand = (brandUid?: string) => {
                 }
               }
             }`,
-          }),
-        ])
-        setProductShowcaseData(response[0].data.body)
-        setImageAndTextData(
-          response[1].data
-            .body as SliceZone<Content.RichContentPageDocumentDataBodyImageAndTextSlice>
-        )
-        setBrandLandingData(
-          response[2].data.brands.find(
-            ({ brand }) => asText(brand).toLowerCase().replaceAll(' ', '-') === brandUid
+            }),
+          ])
+          setProductShowcaseData(response[0].data.body)
+          setImageAndTextData(
+            response[1].data
+              .body as SliceZone<Content.RichContentPageDocumentDataBodyImageAndTextSlice>
           )
-        )
+          setBrandLandingData(
+            response[2].data.brands.find(
+              ({ brand }) => asText(brand).toLowerCase().replaceAll(' ', '-') === brandUid
+            )
+          )
+        } catch {
+          // console.log()
+        }
       }
     }
 

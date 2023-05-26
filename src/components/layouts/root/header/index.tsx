@@ -138,7 +138,7 @@ export const Header = () => {
       !isFetchingNavigation && !isLoadingNavigation ? (
         <Menu horizontal className="p-0">
           <Menu.Item tabIndex={0}>
-            <button className="flex items-center gap-1 p-0" onClick={handleUserClick}>
+            <button className="flex items-center gap-1 rounded p-1" onClick={handleUserClick}>
               <UserIcon className="h-5 w-5 lg:h-6 lg:w-6" />
               <Typography>
                 {session?.user !== undefined ? `Hi, ${session.user.name.first}` : 'Sign in'}
