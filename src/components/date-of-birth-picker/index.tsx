@@ -1,52 +1,70 @@
-import { useState } from 'react'
+import { CSSProperties, useCallback, useMemo, useState } from 'react'
 
-import { TextInput } from '@mantine/core'
+import { clsx } from 'clsx'
 import { useFormContext } from 'react-hook-form'
 
 import { Input } from '@/core/components/input'
 import { Typography } from '@/core/components/typogrpahy'
-// import { PreCheckoutSchema } from '@/features/cart/checkout-drawer'
-
-// const dayStyles: TextInputProps['styles'] = {
-//   input: {
-//     borderLeft: '0',
-//     borderRadius: '0',
-//     borderRight: '0',
-//     padding: '0',
-//     textAlign: 'center',
-//   },
-// }
-// const yearStyles: TextInputProps['styles'] = {
-//   input: {
-//     borderBottomLeftRadius: '0',
-//     borderLeft: '0',
-//     borderTopLeftRadius: '0',
-//     padding: '0',
-//   },
-// }
 
 export const DateOfBirthPicker = () => {
   const [month, setMonth] = useState('')
   const [day, setDay] = useState('')
   const [year, setYear] = useState('')
+  const [focused, setFocused] = useState(false)
   const {
-    formState: { dirtyFields: _, errors },
+    formState: { errors },
     register,
     setFocus,
   } = useFormContext()
   const hasError = !!(errors.month?.message || errors.day?.message || errors.year?.message)
-  // const error = errors.month?.message || errors.day?.message || errors.year?.message
-  // const allDirty = dirtyFields.month && dirtyFields.day && dirtyFields.year
+  const error = errors.month?.message || errors.day?.message || errors.year?.message
+
+  const monthStyles: CSSProperties = useMemo(
+    () => ({
+      borderColor: focused ? '#312c2c' : '',
+      borderRadius: '0.25rem 0rem 0rem 0.25rem',
+      borderRightWidth: 0,
+    }),
+    [focused]
+  )
+
+  const dayStyles: CSSProperties = useMemo(
+    () => ({
+      borderColor: focused ? '#312c2c' : '',
+      borderLeftWidth: 0,
+      borderRadius: '0rem',
+      borderRightWidth: 0,
+      textAlign: 'center' as const,
+    }),
+    [focused]
+  )
+
+  const yearStyles: CSSProperties = useMemo(
+    () => ({
+      borderColor: focused ? '#312c2c' : '',
+      borderLeftWidth: 0,
+      borderRadius: '0rem 0.25rem 0.25rem 0rem',
+      textAlign: 'right' as const,
+    }),
+    [focused]
+  )
+
+  const handleFocus = useCallback(() => setFocused(true), [])
 
   return (
-    <div className="">
-      <Typography className="mb-1 text-14">Date of birth</Typography>
-      <div className="flex items-end">
+    <div className="pt-4">
+      <Typography as="label" className="mb-1 text-md" htmlFor="month">
+        Date of birth
+      </Typography>
+      <div className="flex items-start bg-base-light">
         <Input
-          className="rounded-r-0"
+          noSpacing
           error={hasError}
-          id="month"
+          placeholder="mm"
+          style={monthStyles}
+          type="tel"
           {...register('month', {
+            onBlur: () => setFocused(false),
             onChange: event => {
               const input = event.target.value
               const isNumber = !isNaN(+input)
@@ -72,13 +90,24 @@ export const DateOfBirthPicker = () => {
             },
           })}
           value={month}
+          onFocus={handleFocus}
         />
+        <Typography
+          className={clsx(
+            'border-y border-base-dark h-10 inline-flex items-center justify-center',
+            focused && 'border-neutral-dark'
+          )}
+        >
+          /
+        </Typography>
         <Input
-          className="rounded-r-0 border-l-0 border-r-0 p-0 text-center"
+          noSpacing
           error={hasError}
-          id="day"
-          // styles={dayStyles}
+          placeholder="dd"
+          style={dayStyles}
+          type="tel"
           {...register('day', {
+            onBlur: () => setFocused(false),
             onChange: event => {
               const input = event.target.value
               const isNumber = !isNaN(+input)
@@ -106,16 +135,24 @@ export const DateOfBirthPicker = () => {
             },
           })}
           value={day}
+          onFocus={handleFocus}
         />
-        <TextInput
+        <Typography
+          className={clsx(
+            'border-y border-base-dark h-10 inline-flex items-center justify-center',
+            focused && 'border-neutral-dark'
+          )}
+        >
+          /
+        </Typography>
+        <Input
+          noSpacing
           error={hasError}
-          // rightSection={
-          //   !hasError && allDirty ? (
-          //     <CheckCircleIcon className="h-5 w-5 stroke-2 text-success" />
-          //   ) : undefined
-          // }
-          // styles={yearStyles}
+          placeholder="yyyy"
+          style={yearStyles}
+          type="tel"
           {...register('year', {
+            onBlur: () => setFocused(false),
             onChange: event => {
               const input = event.target.value
               const isNumber = !isNaN(+input)
@@ -130,11 +167,10 @@ export const DateOfBirthPicker = () => {
             },
           })}
           value={year}
+          onFocus={handleFocus}
         />
       </div>
-      <Typography className="text-sm" color="error">
-        {/* {error} */}
-      </Typography>
+      <Typography className="text-14 text-error">{error?.toString()}</Typography>
     </div>
   )
 }

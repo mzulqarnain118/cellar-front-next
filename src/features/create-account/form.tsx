@@ -10,6 +10,7 @@ import { clsx } from 'clsx'
 import { FormProvider, SubmitHandler, UseFormProps, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
+import { DateOfBirthPicker } from '@/components/date-of-birth-picker'
 import { Button } from '@/core/components/button'
 import { Input } from '@/core/components/input'
 import { PasswordInput } from '@/core/components/password-input'
@@ -19,13 +20,9 @@ import { CreateAccountOptions, useCreateAccountMutation } from '@/lib/mutations/
 import { useGuestSignInMutation } from '@/lib/mutations/guest-sign-in'
 import { ValidateEmail, useValidateEmailMutation } from '@/lib/mutations/validate-email'
 import { HOME_PAGE_PATH, SIGN_IN_PAGE_PATH } from '@/lib/paths'
-import { useCartQuery } from '@/lib/queries/cart'
 import { useConsultantStore } from '@/lib/stores/consultant'
 
-import { Day } from './dob/day'
-import { Month } from './dob/month'
 import { MAX_DAYS, MONTH_MAP, is21OrOlder, isLeapYear } from './dob/util'
-import { Year } from './dob/year'
 
 const Link = dynamic(() => import('src/components/link').then(module => module.Link), {
   ssr: false,
@@ -140,7 +137,6 @@ const createAccountSchema = baseCreateAccountSchema
 export type CreateAccountSchema = z.infer<typeof createAccountSchema>
 
 export const CreateAccountForm = () => {
-  const { data: cart } = useCartQuery()
   const { consultant } = useConsultantStore()
   const { isLoading: _, mutate: guestSignIn } = useGuestSignInMutation()
 
@@ -166,13 +162,11 @@ export const CreateAccountForm = () => {
   )
   const methods = useForm<CreateAccountSchema>(options)
   const {
-    control,
     formState: { errors, isSubmitting },
     getValues,
     handleSubmit,
     register,
     setError,
-    setFocus,
     setValue,
   } = methods
   const { mutate: createAccount } = useCreateAccountMutation()
@@ -195,7 +189,6 @@ export const CreateAccountForm = () => {
 
     if (isGuest) {
       guestSignIn({
-        cartId: cart?.id || '',
         createAccount: true,
         dateOfBirth: { day, month, year },
         email,
@@ -313,9 +306,7 @@ export const CreateAccountForm = () => {
                 !!dobError && '!border-error'
               )}
             >
-              <Month<CreateAccountSchema> control={control} name="month" setFocus={setFocus} />
-              <Day<CreateAccountSchema> control={control} name="day" setFocus={setFocus} />
-              <Year<CreateAccountSchema> control={control} name="year" setFocus={setFocus} />
+              <DateOfBirthPicker />
             </div>
             {/* <Input.Error className="mt-1 text-[0.875rem] text-error">{dobError}</Input.Error> */}
           </div>

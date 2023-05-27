@@ -18,9 +18,14 @@ import { Input } from '@/core/components/input'
 import { PasswordInput } from '@/core/components/password-input'
 import { Typography } from '@/core/components/typogrpahy'
 import { useValidateEmailMutation } from '@/lib/mutations/validate-email'
-import { CREATE_ACCOUNT_PAGE_PATH, HOME_PAGE_PATH } from '@/lib/paths'
+import {
+  CHECKOUT_PAGE_PATH,
+  CREATE_ACCOUNT_PAGE_PATH,
+  GUEST_CHECKOUT_PAGE_PATH,
+  HOME_PAGE_PATH,
+} from '@/lib/paths'
+import { useCartQuery } from '@/lib/queries/cart'
 import { getStaticNavigation } from '@/lib/queries/header'
-import { useUserStore } from '@/lib/stores/user'
 import { createClient } from '@/prismic-io'
 
 const Link = dynamic(() => import('src/components/link').then(module => module.Link), {
@@ -50,37 +55,33 @@ type PageProps = InferGetStaticPropsType<typeof getStaticProps>
 const SignInPage: NextPage<PageProps> = () => {
   const { data: session } = useSession()
   const router = useRouter()
-  const {
-    user: { fullName },
-  } = useUserStore()
+  const { data: cart } = useCartQuery()
+
+  const hasSubscriptionInCart = useMemo(
+    () => cart?.items.some(item => item.subscribable),
+    [cart?.items]
+  )
+
+  const { email = '', fullName = '', redirectTo = '' } = router.query
 
   const formOptions: UseFormProps<SignInSchema> = useMemo(
     () => ({
-      defaultValues: { email: '', password: '' },
+      defaultValues: { email: email?.toString() || '', password: '' },
       mode: 'onBlur',
       reValidateMode: 'onChange',
       resolver: zodResolver(signInSchema),
     }),
-    []
+    [email]
   )
 
   const {
     formState: { errors, isSubmitting },
-    getValues: _,
     handleSubmit,
     register,
     setError,
   } = useForm<SignInSchema>(formOptions)
-
   const [isLoading, setIsLoading] = useState(false)
-  // const [showPassword, setShowPassword] = useState(false)
-  // const passwordRef = useRef<HTMLInputElement | null>(null)
-
-  const { isLoading: _isValidatingEmail, mutate: validateEmail } = useValidateEmailMutation()
-
-  // const handleEmailBlur: FocusEventHandler<HTMLInputElement> = useCallback(() => {
-  //   const { email } = getValues()
-  // }, [getValues, validateEmail])
+  const { isLoading: isValidatingEmail, mutate: validateEmail } = useValidateEmailMutation()
 
   const handleCreateAccount = useCallback(() => router.push(CREATE_ACCOUNT_PAGE_PATH), [router])
 
@@ -91,7 +92,7 @@ const SignInPage: NextPage<PageProps> = () => {
         const response = await signIn('sign-in', { email, password, redirect: false })
 
         if (response?.ok) {
-          await router.push(HOME_PAGE_PATH)
+          await router.push(redirectTo.toString() || HOME_PAGE_PATH)
         } else {
           setError('email', {
             message: 'Invalid email or password.',
@@ -102,8 +103,7 @@ const SignInPage: NextPage<PageProps> = () => {
             type: 'invalid',
           })
         }
-      } catch (error) {
-        // ! TODO: Handle error.
+      } catch {
         setError('email', {
           message: 'Invalid email or password.',
           type: 'invalid',
@@ -116,8 +116,12 @@ const SignInPage: NextPage<PageProps> = () => {
         setIsLoading(false)
       }
     },
-    [router, setError]
+    [redirectTo, router, setError]
   )
+
+  const handleProceedAsGuest = useCallback(() => {
+    router.push(GUEST_CHECKOUT_PAGE_PATH, CHECKOUT_PAGE_PATH)
+  }, [router])
 
   const { ref: passwordFormRef, ...passwordRegister } = register('password')
 
@@ -140,15 +144,15 @@ const SignInPage: NextPage<PageProps> = () => {
             <div
               className={clsx(
                 `
-                relative grid gap-12 divide-y divide-solid divide-neutral-200 rounded border
-                border-solid border-neutral-200 bg-neutral-50 p-10 md:mx-auto
+                relative grid gap-12 divide-y divide-solid divide-neutral-light rounded border
+                border-solid border-neutral-light bg-neutral-50 p-10 md:mx-auto
                 md:max-w-6xl md:grid-cols-2 md:gap-0 md:divide-x
               `,
-                fullName !== undefined && !!fullName.length && 'md:max-w-xl md:grid-cols-1'
+                fullName !== undefined && !!fullName.length && 'md:max-w-xl md:!grid-cols-1'
               )}
             >
               <LoadingOverlay visible={isSubmitting} />
-              <div className={clsx('md:pr-16', fullName && 'md:pr-0')}>
+              <div className={clsx('md:pr-16', fullName && 'md:!pr-0')}>
                 <div className="mb-3">
                   {fullName !== undefined && !!fullName.length ? (
                     <Typography as="h4">Welcome back, {fullName}</Typography>
@@ -162,16 +166,13 @@ const SignInPage: NextPage<PageProps> = () => {
                   <Input
                     id="email"
                     label="Email"
-                    // rightSection={isValidatingEmail ? <Loader size="sm" /> : undefined}
+                    loading={isValidatingEmail}
                     type="email"
                     {...register('email', {
                       onBlur: event => {
                         const newEmail = event.target.value
                         if (newEmail.trim().length > 0) {
                           validateEmail({
-                            callback: _resopnse => {
-                              // console.log()
-                            },
                             email: newEmail.trim(),
                           })
                         }
@@ -186,28 +187,20 @@ const SignInPage: NextPage<PageProps> = () => {
                   />
                   <div className="flex items-center justify-between pt-2">
                     <Button type="submit">Sign in</Button>
-                    <Link href="/forgot-password">Forgot password?</Link>
+                    <Link className="!text-neutral-dark" href="/forgot-password">
+                      Forgot password?
+                    </Link>
                   </div>
                 </form>
               </div>
               {!fullName && (
                 <div className="space-y-3 border-x-0 pt-4 md:!border-y-0 md:border-x md:!pt-0 md:pl-16">
-                  <Typography as="h3" className="!m-0">
-                    New to Scout & Cellar?
-                  </Typography>
-                  {/* {redirectTo === CHECKOUT_URL && !hasSubscriptionInCart && (
-                    <div className="pb-4">
-                      <h6>Are you ready to checkout?</h6>
-                      <button
-                        className="btn-primary btn"
-                        onClick={async () => {
-                          await navigate(CHECKOUT_URL, { state: { method: 'guest' } })
-                        }}
-                      >
-                        Proceed as guest
-                      </button>
+                  {redirectTo === CHECKOUT_PAGE_PATH && !hasSubscriptionInCart && (
+                    <div className="pb-4 space-y-2">
+                      <Typography as="h6">Are you ready to checkout?</Typography>
+                      <Button onClick={handleProceedAsGuest}>Proceed as guest</Button>
                     </div>
-                  )} */}
+                  )}
                   <Typography as="h6" className="!text-lg">
                     Create an account. Here&apos;s why you should:
                   </Typography>

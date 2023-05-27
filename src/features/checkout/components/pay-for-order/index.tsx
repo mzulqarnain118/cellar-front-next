@@ -4,6 +4,7 @@ import {
   MutableRefObject,
   useCallback,
   useEffect,
+  useMemo,
 } from 'react'
 
 import { LoadingOverlay } from '@mantine/core'
@@ -15,6 +16,7 @@ import { Checkbox } from '@/core/components/checkbox'
 import { Typography } from '@/core/components/typogrpahy'
 import { formatCurrency } from '@/core/utils'
 import { TERMS_AND_CONDITIONS_PAGE_PATH } from '@/lib/paths'
+import { useCartQuery } from '@/lib/queries/cart'
 import { useGetSubtotalQuery } from '@/lib/queries/checkout/get-subtotal'
 import { useCheckoutActions, useCheckoutErrors } from '@/lib/stores/checkout'
 
@@ -32,11 +34,18 @@ interface PayForOrderProps {
 }
 
 export const PayForOrder = ({ refs, validate }: PayForOrderProps) => {
+  const { data: cart } = useCartQuery()
   const errors = useCheckoutErrors()
   const { data: totalData } = useGetSubtotalQuery()
   const { setErrors } = useCheckoutActions()
   const { mutate: payForOrder, isLoading: isCheckingOut } = useCheckoutPayForOrderMutation()
   const [locked, setLocked] = useLockedBody(false, '__next')
+
+  const isAutoSipCart = useMemo(() => cart?.items.some(item => item.isAutoSip), [cart?.items])
+  const isScoutCircleCart = useMemo(
+    () => cart?.items.some(item => item.isScoutCircleClub),
+    [cart?.items]
+  )
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = useCallback(
     event => {
@@ -84,33 +93,38 @@ export const PayForOrder = ({ refs, validate }: PayForOrderProps) => {
             name="terms"
             onChange={handleChange}
           />
-          <Checkbox
-            ref={refs.autoSipRef}
-            color="dark"
-            error={errors?.autoSipTerms}
-            label={
-              <>
-                By clicking &quot;Place my order&quot; in checkout, I understand that I am enrolling
-                in the Auto-Sip™ program and agree to the Terms & Conditions*
-              </>
-            }
-            name="autoSipTerms"
-            onChange={handleChange}
-          />
-          <Checkbox
-            ref={refs.wineClubRef}
-            color="dark"
-            error={errors?.wineClubTerms}
-            label={
-              <>
-                By joining the Wine Club, I agree to my first Wine Club purchase on the above
-                selected date and then upon future shipments based on the selected frequency, unless
-                I change or cancel my Club Membership. Terms & Conditions*
-              </>
-            }
-            name="wineClubTerms"
-            onChange={handleChange}
-          />
+
+          {isAutoSipCart ? (
+            <Checkbox
+              ref={refs.autoSipRef}
+              color="dark"
+              error={errors?.autoSipTerms}
+              label={
+                <>
+                  By clicking &quot;Place my order&quot; in checkout, I understand that I am
+                  enrolling in the Auto-Sip™ program and agree to the Terms & Conditions*
+                </>
+              }
+              name="autoSipTerms"
+              onChange={handleChange}
+            />
+          ) : undefined}
+          {isScoutCircleCart ? (
+            <Checkbox
+              ref={refs.wineClubRef}
+              color="dark"
+              error={errors?.wineClubTerms}
+              label={
+                <>
+                  By joining the Wine Club, I agree to my first Wine Club purchase on the above
+                  selected date and then upon future shipments based on the selected frequency,
+                  unless I change or cancel my Club Membership. Terms & Conditions*
+                </>
+              }
+              name="wineClubTerms"
+              onChange={handleChange}
+            />
+          ) : undefined}
         </div>
         <div className="fixed bottom-0 flex w-[stretch] items-center border-t border-t-neutral bg-[#f7f3f4] py-4 pr-4 lg:w-[calc(50%-9.25rem)] lg:pr-0">
           <div className="grid">

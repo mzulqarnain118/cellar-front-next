@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useMemo } from 'react'
 
+import dynamic from 'next/dynamic'
+
 import { PlusIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Collapse, LoadingOverlay, Select, SelectProps, Skeleton } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
@@ -18,9 +20,11 @@ import {
 } from '@/lib/stores/checkout'
 import { isPickUpShippingMethodId } from '@/lib/utils/checkout'
 
-import { AddressForm } from './address-form'
+import type { DeliveryRefs } from '.'
 
-import { DeliveryRefs } from '.'
+const AddressForm = dynamic(() => import('./address-form').then(({ AddressForm }) => AddressForm), {
+  ssr: false,
+})
 
 const dropdownClassNames = { input: 'h-10', item: 'text-14', label: 'text-14' }
 

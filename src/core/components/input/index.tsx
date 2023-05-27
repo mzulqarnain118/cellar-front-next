@@ -95,7 +95,7 @@ export const Input = forwardRef<HTMLInputElement, Props>(
                   ref={ref}
                   bordered
                   className={clsx(
-                    `h-10 w-full !rounded border-base-dark bg-base-light text-neutral-dark
+                    `h-10 w-full rounded border-base-dark bg-base-light text-neutral-dark
                     focus:!border-neutral-dark focus:!outline-none`,
                     left !== undefined && '!rounded-l-none !px-4',
                     right !== undefined && '!rounded-r-none !px-4',

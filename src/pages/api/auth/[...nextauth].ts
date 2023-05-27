@@ -4,6 +4,7 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 import { noHooksApi } from '@/lib/api'
 import { CORPORATE_CONSULTANT_ID } from '@/lib/constants'
 import { SIGN_IN_PAGE_PATH } from '@/lib/paths'
+import { useCheckoutStore } from '@/lib/stores/checkout'
 import { useConsultantStore } from '@/lib/stores/consultant'
 import { useCuratedCartStore } from '@/lib/stores/curated-cart'
 import { useShippingStateStore } from '@/lib/stores/shipping-state'
@@ -114,7 +115,6 @@ export const authOptions: NextAuthOptions = {
     session: async ({
       session,
       token: {
-        // ! TODO: Help.
         // @ts-ignore
         user: { user },
       },
@@ -126,6 +126,11 @@ export const authOptions: NextAuthOptions = {
     },
   },
   debug: process.env.NODE_ENV === 'development',
+  events: {
+    signOut: async () => {
+      useCheckoutStore.getState().actions.reset()
+    },
+  },
   pages: {
     signIn: SIGN_IN_PAGE_PATH,
   },
@@ -134,7 +139,10 @@ export const authOptions: NextAuthOptions = {
       authorize: async credentials => {
         const payload = {
           PersonTypeID: 2,
-          password: credentials?.password,
+          password:
+            !!credentials?.password && credentials?.password.length > 0
+              ? credentials.password
+              : process.env.GUEST_PASSWORD,
           rememberMe: false,
           username: credentials?.email,
         }
@@ -173,7 +181,7 @@ export const authOptions: NextAuthOptions = {
                 email: loginData.data.user.Email,
                 fullName: `${personPortalInfo.FirstName} ${personPortalInfo.LastName}`,
                 isClubMember: clubInfo.is_club_member,
-                isGuest: false,
+                isGuest: !credentials?.password || credentials?.password.length === 0,
                 name: {
                   first: personPortalInfo.FirstName,
                   last: personPortalInfo.LastName,

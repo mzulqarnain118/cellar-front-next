@@ -19,6 +19,7 @@
   "files.exclude": {
     "**/node_modules": true
   },
+  "tailwindCSS.classAttributes": ["class", "className", "ngClass", "classNames", "inputClassName"],
   "[env]": {
     "editor.defaultFormatter": "IronGeek.vscode-env"
   },

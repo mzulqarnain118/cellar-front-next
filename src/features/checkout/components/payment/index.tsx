@@ -18,14 +18,17 @@ import {
   XMarkIcon,
 } from '@heroicons/react/24/outline'
 import { Collapse, Select, SelectProps } from '@mantine/core'
-import { useDisclosure } from '@mantine/hooks'
+import { useDisclosure, useMergedRef, useScrollIntoView, useWindowScroll } from '@mantine/hooks'
 import { clsx } from 'clsx'
+import { useSession } from 'next-auth/react'
 import Cards, { Focused } from 'react-credit-cards-2'
 import 'react-credit-cards-2/dist/es/styles-compiled.css'
+import { useIsFirstRender } from 'usehooks-ts'
 
 import { Button } from '@/core/components/button'
 import { Input } from '@/core/components/input'
 import { Typography } from '@/core/components/typogrpahy'
+import { wait } from '@/core/utils/time'
 import { useApplyCheckoutSelectionsMutation } from '@/lib/mutations/checkout/apply-selections'
 import { useAddressesAndCreditCardsQuery } from '@/lib/queries/checkout/addreses-and-credit-cards'
 import {
@@ -34,7 +37,7 @@ import {
   useCheckoutActiveShippingAddress,
   useCheckoutCvv,
   useCheckoutErrors,
-  useCheckoutIsAddingCreditCard,
+  useCheckoutGuestCreditCard,
 } from '@/lib/stores/checkout'
 
 import { CreditCardForm } from './credit-card-form'
@@ -51,6 +54,7 @@ export interface PaymentRefs {
   promoCodeRef: MutableRefObject<HTMLInputElement | null>
 }
 
+const scrollIntoViewSettings = { duration: 500, offset: 120 }
 interface PaymentProps {
   opened: boolean
   refs: PaymentRefs
@@ -63,12 +67,23 @@ export const Payment = memo(({ opened, refs, toggle }: PaymentProps) => {
   const activeShippingAddress = useCheckoutActiveShippingAddress()
   const cvv = useCheckoutCvv()
   const errors = useCheckoutErrors()
-  const isAddingCreditCard = useCheckoutIsAddingCreditCard()
   const { data: addressesAndCreditCards } = useAddressesAndCreditCardsQuery()
   const { mutate: applyCheckoutSelections } = useApplyCheckoutSelectionsMutation()
-  const [creditCardFormOpen, { close: closeCreditCardForm, toggle: toggleCreditCardForm }] =
-    useDisclosure(false)
+  const [
+    creditCardFormOpen,
+    { close: closeCreditCardForm, open: openCreditCardForm, toggle: toggleCreditCardForm },
+  ] = useDisclosure(false)
   const { setCvv, setErrors, setIsAddingCreditCard } = useCheckoutActions()
+  const { data: session } = useSession()
+  const [_, scrollTo] = useWindowScroll()
+  const isFirstRender = useIsFirstRender()
+  const [showCreditCard, { open: openShowCreditCard }] = useDisclosure(
+    opened && activeCreditCard !== undefined && !creditCardFormOpen
+  )
+  const guestCreditCard = useCheckoutGuestCreditCard()
+  const { targetRef, scrollIntoView: scrollCvvIntoView } =
+    useScrollIntoView<HTMLInputElement>(scrollIntoViewSettings)
+  const cvvRef = useMergedRef(targetRef, refs.cvvRef)
 
   const creditCardsData = useMemo(
     () =>
@@ -124,7 +139,6 @@ export const Payment = memo(({ opened, refs, toggle }: PaymentProps) => {
     ),
     []
   )
-
   const handleInputChange: ChangeEventHandler<HTMLInputElement> = useCallback(
     ({ target }) => {
       target.value = formatCVC(target.value)
@@ -145,9 +159,49 @@ export const Payment = memo(({ opened, refs, toggle }: PaymentProps) => {
     setFocused('cvc')
   }, [])
 
+  const handleChangeCreditCard = useCallback(() => {
+    openCreditCardForm()
+  }, [openCreditCardForm])
+
+  const handleCreateCreditCard = useCallback(async () => {
+    scrollTo({ y: 0 })
+    closeCreditCardForm()
+    await wait(1500)
+    scrollCvvIntoView()
+    targetRef.current.focus()
+    openShowCreditCard()
+  }, [closeCreditCardForm, openShowCreditCard, scrollCvvIntoView, scrollTo, targetRef])
+
+  const creditCard = useMemo(
+    () => (session?.user?.isGuest ? guestCreditCard : activeCreditCard),
+    [activeCreditCard, guestCreditCard, session?.user?.isGuest]
+  )
+
   useEffect(() => {
     setIsAddingCreditCard(creditCardFormOpen)
   }, [creditCardFormOpen, setIsAddingCreditCard])
+
+  useEffect(() => {
+    if (!isFirstRender && session?.user?.isGuest && creditCard === undefined) {
+      openCreditCardForm()
+    }
+  }, [creditCard, isFirstRender, openCreditCardForm, session])
+
+  useEffect(() => {
+    if (!isFirstRender) {
+      if (creditCard !== undefined) {
+        openShowCreditCard()
+      }
+    }
+  }, [
+    creditCard,
+    activeShippingAddress,
+    guestCreditCard,
+    isFirstRender,
+    openShowCreditCard,
+    session,
+    targetRef,
+  ])
 
   return (
     <>
@@ -157,11 +211,21 @@ export const Payment = memo(({ opened, refs, toggle }: PaymentProps) => {
         tabIndex={0}
         onClick={() => {
           toggle()
-          closeCreditCardForm()
+          if (creditCard !== undefined) {
+            closeCreditCardForm()
+          } else {
+            openCreditCardForm()
+          }
         }}
-        onKeyDown={() => {
-          toggle()
-          closeCreditCardForm()
+        onKeyDown={event => {
+          if (event.key === 'Escape' || event.key === 'Space') {
+            toggle()
+            if (creditCard !== undefined) {
+              closeCreditCardForm()
+            } else {
+              openCreditCardForm()
+            }
+          }
         }}
       >
         <Typography noSpacing as="h2" displayAs="h5">
@@ -172,16 +236,20 @@ export const Payment = memo(({ opened, refs, toggle }: PaymentProps) => {
 
       <div className="space-y-4 px-4">
         <Collapse className="!m-0" in={opened && !creditCardFormOpen} transitionDuration={300}>
-          <Select
-            classNames={dropdownClassNames}
-            data={creditCardsData}
-            label="Credit card"
-            value={activeCreditCard?.PaymentToken}
-            onChange={handleCreditCardChange}
-          />
+          {session?.user?.isGuest ? (
+            <div />
+          ) : (
+            <Select
+              classNames={dropdownClassNames}
+              data={creditCardsData}
+              label="Credit card"
+              value={creditCard?.PaymentToken}
+              onChange={handleCreditCardChange}
+            />
+          )}
         </Collapse>
 
-        {opened ? (
+        {opened && !session?.user?.isGuest ? (
           <Button
             color="ghost"
             size="sm"
@@ -199,26 +267,26 @@ export const Payment = memo(({ opened, refs, toggle }: PaymentProps) => {
         ) : undefined}
 
         <Collapse in={creditCardFormOpen}>
-          <CreditCardForm ref={refs.creditCardRef} onCreate={closeCreditCardForm} />
+          <CreditCardForm onCreate={handleCreateCreditCard} />
         </Collapse>
 
-        {opened && activeCreditCard !== undefined && !isAddingCreditCard ? (
+        <Collapse in={showCreditCard}>
           <>
             <div className="grid items-start justify-center gap-4 lg:flex lg:items-center">
               <div className="[&>div]:m-0 [&>div]:scale-90">
                 <Cards
                   preview
                   cvc={cvv}
-                  expiry={`${activeCreditCard.ExpirationMonth}/${activeCreditCard.ExpirationYear}`}
+                  expiry={`${creditCard?.ExpirationMonth}/${creditCard?.ExpirationYear}`}
                   focused={focused}
-                  issuer={activeCreditCard.CreditCardTypeName}
-                  name={activeCreditCard.NameOnCard}
-                  number={`************${activeCreditCard.DisplayNumber}`}
+                  issuer={creditCard?.CreditCardTypeName}
+                  name={creditCard?.NameOnCard || ''}
+                  number={`************${creditCard?.DisplayNumber}`}
                 />
               </div>
               <div className="grid">
                 <Input
-                  ref={refs.cvvRef}
+                  ref={cvvRef}
                   noSpacing
                   error={errors?.payment?.cvv}
                   label="CVV"
@@ -234,8 +302,13 @@ export const Payment = memo(({ opened, refs, toggle }: PaymentProps) => {
                 <div>
                   <Typography className="text-sm">Please confirm the CVV for your card:</Typography>
                   <Typography noSpacing as="p" className="text-14 font-bold text-neutral-dark">
-                    {activeCreditCard?.FriendlyDescription}
+                    {creditCard?.FriendlyDescription}
                   </Typography>
+                  {session?.user?.isGuest ? (
+                    <Button link onClick={handleChangeCreditCard}>
+                      Change credit card
+                    </Button>
+                  ) : undefined}
                 </div>
               </div>
             </div>
@@ -262,7 +335,7 @@ export const Payment = memo(({ opened, refs, toggle }: PaymentProps) => {
               />
             </div>
           </>
-        ) : undefined}
+        </Collapse>
       </div>
     </>
   )

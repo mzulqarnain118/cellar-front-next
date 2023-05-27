@@ -1,11 +1,16 @@
+import { useRouter } from 'next/router'
+
+import { showNotification } from '@mantine/notifications'
 import { useMutation } from '@tanstack/react-query'
 import { signIn } from 'next-auth/react'
 
 import { api } from '../api'
 import { CORPORATE_CONSULTANT_ID } from '../constants'
+import { CHECKOUT_PAGE_PATH } from '../paths'
 import { useCartQuery } from '../queries/cart'
 import { useConsultantStore } from '../stores/consultant'
 import { useUserStore } from '../stores/user'
+import { Failure } from '../types'
 
 export interface CreateGuestAccountOptions {
   callback?: () => void
@@ -22,24 +27,31 @@ export interface CreateGuestAccountOptions {
   redirection?: string
 }
 
-interface CreateGuestAccountResponse {
-  result: boolean
-  error?: string
-  data: {
-    token: string
-    user: {
-      FirstName: string
-      LastName: string
-      DisplayID: string
+interface CreateGuestAccountSuccess {
+  Success: true
+  Data: {
+    data: {
+      token: string
+      user: {
+        Status: string
+        Type: string
+        SponsorName: string
+        SponsorDisplayID: string
+        DisplayID: string
+        UserID: number
+        Username: string
+        LoginGuid: string | null
+        DateCreated: string
+        PersonTypeID: number
+        LanguageCode: string
+        CountryCode: string | null
+        Email: string
+      }
     }
-    sponsor: {
-      DisplayID: string
-      DisplayName: string
-      Url: string
-    }
-    ExceptionMessage?: string
   }
 }
+
+type CreateGuestAccountResponse = CreateGuestAccountSuccess | Failure
 
 const SET_ORDER_PERSON_URL = 'v2/SetOrderOwner'
 
@@ -61,6 +73,7 @@ export const useCreateGuestAccountMutation = () => {
   const { data: cart } = useCartQuery()
   const { consultant } = useConsultantStore()
   const { setUser } = useUserStore()
+  const router = useRouter()
 
   return useMutation<CreateGuestAccountResponse, Error, CreateGuestAccountOptions>({
     mutationFn: options =>
@@ -74,46 +87,46 @@ export const useCreateGuestAccountMutation = () => {
       createGuestAccountData,
       { callback, dateOfBirth: { day, month, year }, email, firstName, lastName, redirection }
     ) => {
-      if (!createGuestAccountData?.data) {
-        // showErrorNotification('There was an error creating your account.')
-        return
-      }
-      const token = { Authorization: `bearer ${createGuestAccountData.data.token}` }
-
-      if (!createGuestAccountData.result || createGuestAccountData.data.ExceptionMessage) {
-        // showErrorNotification(signUpData.error || 'There was an error creating your account.')
-        return
-      } else {
-        await api(SET_ORDER_PERSON_URL, {
-          headers: token,
-          json: { cartId: cart?.id || '' },
-          method: 'post',
-        }).json()
-        const userStateData = {
-          dateOfBirth: new Date(parseInt(year), parseInt(month) - 1, parseInt(day)),
-          displayId: createGuestAccountData.data.user.DisplayID,
-          email,
-          isClubMember: false,
-          isGuest: true,
-          name: { first: firstName, last: lastName },
-          token: createGuestAccountData.data.token,
-          username: email,
-        }
-
-        setUser(prev => ({ ...prev, ...userStateData, shippingState: prev.shippingState }))
-
-        await signIn('sign-in', {
-          callbackUrl: redirection,
-          email,
-          // ! TODO: Password?
-          password: '',
-          redirect: false,
+      if (!createGuestAccountData?.Success) {
+        showNotification({
+          message:
+            createGuestAccountData.Error.Message ||
+            'There was an error proceeding to checkout. Please try again later.',
         })
-
-        if (callback !== undefined) {
-          callback()
-        }
+        return
       }
+      const token = { Authorization: `bearer ${createGuestAccountData.Data.data.token}` }
+
+      await api(SET_ORDER_PERSON_URL, {
+        headers: token,
+        json: { cartId: cart?.id || '' },
+        method: 'post',
+      }).json()
+      const userStateData = {
+        dateOfBirth: new Date(parseInt(year), parseInt(month) - 1, parseInt(day)),
+        displayId: createGuestAccountData.Data.data.user.DisplayID,
+        email,
+        isClubMember: false,
+        isGuest: true,
+        name: { first: firstName, last: lastName },
+        token: createGuestAccountData.Data.data.token,
+        username: email,
+      }
+
+      setUser(prev => ({ ...prev, ...userStateData, shippingState: prev.shippingState }))
+
+      await signIn('sign-in', {
+        callbackUrl: redirection,
+        email,
+        password: process.env.GUEST_PASSWORD || '',
+        redirect: false,
+      })
+
+      if (callback !== undefined) {
+        callback()
+      }
+
+      router.push(CHECKOUT_PAGE_PATH)
     },
   })
 }

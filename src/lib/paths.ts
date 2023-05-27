@@ -6,6 +6,7 @@ export const FORGOT_PASSWORD_PAGE_PATH = '/forgot-password'
 export const MY_ACCOUNT_PAGE_PATH = '/my-account'
 export const CHECKOUT_PAGE_PATH = '/checkout'
 export const CHECKOUT_CONFIRMATION_PAGE_PATH = '/checkout-confirmation'
+export const GUEST_CHECKOUT_PAGE_PATH = '/guest-checkout'
 
 /** PLP paths. */
 export const WINE_PAGE_PATH = '/wine'

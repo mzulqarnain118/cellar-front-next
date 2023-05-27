@@ -4,8 +4,8 @@ import { signOut as nextAuthSignOut } from 'next-auth/react'
 import { CART_QUERY_KEY } from '../queries/cart'
 import { useCheckoutStore } from '../stores/checkout'
 
-export const signOut = async (queryClient?: QueryClient) => {
-  await nextAuthSignOut()
+export const signOut = async (queryClient?: QueryClient, redirect = true) => {
+  await nextAuthSignOut({ redirect })
   const {
     actions: { reset },
   } = useCheckoutStore.getState()

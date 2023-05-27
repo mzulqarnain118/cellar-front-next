@@ -4,6 +4,11 @@ import Image, { ImageProps } from 'next/image'
 
 import { clsx } from 'clsx'
 
+const style = {
+  height: 'auto',
+  width: 'auto',
+}
+
 export const BlurImage = forwardRef<HTMLImageElement, ImageProps>(
   ({ alt, className, ...rest }: ImageProps, ref) => {
     const [isLoading, setIsLoading] = useState(true)
@@ -22,6 +27,7 @@ export const BlurImage = forwardRef<HTMLImageElement, ImageProps>(
           'duration-300 ease-in-out',
           isLoading ? 'scale-110 blur-2xl grayscale' : 'scale-100 blur-0 grayscale-0'
         )}
+        style={rest.fill ? undefined : style}
         onLoadingComplete={onLoadingComplete}
       />
     )

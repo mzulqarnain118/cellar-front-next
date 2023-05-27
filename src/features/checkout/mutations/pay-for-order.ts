@@ -13,6 +13,7 @@ import {
   useCheckoutActions,
   useCheckoutActiveShippingAddress,
   useCheckoutCvv,
+  useCheckoutGuestAddress,
 } from '@/lib/stores/checkout'
 import { Receipt, useReceiptActions } from '@/lib/stores/receipt'
 import { Failure, Success } from '@/lib/types'
@@ -52,9 +53,21 @@ export const payForOrder = async ({
   }
 }
 
+const signOutServerSide = async () => {
+  try {
+    const csrf = await api('/api/auth/csrf', { method: 'get' }).json<string>()
+    const formData = new FormData()
+    formData.append('csrfToken', csrf)
+    await api('/api/auth/signout', { body: formData, method: 'post' })
+  } catch {
+    //
+  }
+}
+
 const PAY_FOR_ORDER_MUTATION_KEY = 'pay-for-order'
 export const useCheckoutPayForOrderMutation = () => {
   const activeShippingAddress = useCheckoutActiveShippingAddress()
+  const guestAddress = useCheckoutGuestAddress()
   const cvv = useCheckoutCvv()
   const queryClient = useQueryClient()
   const router = useRouter()
@@ -72,19 +85,20 @@ export const useCheckoutPayForOrderMutation = () => {
       // console.log()
     },
     onSuccess: async () => {
+      const address = guestAddress || activeShippingAddress
       const checkoutReceipt: Receipt = {
         cartItems: cart?.items || [],
         consultantDisplayId:
           consultant?.displayId !== CORPORATE_CONSULTANT_ID ? consultant.displayId : undefined,
         deliveryAddress: {
-          addressLineOne: activeShippingAddress?.Street1,
-          addressLineTwo: activeShippingAddress?.Street2,
-          city: activeShippingAddress?.City,
-          company: activeShippingAddress?.Company,
-          firstName: activeShippingAddress?.FirstName,
-          lastName: activeShippingAddress?.LastName,
-          state: activeShippingAddress?.ProvinceAbbreviation,
-          zipCode: activeShippingAddress?.PostalCode,
+          addressLineOne: address?.Street1,
+          addressLineTwo: address?.Street2,
+          city: address?.City,
+          company: address?.Company,
+          firstName: address?.FirstName,
+          lastName: address?.LastName,
+          state: address?.ProvinceAbbreviation,
+          zipCode: address?.PostalCode,
         },
         deliveryMethodDisplayName: totalData?.shipping.displayName || '',
         discounts: cart?.discounts || [],
@@ -101,9 +115,11 @@ export const useCheckoutPayForOrderMutation = () => {
       }
 
       reset()
+
       setReceipt(checkoutReceipt)
       queryClient.invalidateQueries(CART_QUERY_KEY)
-      await router.push(CHECKOUT_CONFIRMATION_PAGE_PATH)
+      await signOutServerSide()
+      router.push(CHECKOUT_CONFIRMATION_PAGE_PATH)
     },
   })
 }

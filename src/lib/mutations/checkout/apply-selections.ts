@@ -80,7 +80,7 @@ export const useApplyCheckoutSelectionsMutation = () => {
         const { addresses, creditCards } =
           await queryClient.ensureQueryData<ShippingAddressesAndCreditCards>({
             queryFn: getShippingAddressesAndCreditCards,
-            queryKey: [ADDRESS_CREDIT_CARDS_QUERY_KEY, cart?.id],
+            queryKey: [ADDRESS_CREDIT_CARDS_QUERY_KEY, cart?.id, session?.user?.isGuest],
           })
         let correspondingAddress = addresses.find(address => address.AddressID === data.addressId)
         let correspondingCreditCard = creditCards.find(
@@ -90,7 +90,7 @@ export const useApplyCheckoutSelectionsMutation = () => {
           const { addresses: altAddresses, creditCards: altCreditCards } =
             await queryClient.ensureQueryData<ShippingAddressesAndCreditCards>({
               queryFn: getShippingAddressesAndCreditCards,
-              queryKey: [ADDRESS_CREDIT_CARDS_QUERY_KEY, cart?.id],
+              queryKey: [ADDRESS_CREDIT_CARDS_QUERY_KEY, cart?.id, session?.user?.isGuest],
             })
           correspondingAddress = altAddresses.find(address => address.AddressID === data.addressId)
           correspondingCreditCard = altCreditCards.find(

@@ -1,11 +1,14 @@
-import { QueryClient, useMutation } from '@tanstack/react-query'
+import { useRouter } from 'next/router'
+
+import { showNotification } from '@mantine/notifications'
+import { useMutation } from '@tanstack/react-query'
 import { signIn } from 'next-auth/react'
 
 import { api } from '../api'
 import { CHECKOUT_PAGE_PATH } from '../paths'
-import { CART_QUERY_KEY } from '../queries/cart'
+import { useCartQuery } from '../queries/cart'
 import { useUserStore } from '../stores/user'
-import { Cart, Failure } from '../types'
+import { Failure } from '../types'
 
 interface GuestSignInOptions {
   callback?: () => void
@@ -37,9 +40,12 @@ export const guestSignIn = async ({ email, firstName }: GuestSignInOptions) =>
     method: 'post',
   }).json<GuestResponse>()
 
-export const useGuestSignInMutation = () =>
-  useMutation<GuestResponse | undefined, Error, GuestSignInOptions>({
-    mutationFn: options => guestSignIn(options),
+export const useGuestSignInMutation = () => {
+  const { data: cart } = useCartQuery()
+  const router = useRouter()
+
+  return useMutation<GuestResponse | undefined, Error, Omit<GuestSignInOptions, 'cartId'>>({
+    mutationFn: options => guestSignIn({ ...options, cartId: cart?.id || '' }),
     mutationKey: ['guest-sign-in'],
     onSuccess: async (
       response,
@@ -56,9 +62,6 @@ export const useGuestSignInMutation = () =>
     ) => {
       if (response?.Success) {
         const token = { Authorization: `Bearer ${response.Data.data.token}` }
-
-        const queryClient = new QueryClient()
-        const cart = queryClient.getQueryData<Cart>(CART_QUERY_KEY)
 
         await api('v2/SetOrderOwner', {
           json: { cartId: cart?.id || '' },
@@ -103,6 +106,15 @@ export const useGuestSignInMutation = () =>
         if (callback) {
           callback()
         }
+
+        router.push(CHECKOUT_PAGE_PATH)
+      } else {
+        showNotification({
+          message:
+            response?.Error?.Message ||
+            'There was an error proceeding to checkout. Please try again later.',
+        })
       }
     },
   })
+}

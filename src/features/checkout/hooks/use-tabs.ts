@@ -6,6 +6,7 @@ import {
   useCheckoutActiveCreditCard,
   useCheckoutActiveShippingAddress,
   useCheckoutCvv,
+  useCheckoutGuestAddress,
   useCheckoutIsAddingAddress,
   useCheckoutIsAddingCreditCard,
   useCheckoutIsAddingGiftMessage,
@@ -23,6 +24,7 @@ export const useCheckoutTabs = () => {
   const activeCreditCard = useCheckoutActiveCreditCard()
   const activeShippingAddress = useCheckoutActiveShippingAddress()
   const cvv = useCheckoutCvv()
+  const guestAddress = useCheckoutGuestAddress()
   const isAddingAddress = useCheckoutIsAddingAddress()
   const isAddingCreditCard = useCheckoutIsAddingCreditCard()
   const isAddingGiftMessage = useCheckoutIsAddingGiftMessage()
@@ -53,6 +55,10 @@ export const useCheckoutTabs = () => {
       setCompletedTabs(prev => [...prev, 'delivery'])
     }
 
+    if (session?.user?.isGuest && guestAddress !== undefined) {
+      setCompletedTabs(prev => [...prev, 'delivery'])
+    }
+
     if (session?.user === undefined || isAddingGiftMessage) {
       setActiveTab('contact-information')
       setCompletedTabs(prev => prev.filter(tab => tab !== 'contact-information'))
@@ -63,6 +69,7 @@ export const useCheckoutTabs = () => {
     activeCreditCard,
     activeShippingAddress,
     cvv.length,
+    guestAddress,
     isAddingAddress,
     isAddingCreditCard,
     isAddingGiftMessage,

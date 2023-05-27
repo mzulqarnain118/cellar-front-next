@@ -1,4 +1,4 @@
-import { forwardRef, useCallback } from 'react'
+import { forwardRef, useCallback, useMemo } from 'react'
 
 import { LoadingOverlay } from '@mantine/core'
 import { modals } from '@mantine/modals'
@@ -12,7 +12,8 @@ import { Input } from '@/core/components/input'
 import { Typography } from '@/core/components/typogrpahy'
 import { useCreateAddressMutation } from '@/lib/mutations/address/create'
 import { useValidateAddressMutation } from '@/lib/mutations/address/validate'
-import { useCheckoutErrors } from '@/lib/stores/checkout'
+import { useCheckoutErrors, useCheckoutGuestAddress } from '@/lib/stores/checkout'
+import { Address } from '@/lib/types/address'
 
 export const newAddressFormSchema = z.object({
   addressOne: z.string().min(1, { message: 'Please enter the address.' }),
@@ -31,17 +32,8 @@ export const newAddressFormSchema = z.object({
 export type NewAddressFormSchema = z.infer<typeof newAddressFormSchema>
 
 interface AddressFormProps {
-  onCreateAddress?: () => void
+  onCreateAddress?: (address?: Address) => void
   size?: 'sm' | 'md'
-}
-
-const defaultValues: NewAddressFormSchema = {
-  addressOne: '',
-  city: '',
-  firstName: '',
-  lastName: '',
-  state: '',
-  zipCode: '',
 }
 
 export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
@@ -49,6 +41,37 @@ export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
     const errors = useCheckoutErrors()
     const { mutate: validateAddress, isLoading: isValidatingAddress } = useValidateAddressMutation()
     const { mutate: createAddress, isLoading: isCreatingAddress } = useCreateAddressMutation()
+    const guestAddress = useCheckoutGuestAddress()
+
+    const handleAddressChange = useCallback(() => {
+      if (onCreateAddress !== undefined) {
+        onCreateAddress(undefined)
+      }
+    }, [onCreateAddress])
+
+    const defaultValues: NewAddressFormSchema = useMemo(
+      () => ({
+        addressOne: guestAddress?.Street1 || '',
+        addressTwo: guestAddress?.Street2 || '',
+        city: guestAddress?.City || '',
+        company: guestAddress?.Company || '',
+        firstName: guestAddress?.FirstName || '',
+        lastName: guestAddress?.LastName || '',
+        state: guestAddress?.ProvinceID.toString() || '',
+        zipCode: guestAddress?.PostalCode.substring(0, 5) || '',
+      }),
+      [
+        guestAddress?.City,
+        guestAddress?.Company,
+        guestAddress?.FirstName,
+        guestAddress?.LastName,
+        guestAddress?.PostalCode,
+        guestAddress?.ProvinceID,
+        guestAddress?.Street1,
+        guestAddress?.Street2,
+      ]
+    )
+
     const onSubmit: SubmitHandler<NewAddressFormSchema> = useCallback(
       ({
         addressOne: addressLineOne,
@@ -102,7 +125,7 @@ export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
                       address: { ...entered, FirstName: firstName, LastName: lastName },
                       callback: response => {
                         if (response.Success && onCreateAddress !== undefined) {
-                          onCreateAddress()
+                          onCreateAddress(response.Data.Value)
                         }
                       },
                     })
@@ -112,7 +135,7 @@ export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
                       address: { ...suggested, FirstName: firstName, LastName: lastName },
                       callback: response => {
                         if (response.Success && onCreateAddress !== undefined) {
-                          onCreateAddress()
+                          onCreateAddress(response.Data.Value)
                         }
                       },
                     })
@@ -191,10 +214,15 @@ export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
             size={size}
           />
         </Form>
-        <div className="flex justify-end lg:justify-start">
+        <div className="flex justify-end lg:justify-start gap-2">
           <Button dark form="address-form" type="submit">
             Save address
           </Button>
+          {guestAddress !== undefined ? (
+            <Button color="ghost" type="button" onClick={handleAddressChange}>
+              Cancel
+            </Button>
+          ) : undefined}
         </div>
         {errors?.delivery ? (
           <Typography className="mt-4 block text-error">{errors.delivery}</Typography>

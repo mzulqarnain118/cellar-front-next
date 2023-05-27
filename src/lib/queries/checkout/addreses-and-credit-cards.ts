@@ -51,8 +51,9 @@ export const getShippingAddressesAndCreditCards: QueryFunction<
 > = async ({ queryKey }) => {
   try {
     const cartId = queryKey[1] as string | null
+    const isGuest = queryKey[2] as boolean | null
 
-    if (!cartId) {
+    if (!cartId || isGuest) {
       return {
         addresses: [],
         creditCards: [],
@@ -133,6 +134,6 @@ export const useAddressesAndCreditCardsQuery = () => {
       }
     },
     queryFn: getShippingAddressesAndCreditCards,
-    queryKey: [ADDRESS_CREDIT_CARDS_QUERY_KEY, cart?.id],
+    queryKey: [ADDRESS_CREDIT_CARDS_QUERY_KEY, cart?.id, session?.user?.isGuest],
   })
 }

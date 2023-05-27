@@ -1,14 +1,16 @@
-import { MutableRefObject, memo, useCallback, useEffect, useState } from 'react'
+import { MutableRefObject, memo, useCallback, useEffect, useMemo, useState } from 'react'
 
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline'
 import { Collapse, Tabs } from '@mantine/core'
 import { clsx } from 'clsx'
+import { useSession } from 'next-auth/react'
 
 import { Typography } from '@/core/components/typogrpahy'
 import { GROUND_SHIPPING_SHIPPING_METHOD_ID } from '@/lib/constants/shipping-method'
 import { useUpdateShippingMethodMutation } from '@/lib/mutations/checkout/update-shipping-method'
 import { useCheckoutActions, useCheckoutIsPickUp } from '@/lib/stores/checkout'
 
+import { GuestAddress } from './guest-address'
 import { PickUp } from './pick-up'
 import { ShipToHome } from './ship-to-home'
 
@@ -32,6 +34,8 @@ export const Delivery = memo(({ opened, refs, toggle }: DeliveryProps) => {
   const { setIsPickUp, setSelectedPickUpOption } = useCheckoutActions()
   const { mutate: updateShippingMethod } = useUpdateShippingMethodMutation()
   const [value, setValue] = useState<string | null>(isPickUp ? 'pickUp' : 'shipToHome')
+  const { data: session } = useSession()
+  const isGuest = useMemo(() => session?.user?.isGuest || false, [session?.user?.isGuest])
 
   const handleTabChange = useCallback(
     (tab: string) => {
@@ -61,8 +65,10 @@ export const Delivery = memo(({ opened, refs, toggle }: DeliveryProps) => {
         onClick={() => {
           toggle()
         }}
-        onKeyDown={() => {
-          toggle()
+        onKeyDown={event => {
+          if (event.key === 'Escape' || event.key === 'Space') {
+            toggle()
+          }
         }}
       >
         <Typography noSpacing as="h2" displayAs="h5">
@@ -91,7 +97,11 @@ export const Delivery = memo(({ opened, refs, toggle }: DeliveryProps) => {
             </Tabs.List>
 
             <Tabs.Panel className="mt-4" value="shipToHome">
-              <ShipToHome refs={refs} />
+              {isGuest ? (
+                <GuestAddress shippingAddressRef={refs.shippingAddressRef} />
+              ) : (
+                <ShipToHome refs={refs} />
+              )}
             </Tabs.Panel>
             <Tabs.Panel className="mt-4" value="pickUp">
               <PickUp refs={refs} />

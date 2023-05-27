@@ -36,7 +36,7 @@ export const ConsultantSearch = ({
   const { refine } = useSearchBox()
   const {
     field,
-    formState: { errors: _ },
+    formState: { errors },
   } = useController(rest)
   const { hits } = useHits<ConsultantHit>()
   const [value, setValue] = useState('')
@@ -106,18 +106,17 @@ export const ConsultantSearch = ({
   )
 
   return (
-    <>
-      <Autocomplete
-        data={data}
-        // error={errors.consultant?.message}
-        onItemSubmit={handleConsultantSelect}
-        {...field}
-        disabled={disabled}
-        label="Your consultant"
-        placeholder={placeholder}
-        value={value}
-        onChange={onChange}
-      />
-    </>
+    <Autocomplete
+      className="mt-2"
+      data={data}
+      error={errors.consultant?.message?.toString()}
+      onItemSubmit={handleConsultantSelect}
+      {...field}
+      disabled={disabled}
+      label="Your consultant"
+      placeholder={placeholder}
+      value={value}
+      onChange={onChange}
+    />
   )
 }

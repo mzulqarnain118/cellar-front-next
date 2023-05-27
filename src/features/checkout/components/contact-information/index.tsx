@@ -41,8 +41,10 @@ export const ContactInformation = memo(({ opened, refs, toggle }: ContactInforma
         onClick={() => {
           toggle()
         }}
-        onKeyDown={() => {
-          toggle()
+        onKeyDown={event => {
+          if (event.key === 'Escape' || event.key === 'Space') {
+            toggle()
+          }
         }}
       >
         <Typography noSpacing as="h2" displayAs="h5">

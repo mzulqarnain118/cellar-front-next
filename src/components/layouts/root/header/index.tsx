@@ -128,10 +128,15 @@ export const Header = () => {
   )
 
   const handleUserClick = useCallback(() => {
+    if (session?.user !== undefined && session.user.isGuest) {
+      signOut(queryClient, false)
+      router.push(SIGN_IN_PAGE_PATH)
+    }
+
     if (session?.user === undefined) {
       router.push(SIGN_IN_PAGE_PATH)
     }
-  }, [router, session?.user])
+  }, [queryClient, router, session?.user])
 
   const userButton = useMemo(
     () =>
@@ -141,12 +146,16 @@ export const Header = () => {
             <button className="flex items-center gap-1 rounded p-1" onClick={handleUserClick}>
               <UserIcon className="h-5 w-5 lg:h-6 lg:w-6" />
               <Typography>
-                {session?.user !== undefined ? `Hi, ${session.user.name.first}` : 'Sign in'}
+                {session?.user !== undefined && !session.user.isGuest
+                  ? `Hi, ${session.user.name.first}`
+                  : 'Sign in'}
               </Typography>
-              {session?.user !== undefined ? <ChevronDownIcon className="h-4 w-4" /> : undefined}
+              {session?.user !== undefined && !session.user.isGuest ? (
+                <ChevronDownIcon className="h-4 w-4" />
+              ) : undefined}
             </button>
 
-            {session?.user !== undefined ? (
+            {session?.user !== undefined && !session.user.isGuest ? (
               <Menu className="rounded border border-[#e6e0dd] bg-[#f5f3f2] p-2 shadow">
                 <Menu.Item>
                   <button className="!rounded" onClick={() => router.push(MY_ACCOUNT_PAGE_PATH)}>

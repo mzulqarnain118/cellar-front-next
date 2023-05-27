@@ -49,6 +49,8 @@ interface CheckoutStoreState {
   errors?: Errors
   giftCardCode: Code
   giftMessage: GiftMessage
+  guestAddress?: Address
+  guestCreditCard?: CreditCard
   isAddingAddress: boolean
   isAddingCreditCard: boolean
   isAddingGiftMessage: boolean
@@ -70,6 +72,8 @@ interface CheckoutStoreActions {
   setErrors: Setter<Errors | undefined>
   setGiftCardCode: Setter<Code>
   setGiftMessage: Setter<GiftMessage>
+  setGuestAddress: (address: Address | undefined) => void
+  setGuestCreditCard: (creditCard: CreditCard | undefined) => void
   setIsAddingAddress: Setter<boolean>
   setIsAddingCreditCard: Setter<boolean>
   setIsAddingGiftMessage: Setter<boolean>
@@ -99,6 +103,8 @@ const initialValues: CheckoutStoreState = {
     message: '',
     recipientEmail: '',
   },
+  guestAddress: undefined,
+  guestCreditCard: undefined,
   isAddingAddress: false,
   isAddingCreditCard: false,
   isAddingGiftMessage: false,
@@ -143,6 +149,8 @@ export const useCheckoutStore = create<CheckoutStore>()(
           typeof update === 'function'
             ? set(({ giftMessage }) => ({ giftMessage: update(giftMessage) }))
             : set(() => ({ giftMessage: update })),
+        setGuestAddress: guestAddress => set(() => ({ guestAddress })),
+        setGuestCreditCard: guestCreditCard => set(() => ({ guestCreditCard })),
         setIsAddingAddress: update =>
           typeof update === 'function'
             ? set(({ isAddingAddress }) => ({ isAddingAddress: update(isAddingAddress) }))
@@ -187,9 +195,10 @@ export const useCheckoutStore = create<CheckoutStore>()(
     }),
     {
       name: 'checkout',
-      partialize: ({ giftCardCode, giftMessage, promoCode }) => ({
+      partialize: ({ giftCardCode, giftMessage, guestAddress, promoCode }) => ({
         giftCardCode,
         giftMessage,
+        guestAddress,
         promoCode,
       }),
     }
@@ -231,6 +240,16 @@ export const useCheckoutGiftCardCode = () => {
 
 export const useCheckoutGiftMessage = () => {
   const selector = useCallback(({ giftMessage }: CheckoutStore) => giftMessage, [])
+  return useCheckoutStore(selector)
+}
+
+export const useCheckoutGuestAddress = () => {
+  const selector = useCallback(({ guestAddress }: CheckoutStore) => guestAddress, [])
+  return useCheckoutStore(selector)
+}
+
+export const useCheckoutGuestCreditCard = () => {
+  const selector = useCallback(({ guestCreditCard }: CheckoutStore) => guestCreditCard, [])
   return useCheckoutStore(selector)
 }
 

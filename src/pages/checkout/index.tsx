@@ -53,7 +53,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
 
   return {
     props: {
-      session: session.user,
+      session: null,
     },
   }
 }
@@ -83,14 +83,14 @@ const CheckoutPage: NextPage<PageProps> = () => {
   const [
     contactInformationOpened,
     { open: openContactInformation, toggle: toggleContactInformation },
-  ] = useDisclosure(false)
+  ] = useDisclosure(true)
   const isGiftRef = useRef<HTMLInputElement | null>(null)
   const { targetRef: giftMessageRef, scrollIntoView: scrollGiftMessageIntoView } =
     useScrollIntoView<HTMLTextAreaElement>(scrollIntoViewSettings)
   const { targetRef: recipientEmailRef, scrollIntoView: scrollRecipientEmailIntoView } =
     useScrollIntoView<HTMLInputElement>(scrollIntoViewSettings)
 
-  const [deliveryOpened, { open: openDelivery, toggle: toggleDelivery }] = useDisclosure(false)
+  const [deliveryOpened, { open: openDelivery, toggle: toggleDelivery }] = useDisclosure(true)
   const { targetRef: abcRef, scrollIntoView: scrollAbcIntoView } =
     useScrollIntoView<HTMLInputElement>(scrollIntoViewSettings)
   const { targetRef: halRef, scrollIntoView: _scrollHalIntoView } =
@@ -99,7 +99,7 @@ const CheckoutPage: NextPage<PageProps> = () => {
     useScrollIntoView<HTMLInputElement>(scrollIntoViewSettings)
   const shippingMethodRef = useRef<HTMLInputElement | null>(null)
 
-  const [paymentOpened, { open: openPayment, toggle: togglePayment }] = useDisclosure(false)
+  const [paymentOpened, { open: openPayment, toggle: togglePayment }] = useDisclosure(true)
   const { targetRef: creditCardRef, scrollIntoView: scrollCreditCardIntoView } =
     useScrollIntoView<HTMLInputElement>(scrollIntoViewSettings)
   const { targetRef: cvvRef, scrollIntoView: scrollCvvIntoView } =

@@ -63,7 +63,10 @@ export const CartDrawer = () => {
       event.preventDefault()
       const redirection = session?.user ? CHECKOUT_PAGE_PATH : SIGN_IN_PAGE_PATH
 
-      router.push(redirection)
+      router.push(
+        session?.user ? redirection : `${redirection}?redirectTo=${CHECKOUT_PAGE_PATH}`,
+        redirection
+      )
       // generateGtmCheckout(
       //   redirection,
       //   !isLoggedIn ? { state: { redirect: CHECKOUT_URL } } : undefined

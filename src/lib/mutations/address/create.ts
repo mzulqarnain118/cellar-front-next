@@ -1,5 +1,6 @@
 import { showNotification } from '@mantine/notifications'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useSession } from 'next-auth/react'
 
 import { api } from '@/lib/api'
 import { useCartQuery } from '@/lib/queries/cart'
@@ -76,6 +77,7 @@ export const useCreateAddressMutation = () => {
   const activeCreditCard = useCheckoutActiveCreditCard()
   const { mutate: applyCheckoutSelections } = useApplyCheckoutSelectionsMutation()
   const { data: cart } = useCartQuery()
+  const { data: session } = useSession()
 
   return useMutation<CreateAddressResponse, Error, CreateAddressOptions>({
     mutationFn: data => createAddress({ ...data, cartId: data.cartId || cart?.id }),
@@ -85,7 +87,13 @@ export const useCreateAddressMutation = () => {
     },
     onSuccess: (response, data) => {
       if (response.Success) {
-        queryClient.invalidateQueries([ADDRESS_CREDIT_CARDS_QUERY_KEY])
+        if (!session?.user?.isGuest) {
+          queryClient.invalidateQueries([
+            ADDRESS_CREDIT_CARDS_QUERY_KEY,
+            cart?.id,
+            session?.user?.isGuest,
+          ])
+        }
         applyCheckoutSelections({
           addressId: response.Data.Value.AddressID,
           paymentToken: activeCreditCard?.PaymentToken,

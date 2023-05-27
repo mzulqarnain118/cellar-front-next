@@ -1,9 +1,8 @@
 import { ChangeEvent, useCallback, useState } from 'react'
 
-import Image from 'next/image'
-
 import { CloseButton } from '@mantine/core'
 
+import { BlurImage } from '@/components/blur-image'
 import { Price } from '@/components/price'
 import { NumberPicker } from '@/core/components/number-picker'
 import { Typography } from '@/core/components/typogrpahy'
@@ -120,7 +119,14 @@ export const CartProduct = ({ data }: CartProductProps) => {
     <div className="grid grid-cols-[auto_1fr] px-2 py-4">
       {data.pictureUrl ? (
         <div className="relative h-16 w-20">
-          <Image fill alt={data.displayName} className="object-contain" src={data.pictureUrl} />
+          <BlurImage
+            fill
+            priority
+            alt={data.displayName}
+            className="object-contain"
+            sizes="100vw"
+            src={data.pictureUrl}
+          />
         </div>
       ) : undefined}
       <div className="grid items-center">

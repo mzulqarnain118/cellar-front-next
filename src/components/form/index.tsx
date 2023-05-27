@@ -46,6 +46,7 @@ export const Form = <TFieldValues extends FieldValues = FieldValues>({
               ...{
                 ...child.props,
                 control: methods.control,
+                defaultValue: defaultValues[child.props.name] || '',
                 dirty: methods.formState.dirtyFields[child.props.name],
                 error: methods.formState.errors[child.props.name]?.message || child.props.error,
                 key: child.props.name,

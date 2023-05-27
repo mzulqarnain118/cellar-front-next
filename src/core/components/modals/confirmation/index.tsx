@@ -30,7 +30,7 @@ export const ConfirmationModal = ({
     <>
       {body}
       <div className="mt-4 grid gap-4 lg:flex lg:flex-row-reverse">
-        <Button onClick={handleConfirm} {...confirmProps}>
+        <Button dark onClick={handleConfirm} {...confirmProps}>
           {confirmText}
         </Button>
         <Button color="ghost" variant="outline" onClick={handleCancel}>
