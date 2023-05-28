@@ -67,4 +67,7 @@ export const richTextComponents: JSXMapSerializer = {
       </Typography>
     )
   },
+  preformatted: ({ key, text = '' }) => (
+    <div dangerouslySetInnerHTML={{ __html: text }} key={key} className="space-y-6" />
+  ),
 }

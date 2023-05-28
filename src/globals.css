@@ -73,4 +73,16 @@
   a {
     @apply text-[#b7725b] hover:underline;
   }
+
+  table {
+    @apply w-full;
+  }
+
+  table tbody tr td {
+    @apply border border-neutral-light p-1;
+  }
+
+  tr td:last-child {
+    @apply text-right;
+  }
 }
