@@ -12,6 +12,7 @@ export interface ButtonProps extends DaisyButtonProps {
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, color, dark, link = false, ...props }, ref) => {
     const prefersReducedMotion = useReducedMotion()
+    const selectedColor = dark ? 'ghost' : color || 'primary'
 
     return (
       <DaisyButton
@@ -19,14 +20,15 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         animation={!prefersReducedMotion}
         className={clsx(
-          'rounded normal-case text-secondary-light',
+          'rounded normal-case',
+          selectedColor === 'primary' && props.variant === undefined && 'text-secondary-light',
           dark &&
             `text-neutral-50 hover:bg-neutral-dark hover:brightness-90 enabled:border-neutral-dark
           enabled:bg-neutral-dark disabled:cursor-not-allowed`,
           link && 'bg-transparent p-0 text-[#b7725b] hover:underline hover:bg-transparent border-0',
           className
         )}
-        color={dark ? 'ghost' : color || 'primary'}
+        color={selectedColor}
       />
     )
   }
