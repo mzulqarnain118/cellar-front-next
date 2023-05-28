@@ -19,8 +19,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         animation={!prefersReducedMotion}
         className={clsx(
-          'rounded',
-          'normal-case',
+          'rounded normal-case text-secondary-light',
           dark &&
             `text-neutral-50 hover:bg-neutral-dark hover:brightness-90 enabled:border-neutral-dark
           enabled:bg-neutral-dark disabled:cursor-not-allowed`,
