@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 
 import { Content, asText, filter } from '@prismicio/client'
 import { asImageWidthSrcSet } from '@prismicio/helpers'
-import { dehydrate } from '@tanstack/react-query'
+import { QueryClient, dehydrate } from '@tanstack/react-query'
 import { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType, NextPage } from 'next'
 import { NextSeo } from 'next-seo'
 
@@ -14,7 +14,12 @@ import { Breadcrumbs } from '@/features/pdp/components/breadcrumbs'
 import { Description } from '@/features/pdp/components/description'
 import { MediaGallery } from '@/features/pdp/components/media-gallery'
 import { getStaticNavigation } from '@/lib/queries/header'
-import { PRODUCTS_QUERY_KEY, getProductByCartUrl, useProductQuery } from '@/lib/queries/products'
+import {
+  PRODUCTS_QUERY_KEY,
+  getAllProducts,
+  getProductByCartUrl,
+  useProductQuery,
+} from '@/lib/queries/products'
 import { createClient } from '@/prismic-io'
 
 const Brand = dynamic(() => import('@/features/pdp/components/brand').then(({ Brand }) => Brand), {
@@ -50,7 +55,7 @@ export const getStaticProps = async ({ params, previewData }: GetStaticPropsCont
     filters: [filter.fulltext('my.pdp.url', cartUrl.toString())],
     graphQuery,
   })
-  const page = pdps.find(pdp => asText(pdp.data.url) === cartUrl)
+  const page = pdps.find(pdp => asText(pdp.data.url) === cartUrl) || null
   await queryClient.prefetchQuery([...PRODUCTS_QUERY_KEY, cartUrl], getProductByCartUrl)
 
   return {
@@ -63,9 +68,10 @@ export const getStaticProps = async ({ params, previewData }: GetStaticPropsCont
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const client = createClient()
-  const pdps = await client.getAllByType<Content.PdpDocument>('pdp')
-  const paths = pdps.map(pdp => ({ params: { cartUrl: asText(pdp.data.url) } }))
+  const queryClient = new QueryClient()
+  const products = await queryClient.ensureQueryData([PRODUCTS_QUERY_KEY], getAllProducts)
+  const paths =
+    products !== undefined ? products?.map(pdp => ({ params: { cartUrl: pdp.cartUrl } })) : []
 
   return {
     fallback: false,

@@ -186,7 +186,9 @@ const SignInPage: NextPage<PageProps> = () => {
                     ref={passwordFormRef}
                   />
                   <div className="flex items-center justify-between pt-2">
-                    <Button type="submit">Sign in</Button>
+                    <Button disabled={isValidatingEmail} type="submit">
+                      Sign in
+                    </Button>
                     <Link className="!text-neutral-dark" href="/forgot-password">
                       Forgot password?
                     </Link>

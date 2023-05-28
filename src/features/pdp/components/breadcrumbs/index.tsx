@@ -19,10 +19,14 @@ export const Breadcrumbs = ({ cartUrl }: BreadcrumbsProps) => {
   return (
     <DaisyBreadcrumbs>
       <DaisyBreadcrumbs.Item>
-        <Link href={HOME_PAGE_PATH}>Home</Link>
+        <Link className="!text-neutral-dark" href={HOME_PAGE_PATH}>
+          Home
+        </Link>
       </DaisyBreadcrumbs.Item>
       <DaisyBreadcrumbs.Item>
-        <Link href={WINE_PAGE_PATH}>Wine</Link>
+        <Link className="!text-neutral-dark" href={WINE_PAGE_PATH}>
+          Wine
+        </Link>
       </DaisyBreadcrumbs.Item>
       <DaisyBreadcrumbs.Item>{product?.displayName}</DaisyBreadcrumbs.Item>
     </DaisyBreadcrumbs>

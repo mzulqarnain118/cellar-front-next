@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 import { ArrowRightIcon } from '@heroicons/react/20/solid'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LoadingOverlay } from '@mantine/core'
-import { clsx } from 'clsx'
+import { useInputState } from '@mantine/hooks'
 import { FormProvider, SubmitHandler, UseFormProps, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -138,7 +138,7 @@ export type CreateAccountSchema = z.infer<typeof createAccountSchema>
 
 export const CreateAccountForm = () => {
   const { consultant } = useConsultantStore()
-  const { isLoading: _, mutate: guestSignIn } = useGuestSignInMutation()
+  const { mutate: guestSignIn } = useGuestSignInMutation()
 
   const defaultValues: Partial<CreateAccountSchema> = useMemo(
     () => ({
@@ -175,6 +175,7 @@ export const CreateAccountForm = () => {
   const [isExistingCustomer, setIsExistingCustomer] = useState(false)
   const [fullName, setFullName] = useState('')
   const [isGuest, setIsGuest] = useState(false)
+  const [passwordVisible, setPasswordVisible] = useInputState<boolean>(false)
 
   const onSubmit: SubmitHandler<CreateAccountSchema> = async ({
     day,
@@ -227,8 +228,6 @@ export const CreateAccountForm = () => {
     }
   }
 
-  const dobError = errors.month?.message || errors.day?.message || errors.year?.message
-
   const signInHref = useMemo(
     () => ({ pathname: SIGN_IN_PAGE_PATH, query: { email: getValues().email, fullName } }),
     [getValues, fullName]
@@ -239,22 +238,25 @@ export const CreateAccountForm = () => {
       <LoadingOverlay visible={isSubmitting} />
       <FormProvider {...methods}>
         <form
-          className="flex flex-col md:grid md:auto-rows-auto md:grid-cols-2 md:gap-x-11 md:gap-y-4"
+          className="flex flex-col md:grid md:auto-rows-auto md:grid-cols-2 md:gap-x-11 md:gap-y-4 items-start"
           onSubmit={handleSubmit(onSubmit)}
         >
           <Input
+            noSpacing
             error={errors.firstName?.message}
             id="firstName"
             label="First name"
             {...register('firstName')}
           />
           <Input
+            noSpacing
             error={errors.lastName?.message}
             id="lastName"
             label="Last name"
             {...register('lastName')}
           />
           <Input
+            noSpacing
             error={errors.email?.message}
             id="email"
             label="Email"
@@ -291,33 +293,9 @@ export const CreateAccountForm = () => {
               },
             })}
           />
-          <div>
-            <div className="flex items-center justify-between">
-              <label className="text-[1.125rem] text-neutral-800" htmlFor="month">
-                Date of birth
-              </label>
-            </div>
-            <div
-              className={clsx(
-                `
-                  grid grid-cols-5 items-center justify-between rounded border
-                  border-solid border-neutral-300 bg-neutral transition-all
-                `,
-                !!dobError && '!border-error'
-              )}
-            >
-              <DateOfBirthPicker />
-            </div>
-            {/* <Input.Error className="mt-1 text-[0.875rem] text-error">{dobError}</Input.Error> */}
-          </div>
+          <DateOfBirthPicker noSpacing />
           {isExistingCustomer ? (
-            <Link
-              className={`
-                btn-primary btn mb-4 inline-flex items-center gap-1 no-underline transition-all
-                hover:gap-2 hover:no-underline
-              `}
-              href={signInHref}
-            >
+            <Link button href={signInHref}>
               Take me to sign in
               <ArrowRightIcon className="h-6 w-6" />
             </Link>
@@ -326,19 +304,23 @@ export const CreateAccountForm = () => {
               <PasswordInput
                 error={errors.password?.message}
                 label="Password"
+                visible={passwordVisible}
+                onVisibilityChange={setPasswordVisible}
                 {...register('password')}
               />
               <PasswordInput
                 error={errors.password?.message}
                 label="Confirm password"
+                visible={passwordVisible}
+                onVisibilityChange={setPasswordVisible}
                 {...register('confirmPassword')}
               />
-              <Button className="my-4" type="submit">
+              <Button className="my-4" disabled={isValidatingEmail} type="submit">
                 Create my account
               </Button>
               <div className="col-span-2 flex items-center gap-1 text-neutral-900">
                 Already have an account?{' '}
-                <Link href={SIGN_IN_PAGE_PATH}>
+                <Link className="!text-neutral-dark" href={SIGN_IN_PAGE_PATH}>
                   <Typography className="inline" color="brand">
                     Sign in
                   </Typography>

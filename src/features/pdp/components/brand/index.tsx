@@ -35,6 +35,14 @@ export const Brand = ({ cartUrl, className }: BrandProps) => {
     }
   }, [brandLandingData, router])
 
+  if (
+    brandLandingData === undefined ||
+    imageAndTextData === undefined ||
+    productShowcaseData === undefined
+  ) {
+    return <></>
+  }
+
   return (
     <div className={className}>
       <div className="py-10">

@@ -6,10 +6,19 @@ import { useFormContext } from 'react-hook-form'
 import { Input } from '@/core/components/input'
 import { Typography } from '@/core/components/typogrpahy'
 
-export const DateOfBirthPicker = () => {
-  const [month, setMonth] = useState('')
-  const [day, setDay] = useState('')
-  const [year, setYear] = useState('')
+interface DateOfBirthProps {
+  defaultValue?: {
+    day: number | string
+    month: number | string
+    year: number | string
+  }
+  noSpacing?: boolean
+}
+
+export const DateOfBirthPicker = ({ defaultValue, noSpacing = false }: DateOfBirthProps) => {
+  const [month, setMonth] = useState(defaultValue?.month?.toString() || '')
+  const [day, setDay] = useState(defaultValue?.day?.toString() || '')
+  const [year, setYear] = useState(defaultValue?.year?.toString() || '')
   const [focused, setFocused] = useState(false)
   const {
     formState: { errors },
@@ -52,7 +61,7 @@ export const DateOfBirthPicker = () => {
   const handleFocus = useCallback(() => setFocused(true), [])
 
   return (
-    <div className="pt-4">
+    <div className={clsx(!noSpacing && 'pt-4')}>
       <Typography as="label" className="mb-1 text-md" htmlFor="month">
         Date of birth
       </Typography>
