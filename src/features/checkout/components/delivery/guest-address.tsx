@@ -1,15 +1,21 @@
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import dynamic from 'next/dynamic'
 
-import { Collapse } from '@mantine/core'
+import { Collapse, Select, SelectProps } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import { useSession } from 'next-auth/react'
 
 import { Button } from '@/core/components/button'
+import { Skeleton } from '@/core/components/skeleton'
 import { Typography } from '@/core/components/typogrpahy'
+import { formatCurrency } from '@/core/utils'
+import { useApplyCheckoutSelectionsMutation } from '@/lib/mutations/checkout/apply-selections'
+import { useUpdateShippingMethodMutation } from '@/lib/mutations/checkout/update-shipping-method'
+import { useGetSubtotalQuery } from '@/lib/queries/checkout/get-subtotal'
+import { useShippingMethodsQuery } from '@/lib/queries/checkout/shipping-methods'
 import { useCheckoutActions, useCheckoutGuestAddress } from '@/lib/stores/checkout'
 import { Address } from '@/lib/types/address'
+import { isPickUpShippingMethodId } from '@/lib/utils/checkout'
 
 import type { DeliveryRefs } from '.'
 
@@ -17,27 +23,59 @@ const AddressForm = dynamic(() => import('./address-form').then(({ AddressForm }
   ssr: false,
 })
 
+const dropdownClassNames = { input: 'h-10', item: 'text-14', label: 'text-14' }
+
 interface GuestAddressProps {
   shippingAddressRef: DeliveryRefs['shippingAddressRef']
 }
 
 export const GuestAddress = ({ shippingAddressRef }: GuestAddressProps) => {
-  const { data: session } = useSession()
   const guestAddress = useCheckoutGuestAddress()
+  const { isLoading: isApplyingSelections } = useApplyCheckoutSelectionsMutation()
+  const { data: cartTotalData } = useGetSubtotalQuery()
+  const { data: shippingMethodsData } = useShippingMethodsQuery()
+  const { mutate: updateShippingMethod, isLoading: isUpdatingShippingMethod } =
+    useUpdateShippingMethodMutation()
   const { setGuestAddress } = useCheckoutActions()
   const [addressFormOpen, { close: closeAddressForm, toggle: toggleAddressForm }] = useDisclosure(
     guestAddress === undefined
   )
 
-  console.log(session)
+  const handleShippingMethodChange: SelectProps['onChange'] = useCallback(
+    (shippingMethodId: string | null) => {
+      if (
+        !!shippingMethodId &&
+        shippingMethodsData !== undefined &&
+        shippingMethodsData.length > 0
+      ) {
+        updateShippingMethod({ shippingMethodId: parseInt(shippingMethodId) })
+      }
+    },
+    [shippingMethodsData, updateShippingMethod]
+  )
 
+  const shippingMethods = useMemo(
+    () =>
+      shippingMethodsData !== undefined
+        ? shippingMethodsData
+            .map(method => ({
+              data: method,
+              label: `${method.displayName} (${formatCurrency(method.shippingPrice)})`,
+              value: method.shippingMethodId.toString(),
+            }))
+            .filter(method => !isPickUpShippingMethodId(method.data.shippingMethodId))
+        : [],
+    [shippingMethodsData]
+  )
   const handleCreateAddress = useCallback(
     (address?: Address) => {
-      setGuestAddress(address)
+      setGuestAddress(address || guestAddress)
       closeAddressForm()
     },
-    [closeAddressForm, setGuestAddress]
+    [closeAddressForm, guestAddress, setGuestAddress]
   )
+
+  const disabled = isUpdatingShippingMethod || isApplyingSelections
 
   return (
     <>
@@ -62,6 +100,21 @@ export const GuestAddress = ({ shippingAddressRef }: GuestAddressProps) => {
             Edit Address
           </Button>
         </div>
+        {shippingMethodsData === undefined ? (
+          <>
+            <Skeleton className="mb-1 h-6 w-[7.5rem]" />
+            <Skeleton className="h-10" />
+          </>
+        ) : (
+          <Select
+            classNames={dropdownClassNames}
+            data={shippingMethods}
+            disabled={disabled}
+            label="Shipping method"
+            value={cartTotalData?.shipping.methodId.toString()}
+            onChange={handleShippingMethodChange}
+          />
+        )}
       </Collapse>
     </>
   )

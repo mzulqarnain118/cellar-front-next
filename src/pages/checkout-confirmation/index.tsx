@@ -19,7 +19,6 @@ const Receipt = dynamic(
 const CheckoutConfirmationPage: NextPage = () => {
   const { data: session } = useSession()
 
-  console.log('session', session)
   useEffect(() => {
     const signOutGuest = async () => {
       if (typeof window !== 'undefined') {

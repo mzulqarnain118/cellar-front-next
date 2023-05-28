@@ -1,3 +1,5 @@
+import { useMemo } from 'react'
+
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 
@@ -9,10 +11,12 @@ import {
   getShippingAddressesAndCreditCards,
 } from '@/lib/queries/checkout/addreses-and-credit-cards'
 import { GET_SUBTOTAL_QUERY } from '@/lib/queries/checkout/get-subtotal'
+import { SHIPPING_METHODS_QUERY_KEY } from '@/lib/queries/checkout/shipping-methods'
 import {
   useCheckoutActions,
   useCheckoutActiveCreditCard,
   useCheckoutActiveShippingAddress,
+  useCheckoutGuestAddress,
 } from '@/lib/stores/checkout'
 import { Failure } from '@/lib/types'
 
@@ -63,13 +67,18 @@ export const useApplyCheckoutSelectionsMutation = () => {
   const { data: session } = useSession()
   const activeCreditCard = useCheckoutActiveCreditCard()
   const activeShippingAddress = useCheckoutActiveShippingAddress()
+  const guestAddress = useCheckoutGuestAddress()
   const { setActiveCreditCard, setActiveShippingAddress } = useCheckoutActions()
+  const address = useMemo(
+    () => (session?.user?.isGuest ? guestAddress : activeShippingAddress),
+    [activeShippingAddress, guestAddress, session?.user?.isGuest]
+  )
 
   return useMutation<Response, Error, Partial<ApplyCheckoutSelectionsOptions>>({
     mutationFn: data =>
       applyCheckoutSelections({
         ...data,
-        addressId: data.addressId || activeShippingAddress?.AddressID || 0,
+        addressId: data.addressId || address?.AddressID || 0,
         cartId: data.cartId || cart?.id,
         paymentToken: data.paymentToken || activeCreditCard?.PaymentToken,
         userDisplayId: data.userDisplayId || session?.user?.displayId,
@@ -99,8 +108,11 @@ export const useApplyCheckoutSelectionsMutation = () => {
         }
         setActiveShippingAddress(correspondingAddress)
         setActiveCreditCard(correspondingCreditCard)
-        await queryClient.invalidateQueries([GET_SUBTOTAL_QUERY, cart?.id])
       }
+      await queryClient.invalidateQueries([GET_SUBTOTAL_QUERY, cart?.id])
+      await queryClient.invalidateQueries({
+        queryKey: [SHIPPING_METHODS_QUERY_KEY],
+      })
     },
   })
 }

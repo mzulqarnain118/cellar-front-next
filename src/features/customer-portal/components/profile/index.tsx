@@ -148,6 +148,7 @@ export const Profile = (props: TabsPanelProps) => {
           error={errors?.email?.message}
           label="Email"
           loading={isValidatingEmail}
+          type="email"
           {...register('email', { onBlur: handleEmailBlur })}
         />
         <Input

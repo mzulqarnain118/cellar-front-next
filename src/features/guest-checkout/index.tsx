@@ -162,6 +162,7 @@ export const GuestCheckout = () => {
                 error={errors?.email?.message}
                 label="Email"
                 loading={isValidatingEmail}
+                type="email"
                 {...register('email', {
                   onBlur: event => {
                     const newEmail = event.target.value.trim()

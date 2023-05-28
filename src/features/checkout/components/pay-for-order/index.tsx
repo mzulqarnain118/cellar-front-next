@@ -14,6 +14,7 @@ import { Link } from '@/components/link'
 import { Button } from '@/core/components/button'
 import { Checkbox } from '@/core/components/checkbox'
 import { Typography } from '@/core/components/typogrpahy'
+import { useIsDesktop } from '@/core/hooks/use-is-desktop'
 import { formatCurrency } from '@/core/utils'
 import { TERMS_AND_CONDITIONS_PAGE_PATH } from '@/lib/paths'
 import { useCartQuery } from '@/lib/queries/cart'
@@ -40,6 +41,7 @@ export const PayForOrder = ({ refs, validate }: PayForOrderProps) => {
   const { setErrors } = useCheckoutActions()
   const { mutate: payForOrder, isLoading: isCheckingOut } = useCheckoutPayForOrderMutation()
   const [locked, setLocked] = useLockedBody(false, '__next')
+  const isDesktop = useIsDesktop()
 
   const isAutoSipCart = useMemo(() => cart?.items.some(item => item.isAutoSip), [cart?.items])
   const isScoutCircleCart = useMemo(
@@ -134,7 +136,7 @@ export const PayForOrder = ({ refs, validate }: PayForOrderProps) => {
             </Typography>
           </div>
           <div className="ml-auto">
-            <Button size="lg" onClick={handleSubmit}>
+            <Button size={isDesktop ? 'lg' : 'md'} onClick={handleSubmit}>
               Place my order
             </Button>
           </div>

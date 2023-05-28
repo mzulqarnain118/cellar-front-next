@@ -1,8 +1,11 @@
+import { useMemo } from 'react'
+
 import { QueryFunction, useQuery } from '@tanstack/react-query'
+import { useSession } from 'next-auth/react'
 
 import { api } from '@/lib/api'
 import { CORPORATE_GIFTING_SHIPPING_METHOD_ID } from '@/lib/constants/shipping-method'
-import { useCheckoutActiveShippingAddress } from '@/lib/stores/checkout'
+import { useCheckoutActiveShippingAddress, useCheckoutGuestAddress } from '@/lib/stores/checkout'
 import { Failure } from '@/lib/types'
 
 import { useCartQuery } from '../cart'
@@ -56,11 +59,17 @@ export const SHIPPING_METHODS_QUERY_KEY = 'shipping-methods'
 
 export const useShippingMethodsQuery = () => {
   const activeShippingAddress = useCheckoutActiveShippingAddress()
+  const guestAddress = useCheckoutGuestAddress()
   const { data: cart } = useCartQuery()
+  const { data: session } = useSession()
+  const address = useMemo(
+    () => (session?.user?.isGuest ? guestAddress : activeShippingAddress),
+    [activeShippingAddress, guestAddress, session?.user?.isGuest]
+  )
 
   return useQuery({
-    enabled: !!activeShippingAddress,
+    enabled: !!address,
     queryFn: getShippingMethods,
-    queryKey: [SHIPPING_METHODS_QUERY_KEY, cart?.orderDisplayId, activeShippingAddress?.AddressID],
+    queryKey: [SHIPPING_METHODS_QUERY_KEY, cart?.orderDisplayId, address?.AddressID],
   })
 }
