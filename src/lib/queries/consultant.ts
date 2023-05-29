@@ -7,7 +7,7 @@ import { api } from '../api'
 import { CORPORATE_CONSULTANT_ID } from '../constants'
 import { DEFAULT_CONSULTANT_STATE, useConsultantStore } from '../stores/consultant'
 import { Consultant } from '../types'
-import { toastInfo, toastLoading, toastSuccess } from '../utils/notifications'
+import { toastInfo } from '../utils/notifications'
 
 export const CONSULTANT_QUERY_KEY = 'consultant'
 export const getConsultantData: QueryFunction<Consultant> = async ({ queryKey }) => {
@@ -16,7 +16,6 @@ export const getConsultantData: QueryFunction<Consultant> = async ({ queryKey })
     return DEFAULT_CONSULTANT_STATE
   }
 
-  toastLoading({ message: 'Searching for your consultant...' })
   const response = await api(`info/rep/${repUrl}`).json<{
     Address: { City: string; PostalCode: string; ProvinceAbbreviation: string }
     DisplayID: string
@@ -41,7 +40,6 @@ export const getConsultantData: QueryFunction<Consultant> = async ({ queryKey })
     })
     return DEFAULT_CONSULTANT_STATE
   }
-  toastSuccess({ message: 'We found your consultant' })
 
   const consultant: Consultant = {
     address: {
@@ -72,7 +70,7 @@ export const useConsultantQuery = (url?: string) => {
   const repUrl = query.u?.toString() || url || consultant?.url
 
   return useQuery({
-    cacheTime: 15 * (60 * 1000), // 15 mins
+    // cacheTime: 15 * (60 * 1000), // 15 mins
     initialData: DEFAULT_CONSULTANT_STATE,
     onError: () => setConsultant(DEFAULT_CONSULTANT_STATE),
     onSuccess: data => {
@@ -81,6 +79,6 @@ export const useConsultantQuery = (url?: string) => {
     queryFn: getConsultantData,
     queryKey: [CONSULTANT_QUERY_KEY, repUrl || CORPORATE_CONSULTANT_ID],
     refetchOnWindowFocus: false,
-    staleTime: 10 * (60 * 1000), // 10 mins
+    // staleTime: 10 * (60 * 1000), // 10 mins
   })
 }

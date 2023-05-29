@@ -39,7 +39,9 @@ export interface CartDiscount {
 export interface Cart {
   id: string
   orderDisplayId?: string
+  isCuratedCart?: boolean
   isSharedCart?: boolean
+  isVipCart?: boolean
   items: CartItem[]
   discounts: CartDiscount[]
   prices: {

@@ -7,6 +7,7 @@ import { modals } from '@mantine/modals'
 
 import { Button } from '@/core/components/button'
 import { Typography } from '@/core/components/typogrpahy'
+import { useCuratedCartQuery } from '@/features/curated-cart/queries/curated-cart'
 import { useVipCartQuery } from '@/features/vip-cart/queries/vip-cart'
 import { CORPORATE_CONSULTANT_ID } from '@/lib/constants'
 import { useAgeVerified } from '@/lib/hooks/use-age-verified'
@@ -29,6 +30,7 @@ export const RootLayout = ({ children }: RootLayoutProps) => {
   const router = useRouter()
   const { data: consultant } = useConsultantQuery()
   useCartQuery()
+  useCuratedCartQuery()
   useVipCartQuery()
 
   const handleClick = useCallback(() => {

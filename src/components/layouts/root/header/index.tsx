@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 
 import { ShoppingCartIcon, UserIcon } from '@heroicons/react/20/solid'
 import { ChevronDownIcon } from '@heroicons/react/24/outline'
-import { Burger, Collapse, Skeleton } from '@mantine/core'
+import { Burger, Collapse, Popover, Skeleton } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { asText } from '@prismicio/helpers'
 import { PrismicLink, PrismicRichText } from '@prismicio/react'
@@ -15,22 +15,29 @@ import { clsx } from 'clsx'
 import { useSession } from 'next-auth/react'
 import { Badge, Indicator, Menu } from 'react-daisyui'
 
+import { BlurImage } from '@/components/blur-image'
 import { CompanyLogo } from '@/components/company-logo'
 import { Link } from '@/components/link'
+import { Price } from '@/components/price'
 import { Search } from '@/components/search'
 import { Button } from '@/core/components/button'
 import { Typography } from '@/core/components/typogrpahy'
 import { useIsDesktop } from '@/core/hooks/use-is-desktop'
+import { useCuratedCartQuery } from '@/features/curated-cart/queries/curated-cart'
 import { CORPORATE_CONSULTANT_ID } from '@/lib/constants'
 import { CONSULTANTS_PAGE_PATH, MY_ACCOUNT_PAGE_PATH, SIGN_IN_PAGE_PATH } from '@/lib/paths'
-import { useCartQuery } from '@/lib/queries/cart'
+import { CART_QUERY_KEY, useCartQuery } from '@/lib/queries/cart'
 import { useConsultantQuery } from '@/lib/queries/consultant'
+import { useGetCartInfoQuery } from '@/lib/queries/get-info'
 import {
   useNavigationCTAQuery,
   useNavigationPromoMessageQuery,
   useNavigationQuery,
 } from '@/lib/queries/header'
+import { useProductsQuery } from '@/lib/queries/products'
+import { useCuratedCartStore } from '@/lib/stores/curated-cart'
 import { useCartOpen } from '@/lib/stores/process'
+import { Cart } from '@/lib/types'
 import { signOut } from '@/lib/utils/sign-out'
 
 import { StatePicker } from '../state-picker'
@@ -60,6 +67,12 @@ export const Header = () => {
   const isDesktop = useIsDesktop()
   const queryClient = useQueryClient()
   const { data: consultant } = useConsultantQuery()
+  const { curatedCart, dismissCart, setCuratedCart } = useCuratedCartStore()
+  const { data: curatedCartData } = useCuratedCartQuery()
+  const { data: products } = useProductsQuery()
+  const { data: cartInfo } = useGetCartInfoQuery(
+    curatedCart !== undefined && curatedCart.cartId.length > 0 ? curatedCart.cartId : undefined
+  )
 
   const menu = useMemo(
     () =>
@@ -194,6 +207,136 @@ export const Header = () => {
     [cartQuantity]
   )
 
+  const handleNotNow = useCallback(() => {
+    dismissCart()
+  }, [dismissCart])
+
+  const handleUseCart = useCallback(() => {
+    if (cartInfo !== undefined) {
+      queryClient.setQueryData<Cart>(CART_QUERY_KEY, {
+        discounts: [],
+        id: curatedCart?.cartId || '',
+        isCuratedCart: true,
+        isSharedCart: false,
+        isVipCart: false,
+        items: cartInfo.OrderLines.map(item => {
+          const product = products?.find(
+            productData => productData.sku === item.ProductSKU.toLowerCase()
+          )
+          return {
+            ...product,
+            cartUrl: product?.cartUrl || '',
+            catalogId: 0,
+            displayCategories: product?.displayCategories || [],
+            displayName: item.ProductDisplayName,
+            isAutoSip: product?.isAutoSip || false,
+            isClubOnly: product?.isClubOnly || false,
+            isGift: product?.isGift || false,
+            isGiftCard: product?.isGiftCard || false,
+            isScoutCircleClub: product?.isScoutCircleClub || false,
+            isVip: product?.isVip || false,
+            onSalePrice: item.DisplayPrice,
+            orderId: item.OrderID,
+            orderLineId: item.OrderLineID,
+            price: item.Price,
+            quantity: item.Quantity,
+            quantityAvailable: product?.quantityAvailable || 0,
+            sku: item.ProductSKU.toLowerCase(),
+            subscribable: product?.subscribable || false,
+          }
+        }).filter(Boolean),
+        orderDisplayId: cartInfo.DisplayID,
+        prices: {
+          orderTotal: 0,
+          retailDeliveryFee: 0,
+          shipping: 0,
+          subtotal: 0,
+          subtotalAfterSavings: 0,
+          tax: 0,
+        },
+      })
+      if (curatedCart !== undefined) {
+        setCuratedCart({ ...curatedCart, cartAccepted: true, messageDismissed: true })
+      }
+      toggleCartOpen()
+    }
+  }, [cartInfo, curatedCart, products, queryClient, setCuratedCart, toggleCartOpen])
+
+  const cartButton = useMemo(
+    () =>
+      curatedCart !== undefined &&
+      curatedCart.cartId.length > 0 &&
+      !curatedCart.messageDismissed ? (
+        <Popover
+          withArrow
+          arrowPosition="side"
+          opened={curatedCartData !== undefined && curatedCartData.CartID.length > 0}
+          position="top-end"
+          shadow="md"
+          width={380}
+        >
+          <Popover.Target>
+            <button onClick={toggleCartOpen}>
+              <Indicator item={cartBadge}>
+                <ShoppingCartIcon className="h-5 w-5 lg:h-6 lg:w-6" />
+              </Indicator>
+            </button>
+          </Popover.Target>
+          <Popover.Dropdown>
+            <Typography as="h6" className="!text-14 !leading-normal !mb-4">
+              Hooray! Your Consultant has recommended a cart for you. Click on &apos;Use Cart&apos;
+              to proceed, or &apos;Not Now&apos; to save it for another day. Once you proceed, you
+              can add or modify this cart too! And, don&apos;t worry, if now is not the time, this
+              cart will be available to you for a few more days.
+            </Typography>
+            <div className="divide-y divide-y-neutral-light">
+              {cartInfo?.OrderLines.map(item => (
+                <div key={item.ProductSKU} className="grid grid-cols-[auto_1fr] items-center py-2">
+                  <div className="relative w-24 h-24">
+                    <BlurImage
+                      fill
+                      alt={item.ProductDisplayName}
+                      className="object-contain"
+                      sizes="100vw"
+                      src={item.ProductImage}
+                    />
+                  </div>
+                  <div>
+                    <Typography>{item.ProductDisplayName}</Typography>
+                    <Price price={item.Price} onSalePrice={item.DisplayPrice} />
+                    <Typography>QTY: {item.Quantity}</Typography>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="flex justify-end pt-4 gap-2">
+              <Button color="ghost" size="sm" onClick={handleNotNow}>
+                Not now
+              </Button>
+              <Button dark size="sm" onClick={handleUseCart}>
+                Use cart
+              </Button>
+            </div>
+          </Popover.Dropdown>
+        </Popover>
+      ) : (
+        <button onClick={toggleCartOpen}>
+          <Indicator item={cartBadge}>
+            <ShoppingCartIcon className="h-5 w-5 lg:h-6 lg:w-6" />
+          </Indicator>
+        </button>
+      ),
+    [
+      cartBadge,
+      cartInfo?.OrderLines,
+      curatedCart,
+      curatedCartData,
+      handleNotNow,
+      handleUseCart,
+      toggleCartOpen,
+    ]
+  )
+
   return (
     <header className="z-20 h-max bg-[#e6e0dd] text-neutral-900">
       <div className="container mx-auto flex flex-col items-center justify-between space-y-1 py-2 lg:flex-row">
@@ -229,11 +372,7 @@ export const Header = () => {
           </Link>
           <div className="flex items-center gap-4">
             {userButton}
-            <button onClick={toggleCartOpen}>
-              <Indicator item={cartBadge}>
-                <ShoppingCartIcon className="h-5 w-5 lg:h-6 lg:w-6" />
-              </Indicator>
-            </button>
+            {cartButton}
           </div>
         </div>
       </div>
