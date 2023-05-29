@@ -138,7 +138,10 @@ export const useGetSubtotalQuery = (cartId?: string) => {
   const activeShippingAddress = useCheckoutActiveShippingAddress()
   const guestAddress = useCheckoutGuestAddress()
   const activeCreditCard = useCheckoutActiveCreditCard()
-  const address = useMemo(() => (session?.user?.isGuest ? guestAddress : activeShippingAddress), [])
+  const address = useMemo(
+    () => (session?.user?.isGuest ? guestAddress : activeShippingAddress),
+    [activeShippingAddress, guestAddress, session?.user?.isGuest]
+  )
   const { mutate: applyCheckoutSelections } = useApplyCheckoutSelectionsMutation()
 
   return useQuery({
