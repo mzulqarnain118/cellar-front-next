@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 
 import dynamic from 'next/dynamic'
 import Error from 'next/error'
@@ -13,6 +13,7 @@ import { NextSeo } from 'next-seo'
 import { Breadcrumbs } from '@/features/pdp/components/breadcrumbs'
 import { Description } from '@/features/pdp/components/description'
 import { MediaGallery } from '@/features/pdp/components/media-gallery'
+import { usePdpActions } from '@/features/pdp/store'
 import { getStaticNavigation } from '@/lib/queries/header'
 import {
   PRODUCTS_QUERY_KEY,
@@ -85,6 +86,7 @@ const PDP: NextPage<PageProps> = ({ page }) => {
   const router = useRouter()
   const { cartUrl } = router.query
   const { data: product } = useProductQuery(cartUrl?.toString() || '')
+  const { setSelectedProduct } = usePdpActions()
 
   const images = useMemo(
     () => [
@@ -109,6 +111,12 @@ const PDP: NextPage<PageProps> = ({ page }) => {
     ],
     [page?.data.images, product?.displayName, product?.pictureUrl]
   )
+
+  useEffect(() => {
+    if (product !== undefined) {
+      setSelectedProduct(product)
+    }
+  }, [product, setSelectedProduct])
 
   if (cartUrl === undefined || typeof cartUrl !== 'string') {
     return <Error statusCode={404} />

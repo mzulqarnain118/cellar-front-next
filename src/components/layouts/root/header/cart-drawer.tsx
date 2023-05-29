@@ -2,7 +2,7 @@
 import { MouseEventHandler, useCallback, useMemo, useRef } from 'react'
 
 import { ChevronRightIcon } from '@heroicons/react/24/outline'
-import { CloseButton, Drawer, Loader } from '@mantine/core'
+import { CloseButton, Drawer } from '@mantine/core'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 
@@ -93,10 +93,7 @@ export const CartDrawer = () => {
         <CloseButton className="absolute right-4 top-4 z-10" size="lg" onClick={toggleCartOpen} />
         <div className="sticky left-0 top-0 flex w-full flex-col border-b border-base-dark bg-base-light pt-4 lg:grid lg:grid-rows-[auto_1fr_auto]">
           <Typography as="h1" className="h4 text-center">
-            Your Cart{' '}
-            {cartQuantity === 0
-              ? undefined
-              : `(${cartQuantity || <Loader className="inline-block" size="sm" />})`}
+            Your Cart {cartQuantity === 0 ? undefined : `(${cartQuantity})`}
           </Typography>
           <div
             className={`
