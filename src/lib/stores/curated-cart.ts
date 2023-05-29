@@ -8,6 +8,7 @@ import { Setter } from './types'
 interface CuratedCartStore {
   curatedCart?: CuratedCart
   dismissCart: () => void
+  reset: () => void
   setCuratedCart: Setter<CuratedCart | undefined>
 }
 
@@ -27,6 +28,11 @@ export const useCuratedCartStore = create<CuratedCartStore>()(
                   messageDismissed: false,
                   recommendedByPersonDisplayId: '',
                 },
+        })),
+      reset: () =>
+        set(prev => ({
+          ...prev,
+          curatedCart: undefined,
         })),
       setCuratedCart: update =>
         typeof update === 'function'
