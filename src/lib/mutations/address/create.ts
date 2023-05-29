@@ -1,4 +1,3 @@
-import { showNotification } from '@mantine/notifications'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 
@@ -8,6 +7,7 @@ import { ADDRESS_CREDIT_CARDS_QUERY_KEY } from '@/lib/queries/checkout/addreses-
 import { useCheckoutActiveCreditCard } from '@/lib/stores/checkout'
 import { Failure } from '@/lib/types'
 import { Address } from '@/lib/types/address'
+import { toastError, toastSuccess } from '@/lib/utils/notifications'
 
 import { useApplyCheckoutSelectionsMutation } from '../checkout/apply-selections'
 
@@ -83,7 +83,7 @@ export const useCreateAddressMutation = () => {
     mutationFn: data => createAddress({ ...data, cartId: data.cartId || cart?.id }),
     mutationKey: CREATE_ADDRESS_MUTATION_KEY,
     onError: error => {
-      showNotification({ message: error.message })
+      toastError({ message: error.message })
     },
     onSuccess: (response, data) => {
       if (response.Success) {
@@ -98,7 +98,7 @@ export const useCreateAddressMutation = () => {
           addressId: response.Data.Value.AddressID,
           paymentToken: activeCreditCard?.PaymentToken,
         })
-        showNotification({ message: 'Address saved successfully.' })
+        toastSuccess({ message: 'Address saved successfully.' })
 
         if (data.callback !== undefined) {
           data.callback(response)

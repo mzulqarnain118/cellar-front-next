@@ -1,10 +1,10 @@
-import { showNotification } from '@mantine/notifications'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 
 import { useCustomerPortalActions } from '@/features/store'
 import { api } from '@/lib/api'
 import { Address } from '@/lib/types/address'
+import { toastError, toastSuccess } from '@/lib/utils/notifications'
 
 import { CUSTOMER_QUERY_KEY } from '../queries/customer'
 
@@ -51,7 +51,7 @@ export const useCreateAddressMutation = () => {
     mutationFn: options => createAddress(options),
     mutationKey: ['create-customer-address'],
     onError: error => {
-      showNotification({ message: error.message })
+      toastError({ message: error.message })
     },
     onMutate: () => {
       setIsLoading(true)
@@ -61,7 +61,7 @@ export const useCreateAddressMutation = () => {
       setIsLoading(false)
     },
     onSuccess: () => {
-      showNotification({ message: 'Address created successfully!' })
+      toastSuccess({ message: 'Address created successfully!' })
     },
   })
 }

@@ -181,11 +181,12 @@ export const Header = () => {
     useMemo(() => cart?.items.reduce((prev, item) => item.quantity + prev, 0), [cart?.items]) || 0
 
   const cartBadge = useMemo(
-    () => (
-      <Badge className="bg-[#181818]" size="sm">
-        {cartQuantity}
-      </Badge>
-    ),
+    () =>
+      cartQuantity === 0 ? undefined : (
+        <Badge className="bg-[#181818]" size="sm">
+          {cartQuantity}
+        </Badge>
+      ),
     [cartQuantity]
   )
 

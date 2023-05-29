@@ -1,6 +1,5 @@
 import { useRouter } from 'next/router'
 
-import { showNotification } from '@mantine/notifications'
 import { useMutation } from '@tanstack/react-query'
 import { signIn } from 'next-auth/react'
 
@@ -9,6 +8,7 @@ import { CHECKOUT_PAGE_PATH } from '../paths'
 import { useCartQuery } from '../queries/cart'
 import { useUserStore } from '../stores/user'
 import { Failure } from '../types'
+import { toastError } from '../utils/notifications'
 
 interface GuestSignInOptions {
   callback?: () => void
@@ -109,7 +109,7 @@ export const useGuestSignInMutation = () => {
 
         router.push(CHECKOUT_PAGE_PATH)
       } else {
-        showNotification({
+        toastError({
           message:
             response?.Error?.Message ||
             'There was an error proceeding to checkout. Please try again later.',

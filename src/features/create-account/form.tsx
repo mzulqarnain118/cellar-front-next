@@ -309,7 +309,7 @@ export const CreateAccountForm = () => {
                 {...register('password')}
               />
               <PasswordInput
-                error={errors.password?.message}
+                error={errors.confirmPassword?.message}
                 label="Confirm password"
                 visible={passwordVisible}
                 onVisibilityChange={setPasswordVisible}

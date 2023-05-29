@@ -1,6 +1,5 @@
 import { useRouter } from 'next/router'
 
-import { showNotification } from '@mantine/notifications'
 import { useMutation } from '@tanstack/react-query'
 import { signIn } from 'next-auth/react'
 
@@ -11,6 +10,7 @@ import { useCartQuery } from '../queries/cart'
 import { useConsultantStore } from '../stores/consultant'
 import { useUserStore } from '../stores/user'
 import { Failure } from '../types'
+import { toastError } from '../utils/notifications'
 
 export interface CreateGuestAccountOptions {
   callback?: () => void
@@ -88,7 +88,7 @@ export const useCreateGuestAccountMutation = () => {
       { callback, dateOfBirth: { day, month, year }, email, firstName, lastName, redirection }
     ) => {
       if (!createGuestAccountData?.Success) {
-        showNotification({
+        toastError({
           message:
             createGuestAccountData.Error.Message ||
             'There was an error proceeding to checkout. Please try again later.',

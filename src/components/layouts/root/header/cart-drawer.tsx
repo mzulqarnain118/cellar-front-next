@@ -1,8 +1,6 @@
 /* eslint-disable import/order */
 import { MouseEventHandler, useCallback, useMemo, useRef } from 'react'
 
-import dynamic from 'next/dynamic'
-
 import { ChevronRightIcon } from '@heroicons/react/24/outline'
 import { CloseButton, Drawer, Loader } from '@mantine/core'
 import { useSession } from 'next-auth/react'
@@ -16,10 +14,8 @@ import { CHECKOUT_PAGE_PATH, SIGN_IN_PAGE_PATH, WINE_PAGE_PATH } from '@/lib/pat
 import { useCartQuery } from '@/lib/queries/cart'
 import { useCartOpen, useProcessStore } from '@/lib/stores/process'
 
-const Link = dynamic(() => import('src/components/link').then(module => module.Link), {
-  ssr: false,
-})
-
+import { Link } from '@/components/link'
+import { useShareCartMutation } from '@/features/shared-cart/mutations/share-cart'
 import { CartItem } from './cart-item'
 
 const drawerClassNames = { body: 'h-full p-0', content: 'overflow-y-hidden' }
@@ -31,6 +27,11 @@ export const CartDrawer = () => {
   const { data: cart } = useCartQuery()
   const { isMutatingCart } = useProcessStore()
   const footerRef = useRef<HTMLDivElement | null>(null)
+  const { mutate: shareCart, isLoading: isSharingCart } = useShareCartMutation()
+
+  const handleShareCartClick = useCallback(() => {
+    shareCart()
+  }, [shareCart])
 
   const cartQuantity = useMemo(
     () => cart?.items?.reduce((prev, product) => prev + product.quantity, 0),
@@ -54,8 +55,8 @@ export const CartDrawer = () => {
   const difference = 150 - subtotal
 
   const isCheckoutButtonDisabled = useMemo(
-    () => cartItems === undefined || isMutatingCart,
-    [cartItems, isMutatingCart]
+    () => cartItems === undefined || isMutatingCart || isSharingCart,
+    [cartItems, isMutatingCart, isSharingCart]
   )
 
   const handleCheckoutClick: MouseEventHandler<HTMLButtonElement> = useCallback(
@@ -90,9 +91,12 @@ export const CartDrawer = () => {
     >
       <div className="h-[inherit] overflow-y-hidden">
         <CloseButton className="absolute right-4 top-4 z-10" size="lg" onClick={toggleCartOpen} />
-        <div className="sticky left-0 top-0 flex w-full flex-col border-b border-base-dark bg-base-light">
+        <div className="sticky left-0 top-0 flex w-full flex-col border-b border-base-dark bg-base-light pt-4 lg:grid lg:grid-rows-[auto_1fr_auto]">
           <Typography as="h1" className="h4 text-center">
-            Your Cart ({cartQuantity || <Loader className="inline-block" size="sm" />})
+            Your Cart{' '}
+            {cartQuantity === 0
+              ? undefined
+              : `(${cartQuantity || <Loader className="inline-block" size="sm" />})`}
           </Typography>
           <div
             className={`
@@ -114,7 +118,7 @@ export const CartDrawer = () => {
 
               <div className="mb-4 h-5 w-full rounded-full bg-neutral">
                 <div
-                  className="h-5 rounded-full bg-primary"
+                  className="h-5 rounded-full bg-primary transition-[width]"
                   style={{ maxWidth: '100%', width: `${percentage}%` }}
                 ></div>
               </div>
@@ -129,17 +133,10 @@ export const CartDrawer = () => {
               </div>
             </div>
           ) : (
-            <div className="grid h-full grid-cols-1 grid-rows-1 items-center justify-items-center px-4">
+            <div className="grid grid-cols-1 grid-rows-1 items-center justify-items-center px-4">
               <div className="flex flex-col items-center justify-center gap-1">
                 <Typography className="pb-2 text-lg">Your cart is empty!</Typography>
-                <Link
-                  className={`
-                    btn-outline btn-secondary btn-sm btn inline-flex items-center justify-center
-                    gap-1
-                  `}
-                  href={WINE_PAGE_PATH}
-                  onClick={handleGoShoppingClick}
-                >
+                <Link href={WINE_PAGE_PATH} onClick={handleGoShoppingClick}>
                   Go shopping
                   <ChevronRightIcon className="h-5 w-5" />
                 </Link>
@@ -165,7 +162,7 @@ export const CartDrawer = () => {
             color="ghost"
             disabled={isCheckoutButtonDisabled}
             variant="outline"
-            onClick={handleCheckoutClick}
+            onClick={handleShareCartClick}
           >
             Share cart
           </Button>

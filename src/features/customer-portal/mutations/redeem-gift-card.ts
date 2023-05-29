@@ -1,10 +1,10 @@
-import { showNotification } from '@mantine/notifications'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 
 import { api } from '@/lib/api'
 import { useCartQuery } from '@/lib/queries/cart'
 import { Failure } from '@/lib/types'
+import { toastError, toastSuccess } from '@/lib/utils/notifications'
 
 import { SKYWALLET_QUERY_KEY } from '../queries/skywallet'
 
@@ -73,7 +73,7 @@ export const useRedeemGiftCardMutation = () => {
     mutationFn: data => redeemGiftCard({ ...data, cartId: cart?.id || '' }),
     mutationKey: ['redeem-gift-card'],
     onError: error => {
-      showNotification({ message: error.message })
+      toastError({ message: error.message })
     },
     onSettled: () => {
       queryClient.invalidateQueries([
@@ -82,7 +82,7 @@ export const useRedeemGiftCardMutation = () => {
       ])
     },
     onSuccess: () => {
-      showNotification({ message: 'Gift card redeemed' })
+      toastSuccess({ message: 'Gift card redeemed' })
     },
   })
 }

@@ -1,9 +1,9 @@
-import { showNotification } from '@mantine/notifications'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 
 import { useCustomerPortalActions } from '@/features/store'
 import { api } from '@/lib/api'
+import { toastError, toastSuccess } from '@/lib/utils/notifications'
 
 import { CUSTOMER_QUERY_KEY } from '../queries/customer'
 
@@ -80,7 +80,7 @@ export const useUpdateCustomerMutation = () => {
         }),
       mutationKey: ['update-customer'],
       onError: error => {
-        showNotification({ message: error.message })
+        toastError({ message: error.message })
       },
       onMutate: () => {
         setIsLoading(true)
@@ -90,7 +90,7 @@ export const useUpdateCustomerMutation = () => {
         setIsLoading(false)
       },
       onSuccess: () => {
-        showNotification({ message: 'Your profile changes are saved!' })
+        toastSuccess({ message: 'Your profile changes are saved!' })
       },
     }
   )

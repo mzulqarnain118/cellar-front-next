@@ -8,15 +8,14 @@ import { useStatesQuery } from '@/lib/queries/state'
 import { useShippingStateStore } from '@/lib/stores/shipping-state'
 import { State } from '@/lib/types/index'
 
-const classNames = {
-  input: 'bg-[#e6e0dd] font-bold border-0 p-0 text-14',
-  root: 'flex items-center gap-2 lg:grid lg:gap-0',
+interface StatePickerProps {
+  popup?: boolean
 }
 
 /**
  * Renders a select menu with available shipping states listed.
  */
-export const StatePicker = () => {
+export const StatePicker = ({ popup = false }: StatePickerProps) => {
   const queryClient = useQueryClient()
   const { data: states, isFetching, isLoading } = useStatesQuery()
   const { setShippingState, shippingState } = useShippingStateStore()
@@ -48,6 +47,15 @@ export const StatePicker = () => {
     []
   )
 
+  const classNames: SelectProps['classNames'] = useMemo(
+    () => ({
+      input: popup ? 'px-2 font-bold text-14' : 'bg-[#e6e0dd] font-bold border-0 p-0 text-14',
+      item: 'bg-[]',
+      root: 'flex items-center gap-2 lg:grid lg:gap-0',
+    }),
+    [popup]
+  )
+
   if (isFetching || isLoading) {
     return (
       <div className="flex items-center lg:grid">
@@ -60,12 +68,14 @@ export const StatePicker = () => {
   return (
     <Select
       searchable
+      selectOnBlur
       classNames={classNames}
       data={stateOptions}
       filter={filter}
-      label="Shipping to"
-      size="xs"
+      label={popup ? 'Select the state you are planning to ship to' : 'Shipping to'}
+      size={popup ? 'sm' : 'xs'}
       value={shippingState.provinceID.toString()}
+      withinPortal={popup}
       onChange={handleStateChange}
     />
   )

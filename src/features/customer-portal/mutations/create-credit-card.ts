@@ -1,10 +1,10 @@
-import { showNotification } from '@mantine/notifications'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 
 import { useCustomerPortalActions } from '@/features/store'
 import { api } from '@/lib/api'
 import { Address } from '@/lib/types/address'
+import { toastError, toastSuccess } from '@/lib/utils/notifications'
 
 import { CUSTOMER_QUERY_KEY, CustomerCreditCard } from '../queries/customer'
 
@@ -127,7 +127,7 @@ export const useCreateCreditCardMutation = () => {
     mutationFn: options => createCreditCard(options),
     mutationKey: ['create-customer-credit-card'],
     onError: error => {
-      showNotification({ message: error.message })
+      toastError({ message: error.message })
     },
     onMutate: () => {
       setIsLoading(true)
@@ -137,7 +137,7 @@ export const useCreateCreditCardMutation = () => {
       setIsLoading(false)
     },
     onSuccess: () => {
-      showNotification({ message: 'Credit card created successfully!' })
+      toastSuccess({ message: 'Credit card created successfully!' })
     },
   })
 }

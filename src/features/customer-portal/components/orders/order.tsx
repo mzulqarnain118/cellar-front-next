@@ -2,7 +2,6 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useRouter } from 'next/router'
 
-import { showNotification } from '@mantine/notifications'
 import format from 'date-fns/format'
 
 import { BlurImage } from '@/components/blur-image'
@@ -11,6 +10,7 @@ import { Typography } from '@/core/components/typogrpahy'
 import { formatCurrency } from '@/core/utils'
 import { LOCAL_PICK_UP_SHIPPING_METHOD_ID } from '@/lib/constants/shipping-method'
 import { MY_ACCOUNT_PAGE_PATH } from '@/lib/paths'
+import { toastInfo } from '@/lib/utils/notifications'
 
 import { CustomerOrder } from '../../queries/customer-orders'
 import { useOrderTrackingQuery } from '../../queries/order-tracking'
@@ -74,7 +74,7 @@ export const Order = ({ data }: OrderProps) => {
       if (tracking?.TrackingUrl) {
         router.push(tracking.TrackingUrl)
       } else {
-        showNotification({ message: 'There is no tracking data for this order.' })
+        toastInfo({ message: 'There is no tracking data for this order.' })
       }
     }
   }, [enabled, isFetching, isLoading, router, tracking?.TrackingUrl])

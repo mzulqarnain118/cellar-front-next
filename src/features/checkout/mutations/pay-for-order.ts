@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 
+import { notifications } from '@mantine/notifications'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import CryptoJS from 'crypto-js'
 
@@ -17,6 +18,7 @@ import {
 } from '@/lib/stores/checkout'
 import { Receipt, useReceiptActions } from '@/lib/stores/receipt'
 import { Failure, Success } from '@/lib/types'
+import { toastLoading, toastSuccess } from '@/lib/utils/notifications'
 
 type PayForOrderResponse = Success | Failure
 
@@ -84,7 +86,12 @@ export const useCheckoutPayForOrderMutation = () => {
     onError: _error => {
       // console.log()
     },
+    onMutate: () => {
+      toastLoading({ message: 'Placing your order...' })
+    },
     onSuccess: async () => {
+      notifications.clean()
+      toastSuccess({ message: 'Your order has been placed successfully!' })
       const address = guestAddress || activeShippingAddress
       const checkoutReceipt: Receipt = {
         cartItems: cart?.items || [],

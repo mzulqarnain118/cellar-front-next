@@ -6,7 +6,6 @@ import { CreditCardIcon, ForwardIcon, HomeIcon, XCircleIcon } from '@heroicons/r
 import { Select, SelectProps, Tabs, TabsPanelProps } from '@mantine/core'
 import { DateInput } from '@mantine/dates'
 import { modals } from '@mantine/modals'
-import { showNotification } from '@mantine/notifications'
 import { Divider } from 'react-daisyui'
 
 import { BlurImage } from '@/components/blur-image'
@@ -17,6 +16,7 @@ import { NumberPicker } from '@/core/components/number-picker'
 import { Typography } from '@/core/components/typogrpahy'
 import { formatCurrency } from '@/core/utils'
 import { MY_ACCOUNT_PAGE_PATH, TERMS_AND_CONDITIONS_PAGE_PATH } from '@/lib/paths'
+import { toastInfo } from '@/lib/utils/notifications'
 
 import { useChargebeeQuery } from '../../queries/chargebee'
 import { CustomerSubscription, useEditSubscriptionQuery } from '../../queries/edit-subscription'
@@ -329,6 +329,9 @@ export const ClubsEdit = ({
       modals.open({
         centered: true,
         children: <AddCreditCardForm handleClose={modals.closeAll} />,
+        classNames: {
+          title: '!text-18',
+        },
         size: 'lg',
         title: 'Add credit card',
       }),
@@ -340,6 +343,9 @@ export const ClubsEdit = ({
       modals.open({
         centered: true,
         children: <AddAddressForm handleClose={modals.closeAll} />,
+        classNames: {
+          title: '!text-lg',
+        },
         size: 'lg',
         title: 'Add address',
       }),
@@ -353,7 +359,7 @@ export const ClubsEdit = ({
   const handleSave = useCallback(() => {
     if (newSubscription !== undefined) {
       updateSubscription(newSubscription)
-      showNotification({
+      toastInfo({
         message: 'Your subscription changes will go in effect with the next order. Thank you!',
       })
       handleCancel()

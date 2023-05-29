@@ -1,7 +1,16 @@
+import { useMemo } from 'react'
+
 import { QueryFunction, useQuery } from '@tanstack/react-query'
+import { useSession } from 'next-auth/react'
 
 import { api } from '@/lib/api'
 import { GROUND_SHIPPING_SHIPPING_METHOD_ID } from '@/lib/constants/shipping-method'
+import { useApplyCheckoutSelectionsMutation } from '@/lib/mutations/checkout/apply-selections'
+import {
+  useCheckoutActiveCreditCard,
+  useCheckoutActiveShippingAddress,
+  useCheckoutGuestAddress,
+} from '@/lib/stores/checkout'
 import { Failure } from '@/lib/types'
 
 import { useCartQuery } from '../cart'
@@ -125,6 +134,24 @@ export const GET_SUBTOTAL_QUERY = 'get-subtotal'
 
 export const useGetSubtotalQuery = (cartId?: string) => {
   const { data: cart } = useCartQuery()
+  const { data: session } = useSession()
+  const activeShippingAddress = useCheckoutActiveShippingAddress()
+  const guestAddress = useCheckoutGuestAddress()
+  const activeCreditCard = useCheckoutActiveCreditCard()
+  const address = useMemo(() => (session?.user?.isGuest ? guestAddress : activeShippingAddress), [])
+  const { mutate: applyCheckoutSelections } = useApplyCheckoutSelectionsMutation()
 
-  return useQuery({ queryFn: getSubtotal, queryKey: [GET_SUBTOTAL_QUERY, cartId || cart?.id] })
+  return useQuery({
+    onSuccess: data => {
+      if (data.orderTotal === 0) {
+        applyCheckoutSelections({
+          addressId: address?.AddressID,
+          cartId: cartId || cart?.id,
+          paymentToken: activeCreditCard?.PaymentToken,
+        })
+      }
+    },
+    queryFn: getSubtotal,
+    queryKey: [GET_SUBTOTAL_QUERY, cartId || cart?.id],
+  })
 }

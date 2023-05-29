@@ -3,13 +3,13 @@ import { useCallback, useEffect, useMemo } from 'react'
 import { useRouter } from 'next/router'
 import Script from 'next/script'
 
-import { showNotification } from '@mantine/notifications'
 import { useSession } from 'next-auth/react'
 
 import { Link } from '@/components/link'
 import { Button } from '@/core/components/button'
 import { Typography } from '@/core/components/typogrpahy'
 import { MY_ACCOUNT_PAGE_PATH } from '@/lib/paths'
+import { toastInfo } from '@/lib/utils/notifications'
 
 import { useSkipSubscriptionMutation } from '../../mutations/skip-subscription'
 import { ChargebeeData } from '../../queries/chargebee'
@@ -100,7 +100,7 @@ export const Cancel = ({
 
   useEffect(() => {
     if (skipped && !skipping) {
-      showNotification({ message: 'Thank you! Your next subscription shipment will be skipped.' })
+      toastInfo({ message: 'Thank you! Your next subscription shipment will be skipped.' })
       router.push(`${MY_ACCOUNT_PAGE_PATH}/clubs/${subscriptionId}`)
     }
   }, [handleHide, refetch, router, skipped, skipping, subscriptionId])

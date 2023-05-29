@@ -24,7 +24,7 @@ const CreateAccountPage: NextPage<PageProps> = () => (
       <div
         className={`
           relative max-w-3xl space-y-4 rounded border border-solid border-base-dark
-          bg-base-light px-10 py-10 md:px-20
+          bg-[#fafafa] px-10 py-10 md:px-20
         `}
       >
         <Typography as="h1" displayAs="h2">

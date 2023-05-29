@@ -1,9 +1,9 @@
-import { showNotification } from '@mantine/notifications'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 
 import { useCustomerPortalActions } from '@/features/store'
 import { api } from '@/lib/api'
+import { toastError, toastSuccess } from '@/lib/utils/notifications'
 
 import { CUSTOMER_QUERY_KEY, CustomerAddress } from '../queries/customer'
 
@@ -35,7 +35,7 @@ export const useUpdateAddressMutation = () => {
     mutationFn: options => updateAddress(options),
     mutationKey: ['update-address'],
     onError: error => {
-      showNotification({ message: error?.message })
+      toastError({ message: error?.message })
     },
     onMutate: () => {
       setIsLoading(true)
@@ -45,7 +45,7 @@ export const useUpdateAddressMutation = () => {
       setIsLoading(false)
     },
     onSuccess: () => {
-      showNotification({ message: 'Address updated successfully.' })
+      toastSuccess({ message: 'Address updated successfully.' })
     },
   })
 }

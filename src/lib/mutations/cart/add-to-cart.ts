@@ -1,10 +1,10 @@
-import { showNotification } from '@mantine/notifications'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { replaceItemByUniqueId } from '@/core/utils'
 import { useCartStorage } from '@/lib/hooks/use-cart-storage'
 import { CART_QUERY_KEY, useCartQuery } from '@/lib/queries/cart'
 import { GET_SUBTOTAL_QUERY, OrderPrice } from '@/lib/queries/checkout/get-subtotal'
+import { toastError } from '@/lib/utils/notifications'
 
 import { api } from '../../api'
 import { useProcessStore } from '../../stores/process'
@@ -62,7 +62,7 @@ export const useAddToCartMutation = () => {
     onError: (error, _product, context) => {
       queryClient.setQueryData(CART_QUERY_KEY, context?.previousCart)
       setCartStorage(context?.previousCart)
-      showNotification({ message: error.message })
+      toastError({ message: error.message })
     },
     onMutate: async product => {
       setIsMutatingCart(true)

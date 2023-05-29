@@ -1,8 +1,8 @@
-import { showNotification } from '@mantine/notifications'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 
 import { api } from '@/lib/api'
+import { toastError, toastSuccess } from '@/lib/utils/notifications'
 
 import { SKYWALLET_QUERY_KEY } from '../queries/skywallet'
 
@@ -42,7 +42,7 @@ export const useRedeemOfferMutation = () => {
     mutationFn: data => redeemOffer(data),
     mutationKey: ['redeem-offer'],
     onError: error => {
-      showNotification({ message: error.message })
+      toastError({ message: error.message })
     },
     onSettled: () => {
       queryClient.invalidateQueries([
@@ -52,7 +52,7 @@ export const useRedeemOfferMutation = () => {
     },
     onSuccess: data => {
       if (data !== undefined) {
-        showNotification({ message: data })
+        toastSuccess({ message: data })
       }
     },
   })

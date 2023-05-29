@@ -1,9 +1,9 @@
-import { showNotification } from '@mantine/notifications'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 
 import { useCustomerPortalActions } from '@/features/store'
 import { api } from '@/lib/api'
+import { toastError, toastSuccess } from '@/lib/utils/notifications'
 
 import { CUSTOMER_QUERY_KEY } from '../queries/customer'
 
@@ -38,7 +38,7 @@ export const useDeleteAddressMutation = () => {
     mutationFn: options => deleteAddress(options),
     mutationKey: ['delete-address'],
     onError: error => {
-      showNotification({ message: error.message })
+      toastError({ message: error.message })
     },
     onMutate: () => {
       setIsLoading(true)
@@ -48,7 +48,7 @@ export const useDeleteAddressMutation = () => {
       setIsLoading(false)
     },
     onSuccess: () => {
-      showNotification({ message: 'The address deleted successfully.' })
+      toastSuccess({ message: 'The address deleted successfully.' })
     },
   })
 }

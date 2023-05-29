@@ -147,14 +147,14 @@ export const CartItem = ({ product }: CartItemProps) => {
     <div className="border-0 border-b border-solid border-neutral-300 pb-4">
       <div className="grid grid-cols-[auto_1fr] gap-3 pt-3">
         {!!product.pictureUrl && (
-          <Link href={`/product/${product.cartUrl || ''}`}>
+          <Link className="relative w-24 h-24" href={`/product/${product.cartUrl || ''}`}>
             <BlurImage
+              fill
               alt={product.displayName || 'Product'}
-              className="group h-32 w-20 self-center object-contain"
-              height={128}
+              className="group self-center object-contain"
+              sizes="100vw"
               src={product.pictureUrl}
               style={imageDimensions}
-              width={80}
             />
           </Link>
         )}
