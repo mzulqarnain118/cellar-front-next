@@ -72,6 +72,7 @@ export const useConsultantQuery = (url?: string) => {
   const repUrl = query.u?.toString() || url || consultant?.url
 
   return useQuery({
+    cacheTime: 15 * (60 * 1000), // 15 mins
     initialData: DEFAULT_CONSULTANT_STATE,
     onError: () => setConsultant(DEFAULT_CONSULTANT_STATE),
     onSuccess: data => {
@@ -80,5 +81,6 @@ export const useConsultantQuery = (url?: string) => {
     queryFn: getConsultantData,
     queryKey: [CONSULTANT_QUERY_KEY, repUrl || CORPORATE_CONSULTANT_ID],
     refetchOnWindowFocus: false,
+    staleTime: 10 * (60 * 1000), // 10 mins
   })
 }

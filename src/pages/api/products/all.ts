@@ -1,6 +1,7 @@
 import type { NextRequest } from 'next/server'
 
 import { uniqueBy } from '@/core/utils/uniqueBy'
+import { CLASSIFICATION } from '@/lib/constants/classification'
 import { DISPLAY_CATEGORY } from '@/lib/constants/display-category'
 import { ProductsSchema } from '@/lib/types/schemas/product'
 
@@ -119,6 +120,7 @@ const handler = async (req: NextRequest) => {
           isGiftCard: product.CategoriesIDs?.includes(DISPLAY_CATEGORY['Gift Cards']) || false,
           isScoutCircleClub:
             product.CategoriesIDs?.includes(DISPLAY_CATEGORY['Scout Circle']) || false,
+          isVip: product.CategoriesIDs?.includes(CLASSIFICATION.VIP) || false,
           onSalePrice: product.comparePrice
             ? parseFloat(product.comparePrice || '0') || undefined
             : undefined,

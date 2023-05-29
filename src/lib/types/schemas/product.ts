@@ -44,6 +44,7 @@ export const schema = z.object({
   isGift: z.boolean(),
   isGiftCard: z.boolean(),
   isScoutCircleClub: z.boolean(),
+  isVip: z.boolean(),
   onSalePrice: z.number().optional(),
   pictureUrl: z.string().optional(),
   price: z.number(),

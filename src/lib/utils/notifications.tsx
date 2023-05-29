@@ -7,7 +7,7 @@ import { Typography } from '@/core/components/typogrpahy'
 // ! TODO: Sentry logging.
 export const toastError = (props: NotificationProps) =>
   notifications.show({
-    autoClose: false,
+    autoClose: 4000,
     color: 'error',
     icon: <XMarkIcon className="h-4 w-4" />,
     ...props,

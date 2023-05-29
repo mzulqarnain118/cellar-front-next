@@ -110,6 +110,7 @@ export const getNewCartItems = (
           isGift: false,
           isGiftCard: false,
           isScoutCircleClub: false,
+          isVip: false,
           quantityAvailable: 0,
           subscribable: false,
         }
