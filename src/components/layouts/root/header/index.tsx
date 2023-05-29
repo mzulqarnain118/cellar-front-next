@@ -16,12 +16,15 @@ import { useSession } from 'next-auth/react'
 import { Badge, Indicator, Menu } from 'react-daisyui'
 
 import { CompanyLogo } from '@/components/company-logo'
+import { Link } from '@/components/link'
 import { Search } from '@/components/search'
 import { Button } from '@/core/components/button'
 import { Typography } from '@/core/components/typogrpahy'
 import { useIsDesktop } from '@/core/hooks/use-is-desktop'
-import { MY_ACCOUNT_PAGE_PATH, SIGN_IN_PAGE_PATH } from '@/lib/paths'
+import { CORPORATE_CONSULTANT_ID } from '@/lib/constants'
+import { CONSULTANTS_PAGE_PATH, MY_ACCOUNT_PAGE_PATH, SIGN_IN_PAGE_PATH } from '@/lib/paths'
 import { useCartQuery } from '@/lib/queries/cart'
+import { useConsultantQuery } from '@/lib/queries/consultant'
 import {
   useNavigationCTAQuery,
   useNavigationPromoMessageQuery,
@@ -56,6 +59,7 @@ export const Header = () => {
   const burgerLabel = navOpen ? 'Close navigation' : 'Open navigation'
   const isDesktop = useIsDesktop()
   const queryClient = useQueryClient()
+  const { data: consultant } = useConsultantQuery()
 
   const menu = useMemo(
     () =>
@@ -204,7 +208,25 @@ export const Header = () => {
           )}
         </div>
         <div className="flex items-center justify-between gap-4">
-          <Typography>Shopping with a consultant?</Typography>
+          <Link
+            className="!text-neutral-dark"
+            href={
+              consultant?.displayId !== CORPORATE_CONSULTANT_ID
+                ? `${CONSULTANTS_PAGE_PATH}/${consultant?.url}`
+                : CONSULTANTS_PAGE_PATH
+            }
+          >
+            {consultant?.displayId !== CORPORATE_CONSULTANT_ID ? (
+              <div>
+                <Typography className="text-sm">Shopping with: </Typography>
+                <Typography className="text-14">
+                  {consultant?.displayName || consultant?.url}
+                </Typography>
+              </div>
+            ) : (
+              'Shopping with a consultant?'
+            )}
+          </Link>
           <div className="flex items-center gap-4">
             {userButton}
             <button onClick={toggleCartOpen}>

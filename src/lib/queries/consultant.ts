@@ -1,11 +1,13 @@
 import { useRouter } from 'next/router'
 
+import { notifications } from '@mantine/notifications'
 import { QueryFunction, useQuery } from '@tanstack/react-query'
 
 import { api } from '../api'
 import { CORPORATE_CONSULTANT_ID } from '../constants'
 import { DEFAULT_CONSULTANT_STATE, useConsultantStore } from '../stores/consultant'
 import { Consultant } from '../types'
+import { toastInfo, toastLoading, toastSuccess } from '../utils/notifications'
 
 export const CONSULTANT_QUERY_KEY = 'consultant'
 export const getConsultantData: QueryFunction<Consultant> = async ({ queryKey }) => {
@@ -14,6 +16,7 @@ export const getConsultantData: QueryFunction<Consultant> = async ({ queryKey })
     return DEFAULT_CONSULTANT_STATE
   }
 
+  toastLoading({ message: 'Searching for your consultant...' })
   const response = await api(`info/rep/${repUrl}`).json<{
     Address: { City: string; PostalCode: string; ProvinceAbbreviation: string }
     DisplayID: string
@@ -29,10 +32,16 @@ export const getConsultantData: QueryFunction<Consultant> = async ({ queryKey })
     }[]
     Url: string
   }>()
+  notifications.clean()
 
   if (!response.DisplayID) {
+    toastInfo({
+      message:
+        "We couldn't find that consultant. Go to scoutandcellar.com/consultants to find a consultant!",
+    })
     return DEFAULT_CONSULTANT_STATE
   }
+  toastSuccess({ message: 'We found your consultant' })
 
   const consultant: Consultant = {
     address: {
@@ -60,7 +69,7 @@ export const getConsultantData: QueryFunction<Consultant> = async ({ queryKey })
 export const useConsultantQuery = (url?: string) => {
   const { consultant, setConsultant } = useConsultantStore()
   const { query } = useRouter()
-  const repUrl = url || consultant?.url || query.u?.toString()
+  const repUrl = query.u?.toString() || url || consultant?.url
 
   return useQuery({
     initialData: DEFAULT_CONSULTANT_STATE,

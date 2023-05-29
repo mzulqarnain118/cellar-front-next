@@ -34,7 +34,7 @@ export const CartDrawer = () => {
   }, [shareCart])
 
   const cartQuantity = useMemo(
-    () => cart?.items?.reduce((prev, product) => prev + product.quantity, 0),
+    () => cart?.items?.reduce((prev, product) => prev + product.quantity, 0) || 0,
     [cart?.items]
   )
 

@@ -7,9 +7,11 @@ import { modals } from '@mantine/modals'
 
 import { Button } from '@/core/components/button'
 import { Typography } from '@/core/components/typogrpahy'
+import { CORPORATE_CONSULTANT_ID } from '@/lib/constants'
 import { useAgeVerified } from '@/lib/hooks/use-age-verified'
 import { CHECKOUT_PAGE_PATH } from '@/lib/paths'
 import { useCartQuery } from '@/lib/queries/cart'
+import { useConsultantQuery } from '@/lib/queries/consultant'
 
 import { CheckoutLayout } from '../checkout'
 
@@ -22,8 +24,9 @@ interface RootLayoutProps {
 }
 
 export const RootLayout = ({ children }: RootLayoutProps) => {
-  const { pathname } = useRouter()
   const [ageVerified, setAgeVerified] = useAgeVerified()
+  const router = useRouter()
+  const { data: consultant } = useConsultantQuery()
   useCartQuery()
 
   const handleClick = useCallback(() => {
@@ -55,7 +58,14 @@ export const RootLayout = ({ children }: RootLayoutProps) => {
     }
   }, [ageVerified, handleClick, setAgeVerified])
 
-  return pathname === CHECKOUT_PAGE_PATH ? (
+  useEffect(() => {
+    if (!router.query.u && consultant?.displayId !== CORPORATE_CONSULTANT_ID) {
+      router.query.u = consultant?.url
+      router.push(router)
+    }
+  }, [consultant?.displayId, consultant?.url, router, router.isReady])
+
+  return router.pathname === CHECKOUT_PAGE_PATH ? (
     <CheckoutLayout>{children}</CheckoutLayout>
   ) : (
     <div className="min-h-[100svh]" id="root-element">

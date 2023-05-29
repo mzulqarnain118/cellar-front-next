@@ -81,7 +81,7 @@ export const Options = ({ cartUrl }: OptionsProps) => {
         ? Object.entries(variationMap).map(([variation, options]) => (
             <div key={variation}>
               <Typography as="p">{variation}</Typography>
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
                 {options.map(option => (
                   <RadioOption key={option.sku} cartUrl={cartUrl} option={option} />
                 ))}
@@ -94,7 +94,7 @@ export const Options = ({ cartUrl }: OptionsProps) => {
 
   return (
     <>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <Radio
           checked={selectedOption === 'one-time'}
           className={clsx(

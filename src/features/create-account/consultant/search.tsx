@@ -8,6 +8,7 @@ import { useHits, useSearchBox } from 'react-instantsearch-hooks-web'
 import { CORPORATE_CONSULTANT_ID } from '@/lib/constants'
 import { CONSULTANT_QUERY_KEY, getConsultantData } from '@/lib/queries/consultant'
 import { useConsultantStore } from '@/lib/stores/consultant'
+import { Consultant } from '@/lib/types'
 
 interface ConsultantHit extends Record<string, string | object> {
   Address: { City: string; PostalCode: string; ProvinceAbbreviation: string }
@@ -31,7 +32,7 @@ export const ConsultantSearch = ({
   ...rest
 }: UseControllerProps & {
   disabled?: boolean
-  handleSelect: () => void
+  handleSelect: (consultant?: Consultant) => void
 }) => {
   const { refine } = useSearchBox()
   const {
@@ -61,7 +62,7 @@ export const ConsultantSearch = ({
       const selectedConsultant = hits.find(hit => hit.DisplayID === info.id)
 
       if (selectedConsultant !== undefined) {
-        setConsultant({
+        const newConsultant = {
           address: {
             city: selectedConsultant.Address?.City,
             stateAbbreviation: selectedConsultant.Address?.ProvinceAbbreviation,
@@ -79,8 +80,10 @@ export const ConsultantSearch = ({
             url: link.URL,
           })),
           url: selectedConsultant.Url,
-        })
+        } satisfies Consultant
+        setConsultant(newConsultant)
         queryClient.prefetchQuery([CONSULTANT_QUERY_KEY, selectedConsultant.Url], getConsultantData)
+        handleSelect(newConsultant)
       }
 
       handleSelect()

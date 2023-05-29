@@ -1,9 +1,5 @@
-import {
-  CheckIcon,
-  ExclamationTriangleIcon,
-  InformationCircleIcon,
-  XMarkIcon,
-} from '@heroicons/react/24/outline'
+import { InformationCircleIcon } from '@heroicons/react/20/solid'
+import { CheckIcon, ExclamationTriangleIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { NotificationProps, notifications } from '@mantine/notifications'
 
 import { Typography } from '@/core/components/typogrpahy'
@@ -21,7 +17,7 @@ export const toastError = (props: NotificationProps) =>
 export const toastInfo = (props: NotificationProps) =>
   notifications.show({
     autoClose: 4000,
-    icon: <InformationCircleIcon className="w-4 h-4" />,
+    icon: <InformationCircleIcon className="w-10 h-10 rounded text-info" />,
     ...props,
     title: <Typography className="font-bold">{props.title || 'Info'}</Typography>,
   })
