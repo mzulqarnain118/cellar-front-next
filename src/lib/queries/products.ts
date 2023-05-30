@@ -44,6 +44,11 @@ export const getPaginatedProducts: QueryFunction<
   (string | number | Data | Record<string, string>)[]
 > = async ({ queryKey }) => {
   const data = queryKey[1] as Record<string, string>
+
+  if (data.categories) {
+    data.categories = data.categories.toString()
+  }
+
   const params = new URLSearchParams(data).toString()
   const response = await localApi(`products${params ? `?${params}` : ''}`)
 

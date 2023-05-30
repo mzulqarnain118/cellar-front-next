@@ -141,7 +141,7 @@ export const ProductListing = ({
       if (control === 'first') {
         return {
           component: Link,
-          href: `${router.pathname}?page=1${consultant.url ? `&u=${consultant.url}` : ''}`,
+          href: `${router.asPath}?page=1${consultant.url ? `&u=${consultant.url}` : ''}`,
           scroll: true,
           shallow: true,
         }
@@ -150,7 +150,7 @@ export const ProductListing = ({
       if (control === 'last') {
         return {
           component: Link,
-          href: `${router.pathname}?page=${data?.totalNumberOfPages}${
+          href: `${router.asPath}?page=${data?.totalNumberOfPages}${
             consultant.url ? `&u=${consultant.url}` : ''
           }`,
           scroll: true,
@@ -161,7 +161,7 @@ export const ProductListing = ({
       if (control === 'next') {
         return {
           component: Link,
-          href: `${router.pathname}?page=${
+          href: `${router.asPath}?page=${
             active === data?.totalNumberOfPages ? active : active + 1
           }${consultant.url ? `&u=${consultant.url}` : ''}`,
           scroll: true,
@@ -172,7 +172,7 @@ export const ProductListing = ({
       if (control === 'previous') {
         return {
           component: Link,
-          href: `${router.pathname}?page=${active === 1 ? 1 : active - 1}${
+          href: `${router.asPath}?page=${active === 1 ? 1 : active - 1}${
             consultant.url ? `&u=${consultant.url}` : ''
           }`,
           scroll: true,
@@ -182,17 +182,17 @@ export const ProductListing = ({
 
       return {}
     },
-    [active, consultant.url, data?.totalNumberOfPages, router.pathname]
+    [active, consultant.url, data?.totalNumberOfPages, router.asPath]
   )
 
   const getItemProps: PaginationProps['getItemProps'] = useCallback(
     (page: number) => ({
       component: Link,
-      href: `${router.pathname}?page=${page}${consultant.url ? `&u=${consultant.url}` : ''}`,
+      href: `${router.asPath}?page=${page}${consultant.url ? `&u=${consultant.url}` : ''}`,
       scroll: true,
       shallow: true,
     }),
-    [consultant.url, router.pathname]
+    [consultant.url, router.asPath]
   )
 
   const onPageChange = useCallback((page: number) => {

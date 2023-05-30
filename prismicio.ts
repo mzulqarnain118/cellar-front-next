@@ -27,9 +27,8 @@ const routes: prismic.ClientConfig['routes'] = [
     type: 'rich_content_page',
   },
   {
-    path: '/wine',
+    path: '/:uid',
     type: 'plp',
-    uid: 'wine',
   },
   {
     path: '/:parent/:uid',

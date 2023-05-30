@@ -77,24 +77,24 @@ interface GetClubInfoResponse {
   is_club_member: boolean
 }
 
-interface GetCuratedCartResponse {
-  result: boolean
-  data?: {
-    OrderID: number
-    OrderStatusID: number
-    ShoppingCartID: number
-    RecommendedByPersonID: number
-    RecommendedByPersonDisplayID: string
-    RecommendationNote: string
-    RecommendationNotePartyDisplayID: string | null
-    OrderDisplayID: string
-    OrderDate: string
-    CartID: string
-    OrderOwnerDisplayID: string
-    OrderOwnerUsername: string
-    PartyDisplayID: string | null
-  }
-}
+// interface GetCuratedCartResponse {
+//   result: boolean
+//   data?: {
+//     OrderID: number
+//     OrderStatusID: number
+//     ShoppingCartID: number
+//     RecommendedByPersonID: number
+//     RecommendedByPersonDisplayID: string
+//     RecommendationNote: string
+//     RecommendationNotePartyDisplayID: string | null
+//     OrderDisplayID: string
+//     OrderDate: string
+//     CartID: string
+//     OrderOwnerDisplayID: string
+//     OrderOwnerUsername: string
+//     PartyDisplayID: string | null
+//   }
+// }
 
 const isUser = (
   value: unknown

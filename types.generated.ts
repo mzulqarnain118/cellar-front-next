@@ -2034,6 +2034,33 @@ interface CategoryPageDocumentData {
    *
    */
   parent_page: prismic.ContentRelationshipField<'plp'>
+  /**
+   * Display Categories field in *Category Page*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: category_page.display_categories[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  display_categories: prismic.GroupField<Simplify<CategoryPageDocumentDataDisplayCategoriesItem>>
+}
+/**
+ * Item in Category Page → Display Categories
+ *
+ */
+export interface CategoryPageDocumentDataDisplayCategoriesItem {
+  /**
+   * Display Category ID field in *Category Page → Display Categories*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: category_page.display_categories[].display_category_id
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  display_category_id: prismic.KeyTextField
 }
 /**
  * Category Page document from Prismic
@@ -9050,7 +9077,35 @@ export type PdpAutoSipPromoMessageDocument<
   Lang
 >
 /** Content for PLP documents */
-type PlpDocumentData = Record<string, never>
+interface PlpDocumentData {
+  /**
+   * Display Categories field in *PLP*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: plp.display_categories[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  display_categories: prismic.GroupField<Simplify<PlpDocumentDataDisplayCategoriesItem>>
+}
+/**
+ * Item in PLP → Display Categories
+ *
+ */
+export interface PlpDocumentDataDisplayCategoriesItem {
+  /**
+   * Display Category ID field in *PLP → Display Categories*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: plp.display_categories[].display_category_id
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  display_category_id: prismic.KeyTextField
+}
 /**
  * PLP document from Prismic
  *
@@ -13163,6 +13218,7 @@ declare module '@prismicio/client' {
       CategoriesDocumentDataProductItem,
       CategoriesDocument,
       CategoryPageDocumentData,
+      CategoryPageDocumentDataDisplayCategoriesItem,
       CategoryPageDocument,
       CheckoutPopupDocumentData,
       CheckoutPopupDocument,
@@ -13389,6 +13445,7 @@ declare module '@prismicio/client' {
       PdpAutoSipPromoMessageDocumentData,
       PdpAutoSipPromoMessageDocument,
       PlpDocumentData,
+      PlpDocumentDataDisplayCategoriesItem,
       PlpDocument,
       PlpBottomBannerDocumentData,
       PlpBottomBannerDocument,
