@@ -6,7 +6,6 @@ import { CORPORATE_CONSULTANT_ID } from '@/lib/constants'
 import { SIGN_IN_PAGE_PATH } from '@/lib/paths'
 import { useCheckoutStore } from '@/lib/stores/checkout'
 import { useConsultantStore } from '@/lib/stores/consultant'
-import { useCuratedCartStore } from '@/lib/stores/curated-cart'
 import { useShippingStateStore } from '@/lib/stores/shipping-state'
 import { Consultant, User } from '@/lib/types'
 
@@ -245,32 +244,32 @@ export const authOptions: NextAuthOptions = {
                 },
               }
 
-              if (consultant.displayId === CORPORATE_CONSULTANT_ID) {
-                setConsultant(consultantStateData)
-              }
+              // if (consultant.displayId === CORPORATE_CONSULTANT_ID) {
+              setConsultant(consultantStateData)
+              // }
 
-              const curatedCartInfo = await noHooksApi('orders/getcustomerordersforwebsite', {
-                json: {
-                  ConsultantDisplayID:
-                    consultant.displayId !== CORPORATE_CONSULTANT_ID
-                      ? consultant.displayId
-                      : loginData.data.sponsor.DisplayID,
-                  CustomerDisplayID: userStateData.displayId,
-                },
-                method: 'post',
-              }).json<GetCuratedCartResponse>()
+              // const curatedCartInfo = await noHooksApi('orders/getcustomerordersforwebsite', {
+              //   json: {
+              //     ConsultantDisplayID:
+              //       consultant.displayId !== CORPORATE_CONSULTANT_ID
+              //         ? consultant.displayId
+              //         : loginData.data.sponsor.DisplayID,
+              //     CustomerDisplayID: userStateData.displayId,
+              //   },
+              //   method: 'post',
+              // }).json<GetCuratedCartResponse>()
 
-              const { setCuratedCart } = useCuratedCartStore.getState()
-              if (curatedCartInfo.result && curatedCartInfo.data?.CartID) {
-                setCuratedCart({
-                  cartAccepted: false,
-                  cartId: curatedCartInfo.data.CartID,
-                  messageDismissed: false,
-                  partyDisplayId: curatedCartInfo.data.PartyDisplayID || undefined,
-                  recommendedByPersonDisplayId:
-                    curatedCartInfo.data.RecommendedByPersonDisplayID || '',
-                })
-              }
+              // const { setCuratedCart } = useCuratedCartStore.getState()
+              // if (curatedCartInfo.result && curatedCartInfo.data?.CartID) {
+              //   setCuratedCart({
+              //     cartAccepted: false,
+              //     cartId: curatedCartInfo.data.CartID,
+              //     messageDismissed: false,
+              //     partyDisplayId: curatedCartInfo.data.PartyDisplayID || undefined,
+              //     recommendedByPersonDisplayId:
+              //       curatedCartInfo.data.RecommendedByPersonDisplayID || '',
+              //   })
+              // }
 
               // Tell FullStory who you are.
               // identify(userStateData.displayId, {

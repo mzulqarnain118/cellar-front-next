@@ -1,5 +1,4 @@
 import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
 
 import { CORPORATE_CONSULTANT_ID } from '../constants'
 import { Consultant } from '../types'
@@ -16,13 +15,8 @@ export const DEFAULT_CONSULTANT_STATE: Consultant = {
   url: '',
 }
 
-export const useConsultantStore = create<ConsultantStore>()(
-  persist(
-    set => ({
-      consultant: DEFAULT_CONSULTANT_STATE,
-      resetConsultant: () => set({ consultant: DEFAULT_CONSULTANT_STATE }),
-      setConsultant: (consultant: Consultant) => set({ consultant }),
-    }),
-    { name: 'consultant' }
-  )
-)
+export const useConsultantStore = create<ConsultantStore>()(set => ({
+  consultant: DEFAULT_CONSULTANT_STATE,
+  resetConsultant: () => set({ consultant: DEFAULT_CONSULTANT_STATE }),
+  setConsultant: (consultant: Consultant) => set({ consultant }),
+}))
