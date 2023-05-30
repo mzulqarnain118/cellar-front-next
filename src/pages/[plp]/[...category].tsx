@@ -64,7 +64,7 @@ export const getStaticProps = async ({ params, previewData }: GetStaticPropsCont
   return {
     props: {
       dehydratedState: dehydrate(queryClient),
-      page,
+      page: page || null,
     },
     revalidate: 120,
   }
@@ -84,7 +84,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 type PageProps = InferGetStaticPropsType<typeof getStaticProps>
 
 const CategoryPage: NextPage<PageProps> = ({ page }) => {
-  const categories = page.data.display_categories
+  const categories = page?.data.display_categories
     .map(category => category.display_category_id)
     .map(Number)
   const router = useRouter()

@@ -20,22 +20,30 @@ interface Data {
 }
 
 export const getAllProducts: QueryFunction<ProductsSchema[] | undefined> = async () => {
-  const response = await localApi('products/all')
-  const result = (await response.json()) as ProductsResponse
+  try {
+    const response = await localApi('products/all')
+    const result = (await response.json()) as ProductsResponse
 
-  if (result.success) {
-    return result.data
+    if (result.success) {
+      return result.data
+    }
+  } catch {
+    //
   }
 }
 
 export const getProductByCartUrl: QueryFunction<ProductsSchema | undefined> = async ({
   queryKey,
 }) => {
-  const response = await localApi(`products/${queryKey[1]}`)
-  const result = (await response.json()) as { data: ProductsSchema; success: boolean }
+  try {
+    const response = await localApi(`products/${queryKey[1]}`)
+    const result = (await response.json()) as { data: ProductsSchema; success: boolean }
 
-  if (result.success) {
-    return result.data
+    if (result.success) {
+      return result.data
+    }
+  } catch {
+    //
   }
 }
 

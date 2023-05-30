@@ -60,7 +60,7 @@ export const getStaticProps: GetStaticProps = async ({ params, previewData, quer
   return {
     props: {
       dehydratedState: dehydrate(queryClient),
-      page: pageData,
+      page: pageData || null,
     },
     revalidate: 120,
   }
@@ -77,10 +77,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
   }
 }
 
-const PLP = ({ page }: { page: Content.PlpDocument }) => {
+const PLP = ({ page }: { page: Content.PlpDocument | null }) => {
   const router = useRouter()
   const currentPage = router.query.page ? parseInt(router.query.page.toString()) : DEFAULT_PAGE
-  const categories = page.data.display_categories
+  const categories = page?.data.display_categories
     .map(category => category.display_category_id)
     .map(Number)
   const limit = router.query.limit ? parseInt(router.query.limit.toString()) : DEFAULT_LIMIT

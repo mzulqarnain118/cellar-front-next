@@ -62,7 +62,7 @@ export const getStaticProps = async ({ params, previewData }: GetStaticPropsCont
   return {
     props: {
       dehydratedState: dehydrate(queryClient),
-      page,
+      page: page || null,
     },
     revalidate: 120,
   }
