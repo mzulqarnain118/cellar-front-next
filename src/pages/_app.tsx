@@ -6,6 +6,7 @@ import { Merriweather } from 'next/font/google'
 import Head from 'next/head'
 import Script from 'next/script'
 
+import { init, isInitialized } from '@fullstory/browser'
 import { MantineProvider } from '@mantine/core'
 import { ModalsProvider } from '@mantine/modals'
 import { Notifications } from '@mantine/notifications'
@@ -86,6 +87,10 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
     if (process.env.NEXT_PUBLIC_IS_PRODUCTION === 'false') {
       window.toggleDevtools = () => setShowDevtools(prev => !prev)
       setShowDevtools(true)
+    }
+
+    if (!isInitialized()) {
+      init({ orgId: process.env.NEXT_PUBLIC_FULLSTORY_ORG_ID || '' })
     }
   }, [])
 

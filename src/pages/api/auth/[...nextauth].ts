@@ -1,3 +1,4 @@
+import { identify } from '@fullstory/browser'
 import NextAuth, { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 
@@ -272,10 +273,10 @@ export const authOptions: NextAuthOptions = {
               // }
 
               // Tell FullStory who you are.
-              // identify(userStateData.displayId, {
-              //   displayName: `${userStateData.name.first} ${userStateData.name.last}`,
-              //   email: userStateData.email,
-              // })
+              identify(userStateData.displayId, {
+                displayName: `${userStateData.name.first} ${userStateData.name.last}`,
+                email: userStateData.email,
+              })
 
               // if (
               //   data.redirection &&

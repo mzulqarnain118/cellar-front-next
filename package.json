@@ -18,6 +18,7 @@
     "@blacklab/react-image-magnify": "^4.1.1",
     "@emotion/react": "^11.11.0",
     "@emotion/server": "^11.11.0",
+    "@fullstory/browser": "^1.7.1",
     "@geobuff/flags": "^1.31.0",
     "@heroicons/react": "^2.0.18",
     "@hookform/resolvers": "^3.1.0",

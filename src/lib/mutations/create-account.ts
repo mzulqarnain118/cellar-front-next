@@ -1,3 +1,4 @@
+import { identify } from '@fullstory/browser'
 import { useMutation } from '@tanstack/react-query'
 import { signIn } from 'next-auth/react'
 
@@ -148,10 +149,10 @@ export const useCreateAccountMutation = () => {
         // }
 
         // Tell FullStory who you are.
-        // identify(userStateData.displayId, {
-        //   displayName: `${userStateData.name.first} ${userStateData.name.last}`,
-        //   email: userStateData.email,
-        // })
+        identify(userStateData.displayId, {
+          displayName: `${userStateData.name.first} ${userStateData.name.last}`,
+          email: userStateData.email,
+        })
 
         await signIn('sign-in', { callbackUrl: redirection, email, password, redirect: false })
 

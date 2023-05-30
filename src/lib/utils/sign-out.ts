@@ -1,3 +1,4 @@
+import { anonymize } from '@fullstory/browser'
 import { QueryClient } from '@tanstack/react-query'
 import { signOut as nextAuthSignOut } from 'next-auth/react'
 
@@ -7,6 +8,7 @@ import { useCuratedCartStore } from '../stores/curated-cart'
 
 export const signOut = async (queryClient?: QueryClient, redirect = true) => {
   await nextAuthSignOut({ redirect })
+  anonymize()
   const {
     actions: { reset: resetCheckout },
   } = useCheckoutStore.getState()

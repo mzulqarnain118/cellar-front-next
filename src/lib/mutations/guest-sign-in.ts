@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 
+import { identify } from '@fullstory/browser'
 import { useMutation } from '@tanstack/react-query'
 import { signIn } from 'next-auth/react'
 
@@ -82,10 +83,10 @@ export const useGuestSignInMutation = () => {
           username: email,
         }))
 
-        // identify(response.Data.data.user.DisplayID, {
-        //   displayName: `${firstName} ${lastName}`,
-        //   email,
-        // })
+        identify(response.Data.data.user.DisplayID, {
+          displayName: `${firstName} ${lastName}`,
+          email,
+        })
 
         if (createAccount) {
           return await api('v2/UpdateGuestAccount', {
