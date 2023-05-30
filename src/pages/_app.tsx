@@ -130,6 +130,13 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
                         `}
                       </style>
                       <GoogleAnalytics trackPageViews />
+                      <Script
+                        async
+                        defer
+                        id="hs-script-loader"
+                        src="//js.hs-scripts.com/4801108.js"
+                        type="text/javascript"
+                      />
                       <Script id="tastry-init">
                         {`
                             window.addEventListener('loadTastry', () => {
