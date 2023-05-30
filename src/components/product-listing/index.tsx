@@ -15,6 +15,8 @@ import { useConsultantStore } from '@/lib/stores/consultant'
 
 import { ProductCard } from '../product-card'
 
+import { EnabledFilters, Filters } from './filters'
+
 export type Sort = 'relevant' | 'price-low-high' | 'price-high-low'
 
 export const DEFAULT_CATEGORIES = [DISPLAY_CATEGORY.Wine]
@@ -50,6 +52,7 @@ const selectStyles: SelectProps['styles'] = theme => ({
 
 interface ProductListingProps {
   categories?: number[]
+  enabledFilters?: EnabledFilters
   page?: number
   limit?: number
   sort?: Sort
@@ -57,6 +60,7 @@ interface ProductListingProps {
 
 export const ProductListing = ({
   categories = [],
+  enabledFilters = [],
   page: initialPage = 1,
   limit = 16,
   sort: initialSort = 'relevant',
@@ -244,6 +248,7 @@ export const ProductListing = ({
     <div className="flex flex-col gap-4">
       {paginationHeader}
       {productCards}
+      <Filters enabledFilters={enabledFilters} show={showFilters} />
       <Pagination
         withEdges
         className="pt-12"

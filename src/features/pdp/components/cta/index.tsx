@@ -12,6 +12,7 @@ import { useProcessStore } from '@/lib/stores/process'
 import { CartItem, SubscriptionProduct } from '@/lib/types'
 
 import { usePdpActions, usePdpSelectedOption, usePdpSelectedProduct } from '../../store'
+import { Variations } from '../variations'
 
 const Options = dynamic(() => import('../options').then(({ Options }) => Options))
 
@@ -102,6 +103,11 @@ export const CTA = ({ cartUrl }: CTAProps) => {
   return (
     <div className="my-4 space-y-4 border-y border-neutral-light py-6">
       {flightData?.subscriptionProduct !== undefined ? <Options cartUrl={cartUrl} /> : undefined}
+      {flightData?.subscriptionProduct === undefined &&
+      flightData?.variations !== undefined &&
+      flightData?.variations.length > 0 ? (
+        <Variations cartUrl={cartUrl} />
+      ) : undefined}
       <div className="grid auto-rows-auto grid-cols-[auto_1fr] gap-4">
         <NumberPicker
           disabled={numberPickerDisabled}

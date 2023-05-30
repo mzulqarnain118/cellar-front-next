@@ -7,6 +7,7 @@ import { GetServerSideProps as GetStaticProps } from 'next'
 import { NextSeo } from 'next-seo'
 
 import { DEFAULT_LIMIT, DEFAULT_PAGE, DEFAULT_SORT, Sort } from '@/components/product-listing'
+import { EnabledFilters } from '@/components/product-listing/filters'
 import { getStaticNavigation } from '@/lib/queries/header'
 import { PAGINATED_PRODUCTS_QUERY_KEY, getPaginatedProducts } from '@/lib/queries/products'
 import { createClient } from '@/prismic-io'
@@ -63,13 +64,27 @@ const PLP = ({ page }: { page: Content.PlpDocument | null }) => {
     .map(Number)
   const limit = router.query.limit ? parseInt(router.query.limit.toString()) : DEFAULT_LIMIT
   const sort: Sort = router.query.sort ? (router.query.sort.toString() as Sort) : DEFAULT_SORT
+  const enabledFilters: EnabledFilters = [
+    page?.data.brands ? ('brand' as const) : undefined,
+    page?.data.flavor ? ('flavor' as const) : undefined,
+    page?.data.price ? ('price' as const) : undefined,
+    page?.data.region ? ('region' as const) : undefined,
+    page?.data.structure ? ('structure' as const) : undefined,
+    page?.data.varietal ? ('varietal' as const) : undefined,
+  ].filter(Boolean)
 
   return (
     <>
       <NextSeo />
       <main className="py-10">
         <div className="container mx-auto">
-          <ProductListing categories={categories} limit={limit} page={currentPage} sort={sort} />
+          <ProductListing
+            categories={categories}
+            enabledFilters={enabledFilters}
+            limit={limit}
+            page={currentPage}
+            sort={sort}
+          />
         </div>
       </main>
     </>

@@ -37,20 +37,6 @@ export const CartItem = ({ product }: CartItemProps) => {
 
   const containerSize = product.attributes?.['Container Size']
 
-  const variationName = useMemo(() => {
-    let name: string
-    if (product !== undefined && product.variations) {
-      const selectedVariation = product.variations.find(
-        variation => variation.sku?.toLowerCase() === product.sku.toLowerCase()
-      )
-
-      name = selectedVariation
-        ? selectedVariation.variations?.map(vari => vari.option).join(', ') || ''
-        : ''
-      return name
-    }
-  }, [product])
-
   const handleAdd = useCallback(() => {
     setQuantity(prev => {
       if (prev < MAX && prev >= MIN) {
@@ -167,7 +153,6 @@ export const CartItem = ({ product }: CartItemProps) => {
                   href={`/product/${product.cartUrl || ''}`}
                 >
                   {product.displayName}
-                  {variationName !== undefined ? ` (${variationName})` : undefined}
                 </Link>
               </div>
               <Typography className="text-sm">{containerSize}</Typography>

@@ -2045,6 +2045,78 @@ interface CategoryPageDocumentData {
    *
    */
   display_categories: prismic.GroupField<Simplify<CategoryPageDocumentDataDisplayCategoriesItem>>
+  /**
+   * Varietal field in *Category Page*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: true
+   * - **API ID Path**: category_page.varietal
+   * - **Tab**: Filters
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  varietal: prismic.BooleanField
+  /**
+   * Price field in *Category Page*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: true
+   * - **API ID Path**: category_page.price
+   * - **Tab**: Filters
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  price: prismic.BooleanField
+  /**
+   * Brands field in *Category Page*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: true
+   * - **API ID Path**: category_page.brands
+   * - **Tab**: Filters
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  brands: prismic.BooleanField
+  /**
+   * Flavor field in *Category Page*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: true
+   * - **API ID Path**: category_page.flavor
+   * - **Tab**: Filters
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  flavor: prismic.BooleanField
+  /**
+   * Structure field in *Category Page*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: true
+   * - **API ID Path**: category_page.structure
+   * - **Tab**: Filters
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  structure: prismic.BooleanField
+  /**
+   * Region field in *Category Page*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: true
+   * - **API ID Path**: category_page.region
+   * - **Tab**: Filters
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  region: prismic.BooleanField
 }
 /**
  * Item in Category Page → Display Categories
@@ -9089,6 +9161,78 @@ interface PlpDocumentData {
    *
    */
   display_categories: prismic.GroupField<Simplify<PlpDocumentDataDisplayCategoriesItem>>
+  /**
+   * Varietal field in *PLP*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: true
+   * - **API ID Path**: plp.varietal
+   * - **Tab**: Filters
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  varietal: prismic.BooleanField
+  /**
+   * Price field in *PLP*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: true
+   * - **API ID Path**: plp.price
+   * - **Tab**: Filters
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  price: prismic.BooleanField
+  /**
+   * Brands field in *PLP*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: true
+   * - **API ID Path**: plp.brands
+   * - **Tab**: Filters
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  brands: prismic.BooleanField
+  /**
+   * Flavor field in *PLP*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: true
+   * - **API ID Path**: plp.flavor
+   * - **Tab**: Filters
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  flavor: prismic.BooleanField
+  /**
+   * Structure field in *PLP*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: true
+   * - **API ID Path**: plp.structure
+   * - **Tab**: Filters
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  structure: prismic.BooleanField
+  /**
+   * Region field in *PLP*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: true
+   * - **API ID Path**: plp.region
+   * - **Tab**: Filters
+   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   *
+   */
+  region: prismic.BooleanField
 }
 /**
  * Item in PLP → Display Categories
