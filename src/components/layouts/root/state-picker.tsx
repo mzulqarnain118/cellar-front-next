@@ -50,7 +50,7 @@ export const StatePicker = ({ popup = false }: StatePickerProps) => {
   const classNames: SelectProps['classNames'] = useMemo(
     () => ({
       input: popup
-        ? 'w-full lg:w-auto px-2 font-bold text-14'
+        ? 'w-full px-2 font-bold text-14'
         : 'w-full lg:w-auto bg-[#e6e0dd] font-bold border-0 p-0 text-14',
       item: 'bg-[]',
       root: 'flex flex-col lg:flex-row items-center gap-2 lg:grid lg:gap-0',

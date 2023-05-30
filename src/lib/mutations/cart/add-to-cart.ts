@@ -18,6 +18,7 @@ export interface AddToCartOptions {
   originalCartItems: CartItem[]
   item: Omit<CartItem, 'orderLineId' | 'orderId' | 'quantity'>
   quantity: number
+  wineQuiz?: boolean
 }
 
 export const addToCart = async (options: AddToCartOptions) => {
@@ -26,6 +27,7 @@ export const addToCart = async (options: AddToCartOptions) => {
       CartID: options.cartId,
       Quantity: options.quantity,
       SKU: options.item.sku,
+      WineQuiz: options.wineQuiz,
     },
     method: 'post',
   }).json<CartModificationResponse>()
@@ -46,7 +48,7 @@ export const useAddToCartMutation = () => {
   return useMutation<
     CartModificationResponse,
     Error,
-    Pick<AddToCartOptions, 'fetchSubtotal' | 'item' | 'quantity'>,
+    Pick<AddToCartOptions, 'fetchSubtotal' | 'item' | 'quantity' | 'wineQuiz'>,
     { previousCart?: Cart }
   >({
     mutationFn: options =>
@@ -57,6 +59,7 @@ export const useAddToCartMutation = () => {
         item: options.item,
         originalCartItems: cart?.items || [],
         quantity: options.quantity,
+        wineQuiz: options.wineQuiz || false,
       }),
     mutationKey: ['addToCart'],
     onError: (error, _product, context) => {

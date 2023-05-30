@@ -1,9 +1,12 @@
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 
-import { useLocalStorage } from '@mantine/hooks'
-import type { IStorageProperties } from '@mantine/hooks/lib/use-local-storage/create-storage'
+import { getCookie, setCookie } from 'cookies-next'
 
 export const useAgeVerified = () => {
-  const localStorageProps: IStorageProperties<boolean> = useMemo(() => ({ key: 'ageVerified' }), [])
-  return useLocalStorage(localStorageProps)
+  const ageVerified = getCookie('age-verified')?.toString() || 'false'
+  const setAgeVerified = useCallback(
+    (value: 'true' | 'false') => setCookie('age-verified', value, { maxAge: 60 * 6 * 24 }),
+    []
+  )
+  return useMemo(() => ({ ageVerified, setAgeVerified }), [ageVerified, setAgeVerified])
 }

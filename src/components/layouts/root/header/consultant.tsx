@@ -19,7 +19,7 @@ export const Consultant = () => {
 
   if (isFetching || isLoading) {
     return (
-      <div className="flex animate-pulse flex-col items-end space-y-2">
+      <div className="flex animate-pulse items-end space-y-2">
         <div className="h-2 w-20 rounded bg-neutral-400" />
         <div className="h-2 w-28 rounded bg-neutral-400" />
       </div>
@@ -28,18 +28,25 @@ export const Consultant = () => {
 
   return (
     <div className="flex animate-fade-in flex-col text-right duration-1000">
-      {consultant.displayId !== CORPORATE_CONSULTANT_ID ? (
-        <div>
-          <Typography>My Consultant</Typography>
-          <div className="text-sm font-bold">
-            <Typography>{consultant.displayName || consultant.url}</Typography>
+      <Link
+        className="!text-neutral-dark"
+        href={
+          consultant?.displayId !== CORPORATE_CONSULTANT_ID
+            ? `${CONSULTANTS_PAGE_PATH}/${consultant?.url}`
+            : CONSULTANTS_PAGE_PATH
+        }
+      >
+        {consultant?.displayId !== CORPORATE_CONSULTANT_ID ? (
+          <div>
+            <Typography className="text-sm">Shopping with: </Typography>
+            <Typography className="text-14">
+              {consultant?.displayName || consultant?.url}
+            </Typography>
           </div>
-        </div>
-      ) : (
-        <Link className="text-sm hover:underline" href={CONSULTANTS_PAGE_PATH}>
-          Are you shopping with a consultant?
-        </Link>
-      )}
+        ) : (
+          'Shopping with a consultant?'
+        )}
+      </Link>
     </div>
   )
 }

@@ -26,7 +26,7 @@ interface RootLayoutProps {
 }
 
 export const RootLayout = ({ children }: RootLayoutProps) => {
-  const [ageVerified, setAgeVerified] = useAgeVerified()
+  const { ageVerified, setAgeVerified } = useAgeVerified()
   const router = useRouter()
   const { data: consultant } = useConsultantQuery()
   useCartQuery()
@@ -34,12 +34,12 @@ export const RootLayout = ({ children }: RootLayoutProps) => {
   useVipCartQuery()
 
   const handleClick = useCallback(() => {
-    setAgeVerified(true)
+    setAgeVerified('true')
     modals.closeAll()
   }, [setAgeVerified])
 
   useEffect(() => {
-    if (!ageVerified) {
+    if (ageVerified === 'false') {
       modals.open({
         centered: true,
         children: (

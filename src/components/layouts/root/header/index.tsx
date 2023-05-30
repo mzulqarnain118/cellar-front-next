@@ -17,17 +17,14 @@ import { Badge, Indicator, Menu } from 'react-daisyui'
 
 import { BlurImage } from '@/components/blur-image'
 import { CompanyLogo } from '@/components/company-logo'
-import { Link } from '@/components/link'
 import { Price } from '@/components/price'
 import { Search } from '@/components/search'
 import { Button } from '@/core/components/button'
 import { Typography } from '@/core/components/typogrpahy'
 import { useIsDesktop } from '@/core/hooks/use-is-desktop'
 import { useCuratedCartQuery } from '@/features/curated-cart/queries/curated-cart'
-import { CORPORATE_CONSULTANT_ID } from '@/lib/constants'
-import { CONSULTANTS_PAGE_PATH, MY_ACCOUNT_PAGE_PATH, SIGN_IN_PAGE_PATH } from '@/lib/paths'
+import { MY_ACCOUNT_PAGE_PATH, SIGN_IN_PAGE_PATH } from '@/lib/paths'
 import { CART_QUERY_KEY, useCartQuery } from '@/lib/queries/cart'
-import { useConsultantQuery } from '@/lib/queries/consultant'
 import { useGetCartInfoQuery } from '@/lib/queries/get-info'
 import {
   useNavigationCTAQuery,
@@ -43,6 +40,7 @@ import { signOut } from '@/lib/utils/sign-out'
 import { StatePicker } from '../state-picker'
 
 import { CartDrawer } from './cart-drawer'
+import { Consultant } from './consultant'
 import { NavigationItem } from './navigation/item'
 import { SearchNew } from './search'
 
@@ -66,7 +64,6 @@ export const Header = () => {
   const burgerLabel = navOpen ? 'Close navigation' : 'Open navigation'
   const isDesktop = useIsDesktop()
   const queryClient = useQueryClient()
-  const { data: consultant } = useConsultantQuery()
   const { curatedCart, dismissCart, setCuratedCart } = useCuratedCartStore()
   const { data: curatedCartData } = useCuratedCartQuery()
   const { data: products } = useProductsQuery()
@@ -270,7 +267,7 @@ export const Header = () => {
         <Popover
           withArrow
           arrowPosition="side"
-          opened={curatedCartData !== undefined && curatedCartData.CartID.length > 0}
+          opened={!!curatedCartData && curatedCartData.CartID.length > 0}
           position="top-end"
           shadow="md"
           width={380}
@@ -351,25 +348,7 @@ export const Header = () => {
           )}
         </div>
         <div className="flex items-center justify-between gap-4">
-          <Link
-            className="!text-neutral-dark"
-            href={
-              consultant?.displayId !== CORPORATE_CONSULTANT_ID
-                ? `${CONSULTANTS_PAGE_PATH}/${consultant?.url}`
-                : CONSULTANTS_PAGE_PATH
-            }
-          >
-            {consultant?.displayId !== CORPORATE_CONSULTANT_ID ? (
-              <div>
-                <Typography className="text-sm">Shopping with: </Typography>
-                <Typography className="text-14">
-                  {consultant?.displayName || consultant?.url}
-                </Typography>
-              </div>
-            ) : (
-              'Shopping with a consultant?'
-            )}
-          </Link>
+          <Consultant />
           <div className="flex items-center gap-4">
             {userButton}
             {cartButton}

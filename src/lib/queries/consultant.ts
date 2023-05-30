@@ -12,7 +12,7 @@ import { toastInfo } from '../utils/notifications'
 export const CONSULTANT_QUERY_KEY = 'consultant'
 export const getConsultantData: QueryFunction<Consultant> = async ({ queryKey }) => {
   const [_, repUrl] = queryKey
-  if (!repUrl) {
+  if (!repUrl || repUrl === '1001') {
     return DEFAULT_CONSULTANT_STATE
   }
 

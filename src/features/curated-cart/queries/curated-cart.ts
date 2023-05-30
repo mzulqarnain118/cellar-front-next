@@ -40,7 +40,7 @@ export interface GetCuratedCartResponse {
 }
 
 export const getCuratedCart: QueryFunction<
-  GetCuratedCartResponse['data'] | undefined,
+  GetCuratedCartResponse['data'] | null,
   (string | undefined)[]
 > = async ({ queryKey }) => {
   try {
@@ -48,7 +48,7 @@ export const getCuratedCart: QueryFunction<
     const consultantDisplayId = queryKey[2]
 
     if (customerDisplayId === undefined || consultantDisplayId === undefined) {
-      return
+      return null
     }
 
     const response = await api('orders/getcustomerordersforwebsite', {
@@ -80,9 +80,9 @@ export const useCuratedCartQuery = () => {
       if (data !== undefined) {
         setCuratedCart({
           cartAccepted: false,
-          cartId: data.CartID,
+          cartId: data?.CartID || '',
           messageDismissed: false,
-          recommendedByPersonDisplayId: data.RecommendedByPersonDisplayID,
+          recommendedByPersonDisplayId: data?.RecommendedByPersonDisplayID || '',
         })
       } else {
         setCuratedCart(undefined)

@@ -8,8 +8,6 @@ import NextLink, { LinkProps } from 'next/link'
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline'
 import { clsx } from 'clsx'
 
-import { useConsultantStore } from '@/lib/stores/consultant'
-
 type Props = Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, keyof LinkProps> &
   LinkProps & {
     button?: boolean
@@ -23,8 +21,6 @@ const isParsedQueryInput = (
 
 export const Link = forwardRef<HTMLAnchorElement, Props>(
   ({ button = false, href: initialHref, ...rest }: Props, ref) => {
-    const { consultant } = useConsultantStore()
-
     const href: Url = useMemo(() => {
       const pathname = typeof initialHref === 'string' ? initialHref : initialHref.pathname || ''
       const query = typeof initialHref === 'string' ? undefined : initialHref.query
@@ -43,14 +39,7 @@ export const Link = forwardRef<HTMLAnchorElement, Props>(
       }
 
       const searchParams = new URLSearchParams()
-      const consultantUrl = searchParams.get('u')
-      if (!consultantUrl && consultant.url) {
-        searchParams.delete('u')
-        searchParams.append('u', consultant.url)
-      }
-      if (pathname.startsWith('/wine')) {
-        searchParams.set('page', '1')
-      } else {
+      if (!pathname.startsWith('/wine')) {
         searchParams.delete('page')
       }
 
@@ -58,7 +47,7 @@ export const Link = forwardRef<HTMLAnchorElement, Props>(
         pathname,
         query: searchParams.toString(),
       }
-    }, [initialHref, consultant])
+    }, [initialHref])
 
     const link = useMemo(
       () =>

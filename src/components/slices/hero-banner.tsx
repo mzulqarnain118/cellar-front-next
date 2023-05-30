@@ -10,6 +10,8 @@ import { clsx } from 'clsx'
 
 import { Button } from '@/core/components/button'
 
+const imageStyle = { height: 'auto', width: 'auto' }
+
 type HeroBannerProps = SliceComponentProps<Content.RichContentPageDocumentDataBodyHeroBannerSlice>
 
 export const HeroBanner = ({ slice }: HeroBannerProps) => {
@@ -53,7 +55,12 @@ export const HeroBanner = ({ slice }: HeroBannerProps) => {
             )}
           >
             <div className="flex flex-col items-center justify-center">
-              <PrismicNextImage priority field={slice.primary.logo} width={350} />
+              <PrismicNextImage
+                priority
+                field={slice.primary.logo}
+                style={imageStyle}
+                width={350}
+              />
               <section
                 className="flex flex-col items-center text-center [&>*]:!normal-case"
                 style={
