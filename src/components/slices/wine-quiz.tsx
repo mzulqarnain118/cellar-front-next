@@ -155,7 +155,7 @@ export const WineQuiz = () => {
     <div
       className="mx-auto min-h-[40rem] py-4"
       data-consultant={url}
-      data-location={process.env.NEXT_PUBLIC_IS_PRODUCTION ? 'Online' : 'Testing'}
+      data-location={process.env.NEXT_PUBLIC_IS_PRODUCTION === 'true' ? 'Online' : 'Testing'}
       data-shadow="true"
       data-tenant={process.env.NEXT_PUBLIC_TASTRY_TENANT}
       id="tastry-inline-app"

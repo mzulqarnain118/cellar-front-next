@@ -72,8 +72,27 @@ export const getStaticProps = async ({ params, previewData }: GetStaticPropsCont
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const client = createClient()
-  const pages = await client.getAllByType('category_page')
-  const paths = pages.map(page => asLink(page, linkResolver) as string).filter(Boolean)
+  const pages = await client.getAllByType('category_page', {
+    graphQuery: `{
+      category_page {
+        ...category_pageFields
+        parent_page {
+          ...on plp {
+            uid
+          }
+        }
+      }
+    }`,
+  })
+  const paths = pages
+    .filter(
+      page =>
+        page.data.parent_page.link_type !== 'Any' &&
+        'uid' in page.data.parent_page &&
+        page.data.parent_page.uid === 'coffee'
+    )
+    .map(page => asLink(page, linkResolver) as string)
+    .filter(Boolean)
 
   return {
     fallback: true,

@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 
 import { Content } from '@prismicio/client'
 import { dehydrate } from '@tanstack/react-query'
-import { GetStaticPaths, GetServerSideProps as GetStaticProps } from 'next'
+import { GetServerSideProps as GetStaticProps } from 'next'
 import { NextSeo } from 'next-seo'
 
 import { DEFAULT_LIMIT, DEFAULT_PAGE, DEFAULT_SORT, Sort } from '@/components/product-listing'
@@ -16,7 +16,7 @@ const ProductListing = dynamic(
   { ssr: false }
 )
 
-export const getStaticProps: GetStaticProps = async ({ params, previewData, query }) => {
+export const getStaticProps: GetStaticProps = async ({ previewData, query }) => {
   let limit = DEFAULT_LIMIT
   let page = DEFAULT_PAGE
   let sort: Sort = DEFAULT_SORT
@@ -31,21 +31,10 @@ export const getStaticProps: GetStaticProps = async ({ params, previewData, quer
     sort = query.sort.toString() as Sort
   }
 
-  let uid
-  if (params && params.plp) {
-    uid = params.plp.toString()
-  }
-
-  if (!uid) {
-    return {
-      notFound: true,
-    }
-  }
-
   const client = createClient({ previewData })
   const [queryClient, pageData] = await Promise.all([
     getStaticNavigation(client),
-    client.getByUID<Content.PlpDocument>('plp', uid),
+    client.getByUID<Content.PlpDocument>('plp', 'coffee'),
   ])
 
   const categories = pageData.data.display_categories
@@ -63,17 +52,6 @@ export const getStaticProps: GetStaticProps = async ({ params, previewData, quer
       page: pageData || null,
     },
     revalidate: 120,
-  }
-}
-
-export const getStaticPaths: GetStaticPaths = async () => {
-  const client = createClient()
-  const pages = await client.getAllByType('plp')
-  const paths = pages.map(page => ({ params: { plp: page.uid } })).filter(Boolean)
-
-  return {
-    fallback: true,
-    paths,
   }
 }
 

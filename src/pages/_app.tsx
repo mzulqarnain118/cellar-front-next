@@ -145,7 +145,7 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
                             chunk2.async = true;
                             chunk2.defer = true;
                             chunk2.src = '${
-                              process.env.NEXT_PUBLIC_IS_PRODUCTION
+                              process.env.NEXT_PUBLIC_IS_PRODUCTION === 'true'
                                 ? 'https://tastry-react-login.azurewebsites.net/js/chunk-vendors_character.js'
                                 : 'https://tastry-react-login.azurewebsites.net/js/chunk-vendors_scout-testing.js'
                             }';
@@ -156,7 +156,7 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
                             chunk3.async = true;
                             chunk3.defer = true;
                             chunk3.src = '${
-                              process.env.NEXT_PUBLIC_IS_PRODUCTION
+                              process.env.NEXT_PUBLIC_IS_PRODUCTION === 'true'
                                 ? 'https://tastry-react-login.azurewebsites.net/js/app_character.js'
                                 : 'https://tastry-react-login.azurewebsites.net/js/app_scout-testing.js'
                             }';
@@ -166,7 +166,7 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
                             css1.type = 'text/css'
                             css1.rel = 'stylesheet'
                             css1.href = '${
-                              process.env.NEXT_PUBLIC_IS_PRODUCTION
+                              process.env.NEXT_PUBLIC_IS_PRODUCTION === 'true'
                                 ? 'https://tastry-react-login.azurewebsites.net/css/chunk-vendors_character.css'
                                 : 'https://tastry-react-login.azurewebsites.net/css/chunk-vendors_scout-testing.css'
                             }';
@@ -176,7 +176,7 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
                             css2.type = 'text/css'
                             css2.rel = 'stylesheet'
                             css2.href = '${
-                              process.env.NEXT_PUBLIC_IS_PRODUCTION
+                              process.env.NEXT_PUBLIC_IS_PRODUCTION === 'true'
                                 ? 'https://tastry-react-login.azurewebsites.net/css/app_character.css'
                                 : 'https://tastry-react-login.azurewebsites.net/css/app_scout-testing.css'
                             }';
