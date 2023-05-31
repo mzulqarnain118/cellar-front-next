@@ -1,21 +1,19 @@
-import dynamic from 'next/dynamic'
+import { useMemo } from 'react'
+
 import { useRouter } from 'next/router'
 
+import { Content, FilledContentRelationshipField } from '@prismicio/client'
 import { asLink } from '@prismicio/helpers'
 import { dehydrate } from '@tanstack/react-query'
 import { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType, NextPage } from 'next'
 import { NextSeo } from 'next-seo'
 
+import { PlpShell } from '@/components/plp-shell'
 import { DEFAULT_LIMIT, DEFAULT_PAGE, DEFAULT_SORT, Sort } from '@/components/product-listing'
 import { WINE_PAGE_PATH } from '@/lib/paths'
 import { getStaticNavigation } from '@/lib/queries/header'
 import { PAGINATED_PRODUCTS_QUERY_KEY, getPaginatedProducts } from '@/lib/queries/products'
 import { createClient, linkResolver } from '@/prismic-io'
-
-const ProductListing = dynamic(
-  import('@/components/product-listing').then(module => module.ProductListing),
-  { ssr: false }
-)
 
 export const getStaticProps = async ({ params, previewData }: GetStaticPropsContext) => {
   const client = createClient({ previewData })
@@ -103,22 +101,41 @@ export const getStaticPaths: GetStaticPaths = async () => {
 type PageProps = InferGetStaticPropsType<typeof getStaticProps>
 
 const CategoryPage: NextPage<PageProps> = ({ page }) => {
+  const router = useRouter()
+  const currentPage = router.query.page ? parseInt(router.query.page.toString()) : DEFAULT_PAGE
   const categories = page?.data.display_categories
     .map(category => category.display_category_id)
     .map(Number)
-  const router = useRouter()
-  const currentPage = router.query.page ? parseInt(router.query.page.toString()) : DEFAULT_PAGE
   const limit = router.query.limit ? parseInt(router.query.limit.toString()) : DEFAULT_LIMIT
   const sort: Sort = router.query.sort ? (router.query.sort.toString() as Sort) : DEFAULT_SORT
+  const enabledFilters = useMemo(
+    () =>
+      page?.data.enabled_filters
+        .map(({ filter }) => {
+          if (filter.link_type !== 'Any' && 'slug' in filter) {
+            return filter
+          }
+        })
+        .filter(Boolean) || [],
+    [page?.data.enabled_filters]
+  )
 
   return (
     <>
       <NextSeo />
-      <main className="py-10">
-        <div className="container mx-auto">
-          <ProductListing categories={categories} limit={limit} page={currentPage} sort={sort} />
-        </div>
-      </main>
+      <PlpShell
+        categories={categories}
+        enabledFilters={
+          enabledFilters as FilledContentRelationshipField<
+            'filter',
+            string,
+            Content.FilterDocument
+          >[]
+        }
+        limit={limit}
+        page={currentPage}
+        sort={sort}
+      />
     </>
   )
 }

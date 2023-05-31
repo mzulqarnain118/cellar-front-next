@@ -1,20 +1,18 @@
-import dynamic from 'next/dynamic'
+import { useMemo } from 'react'
+
 import { useRouter } from 'next/router'
 
 import { Content } from '@prismicio/client'
+import { FilledContentRelationshipField } from '@prismicio/types'
 import { dehydrate } from '@tanstack/react-query'
 import { GetServerSideProps as GetStaticProps } from 'next'
 import { NextSeo } from 'next-seo'
 
+import { PlpShell } from '@/components/plp-shell'
 import { DEFAULT_LIMIT, DEFAULT_PAGE, DEFAULT_SORT, Sort } from '@/components/product-listing'
 import { getStaticNavigation } from '@/lib/queries/header'
 import { PAGINATED_PRODUCTS_QUERY_KEY, getPaginatedProducts } from '@/lib/queries/products'
 import { createClient } from '@/prismic-io'
-
-const ProductListing = dynamic(
-  import('@/components/product-listing').then(module => module.ProductListing),
-  { ssr: false }
-)
 
 export const getStaticProps: GetStaticProps = async ({ previewData, query }) => {
   let limit = DEFAULT_LIMIT
@@ -34,10 +32,29 @@ export const getStaticProps: GetStaticProps = async ({ previewData, query }) => 
   const client = createClient({ previewData })
   const [queryClient, pageData] = await Promise.all([
     getStaticNavigation(client),
-    client.getByUID<Content.PlpDocument>('plp', 'coffee'),
+    client.getByUID<Content.PlpDocument>('plp', 'coffee', {
+      graphQuery: `{
+        plp {
+          ...plpFields
+          enabled_filters {
+            filter {
+              ...on filter {
+                ...filterFields
+              }
+            }
+          }
+        }
+      }`,
+    }),
   ])
 
-  const categories = pageData.data.display_categories
+  if (!pageData) {
+    return {
+      notFound: true,
+    }
+  }
+
+  const categories = (pageData as Content.PlpDocument)?.data.display_categories
     .map(category => category.display_category_id)
     .map(Number)
 
@@ -63,15 +80,34 @@ const PLP = ({ page }: { page: Content.PlpDocument | null }) => {
     .map(Number)
   const limit = router.query.limit ? parseInt(router.query.limit.toString()) : DEFAULT_LIMIT
   const sort: Sort = router.query.sort ? (router.query.sort.toString() as Sort) : DEFAULT_SORT
+  const enabledFilters = useMemo(
+    () =>
+      page?.data.enabled_filters
+        .map(({ filter }) => {
+          if (filter.link_type !== 'Any' && 'slug' in filter) {
+            return filter
+          }
+        })
+        .filter(Boolean) || [],
+    [page?.data.enabled_filters]
+  )
 
   return (
     <>
       <NextSeo />
-      <main className="py-10">
-        <div className="container mx-auto">
-          <ProductListing categories={categories} limit={limit} page={currentPage} sort={sort} />
-        </div>
-      </main>
+      <PlpShell
+        categories={categories}
+        enabledFilters={
+          enabledFilters as FilledContentRelationshipField<
+            'filter',
+            string,
+            Content.FilterDocument
+          >[]
+        }
+        limit={limit}
+        page={currentPage}
+        sort={sort}
+      />
     </>
   )
 }

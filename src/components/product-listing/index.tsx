@@ -104,20 +104,21 @@ export const ProductListing = ({
   const onFilterToggle = useCallback(() => setShowFilters(prev => !prev), [])
 
   const filtersButton = useMemo(
-    () => (
-      <div className={clsx('flex', showFilters && 'lg:min-w-[15rem]')}>
-        <Button
-          dark
-          className={clsx('group')}
-          size="sm"
-          startIcon={leftIcon}
-          onClick={onFilterToggle}
-        >
-          {showFilters ? 'Hide' : 'Show'} Filters
-        </Button>
-      </div>
-    ),
-    [onFilterToggle, showFilters]
+    () =>
+      enabledFilters.length > 0 ? (
+        <div className={clsx('flex', showFilters && 'lg:min-w-[15rem]')}>
+          <Button
+            dark
+            className={clsx('group')}
+            size="sm"
+            startIcon={leftIcon}
+            onClick={onFilterToggle}
+          >
+            {showFilters ? 'Hide' : 'Show'} Filters
+          </Button>
+        </div>
+      ) : undefined,
+    [enabledFilters.length, onFilterToggle, showFilters]
   )
 
   const productCards = useMemo(
@@ -126,7 +127,7 @@ export const ProductListing = ({
         <div
           className={clsx(
             'transition-all lg:grid lg:grid-cols-[auto_auto]',
-            showFilters && 'lg:gap-10'
+            showFilters && enabledFilters.length > 0 && 'lg:gap-10'
           )}
         >
           {filters}
@@ -143,7 +144,7 @@ export const ProductListing = ({
           </div>
         </div>
       ) : undefined,
-    [data?.products, filters, showFilters]
+    [data?.products, enabledFilters.length, filters, showFilters]
   )
 
   const onSortChange = useCallback((value: Sort) => {
@@ -165,7 +166,8 @@ export const ProductListing = ({
           <div
             className={clsx(
               'lg:grid lg:grid-cols-[auto_1fr] items-end justify-between',
-              showFilters && 'lg:gap-10'
+              showFilters && enabledFilters.length > 0 && 'lg:gap-10',
+              enabledFilters.length === 0 && 'lg:!grid-cols-1'
             )}
           >
             {filtersButton}
@@ -186,7 +188,8 @@ export const ProductListing = ({
           <div
             className={clsx(
               'lg:grid lg:grid-cols-[auto_1fr] items-end justify-between',
-              showFilters && 'lg:gap-10'
+              showFilters && 'lg:gap-10',
+              enabledFilters.length === 0 && 'grid-cols-1'
             )}
           >
             <div className="grid grid-cols-2 items-end gap-4 sticky top-4 left-0 lg:gap-0 lg:grid-cols-[1fr_auto] justify-between w-full">
@@ -209,6 +212,7 @@ export const ProductListing = ({
     [
       data?.results,
       data?.resultsShown,
+      enabledFilters.length,
       filtersButton,
       isDesktop,
       isFetching,

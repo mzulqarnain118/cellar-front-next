@@ -1,6 +1,5 @@
 import { useMemo } from 'react'
 
-import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 
 import { Content } from '@prismicio/client'
@@ -9,17 +8,11 @@ import { dehydrate } from '@tanstack/react-query'
 import { GetServerSideProps as GetStaticProps } from 'next'
 import { NextSeo } from 'next-seo'
 
+import { PlpShell } from '@/components/plp-shell'
 import { DEFAULT_LIMIT, DEFAULT_PAGE, DEFAULT_SORT, Sort } from '@/components/product-listing'
 import { getStaticNavigation } from '@/lib/queries/header'
 import { PAGINATED_PRODUCTS_QUERY_KEY, getPaginatedProducts } from '@/lib/queries/products'
 import { createClient } from '@/prismic-io'
-
-import { FilterDocument } from 'types.generated'
-
-const ProductListing = dynamic(
-  import('@/components/product-listing').then(module => module.ProductListing),
-  { ssr: false }
-)
 
 export const getStaticProps: GetStaticProps = async ({ previewData, query }) => {
   let limit = DEFAULT_LIMIT
@@ -102,19 +95,19 @@ const PLP = ({ page }: { page: Content.PlpDocument | null }) => {
   return (
     <>
       <NextSeo />
-      <main className="py-10">
-        <div className="lg:max-w-screen-[1980px] mx-4 lg:mx-20">
-          <ProductListing
-            categories={categories}
-            enabledFilters={
-              enabledFilters as FilledContentRelationshipField<'filter', string, FilterDocument>[]
-            }
-            limit={limit}
-            page={currentPage}
-            sort={sort}
-          />
-        </div>
-      </main>
+      <PlpShell
+        categories={categories}
+        enabledFilters={
+          enabledFilters as FilledContentRelationshipField<
+            'filter',
+            string,
+            Content.FilterDocument
+          >[]
+        }
+        limit={limit}
+        page={currentPage}
+        sort={sort}
+      />
     </>
   )
 }
