@@ -33,7 +33,10 @@ const leftIcon = (
   <AdjustmentsHorizontalIcon className="h-8 w-8 transition-transform group-hover:rotate-90" />
 )
 
-const selectClassNames = { label: 'font-bold', root: 'text-right' }
+const selectClassNames: SelectProps['classNames'] = {
+  label: 'font-bold',
+  root: 'text-right',
+}
 const selectData = [
   { label: 'Relevant', value: 'relevant' },
   { label: 'Price (low to high)', value: 'price-low-high' },
@@ -190,6 +193,7 @@ export const ProductListing = ({
               <FilterBar />
               {filtersButton}
               <Select
+                withinPortal
                 classNames={selectClassNames}
                 data={selectData}
                 label="Sort by"
