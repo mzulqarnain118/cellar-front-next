@@ -6,7 +6,7 @@ import { Chip as MantineChip } from '@mantine/core'
 const chipClassNames = {
   label: `
     flex items-center gap-1 bg-neutral-dark text-neutral-50 px-4 transition-all
-    hover:bg-neutral-light hover:text-neutral-dark
+    hover:bg-neutral-light hover:text-neutral-dark capitalize
   `,
 }
 
@@ -26,7 +26,7 @@ export const Chip = ({ className, name, onClick }: ChipProps) => {
   return (
     <MantineChip className={className} classNames={chipClassNames} onClick={handleOnClick}>
       <XMarkIcon className="w-4 h-4" />
-      {name}
+      {name.replaceAll('-', ' ')}
     </MantineChip>
   )
 }
