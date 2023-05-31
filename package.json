@@ -113,7 +113,8 @@
     "lint-staged": "^13.2.2",
     "postcss": "^8.4.23",
     "prismic-ts-codegen": "^0.1.9",
-    "slice-machine-ui": "^1.0.3",
+    "slice-machine-ui": "^1.1.0",
+    "start-slicemachine": "^0.8.0",
     "tailwindcss": "^3.3.2",
     "zod": "^3.21.4"
   }

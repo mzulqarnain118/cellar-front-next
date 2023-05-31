@@ -2046,77 +2046,16 @@ interface CategoryPageDocumentData {
    */
   display_categories: prismic.GroupField<Simplify<CategoryPageDocumentDataDisplayCategoriesItem>>
   /**
-   * Varietal field in *Category Page*
+   * Enabled Filters field in *Category Page*
    *
-   * - **Field Type**: Boolean
+   * - **Field Type**: Group
    * - **Placeholder**: *None*
-   * - **Default Value**: true
-   * - **API ID Path**: category_page.varietal
+   * - **API ID Path**: category_page.enabled_filters[]
    * - **Tab**: Filters
-   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
    *
    */
-  varietal: prismic.BooleanField
-  /**
-   * Price field in *Category Page*
-   *
-   * - **Field Type**: Boolean
-   * - **Placeholder**: *None*
-   * - **Default Value**: true
-   * - **API ID Path**: category_page.price
-   * - **Tab**: Filters
-   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
-   *
-   */
-  price: prismic.BooleanField
-  /**
-   * Brands field in *Category Page*
-   *
-   * - **Field Type**: Boolean
-   * - **Placeholder**: *None*
-   * - **Default Value**: true
-   * - **API ID Path**: category_page.brands
-   * - **Tab**: Filters
-   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
-   *
-   */
-  brands: prismic.BooleanField
-  /**
-   * Flavor field in *Category Page*
-   *
-   * - **Field Type**: Boolean
-   * - **Placeholder**: *None*
-   * - **Default Value**: true
-   * - **API ID Path**: category_page.flavor
-   * - **Tab**: Filters
-   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
-   *
-   */
-  flavor: prismic.BooleanField
-  /**
-   * Structure field in *Category Page*
-   *
-   * - **Field Type**: Boolean
-   * - **Placeholder**: *None*
-   * - **Default Value**: true
-   * - **API ID Path**: category_page.structure
-   * - **Tab**: Filters
-   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
-   *
-   */
-  structure: prismic.BooleanField
-  /**
-   * Region field in *Category Page*
-   *
-   * - **Field Type**: Boolean
-   * - **Placeholder**: *None*
-   * - **Default Value**: true
-   * - **API ID Path**: category_page.region
-   * - **Tab**: Filters
-   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
-   *
-   */
-  region: prismic.BooleanField
+  enabled_filters: prismic.GroupField<Simplify<CategoryPageDocumentDataEnabledFiltersItem>>
 }
 /**
  * Item in Category Page → Display Categories
@@ -2133,6 +2072,22 @@ export interface CategoryPageDocumentDataDisplayCategoriesItem {
    *
    */
   display_category_id: prismic.KeyTextField
+}
+/**
+ * Item in Category Page → Enabled Filters
+ *
+ */
+export interface CategoryPageDocumentDataEnabledFiltersItem {
+  /**
+   * Filter field in *Category Page → Enabled Filters*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: category_page.enabled_filters[].filter
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  filter: prismic.ContentRelationshipField<'filter'>
 }
 /**
  * Category Page document from Prismic
@@ -4393,6 +4348,68 @@ interface FaqsDocumentData {
  */
 export type FaqsDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismic.PrismicDocumentWithoutUID<Simplify<FaqsDocumentData>, 'faqs', Lang>
+/** Content for Filter documents */
+interface FilterDocumentData {
+  /**
+   * Name field in *Filter*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: filter.name
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  name: prismic.KeyTextField
+  /**
+   * Values field in *Filter*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: filter.values[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
+   *
+   */
+  values: prismic.GroupField<Simplify<FilterDocumentDataValuesItem>>
+}
+/**
+ * Item in Filter → Values
+ *
+ */
+export interface FilterDocumentDataValuesItem {
+  /**
+   * Display Name field in *Filter → Values*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: filter.values[].display_name
+   * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
+   *
+   */
+  display_name: prismic.KeyTextField
+  /**
+   * Display Category ID field in *Filter → Values*
+   *
+   * - **Field Type**: Number
+   * - **Placeholder**: Enter the display category ID the filter is associated to
+   * - **API ID Path**: filter.values[].display_category_id
+   * - **Documentation**: https://prismic.io/docs/core-concepts/number
+   *
+   */
+  display_category_id: prismic.NumberField
+}
+/**
+ * Filter document from Prismic
+ *
+ * - **API ID**: `filter`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type FilterDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
+  prismic.PrismicDocumentWithoutUID<Simplify<FilterDocumentData>, 'filter', Lang>
 /** Content for filtering menu documents */
 interface FilteringMenuDocumentData {
   /**
@@ -9162,77 +9179,16 @@ interface PlpDocumentData {
    */
   display_categories: prismic.GroupField<Simplify<PlpDocumentDataDisplayCategoriesItem>>
   /**
-   * Varietal field in *PLP*
+   * Enabled Filters field in *PLP*
    *
-   * - **Field Type**: Boolean
+   * - **Field Type**: Group
    * - **Placeholder**: *None*
-   * - **Default Value**: true
-   * - **API ID Path**: plp.varietal
+   * - **API ID Path**: plp.enabled_filters[]
    * - **Tab**: Filters
-   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
+   * - **Documentation**: https://prismic.io/docs/core-concepts/group
    *
    */
-  varietal: prismic.BooleanField
-  /**
-   * Price field in *PLP*
-   *
-   * - **Field Type**: Boolean
-   * - **Placeholder**: *None*
-   * - **Default Value**: true
-   * - **API ID Path**: plp.price
-   * - **Tab**: Filters
-   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
-   *
-   */
-  price: prismic.BooleanField
-  /**
-   * Brands field in *PLP*
-   *
-   * - **Field Type**: Boolean
-   * - **Placeholder**: *None*
-   * - **Default Value**: true
-   * - **API ID Path**: plp.brands
-   * - **Tab**: Filters
-   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
-   *
-   */
-  brands: prismic.BooleanField
-  /**
-   * Flavor field in *PLP*
-   *
-   * - **Field Type**: Boolean
-   * - **Placeholder**: *None*
-   * - **Default Value**: true
-   * - **API ID Path**: plp.flavor
-   * - **Tab**: Filters
-   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
-   *
-   */
-  flavor: prismic.BooleanField
-  /**
-   * Structure field in *PLP*
-   *
-   * - **Field Type**: Boolean
-   * - **Placeholder**: *None*
-   * - **Default Value**: true
-   * - **API ID Path**: plp.structure
-   * - **Tab**: Filters
-   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
-   *
-   */
-  structure: prismic.BooleanField
-  /**
-   * Region field in *PLP*
-   *
-   * - **Field Type**: Boolean
-   * - **Placeholder**: *None*
-   * - **Default Value**: true
-   * - **API ID Path**: plp.region
-   * - **Tab**: Filters
-   * - **Documentation**: https://prismic.io/docs/core-concepts/boolean
-   *
-   */
-  region: prismic.BooleanField
+  enabled_filters: prismic.GroupField<Simplify<PlpDocumentDataEnabledFiltersItem>>
 }
 /**
  * Item in PLP → Display Categories
@@ -9249,6 +9205,22 @@ export interface PlpDocumentDataDisplayCategoriesItem {
    *
    */
   display_category_id: prismic.KeyTextField
+}
+/**
+ * Item in PLP → Enabled Filters
+ *
+ */
+export interface PlpDocumentDataEnabledFiltersItem {
+  /**
+   * Filter field in *PLP → Enabled Filters*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: plp.enabled_filters[].filter
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  filter: prismic.ContentRelationshipField<'filter'>
 }
 /**
  * PLP document from Prismic
@@ -13144,6 +13116,7 @@ export type AllDocumentTypes =
   | EpWelcomeHeaderDocument
   | EpWineTypeSelectorDocument
   | FaqsDocument
+  | FilterDocument
   | FilteringMenuDocument
   | FooterDocument
   | FooterTextDocument
@@ -13363,6 +13336,7 @@ declare module '@prismicio/client' {
       CategoriesDocument,
       CategoryPageDocumentData,
       CategoryPageDocumentDataDisplayCategoriesItem,
+      CategoryPageDocumentDataEnabledFiltersItem,
       CategoryPageDocument,
       CheckoutPopupDocumentData,
       CheckoutPopupDocument,
@@ -13445,6 +13419,9 @@ declare module '@prismicio/client' {
       EpWineTypeSelectorDocument,
       FaqsDocumentData,
       FaqsDocument,
+      FilterDocumentData,
+      FilterDocumentDataValuesItem,
+      FilterDocument,
       FilteringMenuDocumentData,
       FilteringMenuDocumentDataGroupItemsItem,
       FilteringMenuDocumentDataOptionalTextItemsItem,
@@ -13590,6 +13567,7 @@ declare module '@prismicio/client' {
       PdpAutoSipPromoMessageDocument,
       PlpDocumentData,
       PlpDocumentDataDisplayCategoriesItem,
+      PlpDocumentDataEnabledFiltersItem,
       PlpDocument,
       PlpBottomBannerDocumentData,
       PlpBottomBannerDocument,

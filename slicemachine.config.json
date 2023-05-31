@@ -1,5 +1,5 @@
 {
   "repositoryName": "cellar-front-dev",
   "adapter": "@slicemachine/adapter-next",
-  "libraries": ["./slices"]
+  "libraries": ["./src/components/slices"]
 }

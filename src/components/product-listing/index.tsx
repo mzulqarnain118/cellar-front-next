@@ -5,6 +5,8 @@ import { useRouter } from 'next/router'
 
 import { AdjustmentsHorizontalIcon } from '@heroicons/react/24/outline'
 import { Pagination, PaginationProps, Select, SelectProps } from '@mantine/core'
+import { Content, FilledContentRelationshipField } from '@prismicio/client'
+import { clsx } from 'clsx'
 
 import { Button } from '@/core/components/button'
 import { Skeleton } from '@/core/components/skeleton'
@@ -15,7 +17,7 @@ import { useConsultantStore } from '@/lib/stores/consultant'
 
 import { ProductCard } from '../product-card'
 
-import { EnabledFilters, Filters } from './filters'
+import { Filters } from './filters'
 
 export type Sort = 'relevant' | 'price-low-high' | 'price-high-low'
 
@@ -52,7 +54,7 @@ const selectStyles: SelectProps['styles'] = theme => ({
 
 interface ProductListingProps {
   categories?: number[]
-  enabledFilters?: EnabledFilters
+  enabledFilters?: FilledContentRelationshipField<'filter', string, Content.FilterDocument>[]
   page?: number
   limit?: number
   sort?: Sort
@@ -81,13 +83,27 @@ export const ProductListing = ({
   const productCards = useMemo(
     () =>
       data?.products !== undefined ? (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {data.products.map((product, index) => (
-            <ProductCard key={product.sku} priority={index < 4} product={product} />
-          ))}
+        <div
+          className={clsx(
+            'transition-all lg:grid lg:grid-cols-[auto_auto]',
+            showFilters && 'lg:gap-10'
+          )}
+        >
+          <Filters enabledFilters={enabledFilters} show={showFilters} />
+          <div
+            className={clsx(
+              'transition-all grid gap-4 md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-4 3xl:grid-cols-5 relative',
+              showFilters &&
+                'min-[1920px]:!grid-cols-4 min-[1400px]:!grid-cols-3 xl:!grid-cols-2 lg:!grid-cols-1'
+            )}
+          >
+            {data.products.map((product, index) => (
+              <ProductCard key={product.sku} priority={index < 4} product={product} />
+            ))}
+          </div>
         </div>
       ) : undefined,
-    [data?.products]
+    [data?.products, enabledFilters, showFilters]
   )
 
   const onSortChange = useCallback((value: Sort) => {
@@ -248,7 +264,6 @@ export const ProductListing = ({
     <div className="flex flex-col gap-4">
       {paginationHeader}
       {productCards}
-      <Filters enabledFilters={enabledFilters} show={showFilters} />
       <Pagination
         withEdges
         className="pt-12"
