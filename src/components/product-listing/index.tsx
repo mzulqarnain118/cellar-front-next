@@ -79,7 +79,7 @@ export const ProductListing = ({
   const [active, setPage] = useState(initialPage)
   const [sort, setSort] = useState<Sort>(initialSort)
 
-  const [showFilters, setShowFilters] = useState(isDesktop)
+  const [showFilters, setShowFilters] = useState(false)
   const [_, scrollTo] = useWindowScroll()
 
   const options = useMemo(
