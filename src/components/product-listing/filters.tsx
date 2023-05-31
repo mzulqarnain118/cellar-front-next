@@ -29,7 +29,7 @@ export const Filters = ({ enabledFilters, show }: FiltersProps) => {
     () => (
       <div
         className={clsx(
-          'sticky top-0 left-0 -translate-x-96 z-10 transition-transform',
+          'sticky top-8 left-0 -translate-x-96 z-10 transition-transform border border-neutral-light rounded shadow h-max',
           show && 'translate-x-0'
         )}
       >
@@ -40,7 +40,7 @@ export const Filters = ({ enabledFilters, show }: FiltersProps) => {
           {styles => (
             <div
               key="filters-transition"
-              className="max-w-[15rem] min-w-[15rem] rounded p-4 bg-[#f5f3f2]"
+              className="min-w-[15rem] rounded p-4 bg-[#f5f3f2]"
               style={styles}
             >
               <Typography as="h2" displayAs="h6">

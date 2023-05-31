@@ -80,6 +80,11 @@ export const ProductListing = ({
 
   const { data, isError, isFetching, isLoading } = usePaginatedProducts(options)
 
+  const filters = useMemo(
+    () => <Filters enabledFilters={enabledFilters} show={showFilters} />,
+    [enabledFilters, showFilters]
+  )
+
   const productCards = useMemo(
     () =>
       data?.products !== undefined ? (
@@ -89,7 +94,7 @@ export const ProductListing = ({
             showFilters && 'lg:gap-10'
           )}
         >
-          <Filters enabledFilters={enabledFilters} show={showFilters} />
+          {filters}
           <div
             className={clsx(
               'transition-all grid gap-4 md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-4 3xl:grid-cols-5 relative',
@@ -103,7 +108,7 @@ export const ProductListing = ({
           </div>
         </div>
       ) : undefined,
-    [data?.products, enabledFilters, showFilters]
+    [data?.products, filters, showFilters]
   )
 
   const onSortChange = useCallback((value: Sort) => {
@@ -117,7 +122,7 @@ export const ProductListing = ({
     () => (
       <>
         {isFetching || isLoading ? (
-          <div className="mb-4 h-6 w-60 animate-pulse rounded bg-neutral-300" />
+          <div className="h-6 w-60 animate-pulse rounded bg-neutral-300" />
         ) : (
           <Typography>
             Showing {data?.resultsShown?.[0]}-{data?.resultsShown?.[1]} results of {data?.results}.
@@ -222,32 +227,35 @@ export const ProductListing = ({
 
   if (isFetching || isLoading) {
     return (
-      <>
+      <div className="lg:flex lg:flex-col lg:gap-4">
         {paginationHeader}
-        <div className="mt-4 grid grid-cols-1 gap-4 lg:auto-rows-auto lg:grid-cols-4 lg:gap-6">
-          <Skeleton className="h-[30.25rem]" />
-          <Skeleton className="h-[30.25rem]" />
-          <Skeleton className="h-[30.25rem]" />
-          <Skeleton className="h-[30.25rem]" />
-          <Skeleton className="h-[30.25rem]" />
-          <Skeleton className="h-[30.25rem]" />
-          <Skeleton className="h-[30.25rem]" />
-          <Skeleton className="h-[30.25rem]" />
-          <Skeleton className="h-[30.25rem]" />
-          <Skeleton className="h-[30.25rem]" />
-          <Skeleton className="h-[30.25rem]" />
-          <Skeleton className="h-[30.25rem]" />
-          <Skeleton className="h-[30.25rem]" />
-          <Skeleton className="h-[30.25rem]" />
-          <Skeleton className="h-[30.25rem]" />
-          <Skeleton className="h-[30.25rem]" />
+        <div className="lg:grid lg:grid-cols-[auto_1fr] lg:gap-10">
+          <Filters enabledFilters={enabledFilters} show={showFilters} />
+          <div className="grid grid-cols-1 gap-4 lg:auto-rows-auto lg:grid-cols-4 lg:gap-6">
+            <Skeleton className="h-[30.25rem]" />
+            <Skeleton className="h-[30.25rem]" />
+            <Skeleton className="h-[30.25rem]" />
+            <Skeleton className="h-[30.25rem]" />
+            <Skeleton className="h-[30.25rem]" />
+            <Skeleton className="h-[30.25rem]" />
+            <Skeleton className="h-[30.25rem]" />
+            <Skeleton className="h-[30.25rem]" />
+            <Skeleton className="h-[30.25rem]" />
+            <Skeleton className="h-[30.25rem]" />
+            <Skeleton className="h-[30.25rem]" />
+            <Skeleton className="h-[30.25rem]" />
+            <Skeleton className="h-[30.25rem]" />
+            <Skeleton className="h-[30.25rem]" />
+            <Skeleton className="h-[30.25rem]" />
+            <Skeleton className="h-[30.25rem]" />
+          </div>
         </div>
         <div className="mx-auto mt-6 flex items-center justify-center">
           <div className="h-[3rem] w-[2.5rem] animate-pulse rounded bg-neutral-300" />
           <div className="h-[3rem] w-[5rem] animate-pulse rounded bg-neutral-300" />
           <div className="h-[3rem] w-[2.5rem] animate-pulse rounded bg-neutral-300" />
         </div>
-      </>
+      </div>
     )
   }
 
