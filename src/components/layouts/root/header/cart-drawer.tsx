@@ -91,14 +91,19 @@ export const CartDrawer = () => {
     >
       <div className="h-[inherit] overflow-y-hidden">
         <CloseButton className="absolute right-4 top-4 z-10" size="lg" onClick={toggleCartOpen} />
-        <div className="sticky left-0 top-0 flex w-full flex-col border-b border-base-dark bg-base-light pt-4 lg:grid lg:grid-rows-[auto_1fr_auto]">
+        <div
+          className={`
+            sticky left-0 top-0 flex w-full flex-col border-b border-base-dark bg-base-light pt-4
+            lg:grid lg:grid-rows-[auto_1fr_auto]
+          `}
+        >
           <Typography as="h1" className="h4 text-center">
             Your Cart {cartQuantity === 0 ? undefined : `(${cartQuantity})`}
           </Typography>
           <div
             className={`
-            flex w-full items-center justify-between pb-4
-          `}
+              flex w-full items-center justify-between pb-4
+            `}
           >
             <div className="w-full space-y-1 px-4 text-center">
               {difference > 0 ? (
@@ -130,7 +135,12 @@ export const CartDrawer = () => {
               </div>
             </div>
           ) : (
-            <div className="grid grid-cols-1 grid-rows-1 items-center justify-items-center px-4">
+            <div
+              className={`
+                grid grid-cols-1 grid-rows-1 items-center justify-items-center px-4
+                h-[calc(100dvh-12.9125rem)]
+              `}
+            >
               <div className="flex flex-col items-center justify-center gap-1">
                 <Typography className="pb-2 text-lg">Your cart is empty!</Typography>
                 <Link href={WINE_PAGE_PATH} onClick={handleGoShoppingClick}>

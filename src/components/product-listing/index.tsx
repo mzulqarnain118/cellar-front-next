@@ -1,22 +1,25 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 import { AdjustmentsHorizontalIcon } from '@heroicons/react/24/outline'
 import { Pagination, PaginationProps, Select, SelectProps } from '@mantine/core'
+import { useWindowScroll } from '@mantine/hooks'
 import { Content, FilledContentRelationshipField } from '@prismicio/client'
 import { clsx } from 'clsx'
 
 import { Button } from '@/core/components/button'
 import { Skeleton } from '@/core/components/skeleton'
 import { Typography } from '@/core/components/typogrpahy'
+import { useIsDesktop } from '@/core/hooks/use-is-desktop'
 import { DISPLAY_CATEGORY } from '@/lib/constants/display-category'
 import { usePaginatedProducts } from '@/lib/queries/products'
 import { useConsultantStore } from '@/lib/stores/consultant'
 
 import { ProductCard } from '../product-card'
 
+import { FilterBar } from './filter/filter-bar'
 import { Filters } from './filters'
 
 export type Sort = 'relevant' | 'price-low-high' | 'price-high-low'
@@ -69,9 +72,12 @@ export const ProductListing = ({
 }: ProductListingProps) => {
   const { consultant } = useConsultantStore()
   const router = useRouter()
+  const isDesktop = useIsDesktop()
   const [active, setPage] = useState(initialPage)
   const [sort, setSort] = useState<Sort>(initialSort)
-  const [showFilters, setShowFilters] = useState(true)
+
+  const [showFilters, setShowFilters] = useState(false)
+  const [_, scrollTo] = useWindowScroll()
 
   const options = useMemo(
     () => ({ categories, limit, page: active, sort }),
@@ -80,9 +86,32 @@ export const ProductListing = ({
 
   const { data, isError, isFetching, isLoading } = usePaginatedProducts(options)
 
+  const handleFilterClose = useCallback(() => setShowFilters(false), [])
+
   const filters = useMemo(
-    () => <Filters enabledFilters={enabledFilters} show={showFilters} />,
-    [enabledFilters, showFilters]
+    () => (
+      <Filters enabledFilters={enabledFilters} show={showFilters} onClose={handleFilterClose} />
+    ),
+    [enabledFilters, handleFilterClose, showFilters]
+  )
+
+  const onFilterToggle = useCallback(() => setShowFilters(prev => !prev), [])
+
+  const filtersButton = useMemo(
+    () => (
+      <div className={clsx('flex', showFilters && 'lg:min-w-[15rem]')}>
+        <Button
+          dark
+          className={clsx('group')}
+          size="sm"
+          startIcon={leftIcon}
+          onClick={onFilterToggle}
+        >
+          {showFilters ? 'Hide' : 'Show'} Filters
+        </Button>
+      </div>
+    ),
+    [onFilterToggle, showFilters]
   )
 
   const productCards = useMemo(
@@ -116,8 +145,6 @@ export const ProductListing = ({
     setPage(1)
   }, [])
 
-  const onFilterToggle = useCallback(() => setShowFilters(prev => !prev), [])
-
   const paginationHeader = useMemo(
     () => (
       <>
@@ -128,33 +155,57 @@ export const ProductListing = ({
             Showing {data?.resultsShown?.[0]}-{data?.resultsShown?.[1]} results of {data?.results}.
           </Typography>
         )}
-        <div className="flex items-center justify-between">
-          <Button
-            className="group"
-            size="sm"
-            startIcon={leftIcon}
-            variant={showFilters ? 'link' : 'outline'}
-            onClick={onFilterToggle}
+        {isDesktop ? (
+          <div
+            className={clsx(
+              'lg:grid lg:grid-cols-[auto_1fr] items-end justify-between',
+              showFilters && 'lg:gap-10'
+            )}
           >
-            {showFilters ? 'Hide' : 'Show'} Filters
-          </Button>
-          <Select
-            classNames={selectClassNames}
-            data={selectData}
-            label="Sort by"
-            styles={selectStyles}
-            value={sort}
-            onChange={onSortChange}
-          />
-        </div>
+            {filtersButton}
+            <div className="grid grid-cols-2 items-end gap-4 sticky top-4 left-0 lg:gap-0 lg:grid-cols-[1fr_auto] justify-between w-full">
+              <FilterBar />
+              {isDesktop ? undefined : filtersButton}
+              <Select
+                classNames={selectClassNames}
+                data={selectData}
+                label="Sort by"
+                styles={selectStyles}
+                value={sort}
+                onChange={onSortChange}
+              />
+            </div>
+          </div>
+        ) : (
+          <div
+            className={clsx(
+              'lg:grid lg:grid-cols-[auto_1fr] items-end justify-between',
+              showFilters && 'lg:gap-10'
+            )}
+          >
+            <div className="grid grid-cols-2 items-end gap-4 sticky top-4 left-0 lg:gap-0 lg:grid-cols-[1fr_auto] justify-between w-full">
+              <FilterBar />
+              {filtersButton}
+              <Select
+                classNames={selectClassNames}
+                data={selectData}
+                label="Sort by"
+                styles={selectStyles}
+                value={sort}
+                onChange={onSortChange}
+              />
+            </div>
+          </div>
+        )}
       </>
     ),
     [
       data?.results,
       data?.resultsShown,
+      filtersButton,
+      isDesktop,
       isFetching,
       isLoading,
-      onFilterToggle,
       onSortChange,
       showFilters,
       sort,
@@ -220,17 +271,26 @@ export const ProductListing = ({
     [consultant.url, router.asPath]
   )
 
-  const onPageChange = useCallback((page: number) => {
-    document.querySelector('#root-element')?.scrollTo({ behavior: 'smooth', left: 0, top: 0 })
-    setPage(page)
-  }, [])
+  const onPageChange = useCallback(
+    (page: number) => {
+      scrollTo({ y: 0 })
+      setPage(page)
+    },
+    [scrollTo]
+  )
+
+  useEffect(() => {
+    if (isDesktop) {
+      setShowFilters(true)
+    }
+  }, [isDesktop])
 
   if (isFetching || isLoading) {
     return (
       <div className="lg:flex lg:flex-col lg:gap-4">
         {paginationHeader}
         <div className="lg:grid lg:grid-cols-[auto_1fr] lg:gap-10">
-          <Filters enabledFilters={enabledFilters} show={showFilters} />
+          {filters}
           <div className="grid grid-cols-1 gap-4 lg:auto-rows-auto lg:grid-cols-4 lg:gap-6">
             <Skeleton className="h-[30.25rem]" />
             <Skeleton className="h-[30.25rem]" />

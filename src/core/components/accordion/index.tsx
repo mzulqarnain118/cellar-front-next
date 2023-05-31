@@ -1,6 +1,7 @@
 import { KeyboardEvent, ReactNode, useId, useState } from 'react'
 
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
+import { Collapse } from '@mantine/core'
 import { clsx } from 'clsx'
 
 interface AccordionProps {
@@ -62,14 +63,11 @@ export const Accordion = ({
           width={24}
         />
       </div>
-      <div
-        aria-labelledby={headerId}
-        className={clsx('h-0 overflow-hidden transition-all', open && '!h-max overflow-visible')}
-        id={bodyId}
-        role="region"
-      >
-        {children}
-      </div>
+      <Collapse in={open}>
+        <div aria-labelledby={headerId} id={bodyId} role="region">
+          {children}
+        </div>
+      </Collapse>
     </div>
   )
 }
