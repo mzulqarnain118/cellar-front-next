@@ -3,7 +3,9 @@ import { ReactNode, useCallback, useEffect } from 'react'
 
 import { useRouter } from 'next/router'
 
+import { identify, isInitialized } from '@fullstory/browser'
 import { modals } from '@mantine/modals'
+import { useSession } from 'next-auth/react'
 
 import { Button } from '@/core/components/button'
 import { Typography } from '@/core/components/typogrpahy'
@@ -28,6 +30,7 @@ interface RootLayoutProps {
 export const RootLayout = ({ children }: RootLayoutProps) => {
   const { ageVerified, setAgeVerified } = useAgeVerified()
   const router = useRouter()
+  const { data: session } = useSession()
   const { data: consultant } = useConsultantQuery()
   useCartQuery()
   useCuratedCartQuery()
@@ -68,6 +71,16 @@ export const RootLayout = ({ children }: RootLayoutProps) => {
       router.push(router)
     }
   }, [consultant?.displayId, consultant?.url, router, router.isReady])
+
+  useEffect(() => {
+    if (isInitialized() && !!session?.user) {
+      // Tell FullStory who you are.
+      identify(session.user.displayId, {
+        displayName: `${session.user.name.first} ${session.user.name.last}`,
+        email: session.user.email,
+      })
+    }
+  }, [session?.user])
 
   return router.pathname === CHECKOUT_PAGE_PATH ? (
     <CheckoutLayout>{children}</CheckoutLayout>
