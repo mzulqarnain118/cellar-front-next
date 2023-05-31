@@ -287,7 +287,7 @@ export const ProductListing = ({
 
   if (isFetching || isLoading) {
     return (
-      <div className="lg:flex lg:flex-col lg:gap-4">
+      <div className="grid gap-4 lg:flex lg:flex-col">
         {paginationHeader}
         <div className="lg:grid lg:grid-cols-[auto_1fr] lg:gap-10">
           {filters}
