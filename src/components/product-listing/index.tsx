@@ -76,7 +76,7 @@ export const ProductListing = ({
   const [active, setPage] = useState(initialPage)
   const [sort, setSort] = useState<Sort>(initialSort)
 
-  const [showFilters, setShowFilters] = useState(false)
+  const [showFilters, setShowFilters] = useState(isDesktop)
   const [_, scrollTo] = useWindowScroll()
 
   const options = useMemo(
@@ -88,12 +88,15 @@ export const ProductListing = ({
 
   const handleFilterClose = useCallback(() => setShowFilters(false), [])
 
-  const filters = useMemo(
-    () => (
+  const filters = useMemo(() => {
+    if (isLoading) {
+      return <div className="lg:min-w-[15rem] animate-pulse bg-neutral-light rounded" />
+    }
+
+    return (
       <Filters enabledFilters={enabledFilters} show={showFilters} onClose={handleFilterClose} />
-    ),
-    [enabledFilters, handleFilterClose, showFilters]
-  )
+    )
+  }, [enabledFilters, handleFilterClose, isLoading, showFilters])
 
   const onFilterToggle = useCallback(() => setShowFilters(prev => !prev), [])
 

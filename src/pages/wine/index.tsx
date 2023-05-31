@@ -103,7 +103,7 @@ const PLP = ({ page }: { page: Content.PlpDocument | null }) => {
     <>
       <NextSeo />
       <main className="py-10">
-        <div className="lg:max-w-screen-[1980px] mx-20">
+        <div className="lg:max-w-screen-[1980px] mx-4 lg:mx-20">
           <ProductListing
             categories={categories}
             enabledFilters={
