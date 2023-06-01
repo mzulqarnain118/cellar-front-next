@@ -16,6 +16,7 @@ import { useAgeVerified } from '@/lib/hooks/use-age-verified'
 import { CHECKOUT_PAGE_PATH } from '@/lib/paths'
 import { useCartQuery } from '@/lib/queries/cart'
 import { useConsultantQuery } from '@/lib/queries/consultant'
+import { useStatesQuery } from '@/lib/queries/state'
 
 import { CheckoutLayout } from '../checkout'
 
@@ -32,6 +33,7 @@ export const RootLayout = ({ children }: RootLayoutProps) => {
   const router = useRouter()
   const { data: session } = useSession()
   const { data: consultant } = useConsultantQuery()
+  const { isFetching: isFetchingStates, isLoading: isLoadingStates } = useStatesQuery()
   useCartQuery()
   useCuratedCartQuery()
   useVipCartQuery()
@@ -52,7 +54,7 @@ export const RootLayout = ({ children }: RootLayoutProps) => {
               over 21 years of age to enter.
             </Typography>
             <StatePicker popup />
-            <Button fullWidth onClick={handleClick}>
+            <Button fullWidth disabled={isFetchingStates || isLoadingStates} onClick={handleClick}>
               Yes, I am 21 years of age or older
             </Button>
           </div>
@@ -63,7 +65,7 @@ export const RootLayout = ({ children }: RootLayoutProps) => {
         title: 'Are you 21 or older?',
       })
     }
-  }, [ageVerified, handleClick, setAgeVerified])
+  }, [ageVerified, handleClick, isFetchingStates, isLoadingStates, setAgeVerified])
 
   useEffect(() => {
     if (!router.query.u && consultant?.displayId !== CORPORATE_CONSULTANT_ID) {

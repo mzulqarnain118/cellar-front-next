@@ -1,7 +1,8 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import { ChevronRightIcon } from '@heroicons/react/24/outline'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { LoadingOverlay } from '@mantine/core'
 import { NextSeo } from 'next-seo'
 import { FormProvider, SubmitHandler, UseFormProps, useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -79,7 +80,7 @@ export const GuestCheckout = () => {
     () => ({
       defaultValues,
       mode: 'onBlur',
-      reValidateMode: 'onBlur',
+      reValidateMode: 'onChange',
       resolver: zodResolver(guestCheckoutSchema),
     }),
     [defaultValues]
@@ -94,31 +95,34 @@ export const GuestCheckout = () => {
     setError,
   } = methods
 
-  const onSubmit: SubmitHandler<GuestCheckoutSchema> = async data => {
-    const { day, email, firstName, lastName, month, year } = data
+  const onSubmit: SubmitHandler<GuestCheckoutSchema> = useCallback(
+    async data => {
+      const { day, email, firstName, lastName, month, year } = data
 
-    if (isExistingGuest) {
-      guestSignIn({
-        createAccount: false,
-        dateOfBirth: { day, month, year },
-        email,
-        firstName,
-        lastName,
-        password: process.env.GUEST_PASSWORD || '',
-      })
-    } else {
-      createGuestAccount({
-        dateOfBirth: {
-          day,
-          month,
-          year,
-        },
-        email,
-        firstName,
-        lastName,
-      })
-    }
-  }
+      if (isExistingGuest) {
+        guestSignIn({
+          createAccount: false,
+          dateOfBirth: { day, month, year },
+          email,
+          firstName,
+          lastName,
+          password: process.env.GUEST_PASSWORD || '',
+        })
+      } else {
+        createGuestAccount({
+          dateOfBirth: {
+            day,
+            month,
+            year,
+          },
+          email,
+          firstName,
+          lastName,
+        })
+      }
+    },
+    [createGuestAccount, guestSignIn, isExistingGuest]
+  )
 
   const signInHref = useMemo(
     () => ({
@@ -134,9 +138,13 @@ export const GuestCheckout = () => {
       <div className="container mx-auto my-16 flex items-center justify-center">
         <div
           className={`
-            max-w-3xl rounded border border-neutral-300 bg-neutral-50 px-10 py-10 md:px-20
+            relative max-w-3xl rounded border border-neutral-300 bg-neutral-50 px-10 py-10 md:px-20
           `}
         >
+          <LoadingOverlay
+            className="rounded"
+            visible={isGuestCreatingAccount || isGuestSigningIn}
+          />
           <Typography as="h3">Checkout as guest</Typography>
           <Typography as="h6">
             Before you proceed, we need some information to complete your order.
