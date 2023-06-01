@@ -35,7 +35,9 @@ export const StatePicker = ({ popup = false }: StatePickerProps) => {
       const newStateId = value
       const newState = states?.find(state => state.provinceID.toString() === newStateId)
       setShippingState(newState)
-      queryClient.invalidateQueries(CART_QUERY_KEY)
+      queryClient.invalidateQueries({
+        queryKey: [...CART_QUERY_KEY, parseInt(newStateId || '48')],
+      })
     },
     [queryClient, setShippingState, states]
   )
@@ -71,13 +73,13 @@ export const StatePicker = ({ popup = false }: StatePickerProps) => {
     <Select
       searchable
       selectOnBlur
+      withinPortal
       classNames={classNames}
       data={stateOptions}
       filter={filter}
       label={popup ? 'Select the state you are planning to ship to' : 'Shipping to'}
       size={popup ? 'sm' : 'xs'}
       value={shippingState.provinceID.toString()}
-      withinPortal={popup}
       onChange={handleStateChange}
     />
   )

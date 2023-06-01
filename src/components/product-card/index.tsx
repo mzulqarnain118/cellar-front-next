@@ -1,7 +1,6 @@
 import { ChangeEvent, useCallback, useMemo, useState } from 'react'
 
 import dynamic from 'next/dynamic'
-import Image from 'next/image'
 
 import { Select, SelectProps } from '@mantine/core'
 import { clsx } from 'clsx'
@@ -16,6 +15,7 @@ import { useCartQuery } from '@/lib/queries/cart'
 import { useProcessStore } from '@/lib/stores/process'
 import { CartItem, SubscriptionProduct } from '@/lib/types'
 
+import { BlurImage } from '../blur-image'
 import { Price } from '../price'
 
 import { ProductImageLink } from './product-image-link'
@@ -91,18 +91,17 @@ export const ProductCard = ({ className, priority = false, product }: ProductCar
       selectedProduct.badges !== undefined ? (
         <div className="absolute left-4 top-4 flex flex-col space-y-1 lg:space-y-2">
           {selectedProduct.badges.map(badge => (
-            <div
-              key={badge.name}
-              className="tooltip tooltip-right tooltip-secondary cursor-pointer capitalize"
-              data-tip={badge.name}
-            >
-              <Image
-                alt={badge.name}
-                className="h-6 w-6 lg:h-9 lg:w-9"
-                height={36}
-                src={badge.imageUrl}
-                width={36}
-              />
+            <div key={badge.imageUrl} className="flex items-center gap-1.5">
+              <div className="h-6 w-6 lg:h-9 lg:w-9 relative">
+                <BlurImage
+                  fill
+                  alt={badge.name}
+                  className="object-contain"
+                  sizes="(max-width: 992px) 50vw, (max-width: 1400px) 100vw"
+                  src={badge.imageUrl}
+                />
+              </div>
+              <Typography className="text-sm">{badge.name}</Typography>
             </div>
           ))}
         </div>
@@ -277,7 +276,12 @@ export const ProductCard = ({ className, priority = false, product }: ProductCar
         </div>
         <div className="flex items-center justify-between lg:mt-auto">
           {dropdownOrNumberPicker}
-          <Button disabled={numberPickerDisabled} size={isDesktop ? 'md' : 'sm'} onClick={onClick}>
+          <Button
+            color="secondary"
+            disabled={numberPickerDisabled}
+            size={isDesktop ? 'md' : 'sm'}
+            onClick={onClick}
+          >
             Add to Cart
           </Button>
         </div>

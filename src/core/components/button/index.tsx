@@ -22,6 +22,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         className={clsx(
           'rounded normal-case',
           selectedColor === 'primary' && props.variant === undefined && 'text-secondary-light',
+          selectedColor === 'secondary' && props.variant === undefined && 'text-accent-light',
           dark &&
             `text-neutral-50 hover:bg-neutral-dark hover:brightness-90 enabled:border-neutral-dark
           enabled:bg-neutral-dark disabled:cursor-not-allowed`,

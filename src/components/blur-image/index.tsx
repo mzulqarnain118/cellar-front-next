@@ -27,6 +27,7 @@ export const BlurImage = forwardRef<HTMLImageElement, ImageProps>(
           'duration-300 ease-in-out',
           isLoading ? 'scale-110 blur-2xl grayscale' : 'scale-100 blur-0 grayscale-0'
         )}
+        sizes={rest.fill ? rest.sizes || '100vw' : undefined}
         style={rest.fill ? undefined : style}
         onLoadingComplete={onLoadingComplete}
       />

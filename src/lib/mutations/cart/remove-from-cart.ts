@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useSession } from 'next-auth/react'
 
 import { useCartStorage } from '@/lib/hooks/use-cart-storage'
 import { GET_SUBTOTAL_QUERY, OrderPrice } from '@/lib/queries/checkout/get-subtotal'
@@ -33,7 +34,7 @@ export const removeFromCart = async (options: RemoveFromCartOptions) => {
       return response
 
       // if (newItems.length === 0 && localStorage.getItem('giftMessage')) {
-      //   queryClient.invalidateQueries(CART_QUERY_KEY)
+      //   queryClient.invalidateQueries(queryKey)
       //   localStorage.removeItem('giftMessage')
       // }
     } else {
@@ -49,6 +50,8 @@ export const useRemoveFromCartMutation = () => {
   const [_, setCartStorage] = useCartStorage()
   const queryClient = useQueryClient()
   const { setIsMutatingCart } = useProcessStore()
+  const { data: session } = useSession()
+  const queryKey = [...CART_QUERY_KEY, session?.user?.shippingState.provinceID]
 
   return useMutation<
     CartModificationResponse,
@@ -65,19 +68,19 @@ export const useRemoveFromCartMutation = () => {
       }),
     mutationKey: ['removeFromCart'],
     onError: (_err, _product, context) => {
-      queryClient.setQueryData(CART_QUERY_KEY, context?.previousCart)
+      queryClient.setQueryData(queryKey, context?.previousCart)
       setCartStorage(context?.previousCart)
     },
     onMutate: async product => {
       setIsMutatingCart(true)
       // Cancel any outgoing fetches.
-      await queryClient.cancelQueries({ queryKey: CART_QUERY_KEY })
+      await queryClient.cancelQueries({ queryKey })
 
       // Snapshot the previous value.
-      const previousCart = queryClient.getQueryData<Cart | undefined>(CART_QUERY_KEY)
+      const previousCart = queryClient.getQueryData<Cart | undefined>(queryKey)
 
       // Optimistically update to the new value.
-      queryClient.setQueryData<Cart>(CART_QUERY_KEY, () => {
+      queryClient.setQueryData<Cart>(queryKey, () => {
         const newCart =
           previousCart !== undefined
             ? {
@@ -123,7 +126,7 @@ export const useRemoveFromCartMutation = () => {
             ...prices,
           }
         }
-        queryClient.setQueryData(CART_QUERY_KEY, newCartData)
+        queryClient.setQueryData(queryKey, newCartData)
         setCartStorage(newCartData)
       }
     },

@@ -1,4 +1,4 @@
-import { Fragment, useMemo } from 'react'
+import { useMemo } from 'react'
 
 import { Drawer, Transition } from '@mantine/core'
 import { Content, FilledContentRelationshipField } from '@prismicio/client'
@@ -34,11 +34,20 @@ export const Filters = ({ enabledFilters, onClose, show }: FiltersProps) => {
     [enabledFilters]
   )
 
-  const Wrapper = useMemo(() => (isDesktop ? Fragment : Drawer), [isDesktop])
+  const Wrapper = useMemo(() => (isDesktop ? 'div' : Drawer), [isDesktop])
+  const wrapperProps = useMemo(
+    () =>
+      isDesktop
+        ? // eslint-disable-next-line @typescript-eslint/no-empty-function
+          { onClose: () => {}, opened: 'false' }
+        : { classNames: filterMenuClassNames, onClose, opened: show },
+    [isDesktop, onClose, show]
+  )
 
   const filterMenu = useMemo(
     () => (
-      <Wrapper classNames={filterMenuClassNames} opened={show} onClose={onClose}>
+      // @ts-ignore
+      <Wrapper {...wrapperProps}>
         <div
           className={clsx(
             `lg:sticky lg:top-8 lg:left-0 lg:-translate-x-96 lg:z-10 lg:transition-transform
@@ -66,7 +75,7 @@ export const Filters = ({ enabledFilters, onClose, show }: FiltersProps) => {
         </div>
       </Wrapper>
     ),
-    [Wrapper, enabledFilters, enabledFiltersElements, onClose, show]
+    [Wrapper, enabledFilters, enabledFiltersElements, show, wrapperProps]
   )
 
   return filterMenu

@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { notifications } from '@mantine/notifications'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import CryptoJS from 'crypto-js'
+import { useSession } from 'next-auth/react'
 
 import { api } from '@/lib/api'
 import { CORPORATE_CONSULTANT_ID } from '@/lib/constants'
@@ -76,6 +77,7 @@ export const useCheckoutPayForOrderMutation = () => {
   const { data: cart } = useCartQuery()
   const { data: consultant } = useConsultantQuery()
   const { data: totalData } = useGetSubtotalQuery()
+  const { data: session } = useSession()
   const { reset } = useCheckoutActions()
   const { setReceipt } = useReceiptActions()
 
@@ -124,7 +126,7 @@ export const useCheckoutPayForOrderMutation = () => {
       reset()
 
       setReceipt(checkoutReceipt)
-      queryClient.invalidateQueries(CART_QUERY_KEY)
+      queryClient.invalidateQueries([...CART_QUERY_KEY, session?.user?.shippingState?.provinceID])
       await signOutServerSide()
       router.push(CHECKOUT_CONFIRMATION_PAGE_PATH)
     },

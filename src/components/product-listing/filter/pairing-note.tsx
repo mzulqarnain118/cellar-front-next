@@ -60,6 +60,7 @@ export const PairingNoteFilter = ({ slug }: PairingNoteFilterProps) => {
                     <BlurImage
                       fill
                       alt={pairingNote.name.replaceAll('-', ' ')}
+                      sizes="(max-width: 992px) 50vw, (max-width: 1400px) 100vw"
                       src={pairingNote.imageUrl}
                     />
                   </div>

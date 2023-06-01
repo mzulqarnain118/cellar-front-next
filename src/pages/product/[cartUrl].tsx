@@ -72,7 +72,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const queryClient = new QueryClient()
   const products = await queryClient.ensureQueryData([PRODUCTS_QUERY_KEY], getAllProducts)
   const paths =
-    products !== undefined ? products?.map(pdp => ({ params: { cartUrl: pdp.cartUrl } })) : []
+    products !== null ? products?.map(pdp => ({ params: { cartUrl: pdp.cartUrl } })) : []
 
   return {
     fallback: false,
@@ -113,7 +113,7 @@ const PDP: NextPage<PageProps> = ({ page }) => {
   )
 
   useEffect(() => {
-    if (product !== undefined) {
+    if (product !== null) {
       setSelectedProduct(product)
     }
   }, [product, setSelectedProduct])

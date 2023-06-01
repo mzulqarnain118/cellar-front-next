@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 
 import { notifications } from '@mantine/notifications'
 import { QueryFunction, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useSession } from 'next-auth/react'
 
 import { api } from '@/lib/api'
 import { CART_QUERY_KEY } from '@/lib/queries/cart'
@@ -44,6 +45,7 @@ export const useSharedCartQuery = () => {
   const sharedCartId = useMemo(() => query.sharedcartId?.toString(), [query.sharedcartId])
   const provinceId = useMemo(() => shippingState.provinceID, [shippingState.provinceID])
   const queryClient = useQueryClient()
+  const { data: session } = useSession()
   const { data: products } = useProductsQuery()
 
   return useQuery({
@@ -52,7 +54,7 @@ export const useSharedCartQuery = () => {
       if (response?.Success) {
         notifications.clean()
         const { Cart, CartId } = response.Data
-        queryClient.setQueryData([...CART_QUERY_KEY], {
+        queryClient.setQueryData([...CART_QUERY_KEY, session?.user?.shippingState.provinceID], {
           discounts: [],
           id: CartId,
           isSharedCart: true,

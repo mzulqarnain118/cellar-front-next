@@ -2,6 +2,7 @@ import { useRouter } from 'next/router'
 
 import { notifications } from '@mantine/notifications'
 import { QueryFunction, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useSession } from 'next-auth/react'
 
 import { api } from '@/lib/api'
 import { CART_QUERY_KEY } from '@/lib/queries/cart'
@@ -49,6 +50,7 @@ export const useVipCartQuery = () => {
   const orderDisplayId = query.OrderID?.toString() || undefined
   const queryClient = useQueryClient()
   const { data: products } = useProductsQuery()
+  const { data: session } = useSession()
 
   return useQuery({
     enabled: !!orderDisplayId,
@@ -56,7 +58,7 @@ export const useVipCartQuery = () => {
       if (data) {
         notifications.clean()
         const { CartID, cart_information } = data
-        queryClient.setQueryData([...CART_QUERY_KEY], {
+        queryClient.setQueryData([...CART_QUERY_KEY, session?.user?.shippingState.provinceID], {
           discounts: [],
           id: CartID,
           isSharedCart: true,

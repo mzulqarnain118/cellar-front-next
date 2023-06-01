@@ -60,6 +60,7 @@ export const TastingNoteFilter = ({ slug }: TastingNoteFilterProps) => {
                     <BlurImage
                       fill
                       alt={tastingNote.name.replaceAll('-', ' ')}
+                      sizes="(max-width: 992px) 50vw, (max-width: 1400px) 100vw"
                       src={tastingNote.imageUrl}
                     />
                   </div>

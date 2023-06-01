@@ -52,7 +52,7 @@ export const RootLayout = ({ children }: RootLayoutProps) => {
               over 21 years of age to enter.
             </Typography>
             <StatePicker popup />
-            <Button dark fullWidth onClick={handleClick}>
+            <Button fullWidth onClick={handleClick}>
               Yes, I am 21 years of age or older
             </Button>
           </div>

@@ -210,7 +210,7 @@ export const Header = () => {
 
   const handleUseCart = useCallback(() => {
     if (cartInfo !== undefined) {
-      queryClient.setQueryData<Cart>(CART_QUERY_KEY, {
+      queryClient.setQueryData<Cart>([...CART_QUERY_KEY, session?.user?.shippingState.provinceID], {
         discounts: [],
         id: curatedCart?.cartId || '',
         isCuratedCart: true,
@@ -257,7 +257,15 @@ export const Header = () => {
       }
       toggleCartOpen()
     }
-  }, [cartInfo, curatedCart, products, queryClient, setCuratedCart, toggleCartOpen])
+  }, [
+    cartInfo,
+    curatedCart,
+    products,
+    queryClient,
+    session?.user?.shippingState.provinceID,
+    setCuratedCart,
+    toggleCartOpen,
+  ])
 
   const cartButton = useMemo(
     () =>

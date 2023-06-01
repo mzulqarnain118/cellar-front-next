@@ -1,3 +1,5 @@
+import { useMemo } from 'react'
+
 import { useQuery } from '@tanstack/react-query'
 
 import { api } from '../api'
@@ -13,7 +15,7 @@ interface CreateCartOptions {
   provinceId?: number
 }
 
-const createCart = async (options?: CreateCartOptions): Promise<Cart> => {
+export const createCart = async (options?: CreateCartOptions): Promise<Cart> => {
   const newCartItems =
     options?.cartItems?.map(({ sku, quantity }) => ({ Quantity: quantity, SKU: sku })) || []
 
@@ -43,9 +45,13 @@ const createCart = async (options?: CreateCartOptions): Promise<Cart> => {
 
 export const CART_QUERY_KEY = ['cart']
 
-export const useCartQuery = () => {
+export const useCartQuery = (provinceId?: number) => {
   const { shippingState } = useShippingStateStore()
   const [cartStorage, setCartStorage] = useCartStorage()
+  const cartProvinceId = useMemo(
+    () => provinceId || shippingState?.provinceID,
+    [provinceId, shippingState?.provinceID]
+  )
 
   return useQuery({
     cacheTime: Infinity,
@@ -56,9 +62,8 @@ export const useCartQuery = () => {
     onSuccess: response => {
       setCartStorage(response)
     },
-    queryFn: () => createCart({ provinceId: shippingState?.provinceID }),
-    // eslint-disable-next-line @tanstack/query/exhaustive-deps
-    queryKey: CART_QUERY_KEY,
+    queryFn: () => createCart({ provinceId: cartProvinceId }),
+    queryKey: [...CART_QUERY_KEY, cartProvinceId],
     refetchOnWindowFocus: false,
     staleTime: Infinity,
   })

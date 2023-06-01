@@ -19,7 +19,7 @@ interface Data {
   sort: 'relevant' | 'price-low-high' | 'price-high-low'
 }
 
-export const getAllProducts: QueryFunction<ProductsSchema[] | undefined> = async () => {
+export const getAllProducts: QueryFunction<ProductsSchema[] | null> = async () => {
   try {
     const response = await localApi('products/all')
     const result = (await response.json()) as ProductsResponse
@@ -27,14 +27,13 @@ export const getAllProducts: QueryFunction<ProductsSchema[] | undefined> = async
     if (result.success) {
       return result.data
     }
+    return null
   } catch {
-    //
+    return null
   }
 }
 
-export const getProductByCartUrl: QueryFunction<ProductsSchema | undefined> = async ({
-  queryKey,
-}) => {
+export const getProductByCartUrl: QueryFunction<ProductsSchema | null> = async ({ queryKey }) => {
   try {
     const response = await localApi(`products/${queryKey[1]}`)
     const result = (await response.json()) as { data: ProductsSchema; success: boolean }
@@ -42,13 +41,14 @@ export const getProductByCartUrl: QueryFunction<ProductsSchema | undefined> = as
     if (result.success) {
       return result.data
     }
+    return null
   } catch {
-    //
+    return null
   }
 }
 
 export const getPaginatedProducts: QueryFunction<
-  PaginatedProductsSchema | undefined,
+  PaginatedProductsSchema | null,
   (string | number | Data | Record<string, string>)[]
 > = async ({ queryKey }) => {
   const data = queryKey[1] as Record<string, string>
@@ -65,6 +65,7 @@ export const getPaginatedProducts: QueryFunction<
   if (result.success) {
     return result.data
   }
+  return null
 }
 
 export const useProductsQuery = () =>
@@ -99,7 +100,7 @@ export const usePaginatedProducts = (data: Data) => {
 export const useInfiniteProducts = (data: { categories?: number[]; page: number }) =>
   useQuery({
     getNextPageParam: lastPage => {
-      if (lastPage !== undefined) {
+      if (lastPage !== null) {
         const nextPage = lastPage.page + 1
         if (lastPage.totalNumberOfPages <= nextPage) {
           return JSON.stringify({

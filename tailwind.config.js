@@ -24,6 +24,8 @@ module.exports = {
         light: {
           ...require('daisyui/src/colors/themes')['[data-theme=garden]'],
           brown: '#eeddcd',
+          primary: '#464c2c',
+          secondary: '#864f4f',
         },
       },
     ],
@@ -71,10 +73,15 @@ module.exports = {
           light: '#bdb7b7',
         },
         primary: {
-          DEFAULT: '#5c7f67',
-          dark: '#4b6853',
-          light: '#5c7f67',
+          DEFAULT: '#464c2c',
+          dark: '#',
+          light: '#464c2c',
         },
+        // primary: {
+        //   DEFAULT: '#5c7f67',
+        //   dark: '#4b6853',
+        //   light: '#5c7f67',
+        // },
         secondary: {
           DEFAULT: '#ecf4e7',
           dark: '#b9d7a8',

@@ -96,7 +96,7 @@ export const CTA = ({ cartUrl }: CTAProps) => {
 
   useEffect(() => {
     if (selectedProduct === undefined) {
-      setSelectedProduct(flightData)
+      setSelectedProduct(flightData || undefined)
     }
   }, [flightData, selectedProduct, setSelectedProduct])
 

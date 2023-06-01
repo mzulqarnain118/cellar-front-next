@@ -30,7 +30,7 @@ export const Options = ({ cartUrl }: OptionsProps) => {
 
   const handleOneTimeChange = useCallback(() => {
     setSelectedOption('one-time')
-    setSelectedProduct(flightData)
+    setSelectedProduct(flightData || undefined)
   }, [flightData, setSelectedOption, setSelectedProduct])
 
   const handleSubscriptionChange = useCallback(() => {
