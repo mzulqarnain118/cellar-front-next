@@ -1,3 +1,5 @@
+import { useMemo } from 'react'
+
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 
@@ -5,6 +7,7 @@ import { replaceItemByUniqueId } from '@/core/utils'
 import { useCartStorage } from '@/lib/hooks/use-cart-storage'
 import { CART_QUERY_KEY, useCartQuery } from '@/lib/queries/cart'
 import { GET_SUBTOTAL_QUERY, OrderPrice } from '@/lib/queries/checkout/get-subtotal'
+import { useShippingStateStore } from '@/lib/stores/shipping-state'
 import { toastError } from '@/lib/utils/notifications'
 
 import { api } from '../../api'
@@ -44,9 +47,13 @@ export const useAddToCartMutation = () => {
   const [_, setCartStorage] = useCartStorage()
   const { data: cart } = useCartQuery()
   const queryClient = useQueryClient()
+  const { shippingState } = useShippingStateStore()
   const { setIsMutatingCart } = useProcessStore()
   const { data: session } = useSession()
-  const queryKey = [...CART_QUERY_KEY, session?.user?.shippingState.provinceID]
+  const queryKey = useMemo(
+    () => [...CART_QUERY_KEY, shippingState.provinceID || session?.user?.shippingState.provinceID],
+    [session?.user?.shippingState.provinceID, shippingState]
+  )
 
   return useMutation<
     CartModificationResponse,
@@ -81,6 +88,7 @@ export const useAddToCartMutation = () => {
       // Snapshot the previous value.
       const previousCart = queryClient.getQueryData<Cart | undefined>(queryKey)
 
+      console.log(queryKey)
       // Optimistically update to the new value.
       queryClient.setQueryData(queryKey, () => {
         const existingItem = previousCart?.items.find(item => item.sku === product.item.sku)

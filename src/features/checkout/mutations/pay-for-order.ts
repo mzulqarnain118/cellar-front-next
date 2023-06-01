@@ -18,6 +18,7 @@ import {
   useCheckoutGuestAddress,
 } from '@/lib/stores/checkout'
 import { Receipt, useReceiptActions } from '@/lib/stores/receipt'
+import { useShippingStateStore } from '@/lib/stores/shipping-state'
 import { Failure, Success } from '@/lib/types'
 import { toastLoading, toastSuccess } from '@/lib/utils/notifications'
 
@@ -80,6 +81,7 @@ export const useCheckoutPayForOrderMutation = () => {
   const { data: session } = useSession()
   const { reset } = useCheckoutActions()
   const { setReceipt } = useReceiptActions()
+  const { shippingState } = useShippingStateStore()
 
   return useMutation<unknown, Failure, Partial<PayForOrderOptions> | Record<string, never>>({
     mutationFn: options =>
@@ -126,7 +128,10 @@ export const useCheckoutPayForOrderMutation = () => {
       reset()
 
       setReceipt(checkoutReceipt)
-      queryClient.invalidateQueries([...CART_QUERY_KEY, session?.user?.shippingState?.provinceID])
+      queryClient.invalidateQueries([
+        ...CART_QUERY_KEY,
+        shippingState.provinceID || session?.user?.shippingState?.provinceID,
+      ])
       await signOutServerSide()
       router.push(CHECKOUT_CONFIRMATION_PAGE_PATH)
     },

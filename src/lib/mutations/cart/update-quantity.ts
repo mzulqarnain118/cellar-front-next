@@ -1,3 +1,5 @@
+import { useMemo } from 'react'
+
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 
@@ -7,6 +9,7 @@ import { useCartStorage } from '@/lib/hooks/use-cart-storage'
 import { CART_QUERY_KEY, useCartQuery } from '@/lib/queries/cart'
 import { GET_SUBTOTAL_QUERY, OrderPrice } from '@/lib/queries/checkout/get-subtotal'
 import { useProcessStore } from '@/lib/stores/process'
+import { useShippingStateStore } from '@/lib/stores/shipping-state'
 import { Cart, CartItem, DEFAULT_CART_STATE } from '@/lib/types'
 
 import { getNewCartItems } from '../helpers'
@@ -57,7 +60,11 @@ export const useUpdateQuantityMutation = () => {
   const queryClient = useQueryClient()
   const { setIsMutatingCart } = useProcessStore()
   const { data: session } = useSession()
-  const queryKey = [...CART_QUERY_KEY, session?.user?.shippingState.provinceID]
+  const { shippingState } = useShippingStateStore()
+  const queryKey = useMemo(
+    () => [...CART_QUERY_KEY, shippingState.provinceID || session?.user?.shippingState.provinceID],
+    [session?.user?.shippingState.provinceID, shippingState]
+  )
 
   return useMutation<
     CartModificationResponse,

@@ -34,6 +34,7 @@ import {
 import { useProductsQuery } from '@/lib/queries/products'
 import { useCuratedCartStore } from '@/lib/stores/curated-cart'
 import { useCartOpen } from '@/lib/stores/process'
+import { useShippingStateStore } from '@/lib/stores/shipping-state'
 import { Cart } from '@/lib/types'
 import { signOut } from '@/lib/utils/sign-out'
 
@@ -70,6 +71,7 @@ export const Header = () => {
   const { data: cartInfo } = useGetCartInfoQuery(
     curatedCart !== undefined && curatedCart.cartId.length > 0 ? curatedCart.cartId : undefined
   )
+  const { shippingState } = useShippingStateStore()
 
   const menu = useMemo(
     () =>
@@ -210,48 +212,51 @@ export const Header = () => {
 
   const handleUseCart = useCallback(() => {
     if (cartInfo !== undefined) {
-      queryClient.setQueryData<Cart>([...CART_QUERY_KEY, session?.user?.shippingState.provinceID], {
-        discounts: [],
-        id: curatedCart?.cartId || '',
-        isCuratedCart: true,
-        isSharedCart: false,
-        isVipCart: false,
-        items: cartInfo.OrderLines.map(item => {
-          const product = products?.find(
-            productData => productData.sku === item.ProductSKU.toLowerCase()
-          )
-          return {
-            ...product,
-            cartUrl: product?.cartUrl || '',
-            catalogId: 0,
-            displayCategories: product?.displayCategories || [],
-            displayName: item.ProductDisplayName,
-            isAutoSip: product?.isAutoSip || false,
-            isClubOnly: product?.isClubOnly || false,
-            isGift: product?.isGift || false,
-            isGiftCard: product?.isGiftCard || false,
-            isScoutCircleClub: product?.isScoutCircleClub || false,
-            isVip: product?.isVip || false,
-            onSalePrice: item.DisplayPrice,
-            orderId: item.OrderID,
-            orderLineId: item.OrderLineID,
-            price: item.Price,
-            quantity: item.Quantity,
-            quantityAvailable: product?.quantityAvailable || 0,
-            sku: item.ProductSKU.toLowerCase(),
-            subscribable: product?.subscribable || false,
-          }
-        }).filter(Boolean),
-        orderDisplayId: cartInfo.DisplayID,
-        prices: {
-          orderTotal: 0,
-          retailDeliveryFee: 0,
-          shipping: 0,
-          subtotal: 0,
-          subtotalAfterSavings: 0,
-          tax: 0,
-        },
-      })
+      queryClient.setQueryData<Cart>(
+        [...CART_QUERY_KEY, shippingState.provinceID || session?.user?.shippingState.provinceID],
+        {
+          discounts: [],
+          id: curatedCart?.cartId || '',
+          isCuratedCart: true,
+          isSharedCart: false,
+          isVipCart: false,
+          items: cartInfo.OrderLines.map(item => {
+            const product = products?.find(
+              productData => productData.sku === item.ProductSKU.toLowerCase()
+            )
+            return {
+              ...product,
+              cartUrl: product?.cartUrl || '',
+              catalogId: 0,
+              displayCategories: product?.displayCategories || [],
+              displayName: item.ProductDisplayName,
+              isAutoSip: product?.isAutoSip || false,
+              isClubOnly: product?.isClubOnly || false,
+              isGift: product?.isGift || false,
+              isGiftCard: product?.isGiftCard || false,
+              isScoutCircleClub: product?.isScoutCircleClub || false,
+              isVip: product?.isVip || false,
+              onSalePrice: item.DisplayPrice,
+              orderId: item.OrderID,
+              orderLineId: item.OrderLineID,
+              price: item.Price,
+              quantity: item.Quantity,
+              quantityAvailable: product?.quantityAvailable || 0,
+              sku: item.ProductSKU.toLowerCase(),
+              subscribable: product?.subscribable || false,
+            }
+          }).filter(Boolean),
+          orderDisplayId: cartInfo.DisplayID,
+          prices: {
+            orderTotal: 0,
+            retailDeliveryFee: 0,
+            shipping: 0,
+            subtotal: 0,
+            subtotalAfterSavings: 0,
+            tax: 0,
+          },
+        }
+      )
       if (curatedCart !== undefined) {
         setCuratedCart({ ...curatedCart, cartAccepted: true, messageDismissed: true })
       }
@@ -264,6 +269,7 @@ export const Header = () => {
     queryClient,
     session?.user?.shippingState.provinceID,
     setCuratedCart,
+    shippingState.provinceID,
     toggleCartOpen,
   ])
 

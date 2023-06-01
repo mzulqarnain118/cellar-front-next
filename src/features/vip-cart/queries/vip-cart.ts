@@ -8,6 +8,7 @@ import { api } from '@/lib/api'
 import { CART_QUERY_KEY } from '@/lib/queries/cart'
 import { useProductsQuery } from '@/lib/queries/products'
 import { useProcessStore } from '@/lib/stores/process'
+import { useShippingStateStore } from '@/lib/stores/shipping-state'
 import { Cart, CartItem } from '@/lib/types'
 import { toastError, toastLoading, toastSuccess } from '@/lib/utils/notifications'
 
@@ -51,6 +52,7 @@ export const useVipCartQuery = () => {
   const queryClient = useQueryClient()
   const { data: products } = useProductsQuery()
   const { data: session } = useSession()
+  const { shippingState } = useShippingStateStore()
 
   return useQuery({
     enabled: !!orderDisplayId,
@@ -58,35 +60,40 @@ export const useVipCartQuery = () => {
       if (data) {
         notifications.clean()
         const { CartID, cart_information } = data
-        queryClient.setQueryData([...CART_QUERY_KEY, session?.user?.shippingState.provinceID], {
-          discounts: [],
-          id: CartID,
-          isSharedCart: true,
-          items: cart_information.OrderLines.map(item => {
-            const product = products?.find(product => product.sku === item.ProductSKU.toLowerCase())
+        queryClient.setQueryData(
+          [...CART_QUERY_KEY, shippingState.provinceID || session?.user?.shippingState.provinceID],
+          {
+            discounts: [],
+            id: CartID,
+            isSharedCart: true,
+            items: cart_information.OrderLines.map(item => {
+              const product = products?.find(
+                product => product.sku === item.ProductSKU.toLowerCase()
+              )
 
-            if (product) {
-              return {
-                ...product,
-                isVip: true,
-                orderId: item.OrderID,
-                orderLineId: item.OrderLineID,
-                quantity: item.Quantity,
-              } satisfies CartItem
-            } else {
-              return undefined
-            }
-          }).filter(Boolean),
-          orderDisplayId: cart_information.DisplayID,
-          prices: {
-            orderTotal: 0,
-            retailDeliveryFee: 0,
-            shipping: 0,
-            subtotal: cart_information.Subtotal,
-            subtotalAfterSavings: cart_information.SubtotalAfterSavings,
-            tax: cart_information.TaxTotal,
-          },
-        } satisfies Cart)
+              if (product) {
+                return {
+                  ...product,
+                  isVip: true,
+                  orderId: item.OrderID,
+                  orderLineId: item.OrderLineID,
+                  quantity: item.Quantity,
+                } satisfies CartItem
+              } else {
+                return undefined
+              }
+            }).filter(Boolean),
+            orderDisplayId: cart_information.DisplayID,
+            prices: {
+              orderTotal: 0,
+              retailDeliveryFee: 0,
+              shipping: 0,
+              subtotal: cart_information.Subtotal,
+              subtotalAfterSavings: cart_information.SubtotalAfterSavings,
+              tax: cart_information.TaxTotal,
+            },
+          } satisfies Cart
+        )
         toastSuccess({ message: 'VIP cart loaded' })
       }
     },

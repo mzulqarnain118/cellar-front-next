@@ -54,34 +54,39 @@ export const useSharedCartQuery = () => {
       if (response?.Success) {
         notifications.clean()
         const { Cart, CartId } = response.Data
-        queryClient.setQueryData([...CART_QUERY_KEY, session?.user?.shippingState.provinceID], {
-          discounts: [],
-          id: CartId,
-          isSharedCart: true,
-          items: Cart.OrderLines.map(item => {
-            const product = products?.find(product => product.sku === item.ProductSKU.toLowerCase())
+        queryClient.setQueryData(
+          [...CART_QUERY_KEY, shippingState.provinceID || session?.user?.shippingState.provinceID],
+          {
+            discounts: [],
+            id: CartId,
+            isSharedCart: true,
+            items: Cart.OrderLines.map(item => {
+              const product = products?.find(
+                product => product.sku === item.ProductSKU.toLowerCase()
+              )
 
-            if (product) {
-              return {
-                ...product,
-                orderId: item.OrderID,
-                orderLineId: item.OrderLineID,
-                quantity: item.Quantity,
-              } satisfies CartItem
-            } else {
-              return undefined
-            }
-          }).filter(Boolean),
-          orderDisplayId: Cart.DisplayID,
-          prices: {
-            orderTotal: 0,
-            retailDeliveryFee: 0,
-            shipping: 0,
-            subtotal: Cart.Subtotal,
-            subtotalAfterSavings: Cart.SubtotalAfterSavings,
-            tax: Cart.TaxTotal,
-          },
-        } satisfies Cart)
+              if (product) {
+                return {
+                  ...product,
+                  orderId: item.OrderID,
+                  orderLineId: item.OrderLineID,
+                  quantity: item.Quantity,
+                } satisfies CartItem
+              } else {
+                return undefined
+              }
+            }).filter(Boolean),
+            orderDisplayId: Cart.DisplayID,
+            prices: {
+              orderTotal: 0,
+              retailDeliveryFee: 0,
+              shipping: 0,
+              subtotal: Cart.Subtotal,
+              subtotalAfterSavings: Cart.SubtotalAfterSavings,
+              tax: Cart.TaxTotal,
+            },
+          } satisfies Cart
+        )
         toastSuccess({ message: 'Shared cart loaded' })
       }
     },
