@@ -5,7 +5,7 @@ import { useRouter } from 'next/router'
 import type { Content } from '@prismicio/client'
 import { asText } from '@prismicio/helpers'
 import { PrismicNextImage } from '@prismicio/next'
-import { PrismicRichText, PrismicText, SliceComponentProps } from '@prismicio/react'
+import { PrismicRichText, SliceComponentProps } from '@prismicio/react'
 import { clsx } from 'clsx'
 
 import { Button } from '@/core/components/button'
@@ -23,13 +23,13 @@ export const HeroBanner = ({ slice }: HeroBannerProps) => {
   const bgVideoUrl =
     !!slice.primary.background_video && 'url' in slice.primary.background_video
       ? slice.primary.background_video.url
-      : undefined
+      : ''
 
   const handleBgClick = useCallback(() => {
     router.push(asText(slice.primary.cta_link))
   }, [router, slice.primary.cta_link])
 
-  const _style = useMemo(
+  const style = useMemo(
     () => ({
       backgroundColor: slice.primary.cta_background_color || undefined,
       color: slice.primary.cta_text_color || undefined,
@@ -61,17 +61,21 @@ export const HeroBanner = ({ slice }: HeroBannerProps) => {
                 style={imageStyle}
                 width={350}
               />
-              <section
-                className="flex flex-col items-center text-center [&>*]:!normal-case"
-                style={
-                  { '--highlight': slice.primary.highlight_color || 'inherit' } as CSSProperties
-                }
-              >
-                <PrismicRichText field={slice.primary.content} />
-              </section>
-              <Button className="mt-4" size="lg" onClick={handleBgClick}>
-                <PrismicText field={slice.primary.cta_text} />
-              </Button>
+              {asText(slice.primary.content).length > 0 ? (
+                <section
+                  className="flex flex-col items-center text-center [&>*]:!normal-case"
+                  style={
+                    { '--highlight': slice.primary.highlight_color || 'inherit' } as CSSProperties
+                  }
+                >
+                  <PrismicRichText field={slice.primary.content} />
+                </section>
+              ) : undefined}
+              {asText(slice.primary.cta_text).length > 0 ? (
+                <Button className="mt-4" size="lg" style={style} onClick={handleBgClick}>
+                  {asText(slice.primary.cta_text)}
+                </Button>
+              ) : undefined}
             </div>
           </div>
         ) : undefined}
@@ -85,6 +89,7 @@ export const HeroBanner = ({ slice }: HeroBannerProps) => {
       slice.primary.cta_text,
       slice.primary.highlight_color,
       slice.primary.logo,
+      style,
     ]
   )
 

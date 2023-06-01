@@ -1,14 +1,24 @@
-import { CSSProperties } from 'react'
+import { CSSProperties, useMemo } from 'react'
 
-import type { Content } from '@prismicio/client'
+import { Content, asText } from '@prismicio/client'
 import { PrismicNextImage } from '@prismicio/next'
 import { PrismicRichText, SliceComponentProps } from '@prismicio/react'
+
+import { Link } from '../link'
 
 type ColumnedContentProps =
   SliceComponentProps<Content.RichContentPageDocumentDataBodyColumnedContentSlice>
 
 export const ColumnedContent = ({ slice }: ColumnedContentProps) => {
   const columns = slice.items.filter(col => !!col.image.url)
+
+  const linkStyle = useMemo(
+    () => ({
+      backgroundColor: slice.primary.cta_background_color || undefined,
+      color: slice.primary.cta_text_color || undefined,
+    }),
+    [slice.primary.cta_background_color, slice.primary.cta_text_color]
+  )
 
   return (
     <div
@@ -35,7 +45,7 @@ export const ColumnedContent = ({ slice }: ColumnedContentProps) => {
             <div className="flex flex-col lg:flex-row lg:space-x-20">
               {columns.map(column => (
                 <div key={column.image.url} className="flex-1">
-                  <PrismicNextImage field={column.image} />
+                  <PrismicNextImage className="mx-auto" field={column.image} />
                   <div
                     className="py-4 lg:pb-0"
                     style={{ '--highlight': column.highlight_color } as CSSProperties}
@@ -53,20 +63,13 @@ export const ColumnedContent = ({ slice }: ColumnedContentProps) => {
           >
             <PrismicRichText field={slice.primary.content} />
           </div>
-          {/* {slice.primary.ctaLink?.text && (
+          {asText(slice.primary.cta_text).length > 0 && (
             <div className="font-body">
-              <ButtonLink
-                backgroundColor={slice.primary.ctaBackgroundColor || undefined}
-                className="mt-4"
-                size="large"
-                textColor={slice.primary.ctaTextColor || undefined}
-                title={slice.primary.ctaText?.text}
-                to={slice.primary.ctaLink.text}
-              >
-                {slice.primary.ctaText?.text}
-              </ButtonLink>
+              <Link button className="mt-4" href={asText(slice.primary.cta_link)} style={linkStyle}>
+                {asText(slice.primary.cta_text)}
+              </Link>
             </div>
-          )} */}
+          )}
         </div>
       </div>
     </div>

@@ -62,8 +62,9 @@ export const getCuratedCart: QueryFunction<
     if (response.result) {
       return response.data
     }
+    return null
   } catch {
-    // console.log()
+    return null
   }
 }
 
@@ -92,7 +93,7 @@ export const useCuratedCartQuery = () => {
     queryKey: [
       CURATED_CART_QUERY_KEY,
       session?.user?.displayId,
-      consultant?.displayId !== CORPORATE_CONSULTANT_ID ? consultant.displayId : undefined,
+      consultant?.displayId !== CORPORATE_CONSULTANT_ID ? consultant?.displayId : undefined,
     ],
   })
 }

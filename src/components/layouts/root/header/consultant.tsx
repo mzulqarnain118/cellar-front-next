@@ -44,7 +44,7 @@ export const Consultant = () => {
             </Typography>
           </div>
         ) : (
-          'Shopping with a consultant?'
+          <Typography className="text-14">Shopping with a consultant?</Typography>
         )}
       </Link>
     </div>

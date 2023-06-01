@@ -48,7 +48,7 @@ export const RootLayout = ({ children }: RootLayoutProps) => {
       modals.open({
         centered: true,
         children: (
-          <div className="space-y-2">
+          <div key="age-verified" className="space-y-2">
             <Typography as="p">
               We know it&apos;s rude to ask, but we&apos;re a licensed, bonded winery. You must be
               over 21 years of age to enter.
