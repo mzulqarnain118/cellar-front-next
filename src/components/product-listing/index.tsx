@@ -175,6 +175,7 @@ export const ProductListing = ({
               <FilterBar />
               {isDesktop ? undefined : filtersButton}
               <Select
+                withinPortal
                 classNames={selectClassNames}
                 data={selectData}
                 label="Sort by"
