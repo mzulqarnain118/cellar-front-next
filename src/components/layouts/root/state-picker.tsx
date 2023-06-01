@@ -3,6 +3,7 @@ import { useCallback, useMemo } from 'react'
 import { Select, SelectProps, Skeleton } from '@mantine/core'
 import { useQueryClient } from '@tanstack/react-query'
 
+import { useCartStorage } from '@/lib/hooks/use-cart-storage'
 import { CART_QUERY_KEY } from '@/lib/queries/cart'
 import { useStatesQuery } from '@/lib/queries/state'
 import { useShippingStateStore } from '@/lib/stores/shipping-state'
@@ -17,6 +18,7 @@ interface StatePickerProps {
  */
 export const StatePicker = ({ popup = false }: StatePickerProps) => {
   const queryClient = useQueryClient()
+  const [_, setCartStorage] = useCartStorage()
   const { data: states, isFetching, isLoading } = useStatesQuery()
   const { setShippingState, shippingState } = useShippingStateStore()
 
@@ -35,11 +37,13 @@ export const StatePicker = ({ popup = false }: StatePickerProps) => {
       const newStateId = value
       const newState = states?.find(state => state.provinceID.toString() === newStateId)
       setShippingState(newState)
-      queryClient.invalidateQueries({
-        queryKey: [...CART_QUERY_KEY, parseInt(newStateId || '48')],
-      })
+      setCartStorage(undefined)
+      queryClient.invalidateQueries([
+        [...CART_QUERY_KEY, 48],
+        [...CART_QUERY_KEY, parseInt(newStateId || '48')],
+      ])
     },
-    [queryClient, setShippingState, states]
+    [queryClient, setCartStorage, setShippingState, states]
   )
 
   const filter: SelectProps['filter'] = useCallback(
