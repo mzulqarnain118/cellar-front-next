@@ -10,6 +10,7 @@ import { useSession } from 'next-auth/react'
 import { Button } from '@/core/components/button'
 import { Typography } from '@/core/components/typogrpahy'
 import { useCuratedCartQuery } from '@/features/curated-cart/queries/curated-cart'
+import { useSharedCartQuery } from '@/features/shared-cart/queries/shared-cart'
 import { useVipCartQuery } from '@/features/vip-cart/queries/vip-cart'
 import { CORPORATE_CONSULTANT_ID } from '@/lib/constants'
 import { useAgeVerified } from '@/lib/hooks/use-age-verified'
@@ -35,6 +36,7 @@ export const RootLayout = ({ children }: RootLayoutProps) => {
   const { data: consultant } = useConsultantQuery()
   const { isFetching: isFetchingStates, isLoading: isLoadingStates } = useStatesQuery()
   useCartQuery()
+  useSharedCartQuery()
   useCuratedCartQuery()
   useVipCartQuery()
 
