@@ -8,7 +8,7 @@ import { useCartStorage } from '@/lib/hooks/use-cart-storage'
 import { CART_QUERY_KEY, useCartQuery } from '@/lib/queries/cart'
 import { GET_SUBTOTAL_QUERY, OrderPrice } from '@/lib/queries/checkout/get-subtotal'
 import { useShippingStateStore } from '@/lib/stores/shipping-state'
-import { toastError } from '@/lib/utils/notifications'
+import { clearAllToasts, toastError, toastLoading } from '@/lib/utils/notifications'
 
 import { api } from '../../api'
 import { useProcessStore } from '../../stores/process'
@@ -26,6 +26,7 @@ export interface AddToCartOptions {
 }
 
 export const addToCart = async (options: AddToCartOptions) => {
+  toastLoading({ message: 'Adding to cart...' })
   const response = await api('v2/checkout/AddToCart', {
     json: {
       CartID: options.cartId,
@@ -35,6 +36,7 @@ export const addToCart = async (options: AddToCartOptions) => {
     },
     method: 'post',
   }).json<CartModificationResponse>()
+  clearAllToasts()
 
   if (response.Success) {
     return response

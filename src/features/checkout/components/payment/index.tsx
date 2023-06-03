@@ -21,7 +21,7 @@ import { Collapse, Select, SelectProps } from '@mantine/core'
 import { useDisclosure, useMergedRef, useScrollIntoView, useWindowScroll } from '@mantine/hooks'
 import { clsx } from 'clsx'
 import { useSession } from 'next-auth/react'
-import Cards, { Focused } from 'react-credit-cards-2'
+import { Focused } from 'react-credit-cards-2'
 import 'react-credit-cards-2/dist/es/styles-compiled.css'
 import { useIsFirstRender } from 'usehooks-ts'
 
@@ -177,6 +177,12 @@ export const Payment = memo(({ opened, refs, toggle }: PaymentProps) => {
     [activeCreditCard, guestCreditCard, session?.user?.isGuest]
   )
 
+  const hasPaymentError = useMemo(
+    () =>
+      errors?.payment !== undefined ? Object.values(errors?.payment).some(value => !!value) : false,
+    [errors?.payment]
+  )
+
   useEffect(() => {
     setIsAddingCreditCard(creditCardFormOpen)
   }, [creditCardFormOpen, setIsAddingCreditCard])
@@ -204,7 +210,7 @@ export const Payment = memo(({ opened, refs, toggle }: PaymentProps) => {
   ])
 
   return (
-    <>
+    <div className={clsx('py-4 rounded', hasPaymentError && '')}>
       <div
         className={clsx('flex cursor-pointer items-center justify-between rounded p-4')}
         role="button"
@@ -236,17 +242,35 @@ export const Payment = memo(({ opened, refs, toggle }: PaymentProps) => {
 
       <div className="space-y-4 px-4">
         <Collapse className="!m-0" in={opened && !creditCardFormOpen} transitionDuration={300}>
-          {session?.user?.isGuest ? (
-            <div />
-          ) : (
-            <Select
-              classNames={dropdownClassNames}
-              data={creditCardsData}
-              label="Credit card"
-              value={creditCard?.PaymentToken}
-              onChange={handleCreditCardChange}
+          <div className="grid grid-cols-[1fr_auto] items-start gap-4">
+            {session?.user?.isGuest ? (
+              <div />
+            ) : (
+              <Select
+                classNames={dropdownClassNames}
+                data={creditCardsData}
+                label="Credit card"
+                value={creditCard?.PaymentToken}
+                onChange={handleCreditCardChange}
+              />
+            )}
+
+            <Input
+              ref={cvvRef}
+              noSpacing
+              className="mt-0.5"
+              error={errors?.payment?.cvv}
+              label="CVV"
+              name="cvv"
+              pattern="^\d{3,4}$"
+              size="sm"
+              type="tel"
+              value={cvv}
+              onBlur={handleInputBlur}
+              onChange={handleInputChange}
+              onFocus={handleInputFocus}
             />
-          )}
+          </div>
         </Collapse>
 
         {opened && !session?.user?.isGuest ? (
@@ -270,48 +294,13 @@ export const Payment = memo(({ opened, refs, toggle }: PaymentProps) => {
           <CreditCardForm onCreate={handleCreateCreditCard} />
         </Collapse>
 
+        {session?.user?.isGuest ? (
+          <Button link onClick={handleChangeCreditCard}>
+            Change credit card
+          </Button>
+        ) : undefined}
         <Collapse in={showCreditCard}>
           <>
-            <div className="grid items-start justify-center gap-4 lg:flex lg:items-center">
-              <div className="[&>div]:m-0 [&>div]:scale-90">
-                <Cards
-                  preview
-                  cvc={cvv}
-                  expiry={`${creditCard?.ExpirationMonth}/${creditCard?.ExpirationYear}`}
-                  focused={focused}
-                  issuer={creditCard?.CreditCardTypeName}
-                  name={creditCard?.NameOnCard || ''}
-                  number={`************${creditCard?.DisplayNumber}`}
-                />
-              </div>
-              <div className="grid">
-                <Input
-                  ref={cvvRef}
-                  noSpacing
-                  error={errors?.payment?.cvv}
-                  label="CVV"
-                  name="cvv"
-                  pattern="^\d{3,4}$"
-                  size="sm"
-                  type="tel"
-                  value={cvv}
-                  onBlur={handleInputBlur}
-                  onChange={handleInputChange}
-                  onFocus={handleInputFocus}
-                />
-                <div>
-                  <Typography className="text-sm">Please confirm the CVV for your card:</Typography>
-                  <Typography noSpacing as="p" className="text-14 font-bold text-neutral-dark">
-                    {creditCard?.FriendlyDescription}
-                  </Typography>
-                  {session?.user?.isGuest ? (
-                    <Button link onClick={handleChangeCreditCard}>
-                      Change credit card
-                    </Button>
-                  ) : undefined}
-                </div>
-              </div>
-            </div>
             <div className="grid items-center justify-center lg:flex lg:items-start lg:justify-between lg:gap-4">
               <Input
                 ref={refs.promoCodeRef}
@@ -337,7 +326,7 @@ export const Payment = memo(({ opened, refs, toggle }: PaymentProps) => {
           </>
         </Collapse>
       </div>
-    </>
+    </div>
   )
 })
 

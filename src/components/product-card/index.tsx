@@ -250,13 +250,10 @@ export const ProductCard = ({ className, priority = false, product }: ProductCar
             <div>
               <div
                 className={`
-                  grid grid-cols-2 items-center justify-between text-sm text-neutral-500
+                  text-sm text-neutral-500
                 `}
               >
                 <Typography>{selectedProduct.attributes?.Varietal}</Typography>
-                <Typography className="justify-self-end text-right">
-                  {selectedProduct.attributes?.['Container Size']}
-                </Typography>
               </div>
               <Link
                 className="card-title text-base font-semibold leading-normal !text-neutral-900"

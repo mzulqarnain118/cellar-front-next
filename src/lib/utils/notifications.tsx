@@ -4,6 +4,8 @@ import { NotificationProps, notifications } from '@mantine/notifications'
 
 import { Typography } from '@/core/components/typogrpahy'
 
+export const clearAllToasts = () => notifications.clean()
+
 // ! TODO: Sentry logging.
 export const toastError = (props: NotificationProps) =>
   notifications.show({

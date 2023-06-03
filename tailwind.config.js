@@ -89,6 +89,7 @@ module.exports = {
         },
         success: '#36D399',
         warning: '#FBBD23',
+        white: '#F5F5F5',
       },
       fontSize: {
         14: '0.875rem',

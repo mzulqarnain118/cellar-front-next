@@ -7,7 +7,7 @@ import {
   useMemo,
 } from 'react'
 
-import { LoadingOverlay } from '@mantine/core'
+import { CheckboxProps, LoadingOverlay } from '@mantine/core'
 import { useLockedBody } from 'usehooks-ts'
 
 import { Link } from '@/components/link'
@@ -22,6 +22,11 @@ import { useGetSubtotalQuery } from '@/lib/queries/checkout/get-subtotal'
 import { useCheckoutActions, useCheckoutErrors } from '@/lib/stores/checkout'
 
 import { useCheckoutPayForOrderMutation } from '../../mutations/pay-for-order'
+
+const checkboxClassNames: CheckboxProps['classNames'] = {
+  error: 'text-14',
+  label: 'text-14',
+}
 
 interface PayForOrderRefs {
   autoSipRef: MutableRefObject<HTMLInputElement | null>
@@ -77,6 +82,7 @@ export const PayForOrder = ({ refs, validate }: PayForOrderProps) => {
         <div className="mb-24 space-y-4">
           <Checkbox
             ref={refs.termsRef}
+            classNames={checkboxClassNames}
             color="dark"
             error={errors?.terms}
             label={
@@ -99,6 +105,7 @@ export const PayForOrder = ({ refs, validate }: PayForOrderProps) => {
           {isAutoSipCart ? (
             <Checkbox
               ref={refs.autoSipRef}
+              classNames={checkboxClassNames}
               color="dark"
               error={errors?.autoSipTerms}
               label={
@@ -114,6 +121,7 @@ export const PayForOrder = ({ refs, validate }: PayForOrderProps) => {
           {isScoutCircleCart ? (
             <Checkbox
               ref={refs.wineClubRef}
+              classNames={checkboxClassNames}
               color="dark"
               error={errors?.wineClubTerms}
               label={
@@ -128,7 +136,7 @@ export const PayForOrder = ({ refs, validate }: PayForOrderProps) => {
             />
           ) : undefined}
         </div>
-        <div className="fixed bottom-0 flex w-[stretch] items-center border-t border-t-neutral bg-[#f7f3f4] py-4 pr-4 lg:w-[calc(50%-9.25rem)] lg:pr-0">
+        <div className="fixed bottom-0 flex w-[stretch] items-center border-t border-t-neutral bg-[#f7f3f4] py-4 pr-4 lg:w-[50svw]">
           <div className="grid">
             <Typography className="text-neutral-600">TOTAL</Typography>
             <Typography className="text-2xl font-bold">

@@ -12,7 +12,7 @@ import { useProductsQuery } from '@/lib/queries/products'
 import { useProcessStore } from '@/lib/stores/process'
 import { useShippingStateStore } from '@/lib/stores/shipping-state'
 import { Cart, CartItem } from '@/lib/types'
-import { toastLoading, toastSuccess } from '@/lib/utils/notifications'
+import { toastLoading } from '@/lib/utils/notifications'
 
 import { GetSharedCartResponse } from '../types'
 
@@ -87,7 +87,6 @@ export const useSharedCartQuery = () => {
             },
           } satisfies Cart
         )
-        toastSuccess({ message: 'Shared cart loaded' })
       }
     },
     queryFn: getSharedCart,

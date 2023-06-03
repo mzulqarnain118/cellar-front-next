@@ -186,7 +186,7 @@ const CheckoutPage: NextPage<PageProps> = () => {
       if (!prefersReducedMotion) {
         scrollAbcIntoView()
       }
-      setErrors({ delivery: 'Please select a pick up option.' })
+      setErrors({ delivery: 'Please select one.' })
       return false
     } else if (
       isPickUp &&

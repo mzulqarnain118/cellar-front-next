@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 
 import dynamic from 'next/dynamic'
 
-import { Collapse, Radio } from '@mantine/core'
+import { Collapse, Radio, RadioProps } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 
 import { Button } from '@/core/components/button'
@@ -28,6 +28,8 @@ const HoldAtLocationLocator = dynamic(
 interface PickUpProps {
   refs: DeliveryRefs
 }
+
+const radioClassNames: RadioProps['classNames'] = { label: 'text-14' }
 
 export const PickUp = ({ refs }: PickUpProps) => {
   const errors = useCheckoutErrors()
@@ -96,13 +98,16 @@ export const PickUp = ({ refs }: PickUpProps) => {
 
   return (
     <div className="flex flex-col space-y-3">
+      {errors?.delivery ? (
+        <Typography className="text-error">{errors.delivery}</Typography>
+      ) : undefined}
       <Radio
         checked={lpuOpened}
+        classNames={radioClassNames}
         color="brand"
         disabled={isUpdatingShippingMethod}
-        error={errors?.delivery}
         label="Scout &amp; Cellar, Local Pick Up in Dallas, Texas"
-        size="md"
+        size="sm"
         onChange={handleLpuOpen}
       />
 
@@ -127,11 +132,11 @@ export const PickUp = ({ refs }: PickUpProps) => {
       <Radio
         ref={refs.halRef}
         checked={halOpened}
+        classNames={radioClassNames}
         color="brand"
         disabled={isUpdatingShippingMethod}
-        error={errors?.delivery}
         label="Pick up at a hold-at-location"
-        size="md"
+        size="sm"
         onChange={handleHalOpen}
       />
 
@@ -146,9 +151,6 @@ export const PickUp = ({ refs }: PickUpProps) => {
       >
         Shipping to Alabama? Select an Alabama ABC store
       </Button>
-      {errors?.delivery ? (
-        <Typography className="text-error">{errors.delivery}</Typography>
-      ) : undefined}
 
       <Collapse in={abcOpened}>
         <ABC />
