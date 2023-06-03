@@ -46,7 +46,7 @@ export const RootLayout = ({ children }: RootLayoutProps) => {
   }, [setAgeVerified])
 
   useEffect(() => {
-    if (ageVerified === 'false') {
+    if (ageVerified === undefined || ageVerified === 'false') {
       modals.open({
         centered: true,
         children: (
