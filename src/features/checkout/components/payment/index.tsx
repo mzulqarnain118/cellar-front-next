@@ -1,13 +1,4 @@
-import {
-  ChangeEventHandler,
-  FocusEventHandler,
-  MutableRefObject,
-  memo,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react'
+import { ChangeEventHandler, MutableRefObject, memo, useCallback, useEffect, useMemo } from 'react'
 
 import {
   ChevronDownIcon,
@@ -21,7 +12,6 @@ import { Collapse, Select, SelectProps } from '@mantine/core'
 import { useDisclosure, useMergedRef, useScrollIntoView, useWindowScroll } from '@mantine/hooks'
 import { clsx } from 'clsx'
 import { useSession } from 'next-auth/react'
-import { Focused } from 'react-credit-cards-2'
 import 'react-credit-cards-2/dist/es/styles-compiled.css'
 import { useIsFirstRender } from 'usehooks-ts'
 
@@ -62,7 +52,6 @@ interface PaymentProps {
 }
 
 export const Payment = memo(({ opened, refs, toggle }: PaymentProps) => {
-  const [focused, setFocused] = useState<Focused | undefined>('')
   const activeCreditCard = useCheckoutActiveCreditCard()
   const activeShippingAddress = useCheckoutActiveShippingAddress()
   const cvv = useCheckoutCvv()
@@ -150,14 +139,6 @@ export const Payment = memo(({ opened, refs, toggle }: PaymentProps) => {
     },
     [setCvv, setErrors]
   )
-
-  const handleInputBlur: FocusEventHandler<HTMLInputElement> = useCallback(() => {
-    setFocused('')
-  }, [])
-
-  const handleInputFocus: FocusEventHandler<HTMLInputElement> = useCallback(() => {
-    setFocused('cvc')
-  }, [])
 
   const handleChangeCreditCard = useCallback(() => {
     openCreditCardForm()
@@ -266,9 +247,7 @@ export const Payment = memo(({ opened, refs, toggle }: PaymentProps) => {
               size="sm"
               type="tel"
               value={cvv}
-              onBlur={handleInputBlur}
               onChange={handleInputChange}
-              onFocus={handleInputFocus}
             />
           </div>
         </Collapse>
