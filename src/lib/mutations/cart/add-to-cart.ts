@@ -88,7 +88,6 @@ export const useAddToCartMutation = () => {
       // Snapshot the previous value.
       const previousCart = queryClient.getQueryData<Cart | undefined>(queryKey)
 
-      console.log(queryKey)
       // Optimistically update to the new value.
       queryClient.setQueryData(queryKey, () => {
         const existingItem = previousCart?.items.find(item => item.sku === product.item.sku)
