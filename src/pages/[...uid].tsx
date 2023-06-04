@@ -28,17 +28,19 @@ export const getStaticProps = async ({
     }
   }
 
-  if (uid !== undefined) {
-    page = await client.getByUID('rich_content_page', uid)
-  }
+  try {
+    if (uid !== undefined) {
+      page = await client.getByUID('rich_content_page', uid)
+    }
 
-  if (page === undefined) {
+    if (page === undefined) {
+      return {
+        notFound: true,
+      }
+    }
+  } catch {
     return {
-      redirect: {
-        // ! TODO: Set to 404 page.
-        destination: HOME_PAGE_PATH,
-        permanent: false,
-      },
+      notFound: true,
     }
   }
 
@@ -47,7 +49,7 @@ export const getStaticProps = async ({
   return {
     props: {
       dehydratedState: dehydrate(queryClient),
-      page,
+      page: page || null,
     },
   }
 }
