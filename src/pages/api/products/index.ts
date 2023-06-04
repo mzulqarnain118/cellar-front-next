@@ -27,7 +27,7 @@ const handler = async (req: NextRequest) => {
   const { searchParams } = new URL(req.url)
   const page = parseInt(searchParams.get('page') || '0') || 1
   const perPage = parseInt(searchParams.get('limit') || '0') || 16
-  const displayCategoryIds = searchParams.get('categories')?.split(',').map(Number) || []
+  const displayCategoryIds = searchParams.get('categories')?.split(',').map(Number) || [1]
   const sort: 'relevant' | 'price-low-high' | 'price-high-low' =
     (searchParams.get('sort') as 'relevant' | 'price-low-high' | 'price-high-low') || 'relevant'
   const provinceId = parseInt(searchParams.get('provinceId') || '48')

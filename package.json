@@ -54,6 +54,7 @@
     "dotenv": "^16.0.3",
     "embla-carousel-autoplay": "^7.1.0",
     "embla-carousel-react": "^7.1.0",
+    "fuse.js": "^6.6.2",
     "html-react-parser": "^3.0.16",
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.1",

@@ -13,6 +13,7 @@ import { Button } from '@/core/components/button'
 import { Skeleton } from '@/core/components/skeleton'
 import { Typography } from '@/core/components/typogrpahy'
 import { useIsDesktop } from '@/core/hooks/use-is-desktop'
+import { usePaginatedSearchQuery } from '@/features/search/queries'
 import { DISPLAY_CATEGORY } from '@/lib/constants/display-category'
 import { usePaginatedProducts } from '@/lib/queries/products'
 import { useConsultantStore } from '@/lib/stores/consultant'
@@ -63,6 +64,7 @@ interface ProductListingProps {
   enabledFilters?: FilledContentRelationshipField<'filter', string, Content.FilterDocument>[]
   page?: number
   limit?: number
+  search?: string
   sort?: Sort
 }
 
@@ -71,6 +73,7 @@ export const ProductListing = ({
   enabledFilters = [],
   page: initialPage = 1,
   limit = 16,
+  search = '',
   sort: initialSort = 'relevant',
 }: ProductListingProps) => {
   const { consultant } = useConsultantStore()
@@ -83,11 +86,12 @@ export const ProductListing = ({
   const [_, scrollTo] = useWindowScroll()
 
   const options = useMemo(
-    () => ({ categories, limit, page: active, sort }),
-    [categories, limit, active, sort]
+    () => ({ categories, limit, page: active, search, sort }),
+    [categories, limit, active, search, sort]
   )
 
   const { data, isError, isFetching, isLoading } = usePaginatedProducts(options)
+  const { data: _searchData } = usePaginatedSearchQuery(options)
 
   const handleFilterClose = useCallback(() => setShowFilters(false), [])
 

@@ -6,7 +6,7 @@ import { Sort } from '../product-listing'
 
 const ProductListing = dynamic(
   () => import('../product-listing').then(({ ProductListing }) => ProductListing),
-  { ssr: false }
+  { ssr: true }
 )
 
 interface PlpShellProps {
@@ -14,6 +14,7 @@ interface PlpShellProps {
   enabledFilters: FilledContentRelationshipField<'filter', string, Content.FilterDocument>[]
   limit: number
   page: number
+  search?: string
   sort: Sort
 }
 
@@ -22,6 +23,7 @@ export const PlpShell = ({
   enabledFilters,
   limit,
   page: currentPage,
+  search = '',
   sort,
 }: PlpShellProps) => (
   <main className="py-10">
@@ -37,6 +39,7 @@ export const PlpShell = ({
         }
         limit={limit}
         page={currentPage}
+        search={search}
         sort={sort}
       />
     </div>
