@@ -35,7 +35,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         success: false,
       })
     }
-    const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/products${search}`)
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_APP_URL}/api/products?${search?.toString()}`
+    )
 
     if (response.ok) {
       const data = (await response.json()) as ProductsResponse
