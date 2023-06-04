@@ -1,3 +1,5 @@
+import { useMemo } from 'react'
+
 import { QueryFunction, useQuery } from '@tanstack/react-query'
 
 import { localApi } from '@/lib/api'
@@ -41,10 +43,15 @@ export const getSearchResult: QueryFunction<
     }
 
     if (typeof data !== 'string') {
-      const searchParams = new URLSearchParams(data).toString()
-      const response = await localApi(`search${searchParams ? `?${searchParams}` : ''}`, {
-        method: 'get',
-      }).json<SearchResponse>()
+      const searchParams = new URLSearchParams(data)
+      searchParams.delete('search')
+      searchParams.set('q', data.search)
+      const response = await localApi(
+        `search${searchParams.toString() ? `?${searchParams.toString()}` : ''}`,
+        {
+          method: 'get',
+        }
+      ).json<SearchResponse>()
 
       if (response.success) {
         return response.data
@@ -63,11 +70,22 @@ export const PAGINATED_SEARCH_QUERY_KEY = 'paginated-search'
 
 export const usePaginatedSearchQuery = (data: Data) => {
   const { provinceID } = useUserShippingState()
+  const queryData = useMemo(
+    () => ({
+      categories: data.categories,
+      limit: data.limit,
+      page: data.page,
+      provinceId: provinceID,
+      search: data.search,
+      sort: data.sort,
+    }),
+    [data.categories, data.limit, data.page, data.search, data.sort, provinceID]
+  )
 
   return useQuery({
     keepPreviousData: true,
     queryFn: getSearchResult,
-    queryKey: [PAGINATED_SEARCH_QUERY_KEY, { ...data, provinceID }],
+    queryKey: [PAGINATED_SEARCH_QUERY_KEY, queryData],
     refetchOnMount: false,
     refetchOnWindowFocus: false,
   })

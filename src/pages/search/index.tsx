@@ -5,24 +5,26 @@ import { useRouter } from 'next/router'
 import { Content } from '@prismicio/client'
 import { FilledContentRelationshipField } from '@prismicio/types'
 import { dehydrate } from '@tanstack/react-query'
-import { GetServerSidePropsContext } from 'next'
+import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import { NextSeo } from 'next-seo'
 
 import { PlpShell } from '@/components/plp-shell'
 import { DEFAULT_LIMIT, DEFAULT_PAGE, DEFAULT_SORT, Sort } from '@/components/product-listing'
 import { PAGINATED_SEARCH_QUERY_KEY, getSearchResult } from '@/features/search/queries'
-import { WINE_PAGE_PATH } from '@/lib/paths'
 import { getStaticNavigation } from '@/lib/queries/header'
 import { PAGINATED_PRODUCTS_QUERY_KEY, getPaginatedProducts } from '@/lib/queries/products'
 import { createClient } from '@/prismic-io'
 
-export const getServerSideProps = async ({ previewData, query }: GetServerSidePropsContext) => {
+export const getServerSideProps: GetServerSideProps = async ({
+  previewData,
+  query,
+}: GetServerSidePropsContext) => {
   const { q } = query
   const searchQuery = q?.toString()
 
   if (!query?.q || !searchQuery) {
     return {
-      redirect: WINE_PAGE_PATH,
+      props: {},
     }
   }
 
@@ -46,7 +48,7 @@ export const getServerSideProps = async ({ previewData, query }: GetServerSidePr
 
   if (search.length === 0) {
     return {
-      redirect: WINE_PAGE_PATH,
+      props: {},
     }
   }
 
@@ -106,7 +108,7 @@ const SearchPage = ({ page }: { page: Content.PlpDocument | null }) => {
     .map(Number)
   const limit = router.query.limit ? parseInt(router.query.limit.toString()) : DEFAULT_LIMIT
   const sort: Sort = router.query.sort ? (router.query.sort.toString() as Sort) : DEFAULT_SORT
-  const search = router.query.search ? router.query.search.toString() : undefined
+  const search = router.query.q ? router.query.q.toString() : undefined
   const enabledFilters = useMemo(
     () =>
       page?.data.enabled_filters

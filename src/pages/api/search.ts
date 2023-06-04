@@ -1,53 +1,39 @@
-import { NextRequest } from 'next/server'
-
 import Fuse from 'fuse.js'
+import { NextApiRequest, NextApiResponse } from 'next'
 
 import { ProductsResponse, ProductsSchema } from '@/lib/types/schemas/product'
-
-export const config = {
-  runtime: 'edge',
-}
 
 export type FuseSearchResult = Fuse.FuseResult<ProductsSchema>
 
 const options: Fuse.IFuseOptions<ProductsSchema> = {
+  findAllMatches: true,
+  includeMatches: true,
   includeScore: true,
-  keys: ['displayName', 'sku'],
-  minMatchCharLength: 2,
-  useExtendedSearch: true,
+  keys: ['displayName'],
+  useExtendedSearch: false,
 }
 
-const handler = async (req: NextRequest) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     if (req.method !== 'GET') {
-      return new Response(
-        JSON.stringify({
+      res
+        .status(405)
+        .appendHeader('Allow', 'GET')
+        .json({
           error: {
             message: `Method "${req.method}" is not allowed.`,
           },
           success: false,
-        }),
-        {
-          headers: {
-            Allow: 'GET',
-          },
-          status: 405, // * Method not allowed.
-        }
-      )
+        })
     }
-    const { search, searchParams } = new URL(req.url)
-    const q = searchParams.get('q')
+    const { query: search } = req
+    const q = search.q?.toString()
 
     if (!q) {
-      return new Response(
-        JSON.stringify({
-          message: "A query param called 'q' containing the search query is required.",
-          success: false,
-        }),
-        {
-          status: 400, // * Bad data.
-        }
-      )
+      res.status(400).json({
+        message: "A query param called 'q' containing the search query is required.",
+        success: false,
+      })
     }
     const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/products${search}`)
 
@@ -58,56 +44,40 @@ const handler = async (req: NextRequest) => {
         const { data: productsData } = data
         const products = productsData
         const fuse = new Fuse(products, options)
-        const result = fuse.search(q.toString())
+        const result = fuse.search(q?.toString() || '')
 
         if (result === undefined) {
-          return new Response(
-            JSON.stringify({
+          res
+            .status(204)
+            .setHeader('Cache-Control', 's-maxage-1200, stale-while-revalidate-600')
+            .setHeader('Content-Type', 'application/json')
+            .json({
               data: [],
               success: true,
-            }),
-            {
-              headers: {
-                'Cache-Control': 's-maxage=1200, stale-while-revalidate=600',
-                'Content-Type': 'application/json',
-              },
-              status: 204, // * No content.
-            }
-          )
+            })
         } else {
-          return new Response(
-            JSON.stringify({
+          res
+            .status(200)
+            .setHeader('Cache-Control', 's-maxage-1200, stale-while-revalidate-600')
+            .setHeader('Content-Type', 'application/json')
+            .json({
               data: result.map(product => ({ ...product, score: product.score || 0 })),
               success: true,
-            }),
-            {
-              headers: {
-                'Cache-Control': 's-maxage=1200, stale-while-revalidate=600',
-                'Content-Type': 'application/json',
-              },
-              status: 200,
-            }
-          )
+            })
         }
       }
 
-      return new Response(
-        JSON.stringify({
-          error: { message: `There was an error fetching a search result for query: ${q}.` },
-          success: false,
-        })
-      )
+      res.status(500).json({
+        error: { message: `There was an error fetching a search result for query: ${q}.` },
+        success: false,
+      })
     }
   } catch (error) {
-    return new Response(
-      JSON.stringify({
-        error: {
-          message: 'There was an error fetching a search result for query',
-        },
-        success: false,
-      }),
-      { status: 500 }
-    )
+    console.error(error)
+    res.status(500).json({
+      error: 'Something went wrong',
+      success: false,
+    })
   }
 }
 
