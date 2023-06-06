@@ -16,10 +16,10 @@ import { SearchItem } from './search-item'
 const icon = <MagnifyingGlassIcon className="h-5 w-5 stroke-[3] text-black" />
 
 export const SearchNew = () => {
-  const [opened, setOpened] = useState(true)
+  const [opened, setOpened] = useState(false)
 
   const close = useCallback(() => {
-    // setOpened(false)
+    setOpened(false)
   }, [])
   const ref = useClickOutside(close)
   const [value, setValue] = useState('')
@@ -98,7 +98,7 @@ export const SearchNew = () => {
         rightSection={rightSection}
         value={value}
         onChange={setValue}
-        // onClick={handleClick}
+        onClick={handleClick}
         onItemSubmit={handleItemSubmit}
       />
       <Button dark className="hidden absolute right-2 top-1.5" size="xs" type="submit">
