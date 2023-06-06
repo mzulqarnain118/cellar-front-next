@@ -246,7 +246,7 @@ export const ProductCard = ({ className, priority = false, product }: ProductCar
       </div>
       <div className="flex flex-col justify-between">
         <div>
-          <div className="grid grid-rows-2">
+          <div className="grid grid-rows-1">
             <div>
               <div
                 className={`

@@ -140,9 +140,9 @@ export const ProductListing = ({
           {filters}
           <div
             className={clsx(
-              'transition-all grid gap-4 md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-4 3xl:grid-cols-5 relative',
-              showFilters &&
-                'min-[1920px]:!grid-cols-4 min-[1400px]:!grid-cols-3 xl:!grid-cols-2 lg:!grid-cols-1'
+              'transition-all grid gap-4 md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-4 3xl:grid-cols-5 relative'
+              // showFilters &&
+              //   'min-[1920px]:!grid-cols-4 min-[1400px]:!grid-cols-3 xl:!grid-cols-2 lg:!grid-cols-1'
             )}
           >
             {data.products.map((product, index) => (
