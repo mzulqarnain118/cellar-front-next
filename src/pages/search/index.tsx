@@ -10,7 +10,7 @@ import { NextSeo } from 'next-seo'
 
 import { PlpShell } from '@/components/plp-shell'
 import { DEFAULT_LIMIT, DEFAULT_PAGE, DEFAULT_SORT, Sort } from '@/components/product-listing'
-import { PAGINATED_SEARCH_QUERY_KEY, getSearchResult } from '@/features/search/queries'
+import { PAGINATED_SEARCH_QUERY_KEY, getPaginatedSearchResult } from '@/features/search/queries'
 import { getStaticNavigation } from '@/lib/queries/header'
 import { PAGINATED_PRODUCTS_QUERY_KEY, getPaginatedProducts } from '@/lib/queries/products'
 import { createClient } from '@/prismic-io'
@@ -84,7 +84,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   await Promise.all([
     queryClient.prefetchQuery(
       [PAGINATED_SEARCH_QUERY_KEY, { categories, limit, page, search, sort }],
-      getSearchResult
+      getPaginatedSearchResult
     ),
     queryClient.prefetchQuery(
       [...PAGINATED_PRODUCTS_QUERY_KEY, { categories, limit, page, sort }],

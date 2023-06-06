@@ -16,6 +16,7 @@ interface Data {
   limit?: number
   page: number
   provinceId?: number
+  search?: string
   sort: 'relevant' | 'price-low-high' | 'price-high-low'
 }
 
@@ -57,6 +58,12 @@ export const getPaginatedProducts: QueryFunction<
     data.categories = data.categories.toString()
   }
 
+  if (data.search) {
+    data.categories = [1].toString()
+    data.q = data.search
+    delete data.search
+  }
+
   const params = new URLSearchParams(data).toString()
   const response = await localApi(`products${params ? `?${params}` : ''}`)
 
@@ -85,10 +92,11 @@ export const useProductQuery = (cartUrl: string) =>
   })
 
 export const PAGINATED_PRODUCTS_QUERY_KEY = ['paginated-products']
-export const usePaginatedProducts = (data: Data) => {
+export const usePaginatedProducts = (data: Data, enabled = true) => {
   const { provinceID } = useUserShippingState()
 
   return useQuery({
+    enabled,
     keepPreviousData: true,
     queryFn: getPaginatedProducts,
     queryKey: [...PAGINATED_PRODUCTS_QUERY_KEY, { ...data, provinceID }],

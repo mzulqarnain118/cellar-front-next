@@ -14,7 +14,7 @@ export const ProductImageLink = memo(
   ({ cartUrl, displayName, pictureUrl, priority = false }: ProductImageLinkProps) => (
     <figure className="flex items-center self-center justify-self-center">
       {pictureUrl !== undefined ? (
-        <Link className="relative w-64 h-64" href={`/product/${cartUrl}`}>
+        <Link className="relative w-60 h-60" href={`/product/${cartUrl}`}>
           <BlurImage
             fill
             alt={displayName || 'Product'}

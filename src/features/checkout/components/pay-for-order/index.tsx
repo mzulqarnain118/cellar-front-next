@@ -73,6 +73,10 @@ export const PayForOrder = ({ refs, validate }: PayForOrderProps) => {
 
   useEffect(() => {
     setLocked(isCheckingOut)
+
+    return () => {
+      setLocked(false)
+    }
   }, [isCheckingOut, setLocked])
 
   return (

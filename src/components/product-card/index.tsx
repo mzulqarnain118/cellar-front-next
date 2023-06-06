@@ -234,8 +234,8 @@ export const ProductCard = ({ className, priority = false, product }: ProductCar
     <div
       className={clsx(
         `
-        relative grid grid-rows-[1fr_auto_auto] rounded border border-solid border-base-dark
-        bg-base-light p-6 shadow md:gap-6 w-auto
+        relative grid grid-rows-[auto_auto] rounded border border-solid border-base-dark
+        bg-base-light p-6 shadow md:gap-6 w-auto max-h-[35rem]
       `,
         className
       )}
@@ -244,7 +244,7 @@ export const ProductCard = ({ className, priority = false, product }: ProductCar
         {badges}
         {productImageLink}
       </div>
-      <div className="flex flex-col justify-between md:gap-4">
+      <div className="flex flex-col justify-between">
         <div>
           <div className="grid grid-rows-2">
             <div>
@@ -271,7 +271,7 @@ export const ProductCard = ({ className, priority = false, product }: ProductCar
             </div>
           </div>
         </div>
-        <div className="flex items-center justify-between lg:mt-auto">
+        <div className="flex items-center justify-between">
           {dropdownOrNumberPicker}
           <Button
             color="secondary"

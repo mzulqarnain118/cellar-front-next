@@ -13,7 +13,7 @@ import { Button } from '@/core/components/button'
 import { Skeleton } from '@/core/components/skeleton'
 import { Typography } from '@/core/components/typogrpahy'
 import { useIsDesktop } from '@/core/hooks/use-is-desktop'
-import { usePaginatedSearchQuery } from '@/features/search/queries'
+import { usePaginatedSearch } from '@/features/search/queries'
 import { DISPLAY_CATEGORY } from '@/lib/constants/display-category'
 import { usePaginatedProducts } from '@/lib/queries/products'
 import { useConsultantStore } from '@/lib/stores/consultant'
@@ -90,9 +90,12 @@ export const ProductListing = ({
     [categories, limit, active, search, sort]
   )
 
-  const { data, isError, isFetching, isLoading } = usePaginatedProducts(options)
-  const { data: _searchData } = usePaginatedSearchQuery(options)
-
+  const paginatedProducts = usePaginatedProducts(options, search.length === 0)
+  const paginatedSearch = usePaginatedSearch(options, search.length > 0)
+  const { data, isError, isFetching, isLoading } = useMemo(
+    () => (search.length > 0 ? { ...paginatedSearch } : { ...paginatedProducts }),
+    [paginatedProducts, paginatedSearch, search.length]
+  )
   const handleFilterClose = useCallback(() => setShowFilters(false), [])
 
   const filters = useMemo(() => {
@@ -163,7 +166,8 @@ export const ProductListing = ({
           <div className="h-6 w-60 animate-pulse rounded bg-neutral-300" />
         ) : (
           <Typography>
-            Showing {data?.resultsShown?.[0]}-{data?.resultsShown?.[1]} results of {data?.results}.
+            Showing {search.length > 0 ? `search results for "${search}": ` : undefined}
+            {data?.resultsShown?.[0]}-{data?.resultsShown?.[1]} results of {data?.results}.
           </Typography>
         )}
         {isDesktop ? (
@@ -178,15 +182,17 @@ export const ProductListing = ({
             <div className="grid grid-cols-2 items-end gap-4 sticky top-4 left-0 lg:gap-0 lg:grid-cols-[1fr_auto] justify-between w-full">
               <FilterBar />
               {isDesktop ? undefined : filtersButton}
-              <Select
-                withinPortal
-                classNames={selectClassNames}
-                data={selectData}
-                label="Sort by"
-                styles={selectStyles}
-                value={sort}
-                onChange={onSortChange}
-              />
+              {search.length > 0 ? undefined : (
+                <Select
+                  withinPortal
+                  classNames={selectClassNames}
+                  data={selectData}
+                  label="Sort by"
+                  styles={selectStyles}
+                  value={sort}
+                  onChange={onSortChange}
+                />
+              )}
             </div>
           </div>
         ) : (
@@ -200,15 +206,17 @@ export const ProductListing = ({
             <div className="grid grid-cols-2 items-end gap-4 sticky top-4 left-0 lg:gap-0 lg:grid-cols-[1fr_auto] justify-between w-full">
               <FilterBar />
               {filtersButton}
-              <Select
-                withinPortal
-                classNames={selectClassNames}
-                data={selectData}
-                label="Sort by"
-                styles={selectStyles}
-                value={sort}
-                onChange={onSortChange}
-              />
+              {search.length > 0 ? undefined : (
+                <Select
+                  withinPortal
+                  classNames={selectClassNames}
+                  data={selectData}
+                  label="Sort by"
+                  styles={selectStyles}
+                  value={sort}
+                  onChange={onSortChange}
+                />
+              )}
             </div>
           </div>
         )}
@@ -223,6 +231,7 @@ export const ProductListing = ({
       isFetching,
       isLoading,
       onSortChange,
+      search,
       showFilters,
       sort,
     ]
