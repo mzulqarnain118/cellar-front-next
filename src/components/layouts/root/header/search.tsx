@@ -49,8 +49,10 @@ export const SearchNew = () => {
   )
 
   const handleClick = useCallback(() => {
-    setOpened(prev => !prev)
-  }, [])
+    if (!opened) {
+      setOpened(true)
+    }
+  }, [opened])
 
   const buildOptions = (result: ProductsSchema) => ({
     ...result,
@@ -65,6 +67,7 @@ export const SearchNew = () => {
 
   const handleItemSubmit: AutocompleteProps['onItemSubmit'] = useCallback(
     (item: AutocompleteItem) => {
+      setValue(item.label)
       router.push(`/product/${item.value}`)
     },
     [router]
