@@ -8,6 +8,7 @@ import { getServerSession } from 'next-auth'
 import { NextSeo } from 'next-seo'
 import { Badge } from 'react-daisyui'
 
+import { Link } from '@/components/link'
 import { Typography } from '@/core/components/typogrpahy'
 import { wait } from '@/core/utils/time'
 import { CartSummary } from '@/features/checkout/components/cart-summary'
@@ -15,7 +16,7 @@ import { ContactInformation } from '@/features/checkout/components/contact-infor
 import { Delivery } from '@/features/checkout/components/delivery'
 import { Payment } from '@/features/checkout/components/payment'
 import { useSetCartOwnerMutation } from '@/lib/mutations/cart/set-owner'
-import { SIGN_IN_PAGE_PATH } from '@/lib/paths'
+import { SIGN_IN_PAGE_PATH, WINE_PAGE_PATH } from '@/lib/paths'
 import { useCartQuery } from '@/lib/queries/cart'
 import {
   useCheckoutActions,
@@ -369,6 +370,9 @@ const CheckoutPage: NextPage<PageProps> = () => {
                 </Badge>
               </div>
               <CartSummary />
+              <div className="text-center pt-2">
+                <Link href={WINE_PAGE_PATH}>Continue shopping</Link>
+              </div>
             </div>
           </div>
         </div>
