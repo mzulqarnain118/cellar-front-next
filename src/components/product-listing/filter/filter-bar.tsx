@@ -19,7 +19,7 @@ export const FilterBar = () => {
   return (
     <div
       className={clsx(
-        'flex max-h-0 flex-wrap gap-2 transition-all items-end col-span-2 lg:col-span-1',
+        'flex max-h-0 flex-wrap gap-2 transition-all items-end col-span-1',
         activeFilters.length > 0 && '!max-h-max'
       )}
     >

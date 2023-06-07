@@ -10,7 +10,6 @@ import { Content, FilledContentRelationshipField } from '@prismicio/client'
 import { clsx } from 'clsx'
 
 import { Button } from '@/core/components/button'
-import { Skeleton } from '@/core/components/skeleton'
 import { Typography } from '@/core/components/typogrpahy'
 import { useIsDesktop } from '@/core/hooks/use-is-desktop'
 import { usePaginatedSearch } from '@/features/search/queries'
@@ -98,17 +97,6 @@ export const ProductListing = ({
   )
 
   const handleFilterClose = useCallback(() => setShowFilters(false), [])
-
-  const filters = useMemo(() => {
-    if (isLoading) {
-      return <div className="lg:min-w-[15rem] animate-pulse bg-neutral-light rounded" />
-    }
-
-    return (
-      <Filters enabledFilters={enabledFilters} show={showFilters} onClose={handleFilterClose} />
-    )
-  }, [enabledFilters, handleFilterClose, isLoading, showFilters])
-
   const onFilterToggle = useCallback(() => setShowFilters(prev => !prev), [])
 
   const filtersButton = useMemo(
@@ -129,16 +117,22 @@ export const ProductListing = ({
     [enabledFilters.length, onFilterToggle, showFilters]
   )
 
+  const filters = useMemo(
+    () => (
+      <div className="grid gap-4 pt-4">
+        {filtersButton}
+        <Filters enabledFilters={enabledFilters} show={showFilters} onClose={handleFilterClose} />
+      </div>
+    ),
+    [enabledFilters, filtersButton, handleFilterClose, showFilters]
+  )
+
+  const noResults = useMemo(() => !data || data.products.length === 0, [data])
+
   const productCards = useMemo(
     () =>
       data?.products !== undefined ? (
-        <div
-          className={clsx(
-            'transition-all lg:grid lg:grid-cols-[auto_auto]',
-            showFilters && enabledFilters.length > 0 && 'lg:gap-10'
-          )}
-        >
-          {filters}
+        <div>
           <div
             className={clsx(
               'transition-all grid gap-4 md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-4 3xl:grid-cols-5 relative'
@@ -150,7 +144,7 @@ export const ProductListing = ({
           </div>
         </div>
       ) : undefined,
-    [data?.products, enabledFilters.length, filters, showFilters]
+    [data?.products]
   )
 
   const onSortChange = useCallback((value: Sort) => {
@@ -163,6 +157,8 @@ export const ProductListing = ({
       <>
         {isFetching || isLoading ? (
           <div className="h-6 w-60 animate-pulse rounded bg-neutral-300" />
+        ) : noResults ? (
+          <Typography>No results were found with the selected filters</Typography>
         ) : (
           <Typography>
             Showing {search.length > 0 ? `search results for "${search}": ` : undefined}
@@ -170,29 +166,19 @@ export const ProductListing = ({
           </Typography>
         )}
         {isDesktop ? (
-          <div
-            className={clsx(
-              'lg:grid lg:grid-cols-[auto_1fr] items-end justify-between',
-              showFilters && enabledFilters.length > 0 && 'lg:gap-10',
-              enabledFilters.length === 0 && 'lg:!grid-cols-1'
+          <div className="grid grid-cols-2 items-end gap-4 lg:gap-0 lg:grid-cols-[1fr_auto] justify-between w-full">
+            <FilterBar />
+            {search.length > 0 ? undefined : (
+              <Select
+                withinPortal
+                classNames={selectClassNames}
+                data={selectData}
+                label="Sort by"
+                styles={selectStyles}
+                value={sort}
+                onChange={onSortChange}
+              />
             )}
-          >
-            {filtersButton}
-            <div className="grid grid-cols-2 items-end gap-4 sticky top-4 left-0 lg:gap-0 lg:grid-cols-[1fr_auto] justify-between w-full">
-              <FilterBar />
-              {isDesktop ? undefined : filtersButton}
-              {search.length > 0 ? undefined : (
-                <Select
-                  withinPortal
-                  classNames={selectClassNames}
-                  data={selectData}
-                  label="Sort by"
-                  styles={selectStyles}
-                  value={sort}
-                  onChange={onSortChange}
-                />
-              )}
-            </div>
           </div>
         ) : (
           <div
@@ -202,9 +188,12 @@ export const ProductListing = ({
               enabledFilters.length === 0 && 'grid-cols-1'
             )}
           >
-            <div className="grid grid-cols-2 items-end gap-4 sticky top-4 left-0 lg:gap-0 lg:grid-cols-[1fr_auto] justify-between w-full">
+            <div
+              className={clsx(
+                'grid grid-cols-2 items-end gap-4 lg:gap-0 lg:grid-cols-[1fr_auto] justify-between w-full'
+              )}
+            >
               <FilterBar />
-              {filtersButton}
               {search.length > 0 ? undefined : (
                 <Select
                   withinPortal
@@ -225,10 +214,10 @@ export const ProductListing = ({
       data?.results,
       data?.resultsShown,
       enabledFilters.length,
-      filtersButton,
       isDesktop,
       isFetching,
       isLoading,
+      noResults,
       onSortChange,
       search,
       showFilters,
@@ -314,33 +303,38 @@ export const ProductListing = ({
 
   if (isFetching || isLoading) {
     return (
-      <div className="grid gap-4 lg:flex lg:flex-col">
-        {paginationHeader}
-        <div className="lg:grid lg:grid-cols-[auto_1fr] lg:gap-10">
-          {filters}
-          <div className="grid grid-cols-1 gap-4 lg:auto-rows-auto lg:grid-cols-4 lg:gap-6">
-            <Skeleton className="h-[30.25rem]" />
-            <Skeleton className="h-[30.25rem]" />
-            <Skeleton className="h-[30.25rem]" />
-            <Skeleton className="h-[30.25rem]" />
-            <Skeleton className="h-[30.25rem]" />
-            <Skeleton className="h-[30.25rem]" />
-            <Skeleton className="h-[30.25rem]" />
-            <Skeleton className="h-[30.25rem]" />
-            <Skeleton className="h-[30.25rem]" />
-            <Skeleton className="h-[30.25rem]" />
-            <Skeleton className="h-[30.25rem]" />
-            <Skeleton className="h-[30.25rem]" />
-            <Skeleton className="h-[30.25rem]" />
-            <Skeleton className="h-[30.25rem]" />
-            <Skeleton className="h-[30.25rem]" />
-            <Skeleton className="h-[30.25rem]" />
+      <div
+        className={clsx(
+          'grid transition-all grid-cols-1 px-4 lg:px-0 lg:mx-10',
+          showFilters && 'lg:grid-cols-[auto_1fr] lg:ml-2 lg:gap-10'
+        )}
+      >
+        <div className="w-[16.25rem] max-w-[16.25rem]">{filters}</div>
+        <div className="flex flex-col gap-4 py-10">
+          {paginationHeader}
+          <div className="transition-all grid gap-4 md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-4 3xl:grid-cols-5 relative">
+            <div className="animate-pulse rounded bg-neutral-300 h-[27.75rem]" />
+            <div className="animate-pulse rounded bg-neutral-300 h-[27.75rem]" />
+            <div className="animate-pulse rounded bg-neutral-300 h-[27.75rem]" />
+            <div className="animate-pulse rounded bg-neutral-300 h-[27.75rem]" />
+            <div className="animate-pulse rounded bg-neutral-300 h-[27.75rem]" />
+            <div className="animate-pulse rounded bg-neutral-300 h-[27.75rem]" />
+            <div className="animate-pulse rounded bg-neutral-300 h-[27.75rem]" />
+            <div className="animate-pulse rounded bg-neutral-300 h-[27.75rem]" />
+            <div className="animate-pulse rounded bg-neutral-300 h-[27.75rem]" />
+            <div className="animate-pulse rounded bg-neutral-300 h-[27.75rem]" />
+            <div className="animate-pulse rounded bg-neutral-300 h-[27.75rem]" />
+            <div className="animate-pulse rounded bg-neutral-300 h-[27.75rem]" />
+            <div className="animate-pulse rounded bg-neutral-300 h-[27.75rem]" />
+            <div className="animate-pulse rounded bg-neutral-300 h-[27.75rem]" />
+            <div className="animate-pulse rounded bg-neutral-300 h-[27.75rem]" />
+            <div className="animate-pulse rounded bg-neutral-300 h-[27.75rem]" />
           </div>
-        </div>
-        <div className="mx-auto mt-6 flex items-center justify-center">
-          <div className="h-[3rem] w-[2.5rem] animate-pulse rounded bg-neutral-300" />
-          <div className="h-[3rem] w-[5rem] animate-pulse rounded bg-neutral-300" />
-          <div className="h-[3rem] w-[2.5rem] animate-pulse rounded bg-neutral-300" />
+          <div className="mx-auto mt-6 flex items-center justify-center">
+            <div className="h-[3rem] w-[2.5rem] animate-pulse rounded bg-neutral-300" />
+            <div className="h-[3rem] w-[5rem] animate-pulse rounded bg-neutral-300" />
+            <div className="h-[3rem] w-[2.5rem] animate-pulse rounded bg-neutral-300" />
+          </div>
         </div>
       </div>
     )
@@ -350,27 +344,31 @@ export const ProductListing = ({
     // ! TODO: Something bad happened.
   }
 
-  if (!data || data.products.length === 0) {
-    // ! TODO: Not found.
-    return <>Not found.</>
-  }
-
   return (
-    <div className="flex flex-col gap-4">
-      {paginationHeader}
-      {productCards}
-      <Pagination
-        withEdges
-        className="pt-12"
-        color="dark"
-        disabled={isFetching || isLoading}
-        getControlProps={getControlProps}
-        getItemProps={getItemProps}
-        position="center"
-        total={data?.totalNumberOfPages}
-        value={active}
-        onChange={onPageChange}
-      />
+    <div
+      className={clsx(
+        'grid transition-all grid-cols-1 px-4 lg:px-0 lg:mx-10',
+        showFilters && 'lg:grid-cols-[auto_1fr] lg:ml-2 lg:gap-10'
+      )}
+    >
+      <div className="w-[16.25rem] max-w-[16.25rem]">{filters}</div>
+      <div className="flex flex-col gap-4 py-10">
+        {/* Banner. */}
+        {paginationHeader}
+        {productCards}
+        <Pagination
+          withEdges
+          className="pt-12"
+          color="dark"
+          disabled={isFetching || isLoading}
+          getControlProps={getControlProps}
+          getItemProps={getItemProps}
+          position="center"
+          total={data?.totalNumberOfPages || 0}
+          value={active}
+          onChange={onPageChange}
+        />
+      </div>
     </div>
   )
 }

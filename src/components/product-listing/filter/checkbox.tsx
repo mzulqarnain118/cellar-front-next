@@ -15,7 +15,10 @@ interface FilterCheckboxProps {
 export const FilterCheckbox = ({ filter, label }: FilterCheckboxProps) => {
   const { activeFilters, toggleActiveFilter } = useFiltersStore()
 
-  const value = useMemo(() => activeFilters.includes(filter), [activeFilters, filter])
+  const value = useMemo(
+    () => !!activeFilters.find(element => element.name === filter.name),
+    [activeFilters, filter]
+  )
   const handleFilterToggle = useCallback(() => {
     toggleActiveFilter(filter)
   }, [filter, toggleActiveFilter])

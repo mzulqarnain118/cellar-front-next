@@ -26,8 +26,8 @@ export const PlpShell = ({
   search = '',
   sort,
 }: PlpShellProps) => (
-  <main className="py-10">
-    <div className="lg:max-w-screen-[1980px] mx-4 lg:mx-20">
+  <main>
+    <div>
       <ProductListing
         categories={categories}
         enabledFilters={
