@@ -14,7 +14,11 @@ export const MERCH_PAGE_PATH = '/merch'
 export const COFFEE_PAGE_PATH = '/coffee'
 export const CLUBS_PAGE_PATH = '/clubs'
 
+/** Subscription paths. */
+export const SCOUT_CIRCLE_PAGE_PATH = '/scoutcircle'
+
 /** Consultant paths. */
 export const CONSULTANTS_PAGE_PATH = '/consultants'
 
+/** Service paths. */
 export const TERMS_AND_CONDITIONS_PAGE_PATH = '/terms-and-conditions'

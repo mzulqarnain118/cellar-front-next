@@ -1,9 +1,11 @@
 import { ChangeEvent, useCallback, useMemo, useState } from 'react'
 
 import dynamic from 'next/dynamic'
+import { useRouter } from 'next/router'
 
 import { Select, SelectProps } from '@mantine/core'
 import { clsx } from 'clsx'
+import { useSession } from 'next-auth/react'
 
 import { Button } from '@/core/components/button'
 import { NumberPicker } from '@/core/components/number-picker'
@@ -11,9 +13,11 @@ import { Typography } from '@/core/components/typogrpahy'
 import { useIsDesktop } from '@/core/hooks/use-is-desktop'
 import { useAddToCartMutation } from '@/lib/mutations/cart/add-to-cart'
 import { useUpdateQuantityMutation } from '@/lib/mutations/cart/update-quantity'
+import { SCOUT_CIRCLE_PAGE_PATH } from '@/lib/paths'
 import { useCartQuery } from '@/lib/queries/cart'
 import { useProcessStore } from '@/lib/stores/process'
 import { CartItem, SubscriptionProduct } from '@/lib/types'
+import { getProductButtonText } from '@/lib/utils/button'
 
 import { BlurImage } from '../blur-image'
 import { Price } from '../price'
@@ -57,10 +61,12 @@ export const ProductCard = ({ className, priority = false, product }: ProductCar
   const [variationType, setVariationType] = useState<string>()
   const { toggleCartOpen } = useProcessStore()
 
+  const { data: session } = useSession()
   const { data: cart } = useCartQuery()
   const { mutate: addToCart, isLoading: isAddingToCart } = useAddToCartMutation()
   const { mutate: updateQuantity, isLoading: isUpdatingQuantity } = useUpdateQuantityMutation()
   const numberPickerDisabled = isAddingToCart || isUpdatingQuantity
+  const router = useRouter()
 
   const handleQuantityChange = useCallback(
     (item: CartItem, newQuantity?: number) => {
@@ -209,13 +215,24 @@ export const ProductCard = ({ className, priority = false, product }: ProductCar
     ]
   )
 
+  const productCardButtonText = useMemo(
+    () => getProductButtonText(selectedProduct, session?.user?.isClubMember),
+    [selectedProduct, session?.user?.isClubMember]
+  )
+
   const onClick = useCallback(() => {
-    if (isCartProduct(product)) {
-      handleQuantityChange(product, quantity)
+    if (productCardButtonText === 'Add to Cart') {
+      if (isCartProduct(product)) {
+        handleQuantityChange(product, quantity)
+      } else {
+        handleAddToCart()
+      }
+    } else if (productCardButtonText === 'Details') {
+      router.push(`/product/${product.cartUrl}`)
     } else {
-      handleAddToCart()
+      router.push(SCOUT_CIRCLE_PAGE_PATH)
     }
-  }, [handleAddToCart, handleQuantityChange, product, quantity])
+  }, [handleAddToCart, handleQuantityChange, product, productCardButtonText, quantity, router])
 
   const productImageLink = useMemo(
     () => (
@@ -279,7 +296,7 @@ export const ProductCard = ({ className, priority = false, product }: ProductCar
             size={isDesktop ? 'md' : 'sm'}
             onClick={onClick}
           >
-            Add to Cart
+            {productCardButtonText}
           </Button>
         </div>
       </div>
