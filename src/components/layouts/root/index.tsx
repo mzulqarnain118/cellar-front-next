@@ -90,6 +90,9 @@ export const RootLayout = ({ children }: RootLayoutProps) => {
     () => () => {
       closeAllModals()
       modals.closeAll()
+
+      const body = document.getElementsByTagName('body')?.[0]
+      body.style.overflow = 'visible'
     },
     []
   )
