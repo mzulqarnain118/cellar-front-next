@@ -216,11 +216,11 @@ importers:
         specifier: ^17.6.3
         version: 17.6.3
       '@prismicio/types':
-        specifier: ^0.2.7
-        version: 0.2.7
+        specifier: ^0.2.8
+        version: 0.2.8
       '@slicemachine/adapter-next':
         specifier: ^0.1.3
-        version: 0.1.3(@prismicio/client@7.0.0)(@prismicio/types@0.2.7)(fp-ts@2.15.0)(io-ts-types@0.5.19)(io-ts@2.2.20)(next@13.4.3)(react@18.2.0)(typescript@5.0.4)
+        version: 0.1.3(@prismicio/client@7.0.0)(@prismicio/types@0.2.8)(fp-ts@2.16.0)(io-ts-types@0.5.19)(io-ts@2.2.20)(next@13.4.3)(react@18.2.0)
       '@tailwindcss/forms':
         specifier: ^0.5.3
         version: 0.5.3(tailwindcss@3.3.2)
@@ -300,8 +300,8 @@ importers:
         specifier: ^8.4.23
         version: 8.4.23
       prismic-ts-codegen:
-        specifier: ^0.1.9
-        version: 0.1.9(@prismicio/client@7.0.0)(@prismicio/types@0.2.7)(typescript@5.0.4)
+        specifier: ^0.1.11
+        version: 0.1.11(@prismicio/client@7.0.0)(@prismicio/types@0.2.8)
       slice-machine-ui:
         specifier: ^1.1.0
         version: 1.1.0(@types/react@18.2.6)(react-dom@18.2.0)(typescript@5.0.4)(zod@3.21.4)
@@ -1100,13 +1100,13 @@ packages:
     resolution: {integrity: sha512-7bAYAv0w4AIao9DNg0avfOLTCPE9woAgs6SpXuMq11IN3A+l+cq8ghczwqSZBM11myvPSJA7vLn72q0rJ0QK6Q==}
     dependencies:
       '@formatjs/intl-localematcher': 0.2.32
-      tslib: 2.5.0
+      tslib: 2.4.0
     dev: true
 
   /@formatjs/fast-memoize@2.0.1:
     resolution: {integrity: sha512-M2GgV+qJn5WJQAYewz7q2Cdl6fobQa69S1AzSM2y0P68ZDbK5cWrJIcPCO395Of1ksftGZoOt4LYCO/j9BKBSA==}
     dependencies:
-      tslib: 2.5.0
+      tslib: 2.4.0
     dev: true
 
   /@formatjs/icu-messageformat-parser@2.4.0:
@@ -1114,20 +1114,20 @@ packages:
     dependencies:
       '@formatjs/ecma402-abstract': 1.15.0
       '@formatjs/icu-skeleton-parser': 1.4.0
-      tslib: 2.5.0
+      tslib: 2.4.0
     dev: true
 
   /@formatjs/icu-skeleton-parser@1.4.0:
     resolution: {integrity: sha512-Qq347VM616rVLkvN6QsKJELazRyNlbCiN47LdH0Mc5U7E2xV0vatiVhGqd3KFgbc055BvtnUXR7XX60dCGFuWg==}
     dependencies:
       '@formatjs/ecma402-abstract': 1.15.0
-      tslib: 2.5.0
+      tslib: 2.4.0
     dev: true
 
   /@formatjs/intl-localematcher@0.2.32:
     resolution: {integrity: sha512-k/MEBstff4sttohyEpXxCmC3MqbUn9VvHGlZ8fauLzkbwXmVrEeyzS+4uhrvAk9DWU9/7otYWxyDox4nT/KVLQ==}
     dependencies:
-      tslib: 2.5.0
+      tslib: 2.4.0
     dev: true
 
   /@fullstory/browser@1.7.1:
@@ -1634,14 +1634,14 @@ packages:
     resolution: {integrity: sha512-nJqWD8RikdMaU+xH8t5Hy6tUBWM57cq1yGofsKUHu/UWySIpgo4SA+1SieD11+xzRr7a1b/a/ThA2imJB0DYfQ==}
     engines: {node: '>=14.15.0'}
     dependencies:
-      '@prismicio/types': 0.2.7
+      '@prismicio/types': 0.2.8
     dev: true
 
   /@prismicio/custom-types-client@1.2.0-alpha.0:
     resolution: {integrity: sha512-iqLYoKmDKUvQoDnqGL2Fm7+mdvRPw2v3XXa0FpsNDNB55bT1oeGhNZdEt/PElCLIFxlxcKAgMR8herj6ULfNjA==}
     engines: {node: '>=14.15.0'}
     dependencies:
-      '@prismicio/types': 0.2.7
+      '@prismicio/types': 0.2.8
     dev: true
 
   /@prismicio/editor-fields@0.4.1(@prismicio/editor-ui@0.4.1)(react-dom@18.2.0)(react@18.2.0):
@@ -1752,7 +1752,7 @@ packages:
     engines: {node: '>=12.7.0'}
     dependencies:
       '@prismicio/richtext': 2.1.4
-      '@prismicio/types': 0.2.7
+      '@prismicio/types': 0.2.8
       imgix-url-builder: 0.0.3
     dev: false
 
@@ -1804,20 +1804,20 @@ packages:
     resolution: {integrity: sha512-/99JR2NUU2WV0025eAIqjd9OnF4ITaM57SVuhLc1XBUgnJe0HZrC9f24YKVW43jFR5HYTJtLgz01WjEddymqmA==}
     engines: {node: '>=12.7.0'}
     dependencies:
-      '@prismicio/types': 0.2.7
+      '@prismicio/types': 0.2.8
     dev: true
 
   /@prismicio/richtext@2.1.4:
     resolution: {integrity: sha512-hyC8XItj+2yMmLGNjg9xGA/lRMO5UgbPF132VFrpZHzHhtIKvHN3iYxCZxnrEoPaTcT6JjA8vWyYLjmmB49bvw==}
     engines: {node: '>=12.7.0'}
     dependencies:
-      '@prismicio/types': 0.2.7
+      '@prismicio/types': 0.2.8
 
   /@prismicio/slice-simulator-com@0.4.2:
     resolution: {integrity: sha512-9N3oWhKDoVMbBC1SnOUyTuKXbYVx6YZ8kuny39b6DwV+u1DTykZmdOLRl6voDfFw0hlcf3h4xQ+9HBRmzuvoFQ==}
     engines: {node: '>=14.15.0'}
     dependencies:
-      '@prismicio/types': 0.2.7
+      '@prismicio/types': 0.2.8
       statuses: 2.0.1
 
   /@prismicio/slice-simulator-core@0.2.7:
@@ -1825,7 +1825,7 @@ packages:
     engines: {node: '>=14.15.0'}
     dependencies:
       '@prismicio/slice-simulator-com': 0.4.2
-      '@prismicio/types': 0.2.7
+      '@prismicio/types': 0.2.8
       fp-ts: 2.15.0
       io-ts: 2.2.20(fp-ts@2.15.0)
 
@@ -1868,7 +1868,7 @@ packages:
       io-ts-types: 0.5.16(fp-ts@2.12.3)(io-ts@2.2.18)(monocle-ts@2.3.13)(newtype-ts@0.3.5)
       monocle-ts: 2.3.13(fp-ts@2.12.3)
       newtype-ts: 0.3.5(fp-ts@2.12.3)(monocle-ts@2.3.13)
-      tslib: 2.5.0
+      tslib: 2.4.0
     dev: true
 
   /@prismicio/types-internal@2.0.0-alpha.8(fp-ts@2.15.0)(io-ts-types@0.5.19)(io-ts@2.2.20):
@@ -1884,7 +1884,7 @@ packages:
       io-ts-types: 0.5.19(fp-ts@2.15.0)(io-ts@2.2.20)(monocle-ts@2.3.13)(newtype-ts@0.3.5)
       monocle-ts: 2.3.13(fp-ts@2.15.0)
       newtype-ts: 0.3.5(fp-ts@2.15.0)(monocle-ts@2.3.13)
-      tslib: 2.5.0
+      tslib: 2.4.0
     dev: true
 
   /@prismicio/types-internal@2.0.0-alpha.9(fp-ts@2.15.0)(io-ts-types@0.5.19)(io-ts@2.2.20):
@@ -1897,9 +1897,25 @@ packages:
     dependencies:
       fp-ts: 2.15.0
       io-ts: 2.2.20(fp-ts@2.15.0)
-      io-ts-types: 0.5.19(fp-ts@2.15.0)(io-ts@2.2.20)(monocle-ts@2.3.13)(newtype-ts@0.3.5)
+      io-ts-types: 0.5.19(fp-ts@2.16.0)(io-ts@2.2.20)(monocle-ts@2.3.13)(newtype-ts@0.3.5)
       monocle-ts: 2.3.13(fp-ts@2.15.0)
       newtype-ts: 0.3.5(fp-ts@2.15.0)(monocle-ts@2.3.13)
+      tslib: 2.5.0
+    dev: true
+
+  /@prismicio/types-internal@2.0.0-alpha.9(fp-ts@2.16.0)(io-ts-types@0.5.19)(io-ts@2.2.20):
+    resolution: {integrity: sha512-vyKvksYMCbM8QGbgisdGxThCg+XqnImKgW51hRuWsC7Kkx5OFbupFwSXI1hEvjbyEP6CHILdURb4oHjRsl7b2w==}
+    engines: {node: '>=12.7.0'}
+    peerDependencies:
+      fp-ts: ^2.11.8
+      io-ts: ^2.2.16
+      io-ts-types: ^0.5.16
+    dependencies:
+      fp-ts: 2.16.0
+      io-ts: 2.2.20(fp-ts@2.16.0)
+      io-ts-types: 0.5.19(fp-ts@2.16.0)(io-ts@2.2.20)(monocle-ts@2.3.13)(newtype-ts@0.3.5)
+      monocle-ts: 2.3.13(fp-ts@2.16.0)
+      newtype-ts: 0.3.5(fp-ts@2.16.0)(monocle-ts@2.3.13)
       tslib: 2.5.0
     dev: true
 
@@ -1919,8 +1935,8 @@ packages:
       tslib: 2.5.0
     dev: true
 
-  /@prismicio/types@0.2.7:
-    resolution: {integrity: sha512-xHPBWg+lPcl8U97VB/2oYK3MJlQoVPZq91hbeQO8WRyvq+zgpNST3xFOTk8SkQpgoH6wd50AxGZELvPrpojajQ==}
+  /@prismicio/types@0.2.8:
+    resolution: {integrity: sha512-EmuYYil56U+UtEifMD/9TmLzpWliV+X6kypwPq47GNXmIXyFK1JsP3z872fUziXwoBjd2YILj28DNdYXlLOpXg==}
     engines: {node: '>=12.7.0'}
 
   /@puppeteer/browsers@0.5.0(typescript@5.0.4):
@@ -3165,7 +3181,7 @@ packages:
     resolution: {integrity: sha512-RNiOoTPkptFtSVzQevY/yWtZwf/RxyVnPy/OcA9HBM3MlGDnBEYL5B41H0MTn0Uec8Hi+2qUtTfG2WWZBmMejQ==}
     dev: true
 
-  /@slicemachine/adapter-next@0.1.3(@prismicio/client@7.0.0)(@prismicio/types@0.2.7)(fp-ts@2.15.0)(io-ts-types@0.5.19)(io-ts@2.2.20)(next@13.4.3)(react@18.2.0)(typescript@5.0.4):
+  /@slicemachine/adapter-next@0.1.3(@prismicio/client@7.0.0)(@prismicio/types@0.2.8)(fp-ts@2.16.0)(io-ts-types@0.5.19)(io-ts@2.2.20)(next@13.4.3)(react@18.2.0):
     resolution: {integrity: sha512-Tc+FxLKsqOBkqtCOGKu2TchSBDxGToK7EGdkdogTJv2Q1EaKkYxatshPwRnA2Y4lMowTq0eNvdbyaLmKl7Yl6A==}
     engines: {node: '>=14.15.0'}
     peerDependencies:
@@ -3173,14 +3189,14 @@ packages:
       react: ^17 || ^18
     dependencies:
       '@prismicio/slice-simulator-core': 0.2.7
-      '@prismicio/types-internal': 2.0.0-alpha.9(fp-ts@2.15.0)(io-ts-types@0.5.19)(io-ts@2.2.20)
+      '@prismicio/types-internal': 2.0.0-alpha.9(fp-ts@2.16.0)(io-ts-types@0.5.19)(io-ts@2.2.20)
       '@slicemachine/plugin-kit': 0.2.0(io-ts-types@0.5.19)
       common-tags: 1.8.2
       fs-extra: 11.1.1
       next: 13.4.3(@babel/core@7.21.8)(react-dom@18.2.0)(react@18.2.0)
       node-fetch: 3.3.1
       pascal-case: 3.1.2
-      prismic-ts-codegen: 0.1.9(@prismicio/client@7.0.0)(@prismicio/types@0.2.7)(typescript@5.0.4)
+      prismic-ts-codegen: 0.1.11(@prismicio/client@7.0.0)(@prismicio/types@0.2.8)
       react: 18.2.0
     transitivePeerDependencies:
       - '@prismicio/client'
@@ -3188,7 +3204,6 @@ packages:
       - fp-ts
       - io-ts
       - io-ts-types
-      - typescript
     dev: true
 
   /@slicemachine/manager@0.3.0(monocle-ts@2.3.13)(newtype-ts@0.3.5)(puppeteer@19.11.1):
@@ -3273,7 +3288,7 @@ packages:
   /@swc/helpers@0.4.14:
     resolution: {integrity: sha512-4C7nX/dvpzB7za4Ql9K81xK3HPxCpHMgwTZVyf+9JQ6VUbn9jjZVN7/Nkdz/Ugzs2CSjqnL/UPXroiVBVHUWUw==}
     dependencies:
-      tslib: 2.5.0
+      tslib: 2.4.0
     dev: true
 
   /@swc/helpers@0.5.1:
@@ -5166,16 +5181,14 @@ packages:
       map-obj: 1.0.1
     dev: true
 
-  /decamelize-keys@2.0.1(typescript@5.0.4):
+  /decamelize-keys@2.0.1:
     resolution: {integrity: sha512-nrNeSCtU2gV3Apcmn/EZ+aR20zKDuNDStV67jPiupokD3sOAFeMzslLMCFdKv1sPqzwoe5ZUhsSW9IAVgKSL/Q==}
     engines: {node: '>=14.16'}
     dependencies:
       decamelize: 6.0.0
       map-obj: 4.3.0
       quick-lru: 6.1.1
-      type-fest: 3.10.0(typescript@5.0.4)
-    transitivePeerDependencies:
-      - typescript
+      type-fest: 3.11.1
     dev: true
 
   /decamelize@1.2.0:
@@ -6285,6 +6298,10 @@ packages:
   /fp-ts@2.15.0:
     resolution: {integrity: sha512-3o6EllAvGuCsDgjM+frscLKDRPR9pqbrg13tJ13z86F4eni913kBV8h85rM6zpu2fEvJ8RWA0ouYlUWwHEmxTg==}
 
+  /fp-ts@2.16.0:
+    resolution: {integrity: sha512-bLq+KgbiXdTEoT1zcARrWEpa5z6A/8b7PcDW7Gef3NSisQ+VS7ll2Xbf1E+xsgik0rWub/8u0qP/iTTjj+PhxQ==}
+    dev: true
+
   /fraction.js@4.2.0:
     resolution: {integrity: sha512-MhLuK+2gUcnZe8ZHlaaINnQLl0xRIGRfcGk2yl8xoQAfHrSsL3rYu6FCmBdkdbhc9EPlwyGHewaRsvwRMJtAlA==}
 
@@ -6947,7 +6964,7 @@ packages:
       '@formatjs/ecma402-abstract': 1.15.0
       '@formatjs/fast-memoize': 2.0.1
       '@formatjs/icu-messageformat-parser': 2.4.0
-      tslib: 2.5.0
+      tslib: 2.4.0
     dev: true
 
   /invariant@2.2.4:
@@ -6994,6 +7011,20 @@ packages:
       newtype-ts: 0.3.5(fp-ts@2.15.0)(monocle-ts@2.3.13)
     dev: true
 
+  /io-ts-types@0.5.19(fp-ts@2.16.0)(io-ts@2.2.20)(monocle-ts@2.3.13)(newtype-ts@0.3.5):
+    resolution: {integrity: sha512-kQOYYDZG5vKre+INIDZbLeDJe+oM+4zLpUkjXyTMyUfoCpjJNyi29ZLkuEAwcPufaYo3yu/BsemZtbdD+NtRfQ==}
+    peerDependencies:
+      fp-ts: ^2.0.0
+      io-ts: ^2.0.0
+      monocle-ts: ^2.0.0
+      newtype-ts: ^0.3.2
+    dependencies:
+      fp-ts: 2.16.0
+      io-ts: 2.2.20(fp-ts@2.16.0)
+      monocle-ts: 2.3.13(fp-ts@2.16.0)
+      newtype-ts: 0.3.5(fp-ts@2.16.0)(monocle-ts@2.3.13)
+    dev: true
+
   /io-ts@2.2.18(fp-ts@2.12.3):
     resolution: {integrity: sha512-3JxUUzRtPQPs5sOwB7pW0+Xb54nOzqA6M1sRB1hwgsRmkWMeGTjtOrCynGTJhIj+mBLUj2S37DAq2+BrPh9kTQ==}
     peerDependencies:
@@ -7008,6 +7039,14 @@ packages:
       fp-ts: ^2.5.0
     dependencies:
       fp-ts: 2.15.0
+
+  /io-ts@2.2.20(fp-ts@2.16.0):
+    resolution: {integrity: sha512-Rq2BsYmtwS5vVttie4rqrOCIfHCS9TgpRLFpKQCM1wZBBRY9nWVGmEvm2FnDbSE2un1UE39DvFpTR5UL47YDcA==}
+    peerDependencies:
+      fp-ts: ^2.5.0
+    dependencies:
+      fp-ts: 2.16.0
+    dev: true
 
   /ipaddr.js@1.9.1:
     resolution: {integrity: sha512-0KI/607xoxSToH7GjN1FfSbLoU0+btTicjsQSWQlh/hZykN8KpmMf7uYwPW3R+akZ6R/w18ZlXSHBYXiYUPO3g==}
@@ -7686,7 +7725,7 @@ packages:
   /lower-case@2.0.2:
     resolution: {integrity: sha512-7fm3l3NAF9WfN6W3JOmf5drwpVqX78JtoGJ3A6W0a6ZnldM41w2fV5D490psKFTpMds8TJse/eHLFFsNHHjHgg==}
     dependencies:
-      tslib: 2.5.0
+      tslib: 2.5.3
     dev: true
 
   /lru-cache@5.1.1:
@@ -7898,24 +7937,22 @@ packages:
     resolution: {integrity: sha512-dq+qelQ9akHpcOl/gUVRTxVIOkAJ1wR3QAvb4RsVjS8oVoFjDGTc679wJYmUmknUF5HwMLOgb5O+a3KxfWapPQ==}
     engines: {node: '>= 0.6'}
 
-  /meow@12.0.1(typescript@5.0.4):
+  /meow@12.0.1:
     resolution: {integrity: sha512-/QOqMALNoKQcJAOOdIXjNLtfcCdLXbMFyB1fOOPdm6RzfBTlsuodOCTBDjVbeUSmgDQb8UI2oONqYGtq1PKKKA==}
     engines: {node: '>=16.10'}
     dependencies:
       '@types/minimist': 1.2.2
       camelcase-keys: 8.0.2
       decamelize: 6.0.0
-      decamelize-keys: 2.0.1(typescript@5.0.4)
+      decamelize-keys: 2.0.1
       hard-rejection: 2.1.0
       minimist-options: 4.1.0
       normalize-package-data: 5.0.0
       read-pkg-up: 9.1.0
       redent: 4.0.0
       trim-newlines: 5.0.0
-      type-fest: 3.10.0(typescript@5.0.4)
+      type-fest: 3.11.1
       yargs-parser: 21.1.1
-    transitivePeerDependencies:
-      - typescript
     dev: true
 
   /meow@8.1.2:
@@ -8313,6 +8350,14 @@ packages:
       fp-ts: 2.15.0
     dev: true
 
+  /monocle-ts@2.3.13(fp-ts@2.16.0):
+    resolution: {integrity: sha512-D5Ygd3oulEoAm3KuGO0eeJIrhFf1jlQIoEVV2DYsZUMz42j4tGxgct97Aq68+F8w4w4geEnwFa8HayTS/7lpKQ==}
+    peerDependencies:
+      fp-ts: ^2.5.0
+    dependencies:
+      fp-ts: 2.16.0
+    dev: true
+
   /morgan@1.9.1:
     resolution: {integrity: sha512-HQStPIV4y3afTiCYVxirakhlCfGkI161c76kKFca7Fk1JusM//Qeo1ej2XaMniiNeaZklMVrh3vTtIzpzwbpmA==}
     engines: {node: '>= 0.8.0'}
@@ -8396,6 +8441,16 @@ packages:
     dependencies:
       fp-ts: 2.15.0
       monocle-ts: 2.3.13(fp-ts@2.15.0)
+    dev: true
+
+  /newtype-ts@0.3.5(fp-ts@2.16.0)(monocle-ts@2.3.13):
+    resolution: {integrity: sha512-v83UEQMlVR75yf1OUdoSFssjitxzjZlqBAjiGQ4WJaML8Jdc68LJ+BaSAXUmKY4bNzp7hygkKLYTsDi14PxI2g==}
+    peerDependencies:
+      fp-ts: ^2.0.0
+      monocle-ts: ^2.0.0
+    dependencies:
+      fp-ts: 2.16.0
+      monocle-ts: 2.3.13(fp-ts@2.16.0)
     dev: true
 
   /next-auth@4.22.1(next@13.4.3)(react-dom@18.2.0)(react@18.2.0):
@@ -8495,7 +8550,7 @@ packages:
     resolution: {integrity: sha512-fgAN3jGAh+RoxUGZHTSOLJIqUc2wmoBwGR4tbpNAKmmovFoWq0OdRkb0VkldReO2a2iBT/OEulG9XSUc10r3zg==}
     dependencies:
       lower-case: 2.0.2
-      tslib: 2.5.0
+      tslib: 2.5.3
     dev: true
 
   /nocache@2.0.0:
@@ -8911,7 +8966,7 @@ packages:
     resolution: {integrity: sha512-uWlGT3YSnK9x3BQJaOdcZwrnV6hPpd8jFH1/ucpiLRPh/2zCVJKS19E4GvYHvaCcACn3foXZ0cLB9Wrx1KGe5g==}
     dependencies:
       no-case: 3.0.4
-      tslib: 2.5.0
+      tslib: 2.5.3
     dev: true
 
   /path-browserify@1.0.1:
@@ -9175,13 +9230,13 @@ packages:
     resolution: {integrity: sha512-WuxUnVtlWL1OfZFQFuqvnvs6MiAGk9UNsBostyBOB0Is9wb5uRESevA6rnl/rkksXaGX3GzZhPup5d6Vp1nFew==}
     dev: false
 
-  /prismic-ts-codegen@0.1.9(@prismicio/client@7.0.0)(@prismicio/types@0.2.7)(typescript@5.0.4):
-    resolution: {integrity: sha512-15kA2MSgPp4B2m00yrH3hGmc0vbgSGNqnkJw2DNuyq97nMX1RVU3XXLoJTnn8t0FUOKLeIZGUaaWYiLCJlfwuQ==}
+  /prismic-ts-codegen@0.1.11(@prismicio/client@7.0.0)(@prismicio/types@0.2.8):
+    resolution: {integrity: sha512-3KT74niPjMZSNuwVJlAxqMTzF8+KioDzufcB0Y3jvAku5a9FtjMf3rrjw4dHgOvzaRCVcj+ib24OhT3mLWqC4Q==}
     engines: {node: '>=12.7.0'}
     hasBin: true
     peerDependencies:
       '@prismicio/client': ^6.6 || ^7
-      '@prismicio/types': ^0.2
+      '@prismicio/types': ^0.2.8
     peerDependenciesMeta:
       '@prismicio/client':
         optional: true
@@ -9190,18 +9245,16 @@ packages:
     dependencies:
       '@prismicio/client': 7.0.0
       '@prismicio/custom-types-client': 1.1.0
-      '@prismicio/types': 0.2.7
+      '@prismicio/types': 0.2.8
       common-tags: 1.8.2
       fast-glob: 3.2.12
       jiti: 1.18.2
       joi: 17.9.2
-      meow: 12.0.1(typescript@5.0.4)
+      meow: 12.0.1
       node-fetch: 3.3.1
       pascal-case: 3.1.2
       prettier: 2.8.8
       ts-morph: 18.0.0
-    transitivePeerDependencies:
-      - typescript
     dev: true
 
   /process-nextick-args@2.0.1:
@@ -9718,7 +9771,7 @@ packages:
       react: 18.2.0
       react-remove-scroll-bar: 2.3.4(@types/react@18.2.6)(react@18.2.0)
       react-style-singleton: 2.2.1(@types/react@18.2.6)(react@18.2.0)
-      tslib: 2.5.0
+      tslib: 2.4.0
       use-callback-ref: 1.3.0(@types/react@18.2.6)(react@18.2.0)
       use-sidecar: 1.1.2(@types/react@18.2.6)(react@18.2.0)
     dev: true
@@ -10984,6 +11037,10 @@ packages:
   /tslib@2.5.0:
     resolution: {integrity: sha512-336iVw3rtn2BUK7ORdIAHTyxHGRIHVReokCR3XjbckJMK7ms8FysBfhLR8IXnAgy7T0PTPNBWKiH514FOW/WSg==}
 
+  /tslib@2.5.3:
+    resolution: {integrity: sha512-mSxlJJwl3BMEQCUNnxXBU9jP4JBktcEGhURcPR6VQVlnP0FdDEsIaz0C35dXNGLyRfrATNofF0F5p2KPxQgB+w==}
+    dev: true
+
   /tsscmp@1.0.6:
     resolution: {integrity: sha512-LxhtAkPDTkVCMQjt2h6eBVY28KCjikZqZfMcC15YBeNjkgUpdCfBu5HoiOTDu86v6smE8yOjyEktJ8hlbANHQA==}
     engines: {node: '>=0.6.x'}
@@ -11042,13 +11099,9 @@ packages:
     engines: {node: '>=12.20'}
     dev: true
 
-  /type-fest@3.10.0(typescript@5.0.4):
-    resolution: {integrity: sha512-hmAPf1datm+gt3c2mvu0sJyhFy6lTkIGf0GzyaZWxRLnabQfPUqg6tF95RPg6sLxKI7nFLGdFxBcf2/7+GXI+A==}
+  /type-fest@3.11.1:
+    resolution: {integrity: sha512-aCuRNRERRVh33lgQaJRlUxZqzfhzwTrsE98Mc3o3VXqmiaQdHacgUtJ0esp+7MvZ92qhtzKPeusaX6vIEcoreA==}
     engines: {node: '>=14.16'}
-    peerDependencies:
-      typescript: '>=4.7.0'
-    dependencies:
-      typescript: 5.0.4
     dev: true
 
   /type-is@1.6.18:

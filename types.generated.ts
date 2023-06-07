@@ -2035,6 +2035,17 @@ interface CategoryPageDocumentData {
    */
   parent_page: prismic.ContentRelationshipField<'plp'>
   /**
+   * Banner field in *Category Page*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: category_page.banner
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  banner: prismic.ContentRelationshipField<'plp_banner'>
+  /**
    * Display Categories field in *Category Page*
    *
    * - **Field Type**: Group
@@ -9168,6 +9179,17 @@ export type PdpAutoSipPromoMessageDocument<
 /** Content for PLP documents */
 interface PlpDocumentData {
   /**
+   * Banner field in *PLP*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: plp.banner
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/link-content-relationship
+   *
+   */
+  banner: prismic.ContentRelationshipField<'plp_banner'>
+  /**
    * Display Categories field in *PLP*
    *
    * - **Field Type**: Group
@@ -9233,6 +9255,31 @@ export interface PlpDocumentDataEnabledFiltersItem {
  */
 export type PlpDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismic.PrismicDocumentWithUID<Simplify<PlpDocumentData>, 'plp', Lang>
+/** Content for PLP Banner documents */
+interface PlpBannerDocumentData {
+  /**
+   * Image field in *PLP Banner*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: plp_banner.image
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/image
+   *
+   */
+  image: prismic.ImageField<'Mobile'>
+}
+/**
+ * PLP Banner document from Prismic
+ *
+ * - **API ID**: `plp_banner`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type PlpBannerDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
+  prismic.PrismicDocumentWithoutUID<Simplify<PlpBannerDocumentData>, 'plp_banner', Lang>
 /** Content for Plp Bottom Banner documents */
 interface PlpBottomBannerDocumentData {
   /**
@@ -13147,6 +13194,7 @@ export type AllDocumentTypes =
   | PdpDocument
   | PdpAutoSipPromoMessageDocument
   | PlpDocument
+  | PlpBannerDocument
   | PlpBottomBannerDocument
   | PlpTopBannerDocument
   | PopularProductsDocument
@@ -13569,6 +13617,8 @@ declare module '@prismicio/client' {
       PlpDocumentDataDisplayCategoriesItem,
       PlpDocumentDataEnabledFiltersItem,
       PlpDocument,
+      PlpBannerDocumentData,
+      PlpBannerDocument,
       PlpBottomBannerDocumentData,
       PlpBottomBannerDocument,
       PlpTopBannerDocumentData,

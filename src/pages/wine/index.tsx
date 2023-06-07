@@ -36,6 +36,11 @@ export const getStaticProps: GetStaticProps = async ({ previewData, query }) => 
       graphQuery: `{
         plp {
           ...plpFields
+          banner {
+            ...on plp_banner {
+              ...plp_bannerFields
+            }
+          }
           enabled_filters {
             filter {
               ...on filter {
@@ -91,11 +96,20 @@ const PLP = ({ page }: { page: Content.PlpDocument | null }) => {
         .filter(Boolean) || [],
     [page?.data.enabled_filters]
   )
+  const banner =
+    !!page && page.data.banner.link_type !== 'Any' && 'data' in page.data.banner
+      ? (page.data.banner as FilledContentRelationshipField<
+          'plp_banner',
+          string,
+          Content.PlpBannerDocumentData
+        >)
+      : undefined
 
   return (
     <>
       <NextSeo />
       <PlpShell
+        banner={banner}
         categories={categories}
         enabledFilters={
           enabledFilters as FilledContentRelationshipField<

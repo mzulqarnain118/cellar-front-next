@@ -7,6 +7,7 @@ import { AdjustmentsHorizontalIcon } from '@heroicons/react/24/outline'
 import { Pagination, PaginationProps, Select, SelectProps } from '@mantine/core'
 import { useWindowScroll } from '@mantine/hooks'
 import { Content, FilledContentRelationshipField } from '@prismicio/client'
+import { PrismicNextImage } from '@prismicio/next'
 import { clsx } from 'clsx'
 
 import { Button } from '@/core/components/button'
@@ -59,6 +60,7 @@ const selectStyles: SelectProps['styles'] = theme => ({
 })
 
 interface ProductListingProps {
+  banner?: FilledContentRelationshipField<'plp_banner', string, Content.PlpBannerDocumentData>
   categories?: number[]
   enabledFilters?: FilledContentRelationshipField<'filter', string, Content.FilterDocumentData>[]
   page?: number
@@ -68,6 +70,7 @@ interface ProductListingProps {
 }
 
 export const ProductListing = ({
+  banner,
   categories = [],
   enabledFilters = [],
   page: initialPage = 1,
@@ -295,6 +298,11 @@ export const ProductListing = ({
     [scrollTo]
   )
 
+  const bannerElement = useMemo(
+    () => <PrismicNextImage className="mx-auto" field={banner?.data?.image} />,
+    [banner?.data?.image]
+  )
+
   useEffect(() => {
     if (isDesktop) {
       setShowFilters(true)
@@ -311,6 +319,7 @@ export const ProductListing = ({
       >
         <div className="w-[16.25rem] max-w-[16.25rem]">{filters}</div>
         <div className="flex flex-col gap-4 py-10">
+          {bannerElement}
           {paginationHeader}
           <div className="transition-all grid gap-4 md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-4 3xl:grid-cols-5 relative">
             <div className="animate-pulse rounded bg-neutral-300 h-[27.75rem]" />
@@ -353,7 +362,7 @@ export const ProductListing = ({
     >
       <div className="w-[16.25rem] max-w-[16.25rem]">{filters}</div>
       <div className="flex flex-col gap-4 py-10">
-        {/* Banner. */}
+        {bannerElement}
         {paginationHeader}
         {productCards}
         <Pagination

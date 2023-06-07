@@ -10,6 +10,7 @@ const ProductListing = dynamic(
 )
 
 interface PlpShellProps {
+  banner?: FilledContentRelationshipField<'plp_banner', string, Content.PlpBannerDocumentData>
   categories?: number[]
   enabledFilters: FilledContentRelationshipField<'filter', string, Content.FilterDocumentData>[]
   limit: number
@@ -19,6 +20,7 @@ interface PlpShellProps {
 }
 
 export const PlpShell = ({
+  banner,
   categories,
   enabledFilters,
   limit,
@@ -29,6 +31,7 @@ export const PlpShell = ({
   <main>
     <div>
       <ProductListing
+        banner={banner}
         categories={categories}
         enabledFilters={
           enabledFilters as FilledContentRelationshipField<
