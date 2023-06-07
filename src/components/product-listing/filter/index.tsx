@@ -3,10 +3,12 @@ import dynamic from 'next/dynamic'
 import { Content, FilledContentRelationshipField } from '@prismicio/client'
 
 const BrandFilter = dynamic(() => import('./brand').then(({ BrandFilter }) => BrandFilter))
+const CustomFilter = dynamic(() => import('./custom').then(({ CustomFilter }) => CustomFilter))
 const PairingNoteFilter = dynamic(() =>
   import('./pairing-note').then(({ PairingNoteFilter }) => PairingNoteFilter)
 )
 const PriceFilter = dynamic(() => import('./price').then(({ PriceFilter }) => PriceFilter))
+const RegionFilter = dynamic(() => import('./region').then(({ RegionFilter }) => RegionFilter))
 const TastingNoteFilter = dynamic(() =>
   import('./tasting-note').then(({ TastingNoteFilter }) => TastingNoteFilter)
 )
@@ -15,16 +17,24 @@ const VarietalFilter = dynamic(() =>
 )
 
 interface FilterProps {
-  data: FilledContentRelationshipField<'filter', string, Content.FilterDocument>
+  data: FilledContentRelationshipField<'filter', string, Content.FilterDocumentData>
 }
 
-export const Filter = ({ data }: FilterProps) => (
-  <>
-    {data.slug === 'brand' ? <BrandFilter slug={data.slug} /> : undefined}
-    {data.slug === 'price' ? <PriceFilter slug={data.slug} /> : undefined}
-    {data.slug === 'varietal' ? <VarietalFilter slug={data.slug} /> : undefined}
-    {data.slug === 'pairing-notes' ? <PairingNoteFilter slug={data.slug} /> : undefined}
-    {/* {data.slug === 'region' ? <RegionFilter slug={data.slug} /> : undefined} */}
-    {data.slug === 'tasting-notes' ? <TastingNoteFilter slug={data.slug} /> : undefined}
-  </>
-)
+export const Filter = ({ data }: FilterProps) => {
+  switch (data.slug) {
+    case 'brand':
+      return <BrandFilter slug={data.slug} />
+    case 'pairing-notes':
+      return <PairingNoteFilter slug={data.slug} />
+    case 'price':
+      return <PriceFilter slug={data.slug} />
+    case 'region':
+      return <RegionFilter slug={data.slug} />
+    case 'tasting-notes':
+      return <TastingNoteFilter slug={data.slug} />
+    case 'varietal':
+      return <VarietalFilter slug={data.slug} />
+    default:
+      return data.data ? <CustomFilter filter={data?.data} /> : <></>
+  }
+}

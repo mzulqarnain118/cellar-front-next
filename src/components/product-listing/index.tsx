@@ -61,7 +61,7 @@ const selectStyles: SelectProps['styles'] = theme => ({
 
 interface ProductListingProps {
   categories?: number[]
-  enabledFilters?: FilledContentRelationshipField<'filter', string, Content.FilterDocument>[]
+  enabledFilters?: FilledContentRelationshipField<'filter', string, Content.FilterDocumentData>[]
   page?: number
   limit?: number
   search?: string
@@ -238,61 +238,64 @@ export const ProductListing = ({
 
   const getControlProps: PaginationProps['getControlProps'] = useCallback(
     (control: 'first' | 'previous' | 'last' | 'next') => {
+      const params = new URLSearchParams()
+      if (consultant.url) {
+        params.delete('u')
+        params.set('u', consultant.url)
+      }
+
       if (control === 'first') {
-        return {
-          component: Link,
-          href: `${router.asPath}?page=1${consultant.url ? `&u=${consultant.url}` : ''}`,
-          scroll: true,
-          shallow: true,
-        }
+        params.delete('page')
+        params.set('page', '1')
       }
 
       if (control === 'last') {
-        return {
-          component: Link,
-          href: `${router.asPath}?page=${data?.totalNumberOfPages}${
-            consultant.url ? `&u=${consultant.url}` : ''
-          }`,
-          scroll: true,
-          shallow: true,
-        }
+        params.delete('page')
+        params.set('page', data?.totalNumberOfPages.toString() || '')
       }
 
       if (control === 'next') {
-        return {
-          component: Link,
-          href: `${router.asPath}?page=${
-            active === data?.totalNumberOfPages ? active : active + 1
-          }${consultant.url ? `&u=${consultant.url}` : ''}`,
-          scroll: true,
-          shallow: true,
-        }
+        params.delete('page')
+        params.set(
+          'page',
+          active === data?.totalNumberOfPages ? active.toString() : (active + 1).toString()
+        )
       }
 
       if (control === 'previous') {
-        return {
-          component: Link,
-          href: `${router.asPath}?page=${active === 1 ? 1 : active - 1}${
-            consultant.url ? `&u=${consultant.url}` : ''
-          }`,
-          scroll: true,
-          shallow: true,
-        }
+        params.delete('page')
+        params.set('page', active === 1 ? '1' : (active - 1).toString())
       }
 
-      return {}
+      return {
+        component: Link,
+        href: `${router.pathname}?${params.toString()}`,
+        scroll: true,
+        shallow: true,
+      }
     },
-    [active, consultant.url, data?.totalNumberOfPages, router.asPath]
+    [active, consultant.url, data?.totalNumberOfPages, router.pathname]
   )
 
   const getItemProps: PaginationProps['getItemProps'] = useCallback(
-    (page: number) => ({
-      component: Link,
-      href: `${router.asPath}?page=${page}${consultant.url ? `&u=${consultant.url}` : ''}`,
-      scroll: true,
-      shallow: true,
-    }),
-    [consultant.url, router.asPath]
+    (page: number) => {
+      const params = new URLSearchParams()
+      if (consultant.url) {
+        params.delete('u')
+        params.set('u', consultant.url)
+      }
+
+      params.delete('page')
+      params.set('page', page.toString())
+
+      return {
+        component: Link,
+        href: `${router.pathname}?${params.toString()}`,
+        scroll: true,
+        shallow: true,
+      }
+    },
+    [consultant.url, router.pathname]
   )
 
   const onPageChange = useCallback(

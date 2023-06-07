@@ -130,7 +130,7 @@ const SearchPage = ({ page }: { page: Content.PlpDocument | null }) => {
           enabledFilters as FilledContentRelationshipField<
             'filter',
             string,
-            Content.FilterDocument
+            Content.FilterDocumentData
           >[]
         }
         limit={limit}

@@ -129,7 +129,7 @@ const CategoryPage: NextPage<PageProps> = ({ page }) => {
           enabledFilters as FilledContentRelationshipField<
             'filter',
             string,
-            Content.FilterDocument
+            Content.FilterDocumentData
           >[]
         }
         limit={limit}

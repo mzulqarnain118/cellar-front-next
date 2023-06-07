@@ -1,9 +1,16 @@
 import { create } from 'zustand'
 
-export type FilterType = 'brand' | 'pairing-note' | 'price' | 'region' | 'tasting-note' | 'varietal'
+export type FilterType =
+  | 'brand'
+  | 'custom'
+  | 'pairing-note'
+  | 'price'
+  | 'region'
+  | 'tasting-note'
+  | 'varietal'
 
 export interface Filter {
-  displayCategoryId?: number
+  displayCategoryIds?: number[]
   imageUrl?: string
   name: string
   type: FilterType

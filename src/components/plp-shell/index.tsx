@@ -11,7 +11,7 @@ const ProductListing = dynamic(
 
 interface PlpShellProps {
   categories?: number[]
-  enabledFilters: FilledContentRelationshipField<'filter', string, Content.FilterDocument>[]
+  enabledFilters: FilledContentRelationshipField<'filter', string, Content.FilterDocumentData>[]
   limit: number
   page: number
   search?: string
@@ -34,7 +34,7 @@ export const PlpShell = ({
           enabledFilters as FilledContentRelationshipField<
             'filter',
             string,
-            Content.FilterDocument
+            Content.FilterDocumentData
           >[]
         }
         limit={limit}

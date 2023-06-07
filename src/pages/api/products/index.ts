@@ -60,6 +60,10 @@ const handler = async (req: NextRequest) => {
                       !!product.attributes?.Brand &&
                       product.attributes.Brand.toLowerCase() === filter.name.toLowerCase()
                     )
+                  case 'custom':
+                    return filter.displayCategoryIds?.some(category =>
+                      product.displayCategories.includes(category)
+                    )
                   case 'pairing-note':
                     return (
                       !!product.attributes?.['Pairing Notes'] &&

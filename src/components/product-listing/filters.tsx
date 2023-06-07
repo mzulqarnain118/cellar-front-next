@@ -18,7 +18,7 @@ const filterMenuClassNames = {
 }
 
 export interface FiltersProps {
-  enabledFilters?: FilledContentRelationshipField<'filter', string, Content.FilterDocument>[]
+  enabledFilters?: FilledContentRelationshipField<'filter', string, Content.FilterDocumentData>[]
   onClose: () => void
   show: boolean
 }
