@@ -288,8 +288,13 @@ export const ProductCard = ({ className, priority = false, product }: ProductCar
             </div>
           </div>
         </div>
-        <div className="flex items-center justify-between">
-          {dropdownOrNumberPicker}
+        <div
+          className={clsx(
+            'flex items-center justify-between',
+            productCardButtonText !== 'Add to Cart' && '!justify-end'
+          )}
+        >
+          {productCardButtonText !== 'Add to Cart' ? undefined : dropdownOrNumberPicker}
           <Button
             color="secondary"
             disabled={numberPickerDisabled}
