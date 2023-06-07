@@ -218,11 +218,9 @@ export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
           <Button dark form="address-form" type="submit">
             Save address
           </Button>
-          {guestAddress !== undefined ? (
-            <Button color="ghost" type="button" onClick={handleAddressChange}>
-              Cancel
-            </Button>
-          ) : undefined}
+          <Button color="ghost" type="button" onClick={handleAddressChange}>
+            Cancel
+          </Button>
         </div>
         {errors?.delivery ? (
           <Typography className="mt-4 block text-error">{errors.delivery}</Typography>

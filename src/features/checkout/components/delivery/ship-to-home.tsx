@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo } from 'react'
 
 import dynamic from 'next/dynamic'
 
-import { PlusIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { PlusIcon } from '@heroicons/react/24/outline'
 import { Collapse, LoadingOverlay, Select, SelectProps, Skeleton } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 
@@ -27,6 +27,8 @@ const AddressForm = dynamic(() => import('./address-form').then(({ AddressForm }
 })
 
 const dropdownClassNames = { input: 'h-10', item: 'text-14', label: 'text-14' }
+
+const plusIcon = <PlusIcon className="h-4 w-4" />
 
 interface ShipToHomeProps {
   refs: DeliveryRefs
@@ -132,16 +134,11 @@ export const ShipToHome = ({ refs }: ShipToHomeProps) => {
         )}
       </Collapse>
 
-      <Button
-        color="ghost"
-        size="sm"
-        startIcon={
-          addressFormOpen ? <XMarkIcon className="h-4 w-4" /> : <PlusIcon className="h-4 w-4" />
-        }
-        onClick={toggleAddressForm}
-      >
-        {addressFormOpen ? 'Cancel' : 'Add address'}
-      </Button>
+      {addressFormOpen ? undefined : (
+        <Button color="ghost" size="sm" startIcon={plusIcon} onClick={toggleAddressForm}>
+          Add address
+        </Button>
+      )}
 
       <Collapse in={addressFormOpen}>
         <AddressForm ref={refs.shippingAddressRef} onCreateAddress={closeAddressForm} />

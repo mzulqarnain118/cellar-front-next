@@ -58,10 +58,11 @@ export type CreditCardFormSchema = z.infer<typeof creditCardFormSchema>
 const startIcon = <ChevronLeftIcon className="w-4 h-4" />
 
 interface CreditCardFormProps {
+  onCancel?: () => void
   onCreate?: () => void
 }
 
-export const CreditCardForm = ({ onCreate }: CreditCardFormProps) => {
+export const CreditCardForm = ({ onCancel, onCreate }: CreditCardFormProps) => {
   const activeCreditCard = useCheckoutActiveCreditCard()
   const activeShippingAddress = useCheckoutActiveShippingAddress()
   const checkoutErrors = useCheckoutErrors()
@@ -334,9 +335,12 @@ export const CreditCardForm = ({ onCreate }: CreditCardFormProps) => {
               <Checkbox color="dark" label="Set as default" {...register('default')} />
             )}
           </div>
-          <div className="mt-4 flex justify-end lg:justify-start">
+          <div className="mt-4 flex justify-end lg:justify-start gap-2">
             <Button dark type="submit">
               Save credit card
+            </Button>
+            <Button color="ghost" type="button" onClick={onCancel}>
+              Cancel
             </Button>
           </div>
           {checkoutErrors?.payment?.form ? (

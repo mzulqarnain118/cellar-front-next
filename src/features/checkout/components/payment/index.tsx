@@ -6,7 +6,6 @@ import {
   GiftIcon,
   PlusIcon,
   TagIcon,
-  XMarkIcon,
 } from '@heroicons/react/24/outline'
 import { Collapse, Select, SelectProps } from '@mantine/core'
 import { useDisclosure, useMergedRef, useScrollIntoView, useWindowScroll } from '@mantine/hooks'
@@ -44,6 +43,7 @@ export interface PaymentRefs {
   promoCodeRef: MutableRefObject<HTMLInputElement | null>
 }
 
+const plusIcon = <PlusIcon className="h-4 w-4" />
 const scrollIntoViewSettings = { duration: 500, offset: 120 }
 interface PaymentProps {
   opened: boolean
@@ -153,6 +153,11 @@ export const Payment = memo(({ opened, refs, toggle }: PaymentProps) => {
     openShowCreditCard()
   }, [closeCreditCardForm, openShowCreditCard, scrollCvvIntoView, scrollTo, targetRef])
 
+  const handleCancelCreate = useCallback(() => {
+    scrollTo({ y: 0 })
+    closeCreditCardForm()
+  }, [closeCreditCardForm, scrollTo])
+
   const creditCard = useMemo(
     () => (session?.user?.isGuest ? guestCreditCard : activeCreditCard),
     [activeCreditCard, guestCreditCard, session?.user?.isGuest]
@@ -252,25 +257,14 @@ export const Payment = memo(({ opened, refs, toggle }: PaymentProps) => {
           </div>
         </Collapse>
 
-        {opened && !session?.user?.isGuest ? (
-          <Button
-            color="ghost"
-            size="sm"
-            startIcon={
-              creditCardFormOpen ? (
-                <XMarkIcon className="h-4 w-4" />
-              ) : (
-                <PlusIcon className="h-4 w-4" />
-              )
-            }
-            onClick={toggleCreditCardForm}
-          >
-            {creditCardFormOpen ? 'Cancel' : 'Add credit card'}
+        {opened && !session?.user?.isGuest && !creditCardFormOpen ? (
+          <Button color="ghost" size="sm" startIcon={plusIcon} onClick={toggleCreditCardForm}>
+            Add credit card
           </Button>
         ) : undefined}
 
         <Collapse in={creditCardFormOpen}>
-          <CreditCardForm onCreate={handleCreateCreditCard} />
+          <CreditCardForm onCancel={handleCancelCreate} onCreate={handleCreateCreditCard} />
         </Collapse>
 
         {session?.user?.isGuest ? (
