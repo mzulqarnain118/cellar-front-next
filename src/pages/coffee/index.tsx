@@ -36,6 +36,11 @@ export const getStaticProps: GetStaticProps = async ({ previewData, query }) => 
       graphQuery: `{
         plp {
           ...plpFields
+          banner {
+            ...on plp_banner {
+              ...plp_bannerFields
+            }
+          }
           enabled_filters {
             filter {
               ...on filter {

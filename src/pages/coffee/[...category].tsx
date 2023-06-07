@@ -74,6 +74,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
     graphQuery: `{
       category_page {
         ...category_pageFields
+        banner {
+          ...on plp_banner {
+            ...plp_bannerFields
+          }
+        }
         parent_page {
           ...on plp {
             uid
