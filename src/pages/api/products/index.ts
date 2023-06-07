@@ -53,7 +53,7 @@ const handler = async (req: NextRequest) => {
 
           if (activeFilters.length > 0) {
             filteredProducts = filteredProducts.filter(product =>
-              activeFilters.some(filter => {
+              activeFilters.every(filter => {
                 switch (filter.type) {
                   case 'brand':
                     return (

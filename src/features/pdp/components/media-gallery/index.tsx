@@ -213,7 +213,7 @@ export const MediaGallery = ({
         withControls
         withIndicators
         align="start"
-        className="w-full py-10"
+        className="py-10 max-w-[90svw] lg:!max-w-none"
         slideGap="md"
         slideSize="25%"
         slidesToScroll={3}

@@ -159,12 +159,5 @@ module.exports = {
       body: ['proxima-nova', ...fontFamily.sans],
       heading: ['var(--font-merriweather)', ...fontFamily.sans],
     },
-    // screens: {
-    //   '2xl': '1400px',
-    //   lg: '992px',
-    //   md: '768px',
-    //   sm: '576px',
-    //   xl: '1200px',
-    // },
   },
 }
