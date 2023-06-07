@@ -5,6 +5,7 @@ import { useDisclosure } from '@mantine/hooks'
 import { Accordion } from '@/core/components/accordion'
 import { Button } from '@/core/components/button'
 import { useProductsQuery } from '@/lib/queries/products'
+import { Filter } from '@/lib/stores/filters'
 
 import { FilterCheckbox } from './checkbox'
 
@@ -20,17 +21,19 @@ export const BrandFilter = ({ slug }: BrandFilterProps) => {
     let filterValues = products?.map(product => product.attributes?.Brand).filter(Boolean) || []
     filterValues = filterValues?.filter((value, index) => filterValues.indexOf(value) === index)
 
-    return filterValues.reduce<string[]>((array, currentFilter) => {
-      const index = array.findIndex(
-        element => element.toLowerCase() === currentFilter.toLowerCase()
-      )
-      if (index === -1) {
-        array.push(currentFilter)
-      }
+    return filterValues
+      .reduce<string[]>((array, currentFilter) => {
+        const index = array.findIndex(
+          element => element.toLowerCase() === currentFilter.toLowerCase()
+        )
+        if (index === -1) {
+          array.push(currentFilter)
+        }
 
-      return array
-    }, [])
-  }, [products])
+        return array
+      }, [])
+      .map(brand => ({ name: brand, type: 'brand' }))
+  }, [products]) satisfies Filter[]
 
   const data = useMemo(() => (showAll ? brands : brands.slice(0, 5)), [brands, showAll])
 
@@ -47,7 +50,7 @@ export const BrandFilter = ({ slug }: BrandFilterProps) => {
     <Accordion openByDefault header={slug.replaceAll('-', ' ') || ''}>
       <div className="space-y-2 pt-4">
         {data.map(brand => (
-          <FilterCheckbox key={brand} name={brand} />
+          <FilterCheckbox key={brand.name} filter={brand} />
         ))}
         {brands.length > 5 ? showAllButton : undefined}
       </div>

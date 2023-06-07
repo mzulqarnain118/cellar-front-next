@@ -4,19 +4,12 @@ import { useWindowScroll } from '@mantine/hooks'
 import { clsx } from 'clsx'
 
 import { useFiltersStore } from '@/lib/stores/filters'
-import { Chip } from '@/ui/chip'
+
+import { FilterChip } from './filter-chip'
 
 export const FilterBar = () => {
-  const { activeFilters, clearAll, removeFilter } = useFiltersStore()
+  const { activeFilters, clearAll } = useFiltersStore()
   const [_, scrollTo] = useWindowScroll()
-
-  const onChipClick = useCallback(
-    (name: string) => {
-      scrollTo({ y: 0 })
-      removeFilter(name)
-    },
-    [removeFilter, scrollTo]
-  )
 
   const handleClearAll = useCallback(() => {
     scrollTo({ y: 0 })
@@ -31,12 +24,7 @@ export const FilterBar = () => {
       )}
     >
       {activeFilters.map(filter => (
-        <Chip
-          key={filter}
-          className="animate-fade-in transition-all"
-          name={filter}
-          onClick={onChipClick}
-        />
+        <FilterChip key={filter.name} filter={filter} />
       ))}
       {activeFilters.length > 0 && (
         <button

@@ -1,24 +1,24 @@
 import { ReactNode, useCallback, useMemo } from 'react'
 
 import { Checkbox } from '@/core/components/checkbox'
-import { useFiltersStore } from '@/lib/stores/filters'
+import { Filter, useFiltersStore } from '@/lib/stores/filters'
 
 const checkboxClassNames = {
   body: 'items-center',
 }
 
 interface FilterCheckboxProps {
+  filter: Filter
   label?: ReactNode
-  name: string
 }
 
-export const FilterCheckbox = ({ label, name }: FilterCheckboxProps) => {
+export const FilterCheckbox = ({ filter, label }: FilterCheckboxProps) => {
   const { activeFilters, toggleActiveFilter } = useFiltersStore()
 
-  const value = useMemo(() => activeFilters.includes(name), [activeFilters, name])
+  const value = useMemo(() => activeFilters.includes(filter), [activeFilters, filter])
   const handleFilterToggle = useCallback(() => {
-    toggleActiveFilter(name)
-  }, [name, toggleActiveFilter])
+    toggleActiveFilter(filter)
+  }, [filter, toggleActiveFilter])
 
   return (
     <Checkbox
@@ -26,7 +26,7 @@ export const FilterCheckbox = ({ label, name }: FilterCheckboxProps) => {
       className="capitalize"
       classNames={checkboxClassNames}
       color="dark"
-      label={label || name}
+      label={label || filter.name}
       onChange={handleFilterToggle}
     />
   )

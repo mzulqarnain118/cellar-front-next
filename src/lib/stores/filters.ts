@@ -1,24 +1,33 @@
 import { create } from 'zustand'
 
+export type FilterType = 'brand' | 'pairing-note' | 'price' | 'region' | 'tasting-note' | 'varietal'
+
+export interface Filter {
+  displayCategoryId?: number
+  imageUrl?: string
+  name: string
+  type: FilterType
+}
+
 interface FiltersStore {
-  activeFilters: string[]
+  activeFilters: Filter[]
   clearAll: () => void
-  removeFilter: (filter: string) => void
-  toggleActiveFilter: (activeFilter: string) => void
+  removeFilter: (filter: Filter) => void
+  toggleActiveFilter: (activeFilter: Filter) => void
 }
 
 export const useFiltersStore = create<FiltersStore>(set => ({
   activeFilters: [],
   clearAll: () => set(() => ({ activeFilters: [] })),
-  removeFilter: (filter: string) => {
+  removeFilter: (filter: Filter) => {
     set(({ activeFilters }) => ({
-      activeFilters: activeFilters.filter(activeFilter => activeFilter !== filter),
+      activeFilters: activeFilters.filter(activeFilter => activeFilter.name !== filter.name),
     }))
   },
-  toggleActiveFilter: (activeFilter: string) =>
+  toggleActiveFilter: (activeFilter: Filter) =>
     set(({ activeFilters }) => {
-      if (activeFilters.includes(activeFilter)) {
-        return { activeFilters: activeFilters.filter(filter => filter !== activeFilter) }
+      if (activeFilters.some(filter => filter.name === activeFilter.name)) {
+        return { activeFilters: activeFilters.filter(filter => filter.name !== activeFilter.name) }
       }
 
       return { activeFilters: [...activeFilters, activeFilter] }

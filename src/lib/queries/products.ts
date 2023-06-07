@@ -1,6 +1,7 @@
 import { QueryFunction, useQuery } from '@tanstack/react-query'
 
 import { localApi } from '../api'
+import { Filter, useFiltersStore } from '../stores/filters'
 import { useUserShippingState } from '../stores/user'
 import {
   PaginatedProductsResponse,
@@ -50,9 +51,10 @@ export const getProductByCartUrl: QueryFunction<ProductsSchema | null> = async (
 
 export const getPaginatedProducts: QueryFunction<
   PaginatedProductsSchema | null,
-  (string | number | Data | Record<string, string>)[]
+  (string | number | Data | Filter[] | Record<string, string>)[]
 > = async ({ queryKey }) => {
   const data = queryKey[1] as Record<string, string>
+  const filters = queryKey[2] as Filter[]
 
   if (data.categories) {
     data.categories = data.categories.toString()
@@ -65,7 +67,10 @@ export const getPaginatedProducts: QueryFunction<
   }
 
   const params = new URLSearchParams(data).toString()
-  const response = await localApi(`products${params ? `?${params}` : ''}`)
+  const response = await localApi(`products${params ? `?${params}` : ''}`, {
+    json: !!filters && filters.length > 0 ? filters : undefined,
+    method: !!filters && filters.length > 0 ? 'post' : 'get',
+  })
 
   const result = (await response.json()) as PaginatedProductsResponse
 
@@ -94,12 +99,13 @@ export const useProductQuery = (cartUrl: string) =>
 export const PAGINATED_PRODUCTS_QUERY_KEY = ['paginated-products']
 export const usePaginatedProducts = (data: Data, enabled = true) => {
   const { provinceID } = useUserShippingState()
+  const { activeFilters } = useFiltersStore()
 
   return useQuery({
     enabled,
     keepPreviousData: true,
     queryFn: getPaginatedProducts,
-    queryKey: [...PAGINATED_PRODUCTS_QUERY_KEY, { ...data, provinceID }],
+    queryKey: [...PAGINATED_PRODUCTS_QUERY_KEY, { ...data, provinceID }, activeFilters || []],
     refetchOnMount: false,
     refetchOnWindowFocus: false,
   })

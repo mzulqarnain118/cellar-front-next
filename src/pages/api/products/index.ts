@@ -1,5 +1,6 @@
 import type { NextRequest } from 'next/server'
 
+import { Filter } from '@/lib/stores/filters'
 import { ProductsResponse } from '@/lib/types/schemas/product'
 
 export const config = {
@@ -7,7 +8,7 @@ export const config = {
 }
 
 const handler = async (req: NextRequest) => {
-  if (req.method !== 'GET') {
+  if (req.method !== 'GET' && req.method !== 'POST') {
     return new Response(
       JSON.stringify({
         error: {
@@ -17,7 +18,7 @@ const handler = async (req: NextRequest) => {
       }),
       {
         headers: {
-          Allow: 'GET',
+          Allow: 'GET, POST',
         },
         status: 405, // * Method not allowed.
       }
@@ -46,6 +47,55 @@ const handler = async (req: NextRequest) => {
                 displayCategoryIds.every(category => product.displayCategories.includes(category))
               )
             : productsData
+
+        if (req.method === 'POST') {
+          const activeFilters = (await req.json()) as Filter[]
+
+          if (activeFilters.length > 0) {
+            filteredProducts = filteredProducts.filter(product =>
+              activeFilters.some(filter => {
+                switch (filter.type) {
+                  case 'brand':
+                    return (
+                      !!product.attributes?.Brand &&
+                      product.attributes.Brand.toLowerCase() === filter.name.toLowerCase()
+                    )
+                  case 'pairing-note':
+                    return (
+                      !!product.attributes?.['Pairing Notes'] &&
+                      product.attributes['Pairing Notes'].length > 0 &&
+                      product.attributes['Pairing Notes'].find(
+                        note => note.name.toLowerCase() === filter.name.toLowerCase()
+                      )
+                    )
+                  // ! TODO Price
+                  // case 'price':
+                  case 'region':
+                    return (
+                      !!product.attributes?.Origin &&
+                      product.attributes.Origin.toLowerCase() === filter.name.toLowerCase()
+                    )
+                  case 'tasting-note':
+                    return (
+                      !!product.attributes?.['Tasting Notes'] &&
+                      product.attributes['Tasting Notes'].length > 0 &&
+                      product.attributes['Tasting Notes'].find(
+                        note => note.name.toLowerCase() === filter.name.toLowerCase()
+                      )
+                    )
+                  case 'varietal':
+                    return (
+                      !!product.attributes?.Varietal &&
+                      product.attributes.Varietal.toLowerCase() === filter.name.toLowerCase()
+                    )
+                  default:
+                    return false
+                }
+              })
+            )
+          }
+        }
+
         filteredProducts = filteredProducts
           .sort((left, right) => {
             const leftPrice = left.onSalePrice !== undefined ? left.onSalePrice : left.price || 0

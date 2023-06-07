@@ -9,16 +9,16 @@ import { Filter } from '@/lib/stores/filters'
 
 import { FilterCheckbox } from './checkbox'
 
-interface VarietalFilterProps {
+interface RegionFilterProps {
   slug: string
 }
 
-export const VarietalFilter = ({ slug }: VarietalFilterProps) => {
+export const RegionFilter = ({ slug }: RegionFilterProps) => {
   const [showAll, { toggle: toggleShowAll }] = useDisclosure(false)
   const { data: products } = useProductsQuery()
 
-  const varietals = useMemo(() => {
-    let filterValues = products?.map(product => product.attributes?.Varietal).filter(Boolean) || []
+  const regions = useMemo(() => {
+    let filterValues = products?.map(product => product.attributes?.Origin).filter(Boolean) || []
     filterValues = filterValues?.filter((value, index) => filterValues.indexOf(value) === index)
 
     return filterValues
@@ -32,10 +32,10 @@ export const VarietalFilter = ({ slug }: VarietalFilterProps) => {
 
         return array
       }, [])
-      .map(varietal => ({ name: varietal, type: 'varietal' }))
+      .map(region => ({ name: region, type: 'region' }))
   }, [products]) satisfies Filter[]
 
-  const data = useMemo(() => (showAll ? varietals : varietals.slice(0, 5)), [varietals, showAll])
+  const data = useMemo(() => (showAll ? regions : regions.slice(0, 5)), [regions, showAll])
 
   const showAllButton = useMemo(
     () => (
@@ -49,10 +49,10 @@ export const VarietalFilter = ({ slug }: VarietalFilterProps) => {
   return (
     <Accordion openByDefault header={slug.replaceAll('-', ' ') || ''}>
       <div className="space-y-2 pt-4">
-        {data.map(varietal => (
-          <FilterCheckbox key={varietal.name} filter={varietal} />
+        {data.map(region => (
+          <FilterCheckbox key={region.name} filter={region} />
         ))}
-        {varietals.length > 5 ? showAllButton : undefined}
+        {regions.length > 5 ? showAllButton : undefined}
       </div>
     </Accordion>
   )

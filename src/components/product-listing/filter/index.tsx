@@ -24,6 +24,7 @@ export const Filter = ({ data }: FilterProps) => (
     {data.slug === 'price' ? <PriceFilter slug={data.slug} /> : undefined}
     {data.slug === 'varietal' ? <VarietalFilter slug={data.slug} /> : undefined}
     {data.slug === 'pairing-notes' ? <PairingNoteFilter slug={data.slug} /> : undefined}
+    {/* {data.slug === 'region' ? <RegionFilter slug={data.slug} /> : undefined} */}
     {data.slug === 'tasting-notes' ? <TastingNoteFilter slug={data.slug} /> : undefined}
   </>
 )

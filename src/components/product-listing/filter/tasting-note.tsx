@@ -7,6 +7,7 @@ import { Accordion } from '@/core/components/accordion'
 import { Button } from '@/core/components/button'
 import { Typography } from '@/core/components/typogrpahy'
 import { useProductsQuery } from '@/lib/queries/products'
+import { Filter } from '@/lib/stores/filters'
 
 import { FilterCheckbox } from './checkbox'
 
@@ -31,7 +32,8 @@ export const TastingNoteFilter = ({ slug }: TastingNoteFilterProps) => {
         return array
       }, [])
       .filter(Boolean)
-  }, [products])
+      .map(note => ({ imageUrl: note.imageUrl, name: note.name, type: 'tasting-note' }))
+  }, [products]) satisfies Filter[]
 
   const data = useMemo(
     () => (showAll ? tastingNotes : tastingNotes.slice(0, 5)),
@@ -53,6 +55,7 @@ export const TastingNoteFilter = ({ slug }: TastingNoteFilterProps) => {
         {data.map(tastingNote => (
           <FilterCheckbox
             key={tastingNote.name}
+            filter={tastingNote}
             label={
               <>
                 <div className="flex items-center gap-2">
@@ -68,7 +71,6 @@ export const TastingNoteFilter = ({ slug }: TastingNoteFilterProps) => {
                 </div>
               </>
             }
-            name={tastingNote.name}
           />
         ))}
         {tastingNotes.length > 5 ? showAllButton : undefined}
