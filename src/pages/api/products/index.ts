@@ -44,7 +44,7 @@ const handler = async (req: NextRequest) => {
         let filteredProducts =
           displayCategoryIds.length > 0
             ? productsData.filter(product =>
-                displayCategoryIds.every(category => product.displayCategories.includes(category))
+                displayCategoryIds.some(category => product.displayCategories.includes(category))
               )
             : productsData
 
