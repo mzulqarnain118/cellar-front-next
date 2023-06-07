@@ -4,7 +4,7 @@ import { ReactNode, useCallback, useEffect } from 'react'
 import { useRouter } from 'next/router'
 
 import { identify, isInitialized } from '@fullstory/browser'
-import { modals } from '@mantine/modals'
+import { closeAllModals, modals } from '@mantine/modals'
 import { useSession } from 'next-auth/react'
 
 import { Button } from '@/core/components/button'
@@ -85,6 +85,14 @@ export const RootLayout = ({ children }: RootLayoutProps) => {
       })
     }
   }, [session?.user])
+
+  useEffect(
+    () => () => {
+      closeAllModals()
+      modals.closeAll()
+    },
+    []
+  )
 
   return router.pathname === CHECKOUT_PAGE_PATH ? (
     <CheckoutLayout>{children}</CheckoutLayout>
