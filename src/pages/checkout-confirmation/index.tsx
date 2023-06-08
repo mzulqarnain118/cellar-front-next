@@ -10,6 +10,7 @@ import { NextSeo } from 'next-seo'
 import { BlurImage } from '@/components/blur-image'
 import { Typography } from '@/core/components/typogrpahy'
 import { CHECKOUT_CONFIRMATION_PAGE_PATH } from '@/lib/paths'
+import { useCheckoutActions } from '@/lib/stores/checkout'
 
 const Receipt = dynamic(
   () => import('@/features/checkout/components/receipt').then(({ Receipt }) => Receipt),
@@ -18,9 +19,11 @@ const Receipt = dynamic(
 
 const CheckoutConfirmationPage: NextPage = () => {
   const { data: session } = useSession()
+  const { reset } = useCheckoutActions()
 
   useEffect(() => {
     const signOutGuest = async () => {
+      reset()
       if (typeof window !== 'undefined') {
         localStorage.removeItem('checkout')
       }
@@ -30,7 +33,7 @@ const CheckoutConfirmationPage: NextPage = () => {
       }
     }
     signOutGuest()
-  }, [session?.user?.isGuest])
+  }, [reset, session?.user?.isGuest])
 
   return (
     <>

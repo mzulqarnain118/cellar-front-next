@@ -46,6 +46,7 @@ interface GetSubtotalInfoSuccess {
 type GetSubtotalInfoResponse = GetSubtotalInfoSuccess | Failure
 
 export interface OrderPrice {
+  default?: boolean
   discountTotals: {
     description: string
     amount: number
@@ -63,6 +64,7 @@ export interface OrderPrice {
 }
 
 const defaultOrderPrice: OrderPrice = {
+  default: true,
   discountTotals: [],
   orderTotal: 0,
   retailDeliveryFee: 0,
@@ -146,7 +148,7 @@ export const useGetSubtotalQuery = (cartId?: string) => {
 
   return useQuery({
     onSuccess: data => {
-      if (data.orderTotal === 0) {
+      if (data.orderTotal === 0 && !data.default) {
         applyCheckoutSelections({
           addressId: address?.AddressID,
           cartId: cartId || cart?.id,
