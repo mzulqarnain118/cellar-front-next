@@ -136,7 +136,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return
     }
   } catch (error) {
-    console.error(error)
     res.status(500).json({
       error: 'Something went wrong',
       success: false,

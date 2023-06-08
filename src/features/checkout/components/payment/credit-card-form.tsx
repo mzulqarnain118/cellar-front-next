@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Checkbox } from '@mantine/core'
 import { modals } from '@mantine/modals'
 import { useSession } from 'next-auth/react'
-import Cards, { Focused } from 'react-credit-cards-2'
+import { Focused } from 'react-credit-cards-2'
 import { FormProvider, SubmitHandler, UseFormProps, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -257,7 +257,20 @@ export const CreditCardForm = ({ onCancel, onCreate }: CreditCardFormProps) => {
         },
       })
     },
-    [createCreditCard, onCreate, setError, validateAddress]
+    [
+      activeAddress?.City,
+      activeAddress?.Company,
+      activeAddress?.FirstName,
+      activeAddress?.LastName,
+      activeAddress?.PostalCode,
+      activeAddress?.ProvinceID,
+      activeAddress?.Street1,
+      activeAddress?.Street2,
+      createCreditCard,
+      onCreate,
+      setError,
+      validateAddress,
+    ]
   )
 
   return (
@@ -267,14 +280,6 @@ export const CreditCardForm = ({ onCancel, onCreate }: CreditCardFormProps) => {
           Never mind
         </Button>
       ) : undefined}
-      <Cards
-        cvc={state.cvc}
-        expiry={state.expiry}
-        focused={state.focus}
-        issuer={state.issuer}
-        name={state.name}
-        number={state.number}
-      />
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid items-start lg:grid-cols-2 lg:gap-4">

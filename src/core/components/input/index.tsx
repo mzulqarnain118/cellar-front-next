@@ -13,6 +13,7 @@ interface Props<TFieldValues extends FieldValues = FieldValues> extends InputPro
   dirty?: boolean
   error?: string | boolean
   id?: string
+  inputClassName?: string
   instructionLabel?: string
   label?: string
   left?: ReactNode
@@ -32,6 +33,7 @@ export const Input = forwardRef<HTMLInputElement, Props>(
       className,
       dirty = false,
       error = false,
+      inputClassName,
       instructionLabel,
       label,
       left,
@@ -99,7 +101,8 @@ export const Input = forwardRef<HTMLInputElement, Props>(
                     focus:!border-neutral-dark focus:!outline-none`,
                     left !== undefined && '!rounded-l-none !px-4',
                     right !== undefined && '!rounded-r-none !px-4',
-                    !!error && touched && 'border-error'
+                    !!error && touched && '!border-error',
+                    inputClassName
                   )}
                   color={color}
                   id={props.name}

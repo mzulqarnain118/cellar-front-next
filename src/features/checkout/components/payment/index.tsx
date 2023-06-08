@@ -195,8 +195,6 @@ export const Payment = memo(({ opened, refs, toggle }: PaymentProps) => {
     targetRef,
   ])
 
-  console.log(creditCard)
-
   return (
     <div className={clsx('py-4 rounded', hasPaymentError && '')}>
       <div
@@ -233,7 +231,6 @@ export const Payment = memo(({ opened, refs, toggle }: PaymentProps) => {
           <div className="grid grid-cols-[1fr_auto] items-start gap-4">
             {session?.user?.isGuest ? (
               <div className="grid self-center">
-                <Typography className="text-14">Please enter the CVV for your card:</Typography>
                 <Typography className="font-bold">
                   {creditCard?.NameOnCard} - {creditCard?.CreditCardTypeName} ending in{' '}
                   {creditCard?.DisplayNumber}
@@ -254,6 +251,7 @@ export const Payment = memo(({ opened, refs, toggle }: PaymentProps) => {
               noSpacing
               className="mt-0.5"
               error={errors?.payment?.cvv}
+              inputClassName={clsx(errors?.payment?.cvv && '!border-error focus:!border-error')}
               label="CVV"
               name="cvv"
               pattern="^\d{3,4}$"
@@ -275,8 +273,8 @@ export const Payment = memo(({ opened, refs, toggle }: PaymentProps) => {
           <CreditCardForm onCancel={handleCancelCreate} onCreate={handleCreateCreditCard} />
         </Collapse>
 
-        {session?.user?.isGuest ? (
-          <Button link onClick={handleChangeCreditCard}>
+        {session?.user?.isGuest && !creditCardFormOpen ? (
+          <Button link className="!m-0" onClick={handleChangeCreditCard}>
             Change credit card
           </Button>
         ) : undefined}

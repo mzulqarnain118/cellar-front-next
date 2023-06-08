@@ -145,7 +145,7 @@ export const ShipToHome = ({ refs }: ShipToHomeProps) => {
       </Collapse>
 
       <Collapse in={!addressFormOpen}>
-        {shippingMethodsData === undefined ? (
+        {shippingMethodsData === undefined || shippingMethodsData.length === 0 ? (
           <>
             <Skeleton className="mb-1 h-6" width={120} />
             <Skeleton className="h-10" />

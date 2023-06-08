@@ -23,6 +23,7 @@ import {
   useCheckoutActiveCreditCard,
   useCheckoutGiftCardCode,
   useCheckoutGiftMessage,
+  useCheckoutGuestCreditCard,
   useCheckoutIsAddingAddress,
   useCheckoutIsAddingCreditCard,
   useCheckoutIsAddingGiftMessage,
@@ -80,6 +81,11 @@ const CheckoutPage: NextPage<PageProps> = () => {
   const selectedPickUpAddress = useCheckoutSelectedPickUpAddress()
   const selectedPickUpOption = useCheckoutSelectedPickUpOption()
   const { setErrors } = useCheckoutActions()
+  const guestCreditCard = useCheckoutGuestCreditCard()
+  const creditCard = useMemo(
+    () => guestCreditCard || activeCreditCard,
+    [activeCreditCard, guestCreditCard]
+  )
 
   const [
     contactInformationOpened,
@@ -217,7 +223,7 @@ const CheckoutPage: NextPage<PageProps> = () => {
       return false
     }
 
-    if (activeCreditCard !== undefined && !cvvRef.current?.value.length) {
+    if (creditCard !== undefined && !cvvRef.current?.value.length) {
       openPayment()
       await wait(300)
 
@@ -289,9 +295,9 @@ const CheckoutPage: NextPage<PageProps> = () => {
 
     return true
   }, [
-    activeCreditCard,
     autoSipRef,
     cart?.items,
+    creditCard,
     cvvRef,
     giftCardCodes.isAdded,
     giftCardRef,
