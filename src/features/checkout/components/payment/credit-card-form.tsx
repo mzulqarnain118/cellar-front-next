@@ -20,6 +20,7 @@ import {
   useCheckoutActiveCreditCard,
   useCheckoutActiveShippingAddress,
   useCheckoutErrors,
+  useCheckoutGuestAddress,
 } from '@/lib/stores/checkout'
 import { Address } from '@/lib/types/address'
 
@@ -66,6 +67,11 @@ export const CreditCardForm = ({ onCancel, onCreate }: CreditCardFormProps) => {
   const activeCreditCard = useCheckoutActiveCreditCard()
   const activeShippingAddress = useCheckoutActiveShippingAddress()
   const checkoutErrors = useCheckoutErrors()
+  const guestAddress = useCheckoutGuestAddress()
+  const activeAddress = useMemo(
+    () => guestAddress || activeShippingAddress,
+    [activeShippingAddress, guestAddress]
+  )
   const { mutate: createCreditCard } = useCreateCreditCardMutation()
   const { mutate: validateAddress } = useValidateAddressMutation()
   const { data: addressesAndCreditCards } = useAddressesAndCreditCardsQuery()
@@ -147,22 +153,16 @@ export const CreditCardForm = ({ onCancel, onCreate }: CreditCardFormProps) => {
       }
 
       const address = {
-        addressLineOne: data.sameAsShipping
-          ? activeShippingAddress?.Street1 || ''
-          : data.addressOne || '',
-        addressLineTwo: data.sameAsShipping
-          ? activeShippingAddress?.Street2 || ''
-          : data.addressTwo || '',
-        city: data.sameAsShipping ? activeShippingAddress?.City || '' : data.city || '',
-        company: data.sameAsShipping ? activeShippingAddress?.Company || '' : data.company || '',
-        firstName: data.sameAsShipping
-          ? activeShippingAddress?.FirstName || ''
-          : data.firstName || '',
-        lastName: data.sameAsShipping ? activeShippingAddress?.LastName || '' : data.lastName || '',
+        addressLineOne: data.sameAsShipping ? activeAddress?.Street1 || '' : data.addressOne || '',
+        addressLineTwo: data.sameAsShipping ? activeAddress?.Street2 || '' : data.addressTwo || '',
+        city: data.sameAsShipping ? activeAddress?.City || '' : data.city || '',
+        company: data.sameAsShipping ? activeAddress?.Company || '' : data.company || '',
+        firstName: data.sameAsShipping ? activeAddress?.FirstName || '' : data.firstName || '',
+        lastName: data.sameAsShipping ? activeAddress?.LastName || '' : data.lastName || '',
         provinceId: parseInt(
-          data.sameAsShipping ? activeShippingAddress?.ProvinceID || '0' : data.state || '0'
+          data.sameAsShipping ? activeAddress?.ProvinceID || '0' : data.state || '0'
         ),
-        zipCode: data.sameAsShipping ? activeShippingAddress?.PostalCode || '' : data.zipCode || '',
+        zipCode: data.sameAsShipping ? activeAddress?.PostalCode || '' : data.zipCode || '',
       }
 
       let selectedAddress: Address
@@ -257,7 +257,7 @@ export const CreditCardForm = ({ onCancel, onCreate }: CreditCardFormProps) => {
         },
       })
     },
-    [activeShippingAddress, createCreditCard, onCreate, setError, validateAddress]
+    [createCreditCard, onCreate, setError, validateAddress]
   )
 
   return (

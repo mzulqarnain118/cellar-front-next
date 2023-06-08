@@ -195,6 +195,8 @@ export const Payment = memo(({ opened, refs, toggle }: PaymentProps) => {
     targetRef,
   ])
 
+  console.log(creditCard)
+
   return (
     <div className={clsx('py-4 rounded', hasPaymentError && '')}>
       <div
@@ -230,7 +232,13 @@ export const Payment = memo(({ opened, refs, toggle }: PaymentProps) => {
         <Collapse className="!m-0" in={opened && !creditCardFormOpen} transitionDuration={300}>
           <div className="grid grid-cols-[1fr_auto] items-start gap-4">
             {session?.user?.isGuest ? (
-              <div />
+              <div className="grid self-center">
+                <Typography className="text-14">Please enter the CVV for your card:</Typography>
+                <Typography className="font-bold">
+                  {creditCard?.NameOnCard} - {creditCard?.CreditCardTypeName} ending in{' '}
+                  {creditCard?.DisplayNumber}
+                </Typography>
+              </div>
             ) : (
               <Select
                 classNames={dropdownClassNames}

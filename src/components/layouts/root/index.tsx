@@ -64,7 +64,10 @@ export const RootLayout = ({ children }: RootLayoutProps) => {
         classNames: {
           title: '!h4',
         },
+        closeOnClickOutside: false,
+        closeOnEscape: false,
         title: 'Are you 21 or older?',
+        withCloseButton: false,
       })
     }
   }, [ageVerified, handleClick, isFetchingStates, isLoadingStates, setAgeVerified])

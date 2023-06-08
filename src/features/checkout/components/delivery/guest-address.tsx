@@ -100,7 +100,7 @@ export const GuestAddress = ({ shippingAddressRef }: GuestAddressProps) => {
             Edit Address
           </Button>
         </div>
-        {shippingMethodsData === undefined ? (
+        {shippingMethodsData === undefined || shippingMethodsData.length === 0 ? (
           <>
             <Skeleton className="mb-1 h-6 w-[7.5rem]" />
             <Skeleton className="h-10" />
