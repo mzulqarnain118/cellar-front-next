@@ -28,7 +28,6 @@ import {
   useCheckoutActiveShippingAddress,
   useCheckoutRemovedCartItems,
 } from '@/lib/stores/checkout'
-import { useShippingStateStore } from '@/lib/stores/shipping-state'
 import { isPickUpShippingMethodId } from '@/lib/utils/checkout'
 import { toastLoading } from '@/lib/utils/notifications'
 
@@ -64,7 +63,6 @@ export const ShipToHome = ({ refs }: ShipToHomeProps) => {
     useDisclosure(false)
   const { setIsAddingAddress, setRemovedCartItems } = useCheckoutActions()
   const { mutate: removeFromCart } = useRemoveFromCartMutation()
-  const { setShippingState } = useShippingStateStore()
 
   const handleAddressChange: SelectProps['onChange'] = useCallback(
     (addressId: string | null) => {
