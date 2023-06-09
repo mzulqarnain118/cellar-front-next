@@ -8,6 +8,7 @@ import { useSession } from 'next-auth/react'
 import { Typography } from '@/core/components/typogrpahy'
 import { GROUND_SHIPPING_SHIPPING_METHOD_ID } from '@/lib/constants/shipping-method'
 import { useUpdateShippingMethodMutation } from '@/lib/mutations/checkout/update-shipping-method'
+import { useShippingMethodsQuery } from '@/lib/queries/checkout/shipping-methods'
 import { useCheckoutActions, useCheckoutIsPickUp } from '@/lib/stores/checkout'
 
 import { GuestAddress } from './guest-address'
@@ -31,6 +32,7 @@ interface DeliveryProps {
 
 export const Delivery = memo(({ opened, refs, toggle }: DeliveryProps) => {
   const isPickUp = useCheckoutIsPickUp()
+  const { data: shippingMethods } = useShippingMethodsQuery()
   const { setIsPickUp, setSelectedPickUpOption } = useCheckoutActions()
   const { mutate: updateShippingMethod } = useUpdateShippingMethodMutation()
   const [value, setValue] = useState<string | null>(isPickUp ? 'pickUp' : 'shipToHome')
@@ -42,10 +44,13 @@ export const Delivery = memo(({ opened, refs, toggle }: DeliveryProps) => {
       setValue(tab)
 
       if (tab === 'shipToHome' && value !== 'shipToHome') {
-        updateShippingMethod({ shippingMethodId: GROUND_SHIPPING_SHIPPING_METHOD_ID })
+        updateShippingMethod({
+          shippingMethodId:
+            shippingMethods?.[0]?.shippingMethodId || GROUND_SHIPPING_SHIPPING_METHOD_ID,
+        })
       }
     },
-    [updateShippingMethod, value]
+    [shippingMethods, updateShippingMethod, value]
   )
 
   useEffect(() => {

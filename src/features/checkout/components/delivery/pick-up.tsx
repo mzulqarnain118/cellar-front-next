@@ -14,6 +14,7 @@ import {
 } from '@/lib/constants/shipping-method'
 import { useUpdateShippingMethodMutation } from '@/lib/mutations/checkout/update-shipping-method'
 import { useGetSubtotalQuery } from '@/lib/queries/checkout/get-subtotal'
+import { useShippingMethodsQuery } from '@/lib/queries/checkout/shipping-methods'
 import { useCheckoutActions, useCheckoutErrors } from '@/lib/stores/checkout'
 
 import { ABC } from './abc'
@@ -37,6 +38,7 @@ export const PickUp = ({ refs }: PickUpProps) => {
   const { mutate: updateShippingMethod, isLoading: isUpdatingShippingMethod } =
     useUpdateShippingMethodMutation()
   const { data: totalData } = useGetSubtotalQuery()
+  const { data: shippingMethods } = useShippingMethodsQuery()
   const [abcOpened, { close: closeAbc, toggle: toggleAbcOpened }] = useDisclosure(
     totalData?.shipping.methodId === ABC_STORE_SHIPPING_METHOD_ID
   )
@@ -67,12 +69,16 @@ export const PickUp = ({ refs }: PickUpProps) => {
     toggleHalOpened()
     setSelectedPickUpOption('hal')
     setErrors(prev => ({ ...prev, delivery: '' }))
-    updateShippingMethod({ shippingMethodId: GROUND_SHIPPING_SHIPPING_METHOD_ID })
+    updateShippingMethod({
+      shippingMethodId:
+        shippingMethods?.[0]?.shippingMethodId || GROUND_SHIPPING_SHIPPING_METHOD_ID,
+    })
   }, [
     closeAbc,
     closeLpu,
     setErrors,
     setSelectedPickUpOption,
+    shippingMethods,
     toggleHalOpened,
     updateShippingMethod,
   ])

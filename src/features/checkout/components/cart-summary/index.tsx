@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 
 import { Typography } from '@/core/components/typogrpahy'
 import { formatCurrency } from '@/core/utils'
+import { SUMMER_PACKAGING } from '@/lib/constants/shipping-method'
 import { useCartQuery } from '@/lib/queries/cart'
 import { useGetSubtotalQuery } from '@/lib/queries/checkout/get-subtotal'
 
@@ -16,6 +17,7 @@ export const CartSummary = () => {
   const retailDeliveryFee = subtotalInfo?.retailDeliveryFee || 0
   const tax = subtotalInfo?.tax || 0
   const orderTotal = subtotalInfo?.orderTotal || 0
+  const shippingMethodId = subtotalInfo?.shipping.methodId
 
   const cartItems = useMemo(
     () => (
@@ -73,9 +75,15 @@ export const CartSummary = () => {
             {orderTotal ? formatCurrency(orderTotal) : '$--.--'}
           </Typography>
         </div>
+        {shippingMethodId !== undefined &&
+        (SUMMER_PACKAGING.includes(shippingMethodId) || shippingMethodId > 39) ? (
+          <Typography as="em" className="block py-1 text-sm">
+            * Includes $5 shipping surcharge for EcoCoolPaks to protect your wine from summer heat.
+          </Typography>
+        ) : undefined}
       </div>
     ),
-    [orderTotal, retailDeliveryFee, shippingPrice, subtotal, tax]
+    [orderTotal, retailDeliveryFee, shippingMethodId, shippingPrice, subtotal, tax]
   )
 
   return (

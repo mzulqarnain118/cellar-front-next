@@ -13,6 +13,7 @@ import { useCreateAddressMutation } from '@/lib/mutations/address/create'
 import { useApplyCheckoutSelectionsMutation } from '@/lib/mutations/checkout/apply-selections'
 import { useUpdateShippingMethodMutation } from '@/lib/mutations/checkout/update-shipping-method'
 import { useAddressesAndCreditCardsQuery } from '@/lib/queries/checkout/addreses-and-credit-cards'
+import { useShippingMethodsQuery } from '@/lib/queries/checkout/shipping-methods'
 import { useStatesQuery } from '@/lib/queries/state'
 import {
   useCheckoutActions,
@@ -68,11 +69,13 @@ export const HoldAtLocationLocator = forwardRef<HTMLInputElement>((_props, ref) 
   const { mutate: updateShippingMethod } = useUpdateShippingMethodMutation()
   const { mutate: applyCheckoutSelections } = useApplyCheckoutSelectionsMutation()
   const { data: states } = useStatesQuery()
+  const { data: shippingMethods } = useShippingMethodsQuery()
   const { data: session } = useSession()
   const activeCreditCard = useCheckoutActiveCreditCard()
   const selectedPickUpAddress = useCheckoutSelectedPickUpAddress()
   const { setSelectedPickUpAddress } = useCheckoutActions()
 
+  const primaryShippingMethod = useMemo(() => shippingMethods?.[0], [shippingMethods])
   const value = useMemo(
     () =>
       selectedPickUpAddress !== undefined
@@ -116,7 +119,10 @@ export const HoldAtLocationLocator = forwardRef<HTMLInputElement>((_props, ref) 
         Street3: addressData.id.startsWith('U') ? JSON.stringify(street3).substring(0, 50) : '',
       }
 
-      updateShippingMethod({ shippingMethodId: GROUND_SHIPPING_SHIPPING_METHOD_ID })
+      updateShippingMethod({
+        shippingMethodId:
+          primaryShippingMethod?.shippingMethodId || GROUND_SHIPPING_SHIPPING_METHOD_ID,
+      })
       applyCheckoutSelections({
         addressId: address.AddressID,
         paymentToken: activeCreditCard?.PaymentToken,
@@ -135,6 +141,7 @@ export const HoldAtLocationLocator = forwardRef<HTMLInputElement>((_props, ref) 
       addressesAndCreditCards?.addresses.length,
       applyCheckoutSelections,
       createAddress,
+      primaryShippingMethod?.shippingMethodId,
       session?.user?.name.first,
       session?.user?.name.last,
       setSelectedPickUpAddress,
