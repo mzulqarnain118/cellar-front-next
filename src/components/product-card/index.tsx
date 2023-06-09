@@ -68,6 +68,8 @@ export const ProductCard = ({ className, priority = false, product }: ProductCar
   const numberPickerDisabled = isAddingToCart || isUpdatingQuantity
   const router = useRouter()
 
+  const lowStock = useMemo(() => product.quantityAvailable <= 30, [product.quantityAvailable])
+
   const handleQuantityChange = useCallback(
     (item: CartItem, newQuantity?: number) => {
       const quantityToSend = newQuantity || quantity
@@ -288,6 +290,11 @@ export const ProductCard = ({ className, priority = false, product }: ProductCar
             </div>
           </div>
         </div>
+        {lowStock ? (
+          <Typography className="text-error text-right text-14 pb-2">
+            Only {product.quantityAvailable - 20} available!
+          </Typography>
+        ) : undefined}
         <div
           className={clsx(
             'flex items-center justify-between',

@@ -134,7 +134,9 @@ export const HoldAtLocationLocator = forwardRef<HTMLInputElement>((_props, ref) 
 
       setSelectedPickUpAddress(address)
       sessionStorage.removeItem(HAL_SEARCH_KEY)
-      setSearchValue('')
+      setSearchValue(
+        `${address.Street1}, ${address.City}, ${address.ProvinceAbbreviation} ${address.PostalCode}`
+      )
     },
     [
       activeCreditCard?.PaymentToken,

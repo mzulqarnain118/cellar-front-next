@@ -1,7 +1,7 @@
 import { QueryFunction, useQuery } from '@tanstack/react-query'
 
 import { localApi } from '@/lib/api'
-import { useUserShippingState } from '@/lib/stores/user'
+import { useShippingStateStore } from '@/lib/stores/shipping-state'
 import { ProductsSchema } from '@/lib/types/schemas/product'
 import { toastError } from '@/lib/utils/notifications'
 
@@ -107,25 +107,22 @@ export const getPaginatedSearchResult: QueryFunction<
 
 export const SEARCH_QUERY_KEY = 'search'
 
-export const useSearchQuery = (data: { search: string }) => {
-  const { provinceID: _ } = useUserShippingState()
-
-  return useQuery({
+export const useSearchQuery = (data: { search: string }) =>
+  useQuery({
     queryFn: getSearchResult,
     queryKey: [SEARCH_QUERY_KEY, data],
     refetchOnMount: false,
     refetchOnWindowFocus: false,
   })
-}
 export const PAGINATED_SEARCH_QUERY_KEY = 'paginated-search'
 export const usePaginatedSearch = (data: Data, enabled = true) => {
-  const { provinceID } = useUserShippingState()
+  const { shippingState } = useShippingStateStore()
 
   return useQuery({
     enabled,
     keepPreviousData: true,
     queryFn: getPaginatedSearchResult,
-    queryKey: [PAGINATED_SEARCH_QUERY_KEY, { ...data, provinceID }],
+    queryKey: [PAGINATED_SEARCH_QUERY_KEY, { ...data, provinceId: shippingState?.provinceID }],
     refetchOnMount: false,
     refetchOnWindowFocus: false,
   })

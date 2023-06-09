@@ -7,7 +7,6 @@ import { signIn } from 'next-auth/react'
 import { api } from '../api'
 import { CHECKOUT_PAGE_PATH } from '../paths'
 import { useCartQuery } from '../queries/cart'
-import { useUserStore } from '../stores/user'
 import { Failure } from '../types'
 import { toastError } from '../utils/notifications'
 
@@ -68,20 +67,6 @@ export const useGuestSignInMutation = () => {
           json: { cartId: cart?.id || '' },
           method: 'post',
         })
-
-        const { setUser } = useUserStore.getState()
-
-        setUser(prev => ({
-          ...prev,
-          dateOfBirth: new Date(parseInt(year), parseInt(month) - 1, parseInt(day)),
-          displayId: response.Data.data.user.DisplayID,
-          email,
-          isClubMember: false,
-          isGuest: !createAccount,
-          name: { first: firstName, last: lastName },
-          token: response.Data.data.token,
-          username: email,
-        }))
 
         identify(response.Data.data.user.DisplayID, {
           displayName: `${firstName} ${lastName}`,

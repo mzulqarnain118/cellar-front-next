@@ -6,7 +6,6 @@ import { api, noHooksApi } from '../api'
 import { CORPORATE_CONSULTANT_ID } from '../constants'
 import { useCartQuery } from '../queries/cart'
 import { useConsultantStore } from '../stores/consultant'
-import { useUserStore } from '../stores/user'
 import { Consultant } from '../types'
 
 export interface CreateAccountOptions {
@@ -73,7 +72,6 @@ const createAccount = async (data: CreateAccountOptions) =>
 export const useCreateAccountMutation = () => {
   const { data: cart } = useCartQuery()
   const { consultant, setConsultant } = useConsultantStore()
-  const { setUser } = useUserStore()
 
   return useMutation<SignUpResponse, Error, CreateAccountOptions>({
     mutationFn: options =>
@@ -129,24 +127,7 @@ export const useCreateAccountMutation = () => {
           consultantStateData = consultant
         }
 
-        // Update atoms.
-        setUser(prev => ({ ...prev, ...userStateData, shippingState: prev.shippingState }))
         setConsultant(consultantStateData)
-
-        // const curatedCartInfo = await getCuratedCartInfo({
-        //   consultantDisplayId,
-        //   userDisplayId: signUpData.data.user.DisplayID,
-        // })
-
-        // if (curatedCartInfo.result && curatedCartInfo.data?.CartID) {
-        //   // Update curated cart atom.
-        //   setCuratedCartState({
-        //     messageDismissed: false,
-        //     cartAccepted: false,
-        //     cartId: curatedCartInfo.data.CartID,
-        //     recommendedByPersonDisplayId: curatedCartInfo.data.RecommendedByPersonDisplayID || '',
-        //   })
-        // }
 
         // Tell FullStory who you are.
         identify(userStateData.displayId, {

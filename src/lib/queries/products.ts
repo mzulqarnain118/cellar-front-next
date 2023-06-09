@@ -2,7 +2,7 @@ import { QueryFunction, useQuery } from '@tanstack/react-query'
 
 import { localApi } from '../api'
 import { Filter, useFiltersStore } from '../stores/filters'
-import { useUserShippingState } from '../stores/user'
+import { useShippingStateStore } from '../stores/shipping-state'
 import {
   PaginatedProductsResponse,
   PaginatedProductsSchema,
@@ -98,14 +98,18 @@ export const useProductQuery = (cartUrl: string) =>
 
 export const PAGINATED_PRODUCTS_QUERY_KEY = ['paginated-products']
 export const usePaginatedProducts = (data: Data, enabled = true) => {
-  const { provinceID } = useUserShippingState()
+  const { shippingState } = useShippingStateStore()
   const { activeFilters } = useFiltersStore()
 
   return useQuery({
     enabled,
     keepPreviousData: true,
     queryFn: getPaginatedProducts,
-    queryKey: [...PAGINATED_PRODUCTS_QUERY_KEY, { ...data, provinceID }, activeFilters || []],
+    queryKey: [
+      ...PAGINATED_PRODUCTS_QUERY_KEY,
+      { ...data, provinceId: shippingState?.provinceID },
+      activeFilters || [],
+    ],
     refetchOnMount: false,
     refetchOnWindowFocus: false,
   })

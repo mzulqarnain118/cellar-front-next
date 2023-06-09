@@ -357,10 +357,13 @@ export const ProductListing = ({
     <div
       className={clsx(
         'grid transition-all grid-cols-1 px-4 lg:px-0 lg:mx-10',
-        showFilters && 'lg:grid-cols-[auto_1fr] lg:ml-2 lg:gap-10'
+        showFilters && 'lg:grid-cols-[auto_1fr] lg:ml-2 lg:gap-10',
+        enabledFilters.length === 0 && 'lg:!ml-10'
       )}
     >
-      <div className="w-[16.25rem] max-w-[16.25rem]">{filters}</div>
+      {enabledFilters.length > 0 ? (
+        <div className="w-[16.25rem] max-w-[16.25rem]">{filters}</div>
+      ) : undefined}
       <div className="flex flex-col gap-4 py-10">
         {bannerElement}
         {paginationHeader}

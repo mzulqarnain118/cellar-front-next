@@ -1,24 +1,36 @@
-import { useCallback, useEffect, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import dynamic from 'next/dynamic'
 
 import { PlusIcon } from '@heroicons/react/24/outline'
 import { Collapse, LoadingOverlay, Select, SelectProps, Skeleton } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
+import { modals } from '@mantine/modals'
+import { notifications } from '@mantine/notifications'
+import { useQueryClient } from '@tanstack/react-query'
 
 import { Button } from '@/core/components/button'
+import { Typography } from '@/core/components/typogrpahy'
 import { formatCurrency } from '@/core/utils'
+import { useRemoveFromCartMutation } from '@/lib/mutations/cart/remove-from-cart'
 import { useApplyCheckoutSelectionsMutation } from '@/lib/mutations/checkout/apply-selections'
 import { useUpdateShippingMethodMutation } from '@/lib/mutations/checkout/update-shipping-method'
+import { useCartQuery } from '@/lib/queries/cart'
 import { useAddressesAndCreditCardsQuery } from '@/lib/queries/checkout/addreses-and-credit-cards'
-import { useGetSubtotalQuery } from '@/lib/queries/checkout/get-subtotal'
-import { useShippingMethodsQuery } from '@/lib/queries/checkout/shipping-methods'
+import { GET_SUBTOTAL_QUERY, useGetSubtotalQuery } from '@/lib/queries/checkout/get-subtotal'
+import {
+  SHIPPING_METHODS_QUERY_KEY,
+  useShippingMethodsQuery,
+} from '@/lib/queries/checkout/shipping-methods'
 import {
   useCheckoutActions,
   useCheckoutActiveCreditCard,
   useCheckoutActiveShippingAddress,
+  useCheckoutRemovedCartItems,
 } from '@/lib/stores/checkout'
+import { useShippingStateStore } from '@/lib/stores/shipping-state'
 import { isPickUpShippingMethodId } from '@/lib/utils/checkout'
+import { toastLoading } from '@/lib/utils/notifications'
 
 import type { DeliveryRefs } from '.'
 
@@ -35,18 +47,24 @@ interface ShipToHomeProps {
 }
 
 export const ShipToHome = ({ refs }: ShipToHomeProps) => {
+  const [removedProductsModalBtnDisabled, setRemovedProductsModalBtnDisabled] = useState(false)
+  const queryClient = useQueryClient()
   const { data } = useAddressesAndCreditCardsQuery()
+  const { data: cart } = useCartQuery()
   const { mutate: applyCheckoutSelections, isLoading: isApplyingSelections } =
     useApplyCheckoutSelectionsMutation()
   const activeCreditCard = useCheckoutActiveCreditCard()
   const activeShippingAddress = useCheckoutActiveShippingAddress()
+  const removedCartItems = useCheckoutRemovedCartItems()
   const { data: shippingMethodsData } = useShippingMethodsQuery()
   const { data: cartTotalData } = useGetSubtotalQuery()
   const { mutate: updateShippingMethod, isLoading: isUpdatingShippingMethod } =
     useUpdateShippingMethodMutation()
   const [addressFormOpen, { close: closeAddressForm, toggle: toggleAddressForm }] =
     useDisclosure(false)
-  const { setIsAddingAddress } = useCheckoutActions()
+  const { setIsAddingAddress, setRemovedCartItems } = useCheckoutActions()
+  const { mutate: removeFromCart } = useRemoveFromCartMutation()
+  const { setShippingState } = useShippingStateStore()
 
   const handleAddressChange: SelectProps['onChange'] = useCallback(
     (addressId: string | null) => {
@@ -113,6 +131,85 @@ export const ShipToHome = ({ refs }: ShipToHomeProps) => {
   useEffect(() => {
     setIsAddingAddress(addressFormOpen)
   }, [addressFormOpen, setIsAddingAddress])
+
+  useEffect(() => {
+    if (shippingMethods !== undefined && shippingMethods[0]) {
+      updateShippingMethod({ shippingMethodId: shippingMethods[0].data.shippingMethodId })
+    }
+  }, [shippingMethods, updateShippingMethod])
+
+  useEffect(() => {
+    if (removedCartItems.length > 0) {
+      modals.openContextModal({
+        centered: true,
+        classNames: {
+          title: '!text-lg',
+        },
+        id: 'removed-items',
+        innerProps: {
+          body: (
+            <div className="grid gap-2">
+              <Typography as="p">
+                The following products will be removed from your cart because they are not available
+                in the state you are shipping to:
+              </Typography>
+              <ul className="flex flex-col gap-4">
+                {removedCartItems.map(product => (
+                  <li key={product.sku}>
+                    <strong>{product.displayName}</strong>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ),
+          cancelProps: { disabled: removedProductsModalBtnDisabled },
+          cancelText: 'Continue',
+          confirmProps: { disabled: removedProductsModalBtnDisabled },
+          confirmText: 'Select a different address',
+          onCancel: async () => {
+            setRemovedProductsModalBtnDisabled(true)
+            toastLoading({ message: 'Removing unavailable products from your cart...' })
+
+            removedCartItems.forEach(item => {
+              removeFromCart({ fetchSubtotal: false, item, sku: item.sku })
+            })
+
+            await queryClient.invalidateQueries([GET_SUBTOTAL_QUERY, cart?.id])
+            await queryClient.invalidateQueries({
+              queryKey: [SHIPPING_METHODS_QUERY_KEY],
+            })
+            setRemovedCartItems([])
+            notifications.clean()
+            modals.closeAll()
+            setRemovedProductsModalBtnDisabled(false)
+          },
+          onConfirm: () => {
+            setRemovedProductsModalBtnDisabled(true)
+            handleAddressChange(
+              (data?.primaryAddress?.AddressID || data?.addresses[0].AddressID || 0).toString()
+            )
+            setRemovedCartItems([])
+            modals.closeAll()
+            setRemovedProductsModalBtnDisabled(false)
+          },
+        },
+        modal: 'confirmation',
+        title: 'Heads up!',
+      })
+    } else {
+      modals.close('removed-items')
+    }
+  }, [
+    cart?.id,
+    data?.addresses,
+    data?.primaryAddress?.AddressID,
+    handleAddressChange,
+    queryClient,
+    removeFromCart,
+    removedCartItems,
+    removedProductsModalBtnDisabled,
+    setRemovedCartItems,
+  ])
 
   return (
     <div className="space-y-4">

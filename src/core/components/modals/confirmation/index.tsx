@@ -7,9 +7,10 @@ import { Button, ButtonProps } from '../../button'
 export const ConfirmationModal = ({
   context,
   id,
-  innerProps: { body, cancelText, confirmProps, confirmText, onCancel, onConfirm },
+  innerProps: { body, cancelProps, cancelText, confirmProps, confirmText, onCancel, onConfirm },
 }: ContextModalProps<{
   body: ReactNode
+  cancelProps: ButtonProps
   cancelText: string
   confirmProps: ButtonProps
   confirmText: string
@@ -33,7 +34,7 @@ export const ConfirmationModal = ({
         <Button dark onClick={handleConfirm} {...confirmProps}>
           {confirmText}
         </Button>
-        <Button color="ghost" variant="outline" onClick={handleCancel}>
+        <Button color="ghost" variant="outline" onClick={handleCancel} {...cancelProps}>
           {cancelText}
         </Button>
       </div>

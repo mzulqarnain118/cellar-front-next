@@ -3,6 +3,7 @@ import { useCallback } from 'react'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
+import { Cart } from '../types'
 import { Address } from '../types/address'
 import { CreditCard } from '../types/credit-card'
 
@@ -57,6 +58,7 @@ interface CheckoutStoreState {
   isGift: boolean
   isPickUp: boolean
   promoCode: Code
+  removedCartItems: Cart['items']
   selectedPickUpAddress?: Address
   selectedPickUpOption?: PickUpOption
 }
@@ -80,6 +82,7 @@ interface CheckoutStoreActions {
   setIsGift: Setter<boolean>
   setIsPickUp: Setter<boolean>
   setPromoCode: Setter<Code>
+  setRemovedCartItems: Setter<Cart['items'] | undefined>
   setSelectedPickUpAddress: Setter<Address | undefined>
   setSelectedPickUpOption: Setter<PickUpOption | undefined>
   toggleIsAddingGiftMessage: () => void
@@ -114,6 +117,7 @@ const initialValues: CheckoutStoreState = {
     codes: [],
     isAdded: false,
   },
+  removedCartItems: [],
 }
 
 export const useCheckoutStore = create<CheckoutStore>()(
@@ -177,6 +181,10 @@ export const useCheckoutStore = create<CheckoutStore>()(
           typeof update === 'function'
             ? set(({ promoCode }) => ({ promoCode: update(promoCode) }))
             : set(() => ({ promoCode: update })),
+        setRemovedCartItems: update =>
+          typeof update === 'function'
+            ? set(({ removedCartItems }) => ({ removedCartItems: update(removedCartItems) }))
+            : set(() => ({ removedCartItems: update })),
         setSelectedPickUpAddress: update =>
           typeof update === 'function'
             ? set(({ selectedPickUpAddress }) => ({
@@ -280,6 +288,11 @@ export const useCheckoutIsPickUp = () => {
 
 export const useCheckoutPromoCode = () => {
   const selector = useCallback(({ promoCode }: CheckoutStore) => promoCode, [])
+  return useCheckoutStore(selector)
+}
+
+export const useCheckoutRemovedCartItems = () => {
+  const selector = useCallback(({ removedCartItems }: CheckoutStore) => removedCartItems, [])
   return useCheckoutStore(selector)
 }
 

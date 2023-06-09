@@ -96,6 +96,7 @@ export const getNewCartItems = (
         OrderLineID,
         Price,
         ProductCartUrl,
+        ProductDisplayName,
         ProductImage,
         ProductSKU,
         Quantity,
@@ -116,7 +117,7 @@ export const getNewCartItems = (
         }
         const item = {
           cartUrl: ProductCartUrl,
-          displayName: cartItem.displayName,
+          displayName: productSku === cartItem.sku ? cartItem.displayName : ProductDisplayName,
           onSalePrice: DisplayPrice || ComparePrice,
           orderId: OrderID,
           orderLineId: OrderLineID,

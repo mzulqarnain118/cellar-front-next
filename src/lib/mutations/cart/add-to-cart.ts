@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import { notifications } from '@mantine/notifications'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 
@@ -41,6 +42,7 @@ export const addToCart = async (options: AddToCartOptions) => {
   if (response.Success) {
     return response
   } else {
+    notifications.clean()
     throw new Error(response.Error.Traceback?.Notifications?.[0]?.Message)
   }
 }

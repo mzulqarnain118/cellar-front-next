@@ -1,8 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 
 import dynamic from 'next/dynamic'
+import { useRouter } from 'next/router'
 
 import { useDisclosure, useReducedMotion, useScrollIntoView, useWindowScroll } from '@mantine/hooks'
+import { notifications } from '@mantine/notifications'
+import { useQueryClient } from '@tanstack/react-query'
 import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next'
 import { getServerSession } from 'next-auth'
 import { NextSeo } from 'next-seo'
@@ -17,7 +20,7 @@ import { Delivery } from '@/features/checkout/components/delivery'
 import { Payment } from '@/features/checkout/components/payment'
 import { useSetCartOwnerMutation } from '@/lib/mutations/cart/set-owner'
 import { SIGN_IN_PAGE_PATH, WINE_PAGE_PATH } from '@/lib/paths'
-import { useCartQuery } from '@/lib/queries/cart'
+import { CART_QUERY_KEY, useCartQuery } from '@/lib/queries/cart'
 import {
   useCheckoutActions,
   useCheckoutActiveCreditCard,
@@ -32,6 +35,7 @@ import {
   useCheckoutSelectedPickUpAddress,
   useCheckoutSelectedPickUpOption,
 } from '@/lib/stores/checkout'
+import { toastInfo } from '@/lib/utils/notifications'
 
 import { authOptions } from '../api/auth/[...nextauth]'
 
@@ -67,8 +71,10 @@ const scrollIntoViewSettings = { duration: 500, offset: 120 }
 const CheckoutPage: NextPage<PageProps> = () => {
   const { mutate: setCartOwner } = useSetCartOwnerMutation()
   const { data: cart } = useCartQuery()
+  const router = useRouter()
   const [scroll] = useWindowScroll()
   const prefersReducedMotion = useReducedMotion()
+  const queryClient = useQueryClient()
 
   const activeCreditCard = useCheckoutActiveCreditCard()
   const isAddingAddress = useCheckoutIsAddingAddress()
@@ -338,6 +344,17 @@ const CheckoutPage: NextPage<PageProps> = () => {
       setCartOwner()
     }
   }, [cart, setCartOwner])
+
+  useEffect(() => {
+    if (cart?.items.length === 0) {
+      notifications.clean()
+      queryClient.invalidateQueries([...CART_QUERY_KEY])
+      router.push(WINE_PAGE_PATH)
+      toastInfo({
+        message: 'You have no products in your cart. Return to checkout when you are ready!',
+      })
+    }
+  }, [cart?.items.length, queryClient, router])
 
   return (
     <>

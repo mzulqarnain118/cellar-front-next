@@ -3,8 +3,10 @@ import { useCallback, useMemo } from 'react'
 import { Select, SelectProps, Skeleton } from '@mantine/core'
 import { useQueryClient } from '@tanstack/react-query'
 
+import { PAGINATED_SEARCH_QUERY_KEY } from '@/features/search/queries'
 import { useCartStorage } from '@/lib/hooks/use-cart-storage'
 import { CART_QUERY_KEY } from '@/lib/queries/cart'
+import { PAGINATED_PRODUCTS_QUERY_KEY, PRODUCTS_QUERY_KEY } from '@/lib/queries/products'
 import { useStatesQuery } from '@/lib/queries/state'
 import { useShippingStateStore } from '@/lib/stores/shipping-state'
 import { State } from '@/lib/types/index'
@@ -38,10 +40,10 @@ export const StatePicker = ({ popup = false }: StatePickerProps) => {
       const newState = states?.find(state => state.provinceID.toString() === newStateId)
       setShippingState(newState)
       setCartStorage(undefined)
-      queryClient.invalidateQueries([
-        [...CART_QUERY_KEY, 48],
-        [...CART_QUERY_KEY, parseInt(newStateId || '48')],
-      ])
+      queryClient.invalidateQueries([...CART_QUERY_KEY, 48])
+      queryClient.invalidateQueries([...PRODUCTS_QUERY_KEY])
+      queryClient.invalidateQueries([...PAGINATED_PRODUCTS_QUERY_KEY])
+      queryClient.invalidateQueries([PAGINATED_SEARCH_QUERY_KEY])
     },
     [queryClient, setCartStorage, setShippingState, states]
   )

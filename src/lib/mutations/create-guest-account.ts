@@ -8,7 +8,6 @@ import { CORPORATE_CONSULTANT_ID } from '../constants'
 import { CHECKOUT_PAGE_PATH } from '../paths'
 import { useCartQuery } from '../queries/cart'
 import { useConsultantStore } from '../stores/consultant'
-import { useUserStore } from '../stores/user'
 import { Failure } from '../types'
 import { toastError } from '../utils/notifications'
 
@@ -72,7 +71,6 @@ const createGuestAccount = async (data: CreateGuestAccountOptions) =>
 export const useCreateGuestAccountMutation = () => {
   const { data: cart } = useCartQuery()
   const { consultant } = useConsultantStore()
-  const { setUser } = useUserStore()
   const router = useRouter()
 
   return useMutation<CreateGuestAccountResponse, Error, CreateGuestAccountOptions>({
@@ -83,10 +81,7 @@ export const useCreateGuestAccountMutation = () => {
         consultantDisplayId: options.consultantDisplayId || consultant.displayId,
       }),
     mutationKey: ['create-guest-account'],
-    onSuccess: async (
-      createGuestAccountData,
-      { callback, dateOfBirth: { day, month, year }, email, firstName, lastName, redirection }
-    ) => {
+    onSuccess: async (createGuestAccountData, { callback, email, redirection }) => {
       if (!createGuestAccountData?.Success) {
         toastError({
           message:
@@ -102,18 +97,6 @@ export const useCreateGuestAccountMutation = () => {
         json: { cartId: cart?.id || '' },
         method: 'post',
       }).json()
-      const userStateData = {
-        dateOfBirth: new Date(parseInt(year), parseInt(month) - 1, parseInt(day)),
-        displayId: createGuestAccountData.Data.data.user.DisplayID,
-        email,
-        isClubMember: false,
-        isGuest: true,
-        name: { first: firstName, last: lastName },
-        token: createGuestAccountData.Data.data.token,
-        username: email,
-      }
-
-      setUser(prev => ({ ...prev, ...userStateData, shippingState: prev.shippingState }))
 
       await signIn('sign-in', {
         callbackUrl: redirection,
