@@ -72,6 +72,7 @@ export const ABC = () => {
           FirstName: session?.user?.name.first || '',
           LastName: session?.user?.name.last || '',
           NickName: displayName,
+          PhoneNumber: '',
           PostalCode: postalCode,
           Primary: false,
           ProvinceAbbreviation: provinceAbbreviation,

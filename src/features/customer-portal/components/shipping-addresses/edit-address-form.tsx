@@ -19,6 +19,7 @@ const editAddressSchema = z.object({
   displayName: z.string().optional(),
   firstName: z.string().min(1, { message: 'Please enter the first name.' }),
   lastName: z.string().min(1, { message: 'Please enter the last name.' }),
+  phoneNumber: z.string().min(1, { message: 'Please enter a phone number.' }),
   setAsDefault: z.boolean(),
   state: z.string().min(1, { message: 'Please select the state.' }),
   street1: z.string().min(1, { message: 'Please enter the street.' }),
@@ -47,6 +48,7 @@ export const EditAddressForm = ({ address, handleClose }: EditAddressProps) => {
       displayName: address.NickName || '',
       firstName: address.FirstName || '',
       lastName: address.LastName || '',
+      phoneNumber: address.PhoneNumber || '',
       setAsDefault: address.Primary || false,
       state: address.ProvinceID?.toString() || '',
       street1: address.Street1 || '',
@@ -59,6 +61,7 @@ export const EditAddressForm = ({ address, handleClose }: EditAddressProps) => {
       address.FirstName,
       address.LastName,
       address.NickName,
+      address.PhoneNumber,
       address.PostalCode,
       address.Primary,
       address.ProvinceID,
@@ -91,6 +94,7 @@ export const EditAddressForm = ({ address, handleClose }: EditAddressProps) => {
       displayName,
       firstName,
       lastName,
+      phoneNumber,
       setAsDefault,
       state,
       street1,
@@ -105,6 +109,7 @@ export const EditAddressForm = ({ address, handleClose }: EditAddressProps) => {
         FirstName: firstName || address.FirstName,
         LastName: lastName || address.LastName,
         NickName: displayName || address.DisplayName,
+        PhoneNumber: phoneNumber || address.PhoneNumber,
         PostalCode: zipCode || address.PostalCode,
         Primary: setAsDefault || address.Primary,
         ProvinceID: parseInt(state) || address.ProvinceID,
@@ -155,6 +160,12 @@ export const EditAddressForm = ({ address, handleClose }: EditAddressProps) => {
         {...register('zipCode')}
         pattern="^\d{5}$"
         type="tel"
+      />
+      <Input
+        error={errors?.phoneNumber?.message}
+        label="Phone number"
+        {...register('phoneNumber')}
+        inputMode="numeric"
       />
       <Checkbox
         className="col-span-2 my-4"

@@ -6,6 +6,7 @@ export interface Address {
   FirstName: string
   LastName: string
   NickName: string
+  PhoneNumber: string
   PostalCode: string
   Primary: boolean
   ProvinceAbbreviation: string

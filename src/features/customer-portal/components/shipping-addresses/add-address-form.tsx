@@ -21,6 +21,7 @@ const newAddressFormSchema = z.object({
   company: z.string().optional(),
   firstName: z.string().min(1, { message: 'Please enter the first name.' }),
   lastName: z.string().min(1, { message: 'Please enter the last name.' }),
+  phoneNumber: z.string().min(1, { message: 'Please enter a phone number.' }),
   state: z.string().min(1, { message: 'Please select the state.' }),
   zipCode: z
     .string()
@@ -35,6 +36,7 @@ const defaultValues: NewAddressFormSchema = {
   city: '',
   firstName: '',
   lastName: '',
+  phoneNumber: '',
   state: '',
   zipCode: '',
 }
@@ -55,6 +57,7 @@ export const AddAddressForm = ({ handleClose }: AddAddressFormProps) => {
       company = '',
       firstName,
       lastName,
+      phoneNumber,
       state: provinceId,
       zipCode,
     }) => {
@@ -76,7 +79,9 @@ export const AddAddressForm = ({ handleClose }: AddAddressFormProps) => {
                     <div className="grid">
                       <Typography as="strong">Suggested address</Typography>
                       <Typography>{suggested.Street1}</Typography>
-                      {suggested.Street2 ? <Typography>{suggested.Street2}</Typography> : undefined}
+                      {suggested.Street2 ? (
+                        <Typography>{suggested.Street2}</Typography>
+                      ) : undefined}{' '}
                       <Typography>
                         {suggested.City}, {suggested.ProvinceAbbreviation} {suggested.PostalCode}
                       </Typography>
@@ -98,6 +103,7 @@ export const AddAddressForm = ({ handleClose }: AddAddressFormProps) => {
                     ...entered,
                     FirstName: firstName,
                     LastName: lastName,
+                    PhoneNumber: phoneNumber,
                   })
                   handleClose()
                 },
@@ -106,6 +112,7 @@ export const AddAddressForm = ({ handleClose }: AddAddressFormProps) => {
                     ...suggested,
                     FirstName: firstName,
                     LastName: lastName,
+                    PhoneNumber: phoneNumber,
                   })
                   handleClose()
                 },
@@ -159,9 +166,14 @@ export const AddAddressForm = ({ handleClose }: AddAddressFormProps) => {
           label="Address 2"
           name="addressTwo"
         />
-        <Input className="col-span-4 [&>div:first-child]:!pt-1" label="City" name="city" />
-        <StateDropdown className="col-span-4 pt-1" name="state" />
-        <Input className="col-span-4 [&>div:first-child]:!pt-1" label="Zip code" name="zipCode" />
+        <Input className="col-span-6 [&>div:first-child]:!pt-1" label="City" name="city" />
+        <StateDropdown className="col-span-6 pt-1" name="state" />
+        <Input className="col-span-6 [&>div:first-child]:!pt-1" label="Zip code" name="zipCode" />
+        <Input
+          className="col-span-6 [&>div:first-child]:!pt-1"
+          label="Phone number"
+          name="phoneNumber"
+        />
       </Form>
       <div className="flex justify-end lg:justify-start">
         <Button dark form="address-form" type="submit">

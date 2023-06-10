@@ -108,6 +108,7 @@ export const HoldAtLocationLocator = forwardRef<HTMLInputElement>((_props, ref) 
         FirstName: session?.user?.name.first || '',
         LastName: session?.user?.name.last || '',
         NickName: '',
+        PhoneNumber: '',
         PostalCode: addressData.address.postcode,
         Primary: false,
         ProvinceAbbreviation: stateData?.abbreviation || 'AL',

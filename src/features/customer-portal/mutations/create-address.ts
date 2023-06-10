@@ -24,7 +24,6 @@ export const createAddress = async (address: Address) => {
         IsValid: true,
         LastName2: null,
         Mailing: false,
-        PhoneNumber: '',
         PhoneNumberFormat: '',
         Region: '',
         Street4: '',

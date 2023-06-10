@@ -31,6 +31,7 @@ interface CreateAddressSuccess {
       City: string
       ProvinceID: string
       CountryName: string
+      PhoneNumber: string
       PostalCode: string
       ProvinceAbbreviation: string
       ProvinceName: string
@@ -58,7 +59,6 @@ const createAddress = async (data: CreateAddressOptions) => {
         IsValid: true,
         LastName2: null,
         Mailing: false,
-        PhoneNumber: '',
         PhoneNumberFormat: '',
         Region: '',
         Street4: '',

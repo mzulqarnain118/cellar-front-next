@@ -69,29 +69,26 @@ export const useUpdateCustomerMutation = () => {
   const { setIsLoading } = useCustomerPortalActions()
   const queryClient = useQueryClient()
 
-  return useMutation<Response, Error, Omit<CustomerData, 'displayId' | 'personId' | 'phoneNumber'>>(
-    {
-      mutationFn: options =>
-        updateCustomer({
-          ...options,
-          displayId: session?.user?.displayId || '',
-          personId: 0,
-          phoneNumber: '',
-        }),
-      mutationKey: ['update-customer'],
-      onError: error => {
-        toastError({ message: error.message })
-      },
-      onMutate: () => {
-        setIsLoading(true)
-      },
-      onSettled: () => {
-        queryClient.invalidateQueries([CUSTOMER_QUERY_KEY, session?.user?.displayId])
-        setIsLoading(false)
-      },
-      onSuccess: () => {
-        toastSuccess({ message: 'Your profile changes are saved!' })
-      },
-    }
-  )
+  return useMutation<Response, Error, Omit<CustomerData, 'displayId' | 'personId'>>({
+    mutationFn: options =>
+      updateCustomer({
+        ...options,
+        displayId: session?.user?.displayId || '',
+        personId: 0,
+      }),
+    mutationKey: ['update-customer'],
+    onError: error => {
+      toastError({ message: error.message })
+    },
+    onMutate: () => {
+      setIsLoading(true)
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries([CUSTOMER_QUERY_KEY, session?.user?.displayId])
+      setIsLoading(false)
+    },
+    onSuccess: () => {
+      toastSuccess({ message: 'Your profile changes are saved!' })
+    },
+  })
 }

@@ -37,11 +37,13 @@ const profileSchema = z
       .min(1, { message: 'Please enter your email.' }),
     firstName: z.string().min(1, { message: 'Please enter your first name.' }),
     lastName: z.string().min(1, { message: 'Please enter your last name.' }),
+    mobileNumber: z.string().min(1, { message: 'Please enter your mobile number.' }),
     month: z
       .string()
       .min(1, { message: 'Please enter the month.' })
       .length(2, 'Please enter the month.')
       .trim(),
+    phoneNumber: z.string().min(1, { message: 'Please enter your phone number.' }),
     year: z
       .string()
       .min(1, { message: 'Please enter the year.' })
@@ -91,11 +93,44 @@ const profileSchema = z
 
 type ProfileSchema = z.infer<typeof profileSchema>
 
+const PHONE_TYPE_ID = 1
+const MOBILE_TYPE_ID = 3
+const NEW_EMAIL = 0
+const CONSULTANT_EMAIL = 1
+const CUSTOMER_EMAIL = 2
+
 export const Profile = (props: TabsPanelProps) => {
   const { data: session } = useSession()
   const { data: customer, isFetching, isLoading } = useCustomerQuery()
   const { mutate: updateCustomer } = useUpdateCustomerMutation()
   const { mutate: validateEmail, isLoading: isValidatingEmail } = useValidateEmailMutation()
+
+  const [phoneNumber, mobileNumber] = useMemo(() => {
+    if (
+      !customer ||
+      !customer.Person_ContactInfo ||
+      !Array.isArray(customer.Person_ContactInfo.Person_Phones)
+    )
+      return ['', '']
+
+    const removeFirstOne = (phoneNum: string) => {
+      const phoneRegEx = new RegExp('^1[0-9]{10}$')
+      return phoneRegEx.test(phoneNum) ? phoneNum.replace(/^1/, '') : phoneNum
+    }
+
+    return [
+      removeFirstOne(
+        (customer.Person_ContactInfo.Person_Phones.find(p => p.PhoneTypeID === PHONE_TYPE_ID) || {})
+          .PhoneNumber || ''
+      ),
+      removeFirstOne(
+        (
+          customer.Person_ContactInfo.Person_Phones.find(p => p.PhoneTypeID === MOBILE_TYPE_ID) ||
+          {}
+        ).PhoneNumber || ''
+      ),
+    ]
+  }, [customer])
 
   const defaultBirthday = useMemo(() => {
     const dateOfBirth =
@@ -119,6 +154,8 @@ export const Profile = (props: TabsPanelProps) => {
       email: customer?.Person_ContactInfo.Email || session?.user?.email || '',
       firstName: customer?.Person_Name.FirstName || session?.user?.name.first || '',
       lastName: customer?.Person_Name.LastName || session?.user?.name.last || '',
+      mobileNumber,
+      phoneNumber,
     }),
     [
       customer?.Person_ContactInfo.Email,
@@ -126,6 +163,8 @@ export const Profile = (props: TabsPanelProps) => {
       customer?.Person_Name.FirstName,
       customer?.Person_Name.LastName,
       defaultBirthday,
+      mobileNumber,
+      phoneNumber,
       session?.user?.email,
       session?.user?.name.first,
       session?.user?.name.last,
@@ -194,7 +233,17 @@ export const Profile = (props: TabsPanelProps) => {
   )
 
   const onSubmit: SubmitHandler<ProfileSchema> = useCallback(
-    async ({ company, day, email, firstName, lastName, month, year }) => {
+    async ({
+      company,
+      day,
+      email,
+      firstName,
+      lastName,
+      mobileNumber: mobile,
+      month,
+      phoneNumber,
+      year,
+    }) => {
       const dateOfBirth = new Date(parseInt(year), parseInt(month), parseInt(day)).toISOString()
 
       updateCustomer({
@@ -204,9 +253,10 @@ export const Profile = (props: TabsPanelProps) => {
         email,
         firstName,
         lastName,
-        mobile: '',
+        mobile,
         optOutCompanyEmail: false,
         optOutConsultantEmail: false,
+        phoneNumber,
       })
     },
     [updateCustomer]
@@ -230,6 +280,18 @@ export const Profile = (props: TabsPanelProps) => {
             loading={isValidatingEmail}
             type="email"
             {...register('email', { onBlur: handleEmailBlur })}
+          />
+          <Input
+            error={errors?.phoneNumber?.message}
+            inputMode="numeric"
+            label="Phone number"
+            {...register('phoneNumber')}
+          />
+          <Input
+            error={errors?.mobileNumber?.message}
+            inputMode="numeric"
+            label="Mobile number"
+            {...register('mobileNumber')}
           />
           <DateOfBirthPicker />
         </form>

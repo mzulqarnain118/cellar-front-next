@@ -104,6 +104,12 @@ export const Address = ({ address }: AddressProps) => {
         <Typography>{address.ProvinceName}</Typography>
         <Typography className="font-bold">Zip Code</Typography>
         <Typography>{address.PostalCode?.slice(0, 5)}</Typography>
+        {!!address.PhoneNumber && address.PhoneNumber.length > 0 ? (
+          <>
+            <Typography className="font-bold">Phone number</Typography>
+            <Typography>{address.PhoneNumber}</Typography>
+          </>
+        ) : undefined}
       </div>
     </div>
   )
