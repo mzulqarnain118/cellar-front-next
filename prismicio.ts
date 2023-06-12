@@ -18,17 +18,12 @@ export const repositoryName = config.repositoryName
  */
 const routes: prismic.ClientConfig['routes'] = [
   {
-    path: '/',
-    type: 'rich_content_page',
-    uid: 'home',
+    path: '/brands',
+    type: 'brand-landing-temp',
   },
   {
-    path: '/:uid',
-    type: 'rich_content_page',
-  },
-  {
-    path: '/:uid',
-    type: 'plp',
+    path: '/brands/:uid',
+    type: 'brand_page',
   },
   {
     path: '/:parent/:uid',
@@ -38,16 +33,8 @@ const routes: prismic.ClientConfig['routes'] = [
     type: 'category_page',
   },
   {
-    path: '/brands',
-    type: 'brand-landing-temp',
-  },
-  {
-    path: '/brands/:uid',
-    type: 'brand_page',
-  },
-  {
-    path: '/product/:uid',
-    type: 'pdp',
+    path: '/:uid',
+    type: 'content_page',
   },
   {
     path: '/our-growers',
@@ -56,6 +43,23 @@ const routes: prismic.ClientConfig['routes'] = [
   {
     path: '/growers/:uid',
     type: 'grower-details',
+  },
+  {
+    path: '/product/:uid',
+    type: 'pdp',
+  },
+  {
+    path: '/:uid',
+    type: 'plp',
+  },
+  {
+    path: '/',
+    type: 'rich_content_page',
+    uid: 'home',
+  },
+  {
+    path: '/:uid',
+    type: 'rich_content_page',
   },
 ]
 
