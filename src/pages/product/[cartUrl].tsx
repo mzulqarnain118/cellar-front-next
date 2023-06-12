@@ -10,7 +10,9 @@ import { QueryClient, dehydrate } from '@tanstack/react-query'
 import { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType, NextPage } from 'next'
 import { NextSeo } from 'next-seo'
 
+import { useIsDesktop } from '@/core/hooks/use-is-desktop'
 import { Breadcrumbs } from '@/features/pdp/components/breadcrumbs'
+import { CtaActions } from '@/features/pdp/components/cta/actions'
 import { Description } from '@/features/pdp/components/description'
 import { MediaGallery } from '@/features/pdp/components/media-gallery'
 import { usePdpActions } from '@/features/pdp/store'
@@ -87,6 +89,7 @@ const PDP: NextPage<PageProps> = ({ page }) => {
   const { cartUrl } = router.query
   const { data: product } = useProductQuery(cartUrl?.toString() || '')
   const { setSelectedProduct } = usePdpActions()
+  const isDesktop = useIsDesktop()
 
   const images = useMemo(
     () => [
@@ -134,6 +137,14 @@ const PDP: NextPage<PageProps> = ({ page }) => {
           </div>
           <Brand cartUrl={cartUrl} className="py-4" />
         </div>
+        {isDesktop ? undefined : (
+          <CtaActions
+            className={`
+              fixed bottom-0 left-0 w-full bg-neutral-50 p-4 border-t border-neutral-light
+              shadow
+            `}
+          />
+        )}
       </main>
     </>
   )

@@ -4,6 +4,7 @@ import type { AppProps, NextWebVitalsMetric } from 'next/app'
 import dynamic from 'next/dynamic'
 import { Merriweather } from 'next/font/google'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 import Script from 'next/script'
 
 import { init, isInitialized } from '@fullstory/browser'
@@ -74,6 +75,7 @@ export const reportWebVitals = ({ id, label, name, value }: NextWebVitalsMetric)
 
 const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
   const isDesktop = useIsDesktop()
+  const router = useRouter()
   const { cartOpen } = useCartOpen()
   const [showDevtools, setShowDevtools] = useState(false)
   const [queryClient] = useState(
@@ -131,6 +133,9 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
                           }
 
                           .linc-web-chat #linc-web-chat-iframe {
+                            display: ${router.asPath.includes('product/') && !isDesktop
+                              ? 'none'
+                              : 'initial'};
                             right: ${cartOpen ? '453px !important' : '13px'};
                           }
                         `}

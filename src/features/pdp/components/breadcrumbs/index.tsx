@@ -17,7 +17,7 @@ export const Breadcrumbs = ({ cartUrl }: BreadcrumbsProps) => {
   }
 
   return (
-    <DaisyBreadcrumbs>
+    <DaisyBreadcrumbs className="max-w-xs lg:max-w-none">
       <DaisyBreadcrumbs.Item>
         <Link className="!text-neutral-dark" href={HOME_PAGE_PATH}>
           Home
