@@ -17,6 +17,7 @@ import { useCartOpen, useProcessStore } from '@/lib/stores/process'
 import { Link } from '@/components/link'
 import { useShareCartMutation } from '@/features/shared-cart/mutations/share-cart'
 import { CartItem } from './cart-item'
+import { Ticker } from './ticker'
 
 const drawerClassNames = { body: 'h-full p-0', content: 'overflow-y-hidden' }
 
@@ -102,8 +103,7 @@ export const CartDrawer = () => {
           </Typography>
           <div
             className={`
-              flex w-full items-center justify-between pb-4
-            `}
+              grid w-full items-center`}
           >
             <div className="w-full space-y-1 px-4 text-center">
               {difference > 0 ? (
@@ -124,6 +124,9 @@ export const CartDrawer = () => {
                   style={{ maxWidth: '100%', width: `${percentage}%` }}
                 ></div>
               </div>
+            </div>
+            <div>
+              <Ticker />
             </div>
           </div>
         </div>
