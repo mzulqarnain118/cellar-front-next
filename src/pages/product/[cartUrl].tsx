@@ -59,12 +59,12 @@ export const getStaticProps = async ({ params, previewData }: GetStaticPropsCont
   const queryClient = await getStaticNavigation(client)
 
   try {
+    await queryClient.prefetchQuery([...PRODUCTS_QUERY_KEY, cartUrl], getProductByCartUrl)
     const pdps = await client.getAllByType<Content.PdpDocument>('pdp', {
       filters: [filter.fulltext('my.pdp.url', cartUrl.toString())],
       graphQuery,
     })
     const page = pdps.find(pdp => asLink(pdp) === cartUrl) || null
-    await queryClient.prefetchQuery([...PRODUCTS_QUERY_KEY, cartUrl], getProductByCartUrl)
     return {
       props: {
         dehydratedState: dehydrate(queryClient),

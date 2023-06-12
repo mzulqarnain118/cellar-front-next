@@ -74,7 +74,7 @@ export const MediaGallery = ({
   const [activeMediaItem, setActiveMediaItem] = useState<ImageOrVideo>(mediaItems[0])
 
   const magnifiedImageProps: MagnifiedImageProps | undefined = useMemo(() => {
-    if (isImage(activeMediaItem)) {
+    if (isImage(activeMediaItem) && !!activeMediaItem.src) {
       const imageUrl = new URL(activeMediaItem.src)
       imageUrl.searchParams.set('w', '1000')
       imageUrl.searchParams.set('h', '1000')
@@ -90,7 +90,7 @@ export const MediaGallery = ({
   }, [activeMediaItem])
 
   const imageProps: ImageProps | undefined = useMemo(() => {
-    if (isImage(activeMediaItem)) {
+    if (isImage(activeMediaItem) && !!activeMediaItem.src) {
       const imageUrl = new URL(activeMediaItem.src)
       imageUrl.searchParams.set('w', '360')
       imageUrl.searchParams.set('h', '528')
