@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic'
 import Error from 'next/error'
 import { useRouter } from 'next/router'
 
-import { Content, asText, filter } from '@prismicio/client'
+import { Content, asLink, filter } from '@prismicio/client'
 import { asImageWidthSrcSet } from '@prismicio/helpers'
 import { QueryClient, dehydrate } from '@tanstack/react-query'
 import { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType, NextPage } from 'next'
@@ -56,21 +56,29 @@ const graphQuery = `{
 export const getStaticProps = async ({ params, previewData }: GetStaticPropsContext) => {
   const client = createClient({ previewData })
   const cartUrl = params?.cartUrl || ''
-
   const queryClient = await getStaticNavigation(client)
-  const pdps = await client.getAllByType<Content.PdpDocument>('pdp', {
-    filters: [filter.fulltext('my.pdp.url', cartUrl.toString())],
-    graphQuery,
-  })
-  const page = pdps.find(pdp => asText(pdp.data.url) === cartUrl) || null
-  await queryClient.prefetchQuery([...PRODUCTS_QUERY_KEY, cartUrl], getProductByCartUrl)
 
-  return {
-    props: {
-      dehydratedState: dehydrate(queryClient),
-      page: page || null,
-    },
-    revalidate: 120,
+  try {
+    const pdps = await client.getAllByType<Content.PdpDocument>('pdp', {
+      filters: [filter.fulltext('my.pdp.url', cartUrl.toString())],
+      graphQuery,
+    })
+    const page = pdps.find(pdp => asLink(pdp) === cartUrl) || null
+    await queryClient.prefetchQuery([...PRODUCTS_QUERY_KEY, cartUrl], getProductByCartUrl)
+    return {
+      props: {
+        dehydratedState: dehydrate(queryClient),
+        page: page || null,
+      },
+      revalidate: 120,
+    }
+  } catch {
+    return {
+      props: {
+        dehydratedState: dehydrate(queryClient),
+        page: null,
+      },
+    }
   }
 }
 
