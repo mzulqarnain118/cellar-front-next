@@ -7,6 +7,7 @@ import { identify, isInitialized } from '@fullstory/browser'
 import { closeAllModals, modals } from '@mantine/modals'
 import { useSession } from 'next-auth/react'
 
+import { LincChat } from '@/components/linc-chat'
 import { Button } from '@/core/components/button'
 import { Typography } from '@/core/components/typogrpahy'
 import { useCuratedCartQuery } from '@/features/curated-cart/queries/curated-cart'
@@ -106,6 +107,7 @@ export const RootLayout = ({ children }: RootLayoutProps) => {
     <div className="min-h-[100svh] grid" id="root-element">
       {/* ! TODO: Add skip link. */}
       {/* <SkipLink /> */}
+      <LincChat />
       <Header />
       {children}
       <Footer />
