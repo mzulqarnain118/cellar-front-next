@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // * NOTE: Function provided by Linc.
 /**
  * SHA256 encryption with hex digest.
