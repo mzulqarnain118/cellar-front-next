@@ -1,10 +1,8 @@
 import { HTMLProps, forwardRef } from 'react'
 
-import { ImageProps } from 'next/image'
+import Image, { ImageProps } from 'next/image'
 
 import { clsx } from 'clsx'
-
-import { BlurImage } from '@/components/blur-image'
 
 type Props = HTMLProps<HTMLInputElement> &
   ImageProps & {
@@ -15,7 +13,7 @@ export const MediaGalleryImage = forwardRef<HTMLImageElement, Props>(({ scale, .
   <div
     className={clsx(
       'relative mx-auto h-[21.75rem] w-[16.75rem] lg:h-[33rem] lg:w-[22.5rem]',
-      scale && 'static !h-[1500px] !w-[1200px]'
+      scale && 'static !h-[1500px] !w-[1200px] lg:!h-[1500px] lg:!w-[1200px]'
     )}
     style={
       scale
@@ -28,10 +26,11 @@ export const MediaGalleryImage = forwardRef<HTMLImageElement, Props>(({ scale, .
         : undefined
     }
   >
-    <BlurImage
+    <Image
       {...props}
       ref={ref}
       priority
+      alt={props.alt}
       className="object-contain"
       fill={!scale}
       sizes={scale ? undefined : '(max-width: 768px) 100vw, (max-width: 1200px) 50vw'}

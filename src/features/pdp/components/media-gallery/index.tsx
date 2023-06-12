@@ -17,6 +17,7 @@ import { BlurImage } from '@/components/blur-image'
 import { useIsDesktop } from '@/core/hooks/use-is-desktop'
 import { Simplify } from '@/lib/types/prismic'
 
+import { Hint } from './hint'
 import { MediaGalleryImage } from './image'
 
 interface ImageSchema {
@@ -74,10 +75,14 @@ export const MediaGallery = ({
 
   const magnifiedImageProps: MagnifiedImageProps | undefined = useMemo(() => {
     if (isImage(activeMediaItem)) {
+      const imageUrl = new URL(activeMediaItem.src)
+      imageUrl.searchParams.set('w', '1000')
+      imageUrl.searchParams.set('h', '1000')
+
       return {
         height: 1000,
         scale: true,
-        src: activeMediaItem.src,
+        src: imageUrl.toString(),
         srcSet: activeMediaItem.srcSet,
         width: 1000,
       }
@@ -86,9 +91,14 @@ export const MediaGallery = ({
 
   const imageProps: ImageProps | undefined = useMemo(() => {
     if (isImage(activeMediaItem)) {
+      const imageUrl = new URL(activeMediaItem.src)
+      imageUrl.searchParams.set('w', '360')
+      imageUrl.searchParams.set('h', '528')
+
       return {
         alt: activeMediaItem.alt || 'Product',
         isfluidwidth: 'false',
+        scale: false,
         src: activeMediaItem.src,
         srcSet: activeMediaItem.srcSet,
       }
@@ -246,6 +256,7 @@ export const MediaGallery = ({
         <div style={style}>
           <ReactImageMagnify
             activationInteractionHint="hover"
+            hintComponent={Hint}
             // @ts-ignore
             imageComponent={MediaGalleryImage}
             imageProps={imageProps}
