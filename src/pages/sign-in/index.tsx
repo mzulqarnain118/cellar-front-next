@@ -180,6 +180,7 @@ const SignInPage: NextPage<PageProps> = () => {
                     })}
                   />
                   <PasswordInput
+                    autoComplete="current-password"
                     error={errors.password?.message}
                     label="Password"
                     {...passwordRegister}

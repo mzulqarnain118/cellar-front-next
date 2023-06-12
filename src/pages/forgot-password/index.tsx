@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import { NextPage } from 'next'
 import { NextSeo } from 'next-seo'
@@ -18,6 +18,8 @@ const forgotPasswordSchema = z.object({
 type ForgotPasswordSchema = z.infer<typeof forgotPasswordSchema>
 
 const ForgotPasswordPage: NextPage = () => {
+  const [_recaptcha, setRecaptcha] = useState('')
+
   const defaultValues: ForgotPasswordSchema = useMemo(
     () => ({
       email: '',
@@ -25,6 +27,12 @@ const ForgotPasswordPage: NextPage = () => {
     }),
     []
   )
+
+  const handleRecaptchaChange = useCallback((value: string | null) => {
+    if (value) {
+      setRecaptcha(value)
+    }
+  }, [])
 
   const handleSubmit: SubmitHandler<ForgotPasswordSchema> = useCallback(async _data => {
     // ! TODO
@@ -49,7 +57,10 @@ const ForgotPasswordPage: NextPage = () => {
             >
               <Input label="Email" name="email" />
               {process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY !== undefined ? (
-                <ReCAPTCHA sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY} />
+                <ReCAPTCHA
+                  sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+                  onChange={handleRecaptchaChange}
+                />
               ) : undefined}
             </Form>
           </div>
