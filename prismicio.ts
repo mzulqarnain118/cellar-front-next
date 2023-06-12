@@ -38,12 +38,20 @@ const routes: prismic.ClientConfig['routes'] = [
     type: 'category_page',
   },
   {
+    path: '/brands',
+    type: 'brand-landing-temp',
+  },
+  {
     path: '/brands/:uid',
     type: 'brand_page',
   },
   {
     path: '/product/:uid',
     type: 'pdp',
+  },
+  {
+    path: '/our-growers',
+    type: 'grower-template',
   },
   {
     path: '/growers/:uid',
