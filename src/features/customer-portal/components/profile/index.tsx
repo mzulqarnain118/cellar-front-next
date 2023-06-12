@@ -95,9 +95,6 @@ type ProfileSchema = z.infer<typeof profileSchema>
 
 const PHONE_TYPE_ID = 1
 const MOBILE_TYPE_ID = 3
-const NEW_EMAIL = 0
-const CONSULTANT_EMAIL = 1
-const CUSTOMER_EMAIL = 2
 
 export const Profile = (props: TabsPanelProps) => {
   const { data: session } = useSession()

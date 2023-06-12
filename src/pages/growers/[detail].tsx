@@ -74,7 +74,7 @@ const GrowerDetailPage: NextPage<PageProps> = ({ page }) => {
     () => ({
       backgroundHeaderImage: page?.data['background-header-image'],
       firstDescription: page?.data['grower-description'],
-      grower: growerImages[0],
+      grower: growerImages?.[0],
       name: page?.data['grower-name'],
       regionMap: page?.data.region_map,
       secondDescription: page?.data.grower_description_second,

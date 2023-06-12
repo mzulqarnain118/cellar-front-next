@@ -26,7 +26,7 @@ const ForgotPasswordPage: NextPage = () => {
     []
   )
 
-  const handleSubmit: SubmitHandler<ForgotPasswordSchema> = useCallback(async data => {
+  const handleSubmit: SubmitHandler<ForgotPasswordSchema> = useCallback(async _data => {
     // ! TODO
   }, [])
 
