@@ -26,6 +26,7 @@ import { Theme } from 'react-daisyui'
 import { RootLayout } from '@/components/layouts/root'
 import { modals } from '@/core/components/modals'
 import { useIsDesktop } from '@/core/hooks/use-is-desktop'
+import { useCartOpen } from '@/lib/stores/process'
 import { linkResolver, repositoryName } from '@/prismic-io'
 
 import defaultSEOConfig from 'next-seo.config'
@@ -73,6 +74,7 @@ export const reportWebVitals = ({ id, label, name, value }: NextWebVitalsMetric)
 
 const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
   const isDesktop = useIsDesktop()
+  const { cartOpen } = useCartOpen()
   const [showDevtools, setShowDevtools] = useState(false)
   const [queryClient] = useState(
     () =>
@@ -126,6 +128,10 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
 
                           #nprogress .peg {
                             box-shadow: 0 0 10px #5c7f67, 0 0 5px #5c7f67 !important;
+                          }
+
+                          .linc-web-chat #linc-web-chat-iframe {
+                            right: ${cartOpen ? '453px !important' : '13px'};
                           }
                         `}
                       </style>
