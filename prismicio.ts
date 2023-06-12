@@ -45,6 +45,10 @@ const routes: prismic.ClientConfig['routes'] = [
     path: '/product/:uid',
     type: 'pdp',
   },
+  {
+    path: '/growers/:uid',
+    type: 'grower-details',
+  },
 ]
 
 /**
