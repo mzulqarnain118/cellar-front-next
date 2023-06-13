@@ -148,59 +148,6 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
                         src="//js.hs-scripts.com/4801108.js"
                         type="text/javascript"
                       />
-                      <Script id="tastry-init">
-                        {`
-                            window.addEventListener('loadTastry', () => {
-                            const chunk2 = document.createElement('script');
-                            chunk2.type = 'text/javascript';
-                            chunk2.async = true;
-                            chunk2.defer = true;
-                            chunk2.src = '${
-                              process.env.NEXT_PUBLIC_IS_PRODUCTION === 'true'
-                                ? 'https://tastry-react-login.azurewebsites.net/js/chunk-vendors_character.js'
-                                : 'https://tastry-react-login.azurewebsites.net/js/chunk-vendors_scout-testing.js'
-                            }';
-                            document.body.appendChild(chunk2);
-
-                            const chunk3 = document.createElement('script');
-                            chunk3.type = 'text/javascript';
-                            chunk3.async = true;
-                            chunk3.defer = true;
-                            chunk3.src = '${
-                              process.env.NEXT_PUBLIC_IS_PRODUCTION === 'true'
-                                ? 'https://tastry-react-login.azurewebsites.net/js/app_character.js'
-                                : 'https://tastry-react-login.azurewebsites.net/js/app_scout-testing.js'
-                            }';
-                            window.document.body.appendChild(chunk3)
-
-                            const css1 = document.createElement( "link" );
-                            css1.type = 'text/css'
-                            css1.rel = 'stylesheet'
-                            css1.href = '${
-                              process.env.NEXT_PUBLIC_IS_PRODUCTION === 'true'
-                                ? 'https://tastry-react-login.azurewebsites.net/css/chunk-vendors_character.css'
-                                : 'https://tastry-react-login.azurewebsites.net/css/chunk-vendors_scout-testing.css'
-                            }';
-                            window.document.head.appendChild(css1);
-
-                            const css2 = document.createElement( "link" );
-                            css2.type = 'text/css'
-                            css2.rel = 'stylesheet'
-                            css2.href = '${
-                              process.env.NEXT_PUBLIC_IS_PRODUCTION === 'true'
-                                ? 'https://tastry-react-login.azurewebsites.net/css/app_character.css'
-                                : 'https://tastry-react-login.azurewebsites.net/css/app_scout-testing.css'
-                            }';
-                            window.document.head.appendChild(css2);
-
-                            const css3 = document.createElement( "link" );
-                            css3.type = 'text/css'
-                            css3.rel = 'stylesheet'
-                            css3.href = 'https://tastry-react-login.azurewebsites.net/css/prime.css';
-                            window.document.head.appendChild(css3);
-                          });
-                        `}
-                      </Script>
                       <Script id="handleTastryAddToCart">{`
                         window.handleTastryAddToCart = (sku) => {
                           if (typeof sku === 'string') {
@@ -212,7 +159,7 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
                     `}</Script>
                       <Script
                         id="tastry-quiz"
-                        src="https://tastry-react-login.azurewebsites.net/js/tastry_character.js"
+                        src="https://tastry-react-login.azurewebsites.net/js/tastry_scout.js"
                       />
                       <Component {...pageProps} />
                       <ProgressBar />
