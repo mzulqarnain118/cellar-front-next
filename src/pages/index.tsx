@@ -13,17 +13,26 @@ type PageProps = InferGetStaticPropsType<typeof getStaticProps>
 
 export const getStaticProps: GetStaticProps = async ({ previewData }) => {
   const client = createClient({ previewData })
-  const [queryClient, page] = await Promise.all([
-    getStaticNavigation(client),
-    client.getByUID<Content.RichContentPageDocument>('rich_content_page', 'home'),
-  ])
 
-  return {
-    props: {
-      dehydratedState: dehydrate(queryClient),
-      page,
-    },
-    revalidate: 120,
+  try {
+    const [queryClient, page] = await Promise.all([
+      getStaticNavigation(client),
+      client.getByUID<Content.RichContentPageDocument>('rich_content_page', 'home'),
+    ])
+
+    return {
+      props: {
+        dehydratedState: dehydrate(queryClient),
+        page,
+      },
+      revalidate: 120,
+    }
+  } catch {
+    return {
+      props: {
+        page: null,
+      },
+    }
   }
 }
 

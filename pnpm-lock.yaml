@@ -140,7 +140,7 @@ importers:
         specifier: ^13.4.3
         version: 13.4.3(@babel/core@7.21.8)(react-dom@18.2.0)(react@18.2.0)
       next-auth:
-        specifier: ^4.22.1
+        specifier: ^4.19.2
         version: 4.22.1(next@13.4.3)(react-dom@18.2.0)(react@18.2.0)
       next-seo:
         specifier: ^6.0.0
