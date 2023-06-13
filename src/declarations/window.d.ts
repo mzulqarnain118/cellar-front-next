@@ -10,4 +10,7 @@ interface Window {
     reload: (properties: object) => void
     unlinkEmail: () => void
   }
+  grecaptcha?: {
+    getResponse: (widgetId?: string) => string
+  }
 }
