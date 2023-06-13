@@ -14,6 +14,7 @@ export interface Filter {
   imageUrl?: string
   name: string
   type: FilterType
+  value?: [number, number]
 }
 
 interface FiltersStore {

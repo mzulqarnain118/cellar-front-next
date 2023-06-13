@@ -1,24 +1,25 @@
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 
-import { Slider } from '@mantine/core'
+import { RangeSlider, RangeSliderProps } from '@mantine/core'
 
 import { Accordion } from '@/core/components/accordion'
+import { useFiltersStore } from '@/lib/stores/filters'
 
 const MARKS = [
   {
-    label: 'All',
+    label: 'Under $25',
     value: 0,
   },
   {
-    label: '$0 - $24',
+    label: '$25-$50',
     value: 33,
   },
   {
-    label: '$25 - $49',
+    label: '$50-$75',
     value: 66,
   },
   {
-    label: '$50+',
+    label: 'Over $75',
     value: 99,
   },
 ]
@@ -27,27 +28,48 @@ const sliderClassNames = {
   markLabel: 'hidden',
 }
 
+const defaultValue: [number, number] = [0, 99]
+
 interface PriceFilterProps {
   slug: string
 }
 
 export const PriceFilter = ({ slug }: PriceFilterProps) => {
+  const { activeFilters, removeFilter, toggleActiveFilter } = useFiltersStore()
+
+  const value = useMemo(
+    () => activeFilters.find(element => element.name === 'price')?.value || defaultValue,
+    [activeFilters]
+  )
+
   const valueLabelFormat = useCallback(
     (value: number) => MARKS.find(mark => mark.value === value)?.label,
     []
   )
 
+  const handleChangeEnd: RangeSliderProps['onChangeEnd'] = useCallback(
+    (value: [number, number]) => {
+      if (value[0] === 0 && value[1] === 99) {
+        removeFilter({ name: 'price', type: 'price' })
+      } else {
+        toggleActiveFilter({ name: 'price', type: 'price', value })
+      }
+    },
+    [removeFilter, toggleActiveFilter]
+  )
+
   return (
     <Accordion openByDefault header={slug.replaceAll('-', ' ') || ''}>
       <div className="space-y-2 pt-4">
-        <Slider
+        <RangeSlider
           labelAlwaysOn
           classNames={sliderClassNames}
           color="dark"
-          defaultValue={0}
           label={valueLabelFormat}
           marks={MARKS}
           step={33}
+          value={value}
+          onChangeEnd={handleChangeEnd}
         />
       </div>
     </Accordion>

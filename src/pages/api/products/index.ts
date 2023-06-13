@@ -73,7 +73,21 @@ const handler = async (req: NextRequest) => {
                       )
                     )
                   // ! TODO Price
-                  // case 'price':
+                  case 'price':
+                    if (filter.value !== undefined) {
+                      if (filter.value[0] === 0 && filter.value[1] === 33) {
+                        return product.price <= 50
+                      } else if (filter.value[0] === 0 && filter.value[1] === 66) {
+                        return product.price <= 75
+                      } else if (filter.value[0] === 33 && filter.value[1] === 66) {
+                        return product.price >= 25 && product.price <= 75
+                      } else if (filter.value[0] === 33 && filter.value[1] === 99) {
+                        return product.price >= 25 && product.price >= 75
+                      } else if (filter.value[0] === 66 && filter.value[1] === 99) {
+                        return product.price >= 50 && product.price >= 75
+                      }
+                    }
+                    return false
                   case 'region':
                     return (
                       !!product.attributes?.Origin &&
