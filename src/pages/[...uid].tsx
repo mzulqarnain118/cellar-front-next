@@ -45,18 +45,24 @@ export const getStaticProps = async ({
       }
     }
   } catch (error) {
-    page = await client.getByUID<Content.ContentPageDocument>('content_page', uid)
+    try {
+      page = await client.getByUID<Content.ContentPageDocument>('content_page', uid)
 
-    if (!page) {
+      if (!page) {
+        return {
+          notFound: true,
+        }
+      }
+
+      return {
+        props: {
+          page: page || null,
+        },
+      }
+    } catch {
       return {
         notFound: true,
       }
-    }
-
-    return {
-      props: {
-        page: page || null,
-      },
     }
   }
   const queryClient = await getStaticNavigation(client)
