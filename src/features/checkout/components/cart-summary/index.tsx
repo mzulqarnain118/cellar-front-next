@@ -78,7 +78,8 @@ export const CartSummary = () => {
         {shippingMethodId !== undefined &&
         (SUMMER_PACKAGING.includes(shippingMethodId) || shippingMethodId > 39) ? (
           <Typography as="em" className="block py-1 text-sm">
-            * Includes $5 shipping surcharge for EcoCoolPaks to protect your wine from summer heat.
+            * Orders with wine include a $5 shipping surcharge for EcoCoolPaks to protect your wine
+            from summer heat.
           </Typography>
         ) : undefined}
       </div>
