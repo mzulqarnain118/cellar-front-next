@@ -3,12 +3,14 @@ import dynamic from 'next/dynamic'
 import type { Content, FilledContentRelationshipField } from '@prismicio/client'
 
 const BrandFilter = dynamic(() => import('./brand').then(({ BrandFilter }) => BrandFilter))
+const CountryFilter = dynamic(() =>
+  import('./country').then(({ CountryFilter: RegionFilter }) => RegionFilter)
+)
 const CustomFilter = dynamic(() => import('./custom').then(({ CustomFilter }) => CustomFilter))
 const PairingNoteFilter = dynamic(() =>
   import('./pairing-note').then(({ PairingNoteFilter }) => PairingNoteFilter)
 )
 const PriceFilter = dynamic(() => import('./price').then(({ PriceFilter }) => PriceFilter))
-const RegionFilter = dynamic(() => import('./region').then(({ RegionFilter }) => RegionFilter))
 const TastingNoteFilter = dynamic(() =>
   import('./tasting-note').then(({ TastingNoteFilter }) => TastingNoteFilter)
 )
@@ -28,8 +30,8 @@ export const Filter = ({ data }: FilterProps) => {
       return <PairingNoteFilter slug={data.slug} values={data.data?.values} />
     case 'price':
       return <PriceFilter slug={data.slug} />
-    case 'region':
-      return <RegionFilter slug={data.slug} values={data.data?.values} />
+    case 'country':
+      return <CountryFilter slug={data.slug} values={data.data?.values} />
     case 'tasting-notes':
       return <TastingNoteFilter slug={data.slug} values={data.data?.values} />
     case 'varietal':

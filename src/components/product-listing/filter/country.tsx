@@ -19,11 +19,11 @@ interface RegionFilterProps {
   values?: GroupField<Simplify<Content.FilterDocumentDataValuesItem>>
 }
 
-export const RegionFilter = ({ slug, values }: RegionFilterProps) => {
+export const CountryFilter = ({ slug, values }: RegionFilterProps) => {
   const [showAll, { toggle: toggleShowAll }] = useDisclosure(false)
   const { data: products } = useProductsQuery()
 
-  const regions = useMemo(() => {
+  const countries = useMemo(() => {
     let filterValues = products?.map(product => product.attributes?.Origin).filter(Boolean) || []
     filterValues = filterValues?.filter((value, index) => filterValues.indexOf(value) === index)
     const manualValues = values?.map(value => value.display_name).filter(Boolean) || []
@@ -39,7 +39,7 @@ export const RegionFilter = ({ slug, values }: RegionFilterProps) => {
 
         return array
       }, [])
-      .map(region => ({ name: region, type: 'region' }))
+      .map(region => ({ name: region, type: 'country' }))
   }, [products, values]) satisfies Filter[]
 
   const showAllButton = useMemo(
@@ -51,10 +51,13 @@ export const RegionFilter = ({ slug, values }: RegionFilterProps) => {
     [showAll, toggleShowAll]
   )
 
-  const popular = useMemo(() => (regions.length > 5 ? regions.slice(0, 5) : undefined), [regions])
+  const popular = useMemo(
+    () => (countries.length > 5 ? countries.slice(0, 5) : undefined),
+    [countries]
+  )
   const otherFilters = useMemo(
-    () => (regions.length > 5 && popular !== undefined ? regions.slice(5) : regions),
-    [popular, regions]
+    () => (countries.length > 5 && popular !== undefined ? countries.slice(5) : countries),
+    [popular, countries]
   )
 
   return (
@@ -63,8 +66,8 @@ export const RegionFilter = ({ slug, values }: RegionFilterProps) => {
         <div className="pt-1">
           <Typography className="text-14">Popular</Typography>
           <div className="space-y-2 pt-2">
-            {popular.map(region => (
-              <FilterCheckbox key={region.name} filter={region} />
+            {popular.map(country => (
+              <FilterCheckbox key={country.name} filter={country} />
             ))}
             <Divider />
           </div>
@@ -73,8 +76,8 @@ export const RegionFilter = ({ slug, values }: RegionFilterProps) => {
       <div className="space-y-2 pt-4">
         {popular !== undefined && !showAll
           ? undefined
-          : otherFilters.map(region => <FilterCheckbox key={region.name} filter={region} />)}
-        {regions.length > 5 ? showAllButton : undefined}
+          : otherFilters.map(country => <FilterCheckbox key={country.name} filter={country} />)}
+        {countries.length > 5 ? showAllButton : undefined}
       </div>
     </Accordion>
   )

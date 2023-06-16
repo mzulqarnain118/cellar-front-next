@@ -88,7 +88,7 @@ const handler = async (req: NextRequest) => {
                       }
                     }
                     return false
-                  case 'region':
+                  case 'country':
                     return (
                       !!product.attributes?.Origin &&
                       product.attributes.Origin.toLowerCase() === filter.name.toLowerCase()

@@ -42,8 +42,6 @@ export const VarietalFilter = ({ slug, values }: VarietalFilterProps) => {
       .map(varietal => ({ name: varietal, type: 'varietal' }))
   }, [products, values]) satisfies Filter[]
 
-  const data = useMemo(() => (showAll ? varietals : varietals.slice(0, 5)), [varietals, showAll])
-
   const showAllButton = useMemo(
     () => (
       <Button link onClick={toggleShowAll}>

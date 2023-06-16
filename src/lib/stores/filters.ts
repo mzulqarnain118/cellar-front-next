@@ -5,7 +5,7 @@ export type FilterType =
   | 'custom'
   | 'pairing-note'
   | 'price'
-  | 'region'
+  | 'country'
   | 'tasting-note'
   | 'varietal'
 
