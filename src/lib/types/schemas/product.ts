@@ -7,6 +7,7 @@ const attributesSchema = z
     'Container Size': z.string(),
     Origin: z.string(),
     'Pairing Notes': z.array(z.object({ imageUrl: z.string(), name: z.string() })),
+    Structure: z.string(),
     SubType: z.string(),
     'Tasting Notes': z.array(z.object({ imageUrl: z.string(), name: z.string() })),
     Varietal: z.string(),

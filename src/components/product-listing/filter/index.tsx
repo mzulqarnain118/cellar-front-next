@@ -11,6 +11,9 @@ const PairingNoteFilter = dynamic(() =>
   import('./pairing-note').then(({ PairingNoteFilter }) => PairingNoteFilter)
 )
 const PriceFilter = dynamic(() => import('./price').then(({ PriceFilter }) => PriceFilter))
+const StructureFilter = dynamic(() =>
+  import('./structure').then(({ StructureFilter }) => StructureFilter)
+)
 const TastingNoteFilter = dynamic(() =>
   import('./tasting-note').then(({ TastingNoteFilter }) => TastingNoteFilter)
 )
@@ -36,6 +39,8 @@ export const Filter = ({ data }: FilterProps) => {
       return <TastingNoteFilter slug={data.slug} values={data.data?.values} />
     case 'varietal':
       return <VarietalFilter slug={data.slug} values={data.data?.values} />
+    case 'structure':
+      return <StructureFilter slug={data.slug} values={data.data?.values} />
     default:
       return data.data ? <CustomFilter filter={data?.data} /> : <></>
   }

@@ -8,6 +8,7 @@ export type FilterType =
   | 'country'
   | 'tasting-note'
   | 'varietal'
+  | 'structure'
 
 export interface Filter {
   displayCategoryIds?: number[]
