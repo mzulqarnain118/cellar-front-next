@@ -24,7 +24,8 @@ export const StructureFilter = ({ slug, values }: StructureFilterProps) => {
   const { data: products } = useProductsQuery()
 
   const structures = useMemo(() => {
-    let filterValues = products?.map(product => product.attributes?.Structure).filter(Boolean) || []
+    let filterValues =
+      products?.flatMap(product => product.attributes?.Structure?.split('|')).filter(Boolean) || []
     filterValues = filterValues?.filter((value, index) => filterValues.indexOf(value) === index)
     const manualValues = values?.map(value => value.display_name).filter(Boolean) || []
 
