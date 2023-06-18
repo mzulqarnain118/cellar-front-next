@@ -60,7 +60,7 @@ export const updateCustomer = async ({
 
     return response
   } catch {
-    throw new Error('')
+    throw new Error('There was an error updating the customer.')
   }
 }
 

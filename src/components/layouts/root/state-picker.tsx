@@ -75,7 +75,7 @@ export const StatePicker = ({ popup = false }: StatePickerProps) => {
       }
 
       if (stateWarnings !== undefined) {
-        const data = stateWarnings.data.states.find(
+        const data = stateWarnings?.data.states.find(
           state => state.state?.toLowerCase() === newState?.abbreviation.toLowerCase()
         )
 

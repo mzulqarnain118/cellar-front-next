@@ -32,7 +32,6 @@ const validateEmail = async (data: ValidateEmailOptions) => {
     }).json<ValidateEmail>()
     return response
   } catch {
-    // ! TODO: handle error.
     throw new Error('Something went wrong.')
   }
 }

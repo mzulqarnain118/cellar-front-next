@@ -31,7 +31,9 @@ export type Subscription = {
   WebsiteID: number
 }
 
-export const getSubscriptions: QueryFunction<Subscription[], string[]> = async ({ queryKey }) => {
+export const getSubscriptions: QueryFunction<Subscription[] | null, string[]> = async ({
+  queryKey,
+}) => {
   try {
     const type = queryKey[2]
     const response = await api('GetSubscriptionsToDisplay', {
@@ -43,7 +45,7 @@ export const getSubscriptions: QueryFunction<Subscription[], string[]> = async (
 
     return response
   } catch {
-    throw new Error('')
+    return null
   }
 }
 

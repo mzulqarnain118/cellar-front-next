@@ -1,11 +1,16 @@
 import { useMemo } from 'react'
 
+import { useRouter } from 'next/router'
+
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 
 import { useCartStorage } from '@/lib/hooks/use-cart-storage'
+import { CHECKOUT_PAGE_PATH } from '@/lib/paths'
 import { GET_SUBTOTAL_QUERY, OrderPrice } from '@/lib/queries/checkout/get-subtotal'
+import { useCheckoutActions, useCheckoutAppliedSkyWallet } from '@/lib/stores/checkout'
 import { useShippingStateStore } from '@/lib/stores/shipping-state'
+import { toastInfo } from '@/lib/utils/notifications'
 
 import { api } from '../../api'
 import { CART_QUERY_KEY, useCartQuery } from '../../queries/cart'
@@ -49,6 +54,8 @@ export const removeFromCart = async (options: RemoveFromCartOptions) => {
 }
 
 export const useRemoveFromCartMutation = () => {
+  const appliedSkyWallet = useCheckoutAppliedSkyWallet()
+  const { setAppliedSkyWallet } = useCheckoutActions()
   const { data: cart } = useCartQuery()
   const [_, setCartStorage] = useCartStorage()
   const queryClient = useQueryClient()
@@ -59,6 +66,7 @@ export const useRemoveFromCartMutation = () => {
     () => [...CART_QUERY_KEY, shippingState.provinceID || session?.user?.shippingState.provinceID],
     [session?.user?.shippingState.provinceID, shippingState]
   )
+  const router = useRouter()
 
   return useMutation<
     CartModificationResponse,
@@ -135,6 +143,14 @@ export const useRemoveFromCartMutation = () => {
         }
         queryClient.setQueryData(queryKey, newCartData)
         setCartStorage(newCartData)
+
+        if (router.asPath === CHECKOUT_PAGE_PATH && appliedSkyWallet > 0) {
+          setAppliedSkyWallet(0)
+          toastInfo({
+            message:
+              'Your applied credit amount was reset due to changes in your cart. Please re-apply the desired balance.',
+          })
+        }
       }
     },
   })

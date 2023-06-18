@@ -114,7 +114,7 @@ export const createCreditCard = async ({
 
     return response
   } catch {
-    throw new Error('')
+    throw new Error('There was an error creating the credit card.')
   }
 }
 

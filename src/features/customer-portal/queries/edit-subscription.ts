@@ -80,7 +80,7 @@ interface EditSubscriptionOptions {
 }
 
 export const getEditSubscription: QueryFunction<
-  CustomerSubscription,
+  CustomerSubscription | null,
   (string | EditSubscriptionOptions)[]
 > = async ({ queryKey }) => {
   try {
@@ -98,7 +98,7 @@ export const getEditSubscription: QueryFunction<
 
     return response
   } catch {
-    throw new Error('')
+    return null
   }
 }
 

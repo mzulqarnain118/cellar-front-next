@@ -252,18 +252,18 @@ export const ClubsEdit = ({
 
   const newSubscription: CustomerSubscription | undefined = useMemo(
     () =>
-      subscription !== undefined
+      subscription
         ? {
             ...subscription,
             AddressID: addressUsedForMembership || 0,
-            Frequency: frequency?.value || subscription.Frequency,
-            NextProcessingDate: newNextOrderDate?.toISOString() || subscription.NextProcessingDate,
-            PaymentToken: creditCardUsedForMembership || subscription.PaymentToken,
-            Quantity: newQuantity || subscription.Quantity,
-            ShippingMethod: newShippingData.Value || subscription.ShippingMethod,
-            ShippingMethodID: newShippingData.Key || subscription.ShippingMethodID,
+            Frequency: frequency?.value || subscription?.Frequency,
+            NextProcessingDate: newNextOrderDate?.toISOString() || subscription?.NextProcessingDate,
+            PaymentToken: creditCardUsedForMembership || subscription?.PaymentToken,
+            Quantity: newQuantity || subscription?.Quantity,
+            ShippingMethod: newShippingData.Value || subscription?.ShippingMethod,
+            ShippingMethodID: newShippingData.Key || subscription?.ShippingMethodID,
             SubscriptionFrequencyID:
-              parseInt(frequency?.label || '0') || subscription.SubscriptionFrequencyID,
+              parseInt(frequency?.label || '0') || subscription?.SubscriptionFrequencyID,
             SubscriptionID: subscriptionId,
           }
         : undefined,

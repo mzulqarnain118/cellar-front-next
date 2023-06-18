@@ -22,7 +22,6 @@ export const getProductDetails: QueryFunction<ProductDetails | null, string[]> =
 
     return null
   } catch {
-    //
     return null
   }
 }

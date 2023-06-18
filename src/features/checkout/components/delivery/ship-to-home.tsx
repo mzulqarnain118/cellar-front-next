@@ -66,7 +66,7 @@ export const ShipToHome = ({ refs }: ShipToHomeProps) => {
 
   const handleAddressChange: SelectProps['onChange'] = useCallback(
     (addressId: string | null) => {
-      if (!!addressId && data !== undefined && data.addresses.length > 0) {
+      if (!!addressId && !!data && data.addresses.length > 0) {
         const correspondingAddress = data.addresses.find(
           address => address.AddressID.toString() === addressId.toLowerCase()
         )
@@ -96,7 +96,7 @@ export const ShipToHome = ({ refs }: ShipToHomeProps) => {
 
   const shippingAddresses = useMemo(
     () =>
-      data !== undefined && data.addresses.length > 0
+      !!data && data.addresses.length > 0
         ? data.addresses.map(data => {
             const label =
               !!data.FirstName && !!data.LastName ? `${data.FirstName} ${data.LastName}, ` : ''

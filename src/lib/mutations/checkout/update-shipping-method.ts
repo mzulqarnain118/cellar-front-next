@@ -93,7 +93,7 @@ export const updateShippingMethod = async ({
     }).json<UpdateShippingMethodResponse>()
     return response
   } catch {
-    throw new Error('')
+    throw new Error('There was an error updating the shipping method.')
   }
 }
 

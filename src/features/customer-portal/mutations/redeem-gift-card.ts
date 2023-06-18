@@ -6,7 +6,7 @@ import { useCartQuery } from '@/lib/queries/cart'
 import { Failure } from '@/lib/types'
 import { toastError, toastSuccess } from '@/lib/utils/notifications'
 
-import { SKYWALLET_QUERY_KEY } from '../queries/skywallet'
+import { SKY_WALLET_QUERY_KEY } from '../queries/sky-wallet'
 
 interface VerifyGiftCardCodeSuccess {
   Success: true
@@ -56,7 +56,7 @@ export const redeemGiftCard = async ({ cartId, giftCard }: RedeemGiftCardCodeOpt
       }
     }
   } catch {
-    throw new Error('')
+    throw new Error('There was an error redeeming the gift card.')
   }
 }
 
@@ -77,7 +77,7 @@ export const useRedeemGiftCardMutation = () => {
     },
     onSettled: () => {
       queryClient.invalidateQueries([
-        SKYWALLET_QUERY_KEY,
+        SKY_WALLET_QUERY_KEY,
         { personDisplayId: session?.user?.displayId, personId: session?.user?.personId },
       ])
     },

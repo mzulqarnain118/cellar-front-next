@@ -11,7 +11,7 @@ export const Orders = (props: TabsPanelProps) => {
 
   const customerOrders = useMemo(
     () =>
-      orders !== undefined ? (
+      orders ? (
         <div className="space-y-8">
           {orders.map(order => (
             <Order key={order.DisplayID} data={order} />

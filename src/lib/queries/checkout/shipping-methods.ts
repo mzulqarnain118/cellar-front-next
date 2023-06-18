@@ -51,7 +51,7 @@ const getShippingMethods: QueryFunction<
     }
     return []
   } catch (error) {
-    throw new Error('')
+    throw new Error('There was an error fetching the shipping methods.')
   }
 }
 

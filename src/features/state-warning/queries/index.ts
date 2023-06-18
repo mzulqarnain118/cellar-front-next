@@ -10,7 +10,7 @@ export const getStateWarnings = async (client?: Client<Content.AllDocumentTypes>
 
     return warnings
   } catch {
-    return undefined
+    return null
   }
 }
 

@@ -47,7 +47,7 @@ export interface ShippingAddressesAndCreditCards {
 }
 
 export const getShippingAddressesAndCreditCards: QueryFunction<
-  ShippingAddressesAndCreditCards
+  ShippingAddressesAndCreditCards | null
 > = async ({ queryKey }) => {
   try {
     const cartId = queryKey[1] as string | null
@@ -105,7 +105,7 @@ export const getShippingAddressesAndCreditCards: QueryFunction<
       throw new Error(userDetails.Error.Message || '')
     }
   } catch (error) {
-    throw new Error('')
+    throw new Error('There was an error fetching the addresses and credit cards.')
   }
 }
 
@@ -121,9 +121,9 @@ export const useAddressesAndCreditCardsQuery = () => {
     onSuccess: data => {
       if (activeShippingAddress === undefined || activeCreditCard === undefined) {
         const address: Address | undefined =
-          activeShippingAddress || data.primaryAddress || data.addresses[0]
+          activeShippingAddress || data?.primaryAddress || data?.addresses[0]
         const creditCard: CreditCard | undefined =
-          activeCreditCard || data.primaryCreditCard || data.creditCards[0]
+          activeCreditCard || data?.primaryCreditCard || data?.creditCards[0]
 
         if (address !== undefined) {
           applyCheckoutSelections({

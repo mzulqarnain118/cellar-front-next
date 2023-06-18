@@ -24,7 +24,7 @@ export const updateSubscription = async (subscription: CustomerSubscription) => 
 
     return response
   } catch {
-    throw new Error('')
+    throw new Error('There was an error updating the subscription.')
   }
 }
 

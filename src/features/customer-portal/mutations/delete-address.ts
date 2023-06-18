@@ -25,7 +25,7 @@ export const deleteAddress = async ({ addressId }: DeleteAddressOptions) => {
     }
     return response
   } catch {
-    throw new Error('')
+    throw new Error('There was an error deleting the address.')
   }
 }
 

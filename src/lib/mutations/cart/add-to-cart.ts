@@ -1,15 +1,19 @@
 import { useMemo } from 'react'
 
+import { useRouter } from 'next/router'
+
 import { notifications } from '@mantine/notifications'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 
 import { replaceItemByUniqueId } from '@/core/utils'
 import { useCartStorage } from '@/lib/hooks/use-cart-storage'
+import { CHECKOUT_PAGE_PATH } from '@/lib/paths'
 import { CART_QUERY_KEY, useCartQuery } from '@/lib/queries/cart'
 import { GET_SUBTOTAL_QUERY, OrderPrice } from '@/lib/queries/checkout/get-subtotal'
+import { useCheckoutActions, useCheckoutAppliedSkyWallet } from '@/lib/stores/checkout'
 import { useShippingStateStore } from '@/lib/stores/shipping-state'
-import { clearAllToasts, toastError, toastLoading } from '@/lib/utils/notifications'
+import { clearAllToasts, toastError, toastInfo, toastLoading } from '@/lib/utils/notifications'
 
 import { api } from '../../api'
 import { useProcessStore } from '../../stores/process'
@@ -48,6 +52,8 @@ export const addToCart = async (options: AddToCartOptions) => {
 }
 
 export const useAddToCartMutation = () => {
+  const appliedSkyWallet = useCheckoutAppliedSkyWallet()
+  const { setAppliedSkyWallet } = useCheckoutActions()
   const [_, setCartStorage] = useCartStorage()
   const { data: cart } = useCartQuery()
   const queryClient = useQueryClient()
@@ -58,6 +64,7 @@ export const useAddToCartMutation = () => {
     () => [...CART_QUERY_KEY, shippingState.provinceID || session?.user?.shippingState.provinceID],
     [session?.user?.shippingState.provinceID, shippingState]
   )
+  const router = useRouter()
 
   return useMutation<
     CartModificationResponse,
@@ -159,6 +166,14 @@ export const useAddToCartMutation = () => {
         }
         queryClient.setQueryData(queryKey, newCartData)
         setCartStorage(newCartData)
+
+        if (router.asPath === CHECKOUT_PAGE_PATH && appliedSkyWallet > 0) {
+          setAppliedSkyWallet(0)
+          toastInfo({
+            message:
+              'Your applied credit amount was reset due to changes in your cart. Please re-apply the desired balance.',
+          })
+        }
       }
     },
   })

@@ -12,10 +12,10 @@ import { formatCurrency } from '@/core/utils'
 
 import { useRedeemGiftCardMutation } from '../../mutations/redeem-gift-card'
 import { useRedeemOfferMutation } from '../../mutations/redeem-offer'
-import { useSkywalletQuery } from '../../queries/skywallet'
+import { useSkyWalletQuery } from '../../queries/sky-wallet'
 
 export const Wallet = (props: TabsPanelProps) => {
-  const { data: skywallet } = useSkywalletQuery()
+  const { data: skywallet } = useSkyWalletQuery()
   const { mutate: redeemGiftCard } = useRedeemGiftCardMutation()
   const { mutate: redeemOffer } = useRedeemOfferMutation()
 

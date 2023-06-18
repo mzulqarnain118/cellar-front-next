@@ -32,7 +32,7 @@ interface GetViewCartInfoSuccess {
 
 export type GetViewCartInfoResponse = GetViewCartInfoSuccess | Failure
 
-export const getCartInfo: QueryFunction<CartInfo | undefined, (string | undefined)[]> = async ({
+export const getCartInfo: QueryFunction<CartInfo | null, (string | undefined)[]> = async ({
   queryKey,
 }) => {
   try {
@@ -45,8 +45,10 @@ export const getCartInfo: QueryFunction<CartInfo | undefined, (string | undefine
     if (response.Success && response.Data.Cart.Success) {
       return response.Data.Cart.Data
     }
+
+    return null
   } catch {
-    throw new Error('')
+    return null
   }
 }
 

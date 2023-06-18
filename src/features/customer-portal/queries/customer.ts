@@ -270,7 +270,7 @@ interface Response {
   Person_PrimaryAddress: CustomerAddress
 }
 
-export const getCustomer: QueryFunction<Response, string[]> = async ({ queryKey }) => {
+export const getCustomer: QueryFunction<Response | null, string[]> = async ({ queryKey }) => {
   try {
     const displayId = queryKey[1]
 
@@ -281,7 +281,7 @@ export const getCustomer: QueryFunction<Response, string[]> = async ({ queryKey 
 
     return response
   } catch {
-    throw new Error('')
+    return null
   }
 }
 

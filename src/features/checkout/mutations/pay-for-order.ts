@@ -1,6 +1,5 @@
 import { useRouter } from 'next/router'
 
-import { notifications } from '@mantine/notifications'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import CryptoJS from 'crypto-js'
 import { useSession } from 'next-auth/react'
@@ -14,13 +13,14 @@ import { useConsultantQuery } from '@/lib/queries/consultant'
 import {
   useCheckoutActions,
   useCheckoutActiveShippingAddress,
+  useCheckoutAppliedSkyWallet,
   useCheckoutCvv,
   useCheckoutGuestAddress,
 } from '@/lib/stores/checkout'
 import { Receipt, useReceiptActions } from '@/lib/stores/receipt'
 import { useShippingStateStore } from '@/lib/stores/shipping-state'
 import { Failure, Success } from '@/lib/types'
-import { toastLoading, toastSuccess } from '@/lib/utils/notifications'
+import { clearLoading, toastError, toastLoading, toastSuccess } from '@/lib/utils/notifications'
 
 type PayForOrderResponse = Success | Failure
 
@@ -50,10 +50,17 @@ export const payForOrder = async ({
     }).json<PayForOrderResponse>()
 
     if (!response.Success) {
+      clearLoading()
       throw new Error(response.Error.Message)
     }
-  } catch {
-    throw new Error('')
+    clearLoading()
+  } catch (error: unknown) {
+    clearLoading()
+    const { message } = error as { message: string }
+    toastError({
+      message: message || 'There was an error placing your order. Please try again later.',
+    })
+    throw new Error((error as string) || 'There was an error placing the order.')
   }
 }
 
@@ -71,6 +78,7 @@ const signOutServerSide = async () => {
 const PAY_FOR_ORDER_MUTATION_KEY = 'pay-for-order'
 export const useCheckoutPayForOrderMutation = () => {
   const activeShippingAddress = useCheckoutActiveShippingAddress()
+  const appliedSkyWallet = useCheckoutAppliedSkyWallet()
   const guestAddress = useCheckoutGuestAddress()
   const cvv = useCheckoutCvv()
   const queryClient = useQueryClient()
@@ -85,16 +93,18 @@ export const useCheckoutPayForOrderMutation = () => {
 
   return useMutation<unknown, Failure, Partial<PayForOrderOptions> | Record<string, never>>({
     mutationFn: options =>
-      payForOrder({ ...options, cartId: cart?.id || '', consultantUrl: consultant?.url, cvv }),
+      payForOrder({
+        ...options,
+        appliedSkyWallet,
+        cartId: cart?.id || '',
+        consultantUrl: consultant?.url,
+        cvv,
+      }),
     mutationKey: [PAY_FOR_ORDER_MUTATION_KEY],
-    onError: _error => {
-      // console.log()
-    },
     onMutate: () => {
       toastLoading({ message: 'Placing your order...' })
     },
     onSuccess: async () => {
-      notifications.clean()
       toastSuccess({ message: 'Your order has been placed successfully!' })
       const address = guestAddress || activeShippingAddress
       const checkoutReceipt: Receipt = {

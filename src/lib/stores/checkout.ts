@@ -45,6 +45,7 @@ type PickUpOption = 'abc' | 'hal' | 'lpu'
 interface CheckoutStoreState {
   activeCreditCard?: CreditCard
   activeShippingAddress?: Address
+  appliedSkyWallet: number
   contactInformation: ContactInformation
   cvv: string
   errors?: Errors
@@ -69,6 +70,7 @@ interface CheckoutStoreActions {
   resetGiftMessage: () => void
   setActiveCreditCard: (creditCard: CreditCard | undefined) => void
   setActiveShippingAddress: (address: Address | undefined) => void
+  setAppliedSkyWallet: Setter<number>
   setContactInformation: Setter<ContactInformation>
   setCvv: Setter<string | undefined>
   setErrors: Setter<Errors | undefined>
@@ -91,6 +93,7 @@ interface CheckoutStoreActions {
 export type CheckoutStore = CheckoutStoreState & { actions: CheckoutStoreActions }
 
 const initialValues: CheckoutStoreState = {
+  appliedSkyWallet: 0,
   contactInformation: {
     dateOfBirth: undefined,
     email: '',
@@ -133,6 +136,10 @@ export const useCheckoutStore = create<CheckoutStore>()(
         resetGiftMessage: () => set(() => ({ giftMessage: initialValues.giftMessage })),
         setActiveCreditCard: activeCreditCard => set(() => ({ activeCreditCard })),
         setActiveShippingAddress: activeShippingAddress => set(() => ({ activeShippingAddress })),
+        setAppliedSkyWallet: update =>
+          typeof update === 'function'
+            ? set(({ appliedSkyWallet }) => ({ appliedSkyWallet }))
+            : set(() => ({ appliedSkyWallet: update })),
         setContactInformation: update =>
           typeof update === 'function'
             ? set(({ contactInformation }) => ({ contactInformation: update(contactInformation) }))
@@ -203,7 +210,8 @@ export const useCheckoutStore = create<CheckoutStore>()(
     }),
     {
       name: 'checkout',
-      partialize: ({ giftCardCode, giftMessage, guestAddress, promoCode }) => ({
+      partialize: ({ appliedSkyWallet, giftCardCode, giftMessage, guestAddress, promoCode }) => ({
+        appliedSkyWallet,
         giftCardCode,
         giftMessage,
         guestAddress,
@@ -224,6 +232,11 @@ export const useCheckoutActiveShippingAddress = () => {
 export const useCheckoutActiveCreditCard = () => {
   const selector = useCallback(({ activeCreditCard }: CheckoutStore) => ({ activeCreditCard }), [])
   return useCheckoutStore(selector).activeCreditCard
+}
+
+export const useCheckoutAppliedSkyWallet = () => {
+  const selector = useCallback(({ appliedSkyWallet }: CheckoutStore) => ({ appliedSkyWallet }), [])
+  return useCheckoutStore(selector).appliedSkyWallet
 }
 
 export const useCheckoutContactInformation = () => {

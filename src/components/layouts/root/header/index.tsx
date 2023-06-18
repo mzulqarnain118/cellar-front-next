@@ -220,33 +220,34 @@ export const Header = () => {
           isCuratedCart: true,
           isSharedCart: false,
           isVipCart: false,
-          items: cartInfo.OrderLines.map(item => {
-            const product = products?.find(
-              productData => productData.sku === item.ProductSKU.toLowerCase()
-            )
-            return {
-              ...product,
-              cartUrl: product?.cartUrl || '',
-              catalogId: 0,
-              displayCategories: product?.displayCategories || [],
-              displayName: item.ProductDisplayName,
-              isAutoSip: product?.isAutoSip || false,
-              isClubOnly: product?.isClubOnly || false,
-              isGift: product?.isGift || false,
-              isGiftCard: product?.isGiftCard || false,
-              isScoutCircleClub: product?.isScoutCircleClub || false,
-              isVip: product?.isVip || false,
-              onSalePrice: item.DisplayPrice,
-              orderId: item.OrderID,
-              orderLineId: item.OrderLineID,
-              price: item.Price,
-              quantity: item.Quantity,
-              quantityAvailable: product?.quantityAvailable || 0,
-              sku: item.ProductSKU.toLowerCase(),
-              subscribable: product?.subscribable || false,
-            }
-          }).filter(Boolean),
-          orderDisplayId: cartInfo.DisplayID,
+          items:
+            cartInfo?.OrderLines.map(item => {
+              const product = products?.find(
+                productData => productData.sku === item.ProductSKU.toLowerCase()
+              )
+              return {
+                ...product,
+                cartUrl: product?.cartUrl || '',
+                catalogId: 0,
+                displayCategories: product?.displayCategories || [],
+                displayName: item.ProductDisplayName,
+                isAutoSip: product?.isAutoSip || false,
+                isClubOnly: product?.isClubOnly || false,
+                isGift: product?.isGift || false,
+                isGiftCard: product?.isGiftCard || false,
+                isScoutCircleClub: product?.isScoutCircleClub || false,
+                isVip: product?.isVip || false,
+                onSalePrice: item.DisplayPrice,
+                orderId: item.OrderID,
+                orderLineId: item.OrderLineID,
+                price: item.Price,
+                quantity: item.Quantity,
+                quantityAvailable: product?.quantityAvailable || 0,
+                sku: item.ProductSKU.toLowerCase(),
+                subscribable: product?.subscribable || false,
+              }
+            }).filter(Boolean) || [],
+          orderDisplayId: cartInfo?.DisplayID,
           prices: {
             orderTotal: 0,
             retailDeliveryFee: 0,

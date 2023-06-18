@@ -59,7 +59,7 @@ export const applyCheckoutSelections = async ({
 
     return response
   } catch {
-    throw new Error('')
+    throw new Error('There was an error applying the checkout selections.')
   }
 }
 
@@ -91,23 +91,27 @@ export const useApplyCheckoutSelectionsMutation = () => {
     mutationKey: [...APPLY_CHECKOUT_SELECTIONS_MUTATION_KEY],
     onSuccess: async (response, data) => {
       if (response.Success) {
-        const { addresses, creditCards } =
-          await queryClient.ensureQueryData<ShippingAddressesAndCreditCards>({
+        const addressesAndCreditCards =
+          await queryClient.ensureQueryData<ShippingAddressesAndCreditCards | null>({
             queryFn: getShippingAddressesAndCreditCards,
             queryKey: [ADDRESS_CREDIT_CARDS_QUERY_KEY, cart?.id, session?.user?.isGuest],
           })
-        let correspondingAddress = addresses.find(address => address.AddressID === data.addressId)
-        let correspondingCreditCard = creditCards.find(
+        let correspondingAddress = addressesAndCreditCards?.addresses.find(
+          address => address.AddressID === data.addressId
+        )
+        let correspondingCreditCard = addressesAndCreditCards?.creditCards.find(
           creditCard => creditCard.PaymentToken === data.paymentToken
         )
         if (correspondingAddress === undefined || correspondingCreditCard === undefined) {
-          const { addresses: altAddresses, creditCards: altCreditCards } =
-            await queryClient.ensureQueryData<ShippingAddressesAndCreditCards>({
+          const altAddressesAndCreditCards =
+            await queryClient.ensureQueryData<ShippingAddressesAndCreditCards | null>({
               queryFn: getShippingAddressesAndCreditCards,
               queryKey: [ADDRESS_CREDIT_CARDS_QUERY_KEY, cart?.id, session?.user?.isGuest],
             })
-          correspondingAddress = altAddresses.find(address => address.AddressID === data.addressId)
-          correspondingCreditCard = altCreditCards.find(
+          correspondingAddress = altAddressesAndCreditCards?.addresses.find(
+            address => address.AddressID === data.addressId
+          )
+          correspondingCreditCard = altAddressesAndCreditCards?.creditCards.find(
             creditCard => creditCard.PaymentToken === data.paymentToken
           )
         }

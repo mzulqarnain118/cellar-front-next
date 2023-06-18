@@ -37,7 +37,7 @@ export const createAddress = async (address: Address) => {
 
     return response
   } catch {
-    throw new Error('')
+    throw new Error('There was an error adding the address.')
   }
 }
 

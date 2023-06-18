@@ -53,7 +53,7 @@ export const getCustomerPortalBanner = async () => {
       title,
     }
   } catch {
-    throw new Error('')
+    return null
   }
 }
 

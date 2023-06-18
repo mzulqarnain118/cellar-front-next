@@ -25,7 +25,7 @@ export const forgotPassword = async ({ email, recaptcha }: ForgotPasswordOptions
 
     return response
   } catch {
-    return undefined
+    throw new Error('There was an error resetting the password.')
   }
 }
 

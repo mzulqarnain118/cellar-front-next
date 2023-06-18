@@ -128,7 +128,7 @@ export const getSubtotal: QueryFunction<OrderPrice> = async ({ queryKey }) => {
       return defaultOrderPrice
     }
   } catch {
-    throw new Error('')
+    throw new Error('There was an error fetching the subtotal.')
   }
 }
 

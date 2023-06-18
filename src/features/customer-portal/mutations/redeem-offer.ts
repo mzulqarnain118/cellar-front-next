@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/react'
 import { api } from '@/lib/api'
 import { toastError, toastSuccess } from '@/lib/utils/notifications'
 
-import { SKYWALLET_QUERY_KEY } from '../queries/skywallet'
+import { SKY_WALLET_QUERY_KEY } from '../queries/sky-wallet'
 
 interface Notifications {
   Notifications: { Message: string }[]
@@ -30,7 +30,7 @@ export const redeemOffer = async ({ couponCode }: RedeemOfferOptions) => {
       return response.response.data.Message
     }
   } catch {
-    throw new Error('')
+    throw new Error('There was an error redeeming the offer.')
   }
 }
 
@@ -46,7 +46,7 @@ export const useRedeemOfferMutation = () => {
     },
     onSettled: () => {
       queryClient.invalidateQueries([
-        SKYWALLET_QUERY_KEY,
+        SKY_WALLET_QUERY_KEY,
         { personDisplayId: session?.user?.displayId, personId: session?.user?.personId },
       ])
     },

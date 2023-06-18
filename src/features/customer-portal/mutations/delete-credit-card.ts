@@ -22,7 +22,7 @@ export const deleteCreditCard = async (paymentToken: string) => {
 
     return response
   } catch {
-    throw new Error('')
+    throw new Error('There was an error deleting the credit card.')
   }
 }
 

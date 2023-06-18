@@ -5,18 +5,34 @@ import { formatCurrency } from '@/core/utils'
 import { SUMMER_PACKAGING } from '@/lib/constants/shipping-method'
 import { useCartQuery } from '@/lib/queries/cart'
 import { useGetSubtotalQuery } from '@/lib/queries/checkout/get-subtotal'
+import { useCheckoutAppliedSkyWallet } from '@/lib/stores/checkout'
 
 import { CartProduct } from './cart-product'
 
 export const CartSummary = () => {
   const { data: subtotalInfo } = useGetSubtotalQuery()
   const { data: cart } = useCartQuery()
+  const appliedSkyWallet = useCheckoutAppliedSkyWallet()
 
-  const subtotal = subtotalInfo?.subtotal || 0
-  const shippingPrice = subtotalInfo?.shipping.price || 0
-  const retailDeliveryFee = subtotalInfo?.retailDeliveryFee || 0
-  const tax = subtotalInfo?.tax || 0
-  const orderTotal = subtotalInfo?.orderTotal || 0
+  const subtotal = useMemo(() => subtotalInfo?.subtotal || 0, [subtotalInfo?.subtotal])
+  const shippingPrice = useMemo(
+    () => subtotalInfo?.shipping.price || 0,
+    [subtotalInfo?.shipping.price]
+  )
+  const retailDeliveryFee = useMemo(
+    () => subtotalInfo?.retailDeliveryFee || 0,
+    [subtotalInfo?.retailDeliveryFee]
+  )
+  const tax = useMemo(() => subtotalInfo?.tax || 0, [subtotalInfo?.tax])
+  const orderTotal = useMemo(() => {
+    const total = (subtotalInfo?.orderTotal || 0) - appliedSkyWallet
+
+    if (total <= 0) {
+      return 0
+    }
+
+    return total
+  }, [appliedSkyWallet, subtotalInfo?.orderTotal])
   const shippingMethodId = subtotalInfo?.shipping.methodId
 
   const cartItems = useMemo(
@@ -67,12 +83,22 @@ export const CartSummary = () => {
             {tax ? formatCurrency(tax) : '$--.--'}
           </Typography>
         </div>
+        {appliedSkyWallet ? (
+          <div className="grid grid-cols-2 items-center">
+            <Typography noSpacing as="p" className="text-neutral-500">
+              Sky Wallet
+            </Typography>
+            <Typography noSpacing as="p" className="text-success text-right">
+              -{formatCurrency(appliedSkyWallet)}
+            </Typography>
+          </div>
+        ) : undefined}
         <div className="mt-4 grid grid-cols-2 items-center text-base font-bold">
           <Typography noSpacing as="p">
             TOTAL
           </Typography>
           <Typography noSpacing as="p" className="text-right">
-            {orderTotal ? formatCurrency(orderTotal) : '$--.--'}
+            {subtotalInfo !== undefined || orderTotal ? formatCurrency(orderTotal) : '$--.--'}
           </Typography>
         </div>
         {shippingMethodId !== undefined &&
@@ -84,7 +110,16 @@ export const CartSummary = () => {
         ) : undefined}
       </div>
     ),
-    [orderTotal, retailDeliveryFee, shippingMethodId, shippingPrice, subtotal, tax]
+    [
+      appliedSkyWallet,
+      orderTotal,
+      retailDeliveryFee,
+      shippingMethodId,
+      shippingPrice,
+      subtotal,
+      subtotalInfo,
+      tax,
+    ]
   )
 
   return (

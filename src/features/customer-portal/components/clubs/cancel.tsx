@@ -15,7 +15,7 @@ import { useSkipSubscriptionMutation } from '../../mutations/skip-subscription'
 import { ChargebeeData } from '../../queries/chargebee'
 
 interface CancelProps {
-  chargebeeData?: ChargebeeData
+  chargebeeData?: ChargebeeData | null
   handleHide: () => void
   refetch: () => void
   skipNext?: boolean
@@ -40,7 +40,7 @@ export const Cancel = ({
 
   const chargebeeData = useMemo(
     () =>
-      customChargebeeData === undefined
+      !customChargebeeData
         ? undefined
         : {
             account: {

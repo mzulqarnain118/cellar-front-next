@@ -23,7 +23,7 @@ export interface ChargebeeData {
   ProductDescription: string
 }
 
-export const getChargebeeData: QueryFunction<ChargebeeData, (string | number)[]> = async ({
+export const getChargebeeData: QueryFunction<ChargebeeData | null, (string | number)[]> = async ({
   queryKey,
 }) => {
   try {
@@ -36,11 +36,11 @@ export const getChargebeeData: QueryFunction<ChargebeeData, (string | number)[]>
     }).json<{ Success: boolean; Data: ChargebeeData[] }>()
 
     if (!response.Success) {
-      throw new Error('')
+      return null
     }
     return response.Data[0]
   } catch {
-    throw new Error('')
+    return null
   }
 }
 

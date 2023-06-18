@@ -17,14 +17,14 @@ import { toastLoading } from '@/lib/utils/notifications'
 import { GetSharedCartResponse } from '../types'
 
 export const getSharedCart: QueryFunction<
-  GetSharedCartResponse | undefined,
+  GetSharedCartResponse | null,
   (string | number | undefined)[]
 > = async ({ queryKey }) => {
   try {
     const sharedCartId = queryKey[1]
     const provinceId = queryKey[2]
     if (sharedCartId === undefined) {
-      return
+      return null
     }
     useProcessStore.getState().toggleCartOpen()
     toastLoading({ message: 'Loading shared cart...' })
@@ -35,7 +35,7 @@ export const getSharedCart: QueryFunction<
 
     return response
   } catch {
-    // console.log()
+    throw new Error('There was an error loading the shared cart.')
   }
 }
 

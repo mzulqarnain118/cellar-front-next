@@ -18,7 +18,7 @@ interface GetOrderTrackingInfoSuccess {
 
 type GetOrderTrackingInfoResponse = GetOrderTrackingInfoSuccess | Failure
 
-export const getOrderTracking: QueryFunction<OrderTrackingInfo, string[]> = async ({
+export const getOrderTracking: QueryFunction<OrderTrackingInfo | null, string[]> = async ({
   queryKey,
 }) => {
   try {
@@ -34,7 +34,7 @@ export const getOrderTracking: QueryFunction<OrderTrackingInfo, string[]> = asyn
 
     return response.Data
   } catch (error) {
-    throw new Error('')
+    throw new Error('There was an error fetching the tracking data.')
   }
 }
 

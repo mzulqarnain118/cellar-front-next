@@ -1,5 +1,7 @@
 import { ChangeEventHandler, MutableRefObject, memo, useCallback, useEffect, useMemo } from 'react'
 
+import dynamic from 'next/dynamic'
+
 import {
   ChevronDownIcon,
   ChevronUpIcon,
@@ -31,6 +33,10 @@ import {
 
 import { CreditCardForm } from './credit-card-form'
 import { formatCVC } from './utils'
+
+const SkyWallet = dynamic(() => import('./sky-wallet').then(({ SkyWallet }) => SkyWallet), {
+  ssr: false,
+})
 
 const dropdownClassNames = { input: 'h-10', item: 'text-14', label: 'text-14' }
 const tagIcon = <TagIcon className="mx-3 h-4 w-4" />
@@ -128,6 +134,7 @@ export const Payment = memo(({ opened, refs, toggle }: PaymentProps) => {
     ),
     []
   )
+
   const handleInputChange: ChangeEventHandler<HTMLInputElement> = useCallback(
     ({ target }) => {
       target.value = formatCVC(target.value)
@@ -280,7 +287,7 @@ export const Payment = memo(({ opened, refs, toggle }: PaymentProps) => {
         ) : undefined}
         <Collapse in={showCreditCard}>
           <>
-            <div className="grid items-center justify-center lg:flex lg:items-start lg:justify-between lg:gap-4">
+            <div className="grid items-center justify-center lg:grid-cols-2 lg:gap-4">
               <Input
                 ref={refs.promoCodeRef}
                 noSpacing
@@ -301,6 +308,7 @@ export const Payment = memo(({ opened, refs, toggle }: PaymentProps) => {
                 right={giftCardSubmit}
                 size="sm"
               />
+              <SkyWallet />
             </div>
           </>
         </Collapse>

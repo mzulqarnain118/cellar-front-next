@@ -36,7 +36,7 @@ interface GetCustomerOrdersSuccess {
 
 type GetCustomerOrdersResponse = GetCustomerOrdersSuccess | Failure
 
-export const getCustomerOrders: QueryFunction<CustomerOrder[], string[]> = async () => {
+export const getCustomerOrders: QueryFunction<CustomerOrder[] | null, string[]> = async () => {
   try {
     const response = await api('v2/Orders/GetPersonalOrders', {
       method: 'get',
@@ -49,7 +49,7 @@ export const getCustomerOrders: QueryFunction<CustomerOrder[], string[]> = async
 
     return response.Data
   } catch {
-    throw new Error('')
+    return null
   }
 }
 

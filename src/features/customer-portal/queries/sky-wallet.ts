@@ -52,14 +52,14 @@ interface Response {
   status: boolean
 }
 
-interface GetSkywalletOptions {
+interface GetSkyWalletOptions {
   personDisplayId: string
   personId: number
 }
 
-export const getSkywallet: QueryFunction<Response['result'] | undefined> = async ({ queryKey }) => {
+export const getSkyWallet: QueryFunction<Response['result'] | null> = async ({ queryKey }) => {
   try {
-    const { personDisplayId, personId } = queryKey[1] as GetSkywalletOptions
+    const { personDisplayId, personId } = queryKey[1] as GetSkyWalletOptions
     const response = await api('Shopping/GetSortedSkyWalletBalance', {
       json: { PersonDisplayID: personDisplayId, PersonID: personId },
       method: 'post',
@@ -68,20 +68,22 @@ export const getSkywallet: QueryFunction<Response['result'] | undefined> = async
     if (response.status) {
       return response.result
     }
+
+    return null
   } catch {
-    throw new Error('')
+    return null
   }
 }
 
-export const SKYWALLET_QUERY_KEY = 'skywallet'
+export const SKY_WALLET_QUERY_KEY = 'sky-wallet'
 
-export const useSkywalletQuery = () => {
+export const useSkyWalletQuery = () => {
   const { data: session } = useSession()
 
   return useQuery({
-    queryFn: getSkywallet,
+    queryFn: getSkyWallet,
     queryKey: [
-      'skywallet',
+      SKY_WALLET_QUERY_KEY,
       { personDisplayId: session?.user?.displayId, personId: session?.user?.personId },
     ],
   })

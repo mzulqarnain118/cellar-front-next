@@ -14,7 +14,6 @@ import { Badge } from 'react-daisyui'
 import { Link } from '@/components/link'
 import { Typography } from '@/core/components/typogrpahy'
 import { wait } from '@/core/utils/time'
-import { CartSummary } from '@/features/checkout/components/cart-summary'
 import { ContactInformation } from '@/features/checkout/components/contact-information'
 import { Delivery } from '@/features/checkout/components/delivery'
 import { Payment } from '@/features/checkout/components/payment'
@@ -39,6 +38,11 @@ import { toastInfo } from '@/lib/utils/notifications'
 
 import { authOptions } from '../api/auth/[...nextauth]'
 
+const CartSummary = dynamic(
+  () =>
+    import('@/features/checkout/components/cart-summary').then(({ CartSummary }) => CartSummary),
+  { ssr: false }
+)
 const PayForOrder = dynamic(
   () =>
     import('@/features/checkout/components/pay-for-order').then(({ PayForOrder }) => PayForOrder),

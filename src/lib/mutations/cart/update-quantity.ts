@@ -1,16 +1,21 @@
 import { useMemo } from 'react'
 
+import { useRouter } from 'next/router'
+
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 
 import { replaceItemByUniqueId } from '@/core/utils'
 import { api } from '@/lib/api'
 import { useCartStorage } from '@/lib/hooks/use-cart-storage'
+import { CHECKOUT_PAGE_PATH } from '@/lib/paths'
 import { CART_QUERY_KEY, useCartQuery } from '@/lib/queries/cart'
 import { GET_SUBTOTAL_QUERY, OrderPrice } from '@/lib/queries/checkout/get-subtotal'
+import { useCheckoutActions, useCheckoutAppliedSkyWallet } from '@/lib/stores/checkout'
 import { useProcessStore } from '@/lib/stores/process'
 import { useShippingStateStore } from '@/lib/stores/shipping-state'
 import { Cart, CartItem, DEFAULT_CART_STATE } from '@/lib/types'
+import { toastInfo } from '@/lib/utils/notifications'
 
 import { getNewCartItems } from '../helpers'
 import { CartModificationResponse } from '../types'
@@ -55,6 +60,8 @@ export const updateQuantity = async ({
 }
 
 export const useUpdateQuantityMutation = () => {
+  const appliedSkyWallet = useCheckoutAppliedSkyWallet()
+  const { setAppliedSkyWallet } = useCheckoutActions()
   const { data: cart } = useCartQuery()
   const [_, setCartStorage] = useCartStorage()
   const queryClient = useQueryClient()
@@ -65,6 +72,7 @@ export const useUpdateQuantityMutation = () => {
     () => [...CART_QUERY_KEY, shippingState.provinceID || session?.user?.shippingState.provinceID],
     [session?.user?.shippingState.provinceID, shippingState]
   )
+  const router = useRouter()
 
   return useMutation<
     CartModificationResponse,
@@ -148,6 +156,14 @@ export const useUpdateQuantityMutation = () => {
         }
         queryClient.setQueryData(queryKey, newCartData)
         setCartStorage(newCartData)
+
+        if (router.asPath === CHECKOUT_PAGE_PATH && appliedSkyWallet > 0) {
+          setAppliedSkyWallet(0)
+          toastInfo({
+            message:
+              'Your applied credit amount was reset due to changes in your cart. Please re-apply the desired balance.',
+          })
+        }
       }
     },
   })

@@ -20,7 +20,7 @@ export const skipSubscription = async (subscriptionId: number) => {
 
     return response
   } catch {
-    throw new Error('')
+    throw new Error('There was an error skipping the subscription.')
   }
 }
 

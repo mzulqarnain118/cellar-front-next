@@ -10,7 +10,7 @@ export const getCartPromoMessages = async (client?: Client<Content.AllDocumentTy
 
     return data
   } catch {
-    return undefined
+    return null
   }
 }
 

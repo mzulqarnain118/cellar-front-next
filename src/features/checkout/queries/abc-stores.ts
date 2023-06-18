@@ -31,7 +31,7 @@ interface GetABCStoresSuccess {
 
 type GetABCStoresResponse = GetABCStoresSuccess | Failure
 
-export const getAbcStores: QueryFunction<ABCStore[]> = async () => {
+export const getAbcStores: QueryFunction<ABCStore[] | null> = async () => {
   try {
     const response = await api('v2/abcstores', {
       method: 'get',
@@ -60,7 +60,7 @@ export const getAbcStores: QueryFunction<ABCStore[]> = async () => {
       throw new Error(response.Error.Message)
     }
   } catch {
-    throw new Error('')
+    return null
   }
 }
 

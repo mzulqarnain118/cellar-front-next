@@ -14,14 +14,14 @@ import { toastError, toastLoading, toastSuccess } from '@/lib/utils/notification
 
 import { VIPCart, VIPCartResponse } from '../types'
 
-export const getVipCart: QueryFunction<VIPCart | undefined, (string | undefined)[]> = async ({
+export const getVipCart: QueryFunction<VIPCart | null, (string | undefined)[]> = async ({
   queryKey,
 }) => {
   try {
     const orderDisplayId = queryKey[1]
 
     if (orderDisplayId === undefined) {
-      return
+      return null
     }
     useProcessStore.getState().toggleCartOpen()
     toastLoading({ message: 'Loading VIP cart...' })
@@ -38,9 +38,11 @@ export const getVipCart: QueryFunction<VIPCart | undefined, (string | undefined)
       return response.Data
     } else {
       toastError({ message: response.Error.Message || "We couldn't load that VIP cart." })
+      return null
     }
   } catch {
     toastError({ message: "We couldn't load that VIP cart." })
+    return null
   }
 }
 

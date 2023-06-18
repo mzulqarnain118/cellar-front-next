@@ -274,7 +274,7 @@ const orderInvoiceSchema = z.object({
 
 export type OrderInvoiceSchema = z.infer<typeof orderInvoiceSchema>
 
-export const getOrderInvoice: QueryFunction<OrderInvoiceSchema, string[]> = async ({
+export const getOrderInvoice: QueryFunction<OrderInvoiceSchema | null, string[]> = async ({
   queryKey,
 }) => {
   try {
@@ -286,7 +286,7 @@ export const getOrderInvoice: QueryFunction<OrderInvoiceSchema, string[]> = asyn
 
     return response
   } catch {
-    throw new Error('')
+    return null
   }
 }
 

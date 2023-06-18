@@ -31,7 +31,7 @@ export const shareCart = async ({ cartId, consultantUrl }: ShareCartOptions) => 
 
     return response
   } catch {
-    // console.log()
+    throw new Error('There was an error sharing the cart.')
   }
 }
 
