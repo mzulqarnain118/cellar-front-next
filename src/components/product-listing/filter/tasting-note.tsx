@@ -98,7 +98,7 @@ export const TastingNoteFilter = ({ slug, values }: TastingNoteFilterProps) => {
           </div>
         </div>
       ) : undefined}
-      <div className="space-y-2 pt-4">
+      <div className="space-y-2">
         {popular !== undefined && !showAll
           ? undefined
           : otherFilters.map(tastingNote => (

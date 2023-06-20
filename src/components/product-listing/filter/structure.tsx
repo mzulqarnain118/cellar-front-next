@@ -2,7 +2,6 @@ import { useMemo } from 'react'
 
 import { useDisclosure } from '@mantine/hooks'
 import type { Content, GroupField } from '@prismicio/client'
-import { Divider } from 'react-daisyui'
 
 import { Accordion } from '@/core/components/accordion'
 import { Button } from '@/core/components/button'
@@ -70,11 +69,10 @@ export const StructureFilter = ({ slug, values }: StructureFilterProps) => {
             {popular.map(structure => (
               <FilterCheckbox key={structure.name} filter={structure} />
             ))}
-            <Divider />
           </div>
         </div>
       ) : undefined}
-      <div className="space-y-2 pt-4">
+      <div className="space-y-2">
         {popular !== undefined && !showAll
           ? undefined
           : otherFilters.map(structure => (

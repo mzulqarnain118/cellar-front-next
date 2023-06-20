@@ -2,7 +2,6 @@ import { useMemo } from 'react'
 
 import { useDisclosure } from '@mantine/hooks'
 import type { Content, GroupField } from '@prismicio/client'
-import { Divider } from 'react-daisyui'
 
 import { Accordion } from '@/core/components/accordion'
 import { Button } from '@/core/components/button'
@@ -69,11 +68,10 @@ export const CountryFilter = ({ slug, values }: RegionFilterProps) => {
             {popular.map(country => (
               <FilterCheckbox key={country.name} filter={country} />
             ))}
-            <Divider />
           </div>
         </div>
       ) : undefined}
-      <div className="space-y-2 pt-4">
+      <div className="space-y-2">
         {popular !== undefined && !showAll
           ? undefined
           : otherFilters.map(country => <FilterCheckbox key={country.name} filter={country} />)}
