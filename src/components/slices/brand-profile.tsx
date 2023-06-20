@@ -1,7 +1,7 @@
 import type { CSSProperties } from 'react'
 
 import type { Content } from '@prismicio/client'
-import { PrismicRichText, SliceComponentProps } from '@prismicio/react'
+import { PrismicRichText, PrismicText, SliceComponentProps } from '@prismicio/react'
 
 type BrandProfileProps =
   SliceComponentProps<Content.RichContentPageDocumentDataBodyBrandProfileSlice>
@@ -12,7 +12,7 @@ export const BrandProfile = ({ slice }: BrandProfileProps) => (
     style={{ backgroundColor: slice.primary.background_color || 'transparent' }}
   >
     <div
-      className="mb-2"
+      className="mb-2 h3 font-heading"
       style={
         {
           '--highlight': slice.primary.highlight_color,
@@ -20,7 +20,7 @@ export const BrandProfile = ({ slice }: BrandProfileProps) => (
         } as CSSProperties
       }
     >
-      <PrismicRichText field={slice.primary.title} />
+      <PrismicText field={slice.primary.title} />
     </div>
     <div
       className="lg:flex lg:items-center lg:justify-center lg:divide-x-2"

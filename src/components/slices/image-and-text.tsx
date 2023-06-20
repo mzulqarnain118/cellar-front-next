@@ -51,7 +51,7 @@ export const ImageAndText = ({ slice }: ImageAndTextProps) => {
   return (
     <div
       style={{
-        backgroundColor: slice.primary.background_color || 'transparent',
+        backgroundColor: slice.primary.background_color || '#ffffff',
         backgroundImage: slice.primary.background_image?.url
           ? `url(${slice.primary.background_image.url})`
           : undefined,
@@ -72,14 +72,16 @@ export const ImageAndText = ({ slice }: ImageAndTextProps) => {
         >
           <div
             className={clsx(
-              'block pb-3 text-center md:text-left lg:pb-5',
+              'block pb-3 text-center lg:pb-5',
               !!slice.primary.center_content && '!text-center'
             )}
             style={{ '--highlight': slice.primary.highlight_color || 'inherit' } as CSSProperties}
           >
             <PrismicRichText field={slice.primary.headline} />
           </div>
-          <PrismicRichText field={slice.primary.content} />
+          <div className="prose leading-none">
+            <PrismicRichText field={slice.primary.content} />
+          </div>
           {linkText ? (
             <div
               className={clsx(
