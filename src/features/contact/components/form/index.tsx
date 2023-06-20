@@ -125,9 +125,8 @@ export const ContactForm = () => {
       }
 
       clearErrors('attachment')
-      setValue('attachment', file)
     },
-    [clearErrors, setError, setValue]
+    [clearErrors, setError]
   )
 
   const onSubmit: SubmitHandler<ContactFormSchema> = useCallback(
