@@ -174,7 +174,10 @@ export const Header = () => {
             {session?.user !== undefined && !session.user.isGuest ? (
               <Menu className="rounded border border-[#e6e0dd] bg-[#f5f3f2] p-2 shadow">
                 <Menu.Item>
-                  <button className="!rounded" onClick={() => router.push(MY_ACCOUNT_PAGE_PATH)}>
+                  <button
+                    className="!rounded"
+                    onClick={() => router.push(`${MY_ACCOUNT_PAGE_PATH}/profile`)}
+                  >
                     My Account
                   </button>
                 </Menu.Item>

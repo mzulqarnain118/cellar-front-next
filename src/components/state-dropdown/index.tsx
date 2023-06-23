@@ -49,7 +49,9 @@ export const StateDropdown = <Schema extends FieldValues>({
 
   const onChange = useCallback(
     (newState: string | null) => {
-      field.onChange({ target: { value: newState } })
+      // ! TODO
+      // @ts-ignore
+      field.onChange({ target: { value: newState || '' } })
       setValue(newState)
     },
     [field]

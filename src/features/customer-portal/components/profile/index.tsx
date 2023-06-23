@@ -1,5 +1,7 @@
 import { FocusEventHandler, useCallback, useEffect, useMemo } from 'react'
 
+import dynamic from 'next/dynamic'
+
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Tabs, TabsPanelProps } from '@mantine/core'
 import { isLeapYear } from 'date-fns'
@@ -10,7 +12,6 @@ import { useSession } from 'next-auth/react'
 import { FormProvider, SubmitHandler, UseFormProps, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import { DateOfBirthPicker } from '@/components/date-of-birth-picker'
 import { Button } from '@/core/components/button'
 import { Input } from '@/core/components/input'
 import { Typography } from '@/core/components/typogrpahy'
@@ -19,6 +20,12 @@ import { ValidateEmail, useValidateEmailMutation } from '@/lib/mutations/validat
 
 import { useUpdateCustomerMutation } from '../../mutations/update-customer'
 import { useCustomerQuery } from '../../queries/customer'
+
+const DateOfBirthPicker = dynamic(
+  () =>
+    import('@/components/date-of-birth-picker').then(({ DateOfBirthPicker }) => DateOfBirthPicker),
+  { ssr: false }
+)
 
 const profileSchema = z
   .object({

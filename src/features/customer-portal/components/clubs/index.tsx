@@ -12,9 +12,10 @@ export const Clubs = ({ autoSip = false, ...props }: TabsPanelProps & { autoSip?
   const clubs = useMemo(
     () => (
       <div className="space-y-8">
-        {subscriptions?.map(subscription => (
-          <Subscription key={subscription.SubscriptionID} autoSip={autoSip} data={subscription} />
-        ))}
+        {!!subscriptions &&
+          subscriptions.map(subscription => (
+            <Subscription key={subscription.SubscriptionID} autoSip={autoSip} data={subscription} />
+          ))}
       </div>
     ),
     [autoSip, subscriptions]

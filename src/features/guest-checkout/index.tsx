@@ -1,5 +1,7 @@
 import { useCallback, useMemo, useState } from 'react'
 
+import dynamic from 'next/dynamic'
+
 import { ChevronRightIcon } from '@heroicons/react/24/outline'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LoadingOverlay } from '@mantine/core'
@@ -7,7 +9,6 @@ import { NextSeo } from 'next-seo'
 import { FormProvider, SubmitHandler, UseFormProps, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import { DateOfBirthPicker } from '@/components/date-of-birth-picker'
 import { Link } from '@/components/link'
 import { Button } from '@/core/components/button'
 import { Input } from '@/core/components/input'
@@ -22,6 +23,12 @@ import { useConsultantStore } from '@/lib/stores/consultant'
 import { ConsultantCheckbox } from '../create-account/consultant/checkbox'
 import { MAX_DAYS, MONTH_MAP, is21OrOlder, isLeapYear } from '../create-account/dob/util'
 import { baseCreateAccountSchema } from '../create-account/form'
+
+const DateOfBirthPicker = dynamic(
+  () =>
+    import('@/components/date-of-birth-picker').then(({ DateOfBirthPicker }) => DateOfBirthPicker),
+  { ssr: false }
+)
 
 const guestCheckoutSchema = baseCreateAccountSchema.superRefine((data, context) => {
   const isFebruary = data.month === '02'

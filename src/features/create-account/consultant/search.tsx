@@ -101,11 +101,10 @@ export const ConsultantSearch = ({
 
   const onChange = useCallback(
     (search: string) => {
-      field.onChange()
       refine(search)
       setValue(search)
     },
-    [field, refine]
+    [refine]
   )
 
   return (

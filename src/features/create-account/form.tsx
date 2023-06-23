@@ -10,7 +10,6 @@ import { useInputState } from '@mantine/hooks'
 import { FormProvider, SubmitHandler, UseFormProps, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import { DateOfBirthPicker } from '@/components/date-of-birth-picker'
 import { Button } from '@/core/components/button'
 import { Input } from '@/core/components/input'
 import { PasswordInput } from '@/core/components/password-input'
@@ -23,6 +22,12 @@ import { HOME_PAGE_PATH, SIGN_IN_PAGE_PATH } from '@/lib/paths'
 import { useConsultantStore } from '@/lib/stores/consultant'
 
 import { MAX_DAYS, MONTH_MAP, is21OrOlder, isLeapYear } from './dob/util'
+
+const DateOfBirthPicker = dynamic(
+  () =>
+    import('@/components/date-of-birth-picker').then(({ DateOfBirthPicker }) => DateOfBirthPicker),
+  { ssr: false }
+)
 
 const Link = dynamic(() => import('src/components/link').then(module => module.Link), {
   ssr: false,
