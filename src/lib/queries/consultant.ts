@@ -9,6 +9,22 @@ import { DEFAULT_CONSULTANT_STATE, useConsultantStore } from '../stores/consulta
 import { Consultant } from '../types'
 import { toastInfo } from '../utils/notifications'
 
+export interface ConsultantResponse {
+  Address: { City: string; PostalCode: string; ProvinceAbbreviation: string }
+  DisplayID: string
+  DisplayName: string
+  EmailAddress: string
+  ImageURL: string
+  PhoneNumber: string
+  ProfileWebsite: string
+  SocialLinks: {
+    LinkBaseURL: string
+    LinkName: string
+    URL: string
+  }[]
+  Url: string
+}
+
 export const CONSULTANT_QUERY_KEY = 'consultant'
 export const getConsultantData: QueryFunction<Consultant> = async ({ queryKey }) => {
   const [_, repUrl] = queryKey
@@ -16,21 +32,7 @@ export const getConsultantData: QueryFunction<Consultant> = async ({ queryKey })
     return DEFAULT_CONSULTANT_STATE
   }
 
-  const response = await api(`info/rep/${repUrl}`).json<{
-    Address: { City: string; PostalCode: string; ProvinceAbbreviation: string }
-    DisplayID: string
-    DisplayName: string
-    EmailAddress: string
-    ImageURL: string
-    PhoneNumber: string
-    ProfileWebsite: string
-    SocialLinks: {
-      LinkBaseURL: string
-      LinkName: string
-      URL: string
-    }[]
-    Url: string
-  }>()
+  const response = await api(`info/rep/${repUrl}`).json<ConsultantResponse>()
   notifications.clean()
 
   if (!response.DisplayID) {
