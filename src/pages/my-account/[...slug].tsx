@@ -18,6 +18,7 @@ import { LoadingOverlay, Tabs, TabsProps } from '@mantine/core'
 import { QueryClient, dehydrate } from '@tanstack/react-query'
 import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next'
 import { getServerSession } from 'next-auth'
+import { NextSeo } from 'next-seo'
 
 import { Typography } from '@/core/components/typogrpahy'
 import { useIsDesktop } from '@/core/hooks/use-is-desktop'
@@ -154,98 +155,101 @@ const MyAccountPage: NextPage<PageProps> = () => {
   )
 
   return (
-    <main className="bg-[#f7f3f4]">
-      <Script
-        id="brightback"
-        src="https://app.brightback.com/js/current/brightback.js?compiled=true"
-      />
-      <LoadingOverlay visible={isLoading} />
-      <div className="container mx-auto py-20">
-        <div className="grid pb-4 lg:grid-cols-12 lg:items-center">
-          <Typography
-            as="h1"
-            className="hidden !leading-tight lg:col-span-3 lg:block"
-            displayAs="h3"
+    <>
+      <NextSeo nofollow noindex title="My account" />
+      <main className="bg-[#f7f3f4]">
+        <Script
+          id="brightback"
+          src="https://app.brightback.com/js/current/brightback.js?compiled=true"
+        />
+        <LoadingOverlay visible={isLoading} />
+        <div className="container mx-auto py-20">
+          <div className="grid pb-4 lg:grid-cols-12 lg:items-center">
+            <Typography
+              as="h1"
+              className="hidden !leading-tight lg:col-span-3 lg:block"
+              displayAs="h3"
+            >
+              {friendlyName}
+            </Typography>
+            {banner?.imageUrl ? (
+              <Image
+                alt={banner.title || 'Customer portal banner'}
+                className="object-contain lg:col-span-9"
+                height={isDesktop ? 146 : 88}
+                src={banner.imageUrl}
+                width={isDesktop ? 1012 : 609}
+              />
+            ) : undefined}
+          </div>
+          <Tabs
+            classNames={tabsClassNames}
+            defaultValue={slug}
+            keepMounted={false}
+            orientation={isDesktop ? 'vertical' : 'horizontal'}
+            variant="pills"
+            onTabChange={handleTabChange}
           >
-            {friendlyName}
-          </Typography>
-          {banner?.imageUrl ? (
-            <Image
-              alt={banner.title || 'Customer portal banner'}
-              className="object-contain lg:col-span-9"
-              height={isDesktop ? 146 : 88}
-              src={banner.imageUrl}
-              width={isDesktop ? 1012 : 609}
-            />
-          ) : undefined}
-        </div>
-        <Tabs
-          classNames={tabsClassNames}
-          defaultValue={slug}
-          keepMounted={false}
-          orientation={isDesktop ? 'vertical' : 'horizontal'}
-          variant="pills"
-          onTabChange={handleTabChange}
-        >
-          <Tabs.List position={isDesktop ? undefined : 'center'}>
-            {SLUGS.map(url => {
-              const Icon = slugMap[url].icon
+            <Tabs.List position={isDesktop ? undefined : 'center'}>
+              {SLUGS.map(url => {
+                const Icon = slugMap[url].icon
 
-              return (
-                <Tabs.Tab
-                  key={url}
-                  className="h-14 w-[17.5rem]"
-                  color="dark"
-                  icon={<Icon className="mr-3 h-5 w-5" />}
-                  value={url}
-                >
-                  {slugMap[url].friendlyName}
-                </Tabs.Tab>
-              )
-            })}
-          </Tabs.List>
-
-          {SLUGS.map(url => {
-            const Panel = slugMap[url].panel
-
-            if (query.slug !== undefined && query.slug.length > 1) {
-              if (url === 'orders' && query.slug[2] === 'invoice') {
                 return (
-                  <OrderInvoicePanel key="orders-invoice" className="lg:px-20" value="orders">
-                    {url}
-                  </OrderInvoicePanel>
-                )
-              } else if ((url === 'clubs' || url === 'auto-sips') && query.slug[2] === 'edit') {
-                return (
-                  <ClubsEdit
-                    key={`${url}-edit`}
-                    autoSip={url === 'auto-sips'}
-                    className="lg:px-20"
+                  <Tabs.Tab
+                    key={url}
+                    className="h-14 w-[17.5rem]"
+                    color="dark"
+                    icon={<Icon className="mr-3 h-5 w-5" />}
                     value={url}
                   >
+                    {slugMap[url].friendlyName}
+                  </Tabs.Tab>
+                )
+              })}
+            </Tabs.List>
+
+            {SLUGS.map(url => {
+              const Panel = slugMap[url].panel
+
+              if (query.slug !== undefined && query.slug.length > 1) {
+                if (url === 'orders' && query.slug[2] === 'invoice') {
+                  return (
+                    <OrderInvoicePanel key="orders-invoice" className="lg:px-20" value="orders">
+                      {url}
+                    </OrderInvoicePanel>
+                  )
+                } else if ((url === 'clubs' || url === 'auto-sips') && query.slug[2] === 'edit') {
+                  return (
+                    <ClubsEdit
+                      key={`${url}-edit`}
+                      autoSip={url === 'auto-sips'}
+                      className="lg:px-20"
+                      value={url}
+                    >
+                      {url}
+                    </ClubsEdit>
+                  )
+                }
+              }
+
+              if (url === 'auto-sips') {
+                return (
+                  <Panel key={url} autoSip className="lg:px-20" value={url}>
                     {url}
-                  </ClubsEdit>
+                  </Panel>
                 )
               }
-            }
 
-            if (url === 'auto-sips') {
               return (
-                <Panel key={url} autoSip className="lg:px-20" value={url}>
+                <Panel key={url} className="lg:px-20" value={url}>
                   {url}
                 </Panel>
               )
-            }
-
-            return (
-              <Panel key={url} className="lg:px-20" value={url}>
-                {url}
-              </Panel>
-            )
-          })}
-        </Tabs>
-      </div>
-    </main>
+            })}
+          </Tabs>
+        </div>
+      </main>
+    </>
   )
 }
 

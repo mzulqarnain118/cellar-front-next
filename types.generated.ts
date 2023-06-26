@@ -2057,6 +2057,28 @@ interface CategoryPageDocumentData {
    */
   display_categories: prismic.GroupField<Simplify<CategoryPageDocumentDataDisplayCategoriesItem>>
   /**
+   * Meta Title field in *Category Page*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: category_page.meta_title
+   * - **Tab**: SEO
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  meta_title: prismic.RichTextField
+  /**
+   * Meta Description field in *Category Page*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: category_page.meta_description
+   * - **Tab**: SEO
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  meta_description: prismic.RichTextField
+  /**
    * Enabled Filters field in *Category Page*
    *
    * - **Field Type**: Group
@@ -6921,6 +6943,174 @@ interface LoginPageDocumentData {
  */
 export type LoginPageDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
   prismic.PrismicDocumentWithUID<Simplify<LoginPageDocumentData>, 'login_page', Lang>
+/** Content for LPU Hours documents */
+interface LpuHoursDocumentData {
+  /**
+   * Sunday Open field in *LPU Hours*
+   *
+   * - **Field Type**: Timestamp
+   * - **Placeholder**: *None*
+   * - **API ID Path**: lpu_hours.sunday_open
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/timestamp
+   *
+   */
+  sunday_open: prismic.TimestampField
+  /**
+   * Sunday Close field in *LPU Hours*
+   *
+   * - **Field Type**: Timestamp
+   * - **Placeholder**: *None*
+   * - **API ID Path**: lpu_hours.sunday_close
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/timestamp
+   *
+   */
+  sunday_close: prismic.TimestampField
+  /**
+   * Monday Open field in *LPU Hours*
+   *
+   * - **Field Type**: Timestamp
+   * - **Placeholder**: *None*
+   * - **API ID Path**: lpu_hours.monday_open
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/timestamp
+   *
+   */
+  monday_open: prismic.TimestampField
+  /**
+   * Monday Close field in *LPU Hours*
+   *
+   * - **Field Type**: Timestamp
+   * - **Placeholder**: *None*
+   * - **API ID Path**: lpu_hours.monday_close
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/timestamp
+   *
+   */
+  monday_close: prismic.TimestampField
+  /**
+   * Tuesday Open field in *LPU Hours*
+   *
+   * - **Field Type**: Timestamp
+   * - **Placeholder**: *None*
+   * - **API ID Path**: lpu_hours.tuesday_open
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/timestamp
+   *
+   */
+  tuesday_open: prismic.TimestampField
+  /**
+   * Tuesday Close field in *LPU Hours*
+   *
+   * - **Field Type**: Timestamp
+   * - **Placeholder**: *None*
+   * - **API ID Path**: lpu_hours.tuesday_close
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/timestamp
+   *
+   */
+  tuesday_close: prismic.TimestampField
+  /**
+   * Wednesday Open field in *LPU Hours*
+   *
+   * - **Field Type**: Timestamp
+   * - **Placeholder**: *None*
+   * - **API ID Path**: lpu_hours.wednesday_open
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/timestamp
+   *
+   */
+  wednesday_open: prismic.TimestampField
+  /**
+   * Wednesday Close field in *LPU Hours*
+   *
+   * - **Field Type**: Timestamp
+   * - **Placeholder**: *None*
+   * - **API ID Path**: lpu_hours.wednesday_close
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/timestamp
+   *
+   */
+  wednesday_close: prismic.TimestampField
+  /**
+   * Thursday Open field in *LPU Hours*
+   *
+   * - **Field Type**: Timestamp
+   * - **Placeholder**: *None*
+   * - **API ID Path**: lpu_hours.thursday_open
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/timestamp
+   *
+   */
+  thursday_open: prismic.TimestampField
+  /**
+   * Thursday Close field in *LPU Hours*
+   *
+   * - **Field Type**: Timestamp
+   * - **Placeholder**: *None*
+   * - **API ID Path**: lpu_hours.thursday_close
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/timestamp
+   *
+   */
+  thursday_close: prismic.TimestampField
+  /**
+   * Friday Open field in *LPU Hours*
+   *
+   * - **Field Type**: Timestamp
+   * - **Placeholder**: *None*
+   * - **API ID Path**: lpu_hours.friday_open
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/timestamp
+   *
+   */
+  friday_open: prismic.TimestampField
+  /**
+   * Friday Close field in *LPU Hours*
+   *
+   * - **Field Type**: Timestamp
+   * - **Placeholder**: *None*
+   * - **API ID Path**: lpu_hours.friday_close
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/timestamp
+   *
+   */
+  friday_close: prismic.TimestampField
+  /**
+   * Saturday Open field in *LPU Hours*
+   *
+   * - **Field Type**: Timestamp
+   * - **Placeholder**: *None*
+   * - **API ID Path**: lpu_hours.saturday_open
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/timestamp
+   *
+   */
+  saturday_open: prismic.TimestampField
+  /**
+   * Saturday Close field in *LPU Hours*
+   *
+   * - **Field Type**: Timestamp
+   * - **Placeholder**: *None*
+   * - **API ID Path**: lpu_hours.saturday_close
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/core-concepts/timestamp
+   *
+   */
+  saturday_close: prismic.TimestampField
+}
+/**
+ * LPU Hours document from Prismic
+ *
+ * - **API ID**: `lpu_hours`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type LpuHoursDocument<Lang extends string = 'en-us' | 'en-bz' | 'en-gb' | 'en-ca'> =
+  prismic.PrismicDocumentWithoutUID<Simplify<LpuHoursDocumentData>, 'lpu_hours', Lang>
 /** Content for Marketing Page documents */
 interface MarketingPageDocumentData {
   /**
@@ -9200,6 +9390,28 @@ interface PlpDocumentData {
    *
    */
   display_categories: prismic.GroupField<Simplify<PlpDocumentDataDisplayCategoriesItem>>
+  /**
+   * Meta Title field in *PLP*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: plp.meta_title
+   * - **Tab**: SEO
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  meta_title: prismic.RichTextField
+  /**
+   * Meta Description field in *PLP*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: plp.meta_description
+   * - **Tab**: SEO
+   * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
+   *
+   */
+  meta_description: prismic.RichTextField
   /**
    * Enabled Filters field in *PLP*
    *
@@ -13180,6 +13392,7 @@ export type AllDocumentTypes =
   | ImageDocument
   | LandingPageDocument
   | LoginPageDocument
+  | LpuHoursDocument
   | MarketingPageDocument
   | MarketingPageFeatureDocument
   | MarketingSectionDocument
@@ -13536,6 +13749,8 @@ declare module '@prismicio/client' {
       LandingPageDocument,
       LoginPageDocumentData,
       LoginPageDocument,
+      LpuHoursDocumentData,
+      LpuHoursDocument,
       MarketingPageDocumentData,
       MarketingPageDocumentDataCarouselItem,
       MarketingPageDocument,

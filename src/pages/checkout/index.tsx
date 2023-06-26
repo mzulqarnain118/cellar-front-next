@@ -362,7 +362,7 @@ const CheckoutPage: NextPage<PageProps> = () => {
 
   return (
     <>
-      <NextSeo title="Checkout" />
+      <NextSeo nofollow noindex title="Checkout" />
       <main>
         <div className="mt-8 flex h-full flex-col-reverse rounded lg:flex-row">
           <div className="h-full flex-1 space-y-6 rounded">

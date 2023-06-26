@@ -7,6 +7,7 @@ import { Content } from '@prismicio/client'
 import { PrismicRichText, PrismicText } from '@prismicio/react'
 import algoliasearch from 'algoliasearch/lite'
 import { GetStaticProps } from 'next'
+import { NextSeo } from 'next-seo'
 import { FormProvider, UseFormProps, useForm } from 'react-hook-form'
 import { InstantSearch } from 'react-instantsearch-hooks-web'
 import { z } from 'zod'
@@ -67,39 +68,42 @@ const ConsultantsPage = ({ data: { data } }: { data: Content.ConsultantSearchPag
   )
 
   return (
-    <main>
-      <div className="container mx-auto mb-10">
-        <Typography as="h1" className="my-12" displayAs="h2">
-          <PrismicText field={data.title} />
-        </Typography>
-        <div className="grid grid-cols-12 gap-8 lg:gap-40">
-          <div className="rounded border border-neutral-light col-span-12 lg:col-span-4 h-max">
-            <Typography
-              as="h2"
-              className="p-6 rounded-t bg-neutral-dark w-full text-neutral-50"
-              displayAs="h4"
-            >
-              <PrismicText field={data.widget_name} />
-            </Typography>
-            <div className="p-6 bg-neutral-50 rounded-b">
-              <PrismicRichText field={data.instructions} />
-              <FormProvider {...methods}>
-                <InstantSearch indexName={algoliaIndex} searchClient={searchClient}>
-                  <ConsultantSearch
-                    control={control}
-                    handleSelect={handleSelect}
-                    name="consultant"
-                  />
-                </InstantSearch>
-              </FormProvider>
+    <>
+      <NextSeo title="Consultants" />
+      <main>
+        <div className="container mx-auto mb-10">
+          <Typography as="h1" className="my-12" displayAs="h2">
+            <PrismicText field={data.title} />
+          </Typography>
+          <div className="grid grid-cols-12 gap-8 lg:gap-40">
+            <div className="rounded border border-neutral-light col-span-12 lg:col-span-4 h-max">
+              <Typography
+                as="h2"
+                className="p-6 rounded-t bg-neutral-dark w-full text-neutral-50"
+                displayAs="h4"
+              >
+                <PrismicText field={data.widget_name} />
+              </Typography>
+              <div className="p-6 bg-neutral-50 rounded-b">
+                <PrismicRichText field={data.instructions} />
+                <FormProvider {...methods}>
+                  <InstantSearch indexName={algoliaIndex} searchClient={searchClient}>
+                    <ConsultantSearch
+                      control={control}
+                      handleSelect={handleSelect}
+                      name="consultant"
+                    />
+                  </InstantSearch>
+                </FormProvider>
+              </div>
+            </div>
+            <div className="col-span-12 lg:col-span-6 space-y-4">
+              <PrismicRichText field={data.zero_result_description} />
             </div>
           </div>
-          <div className="col-span-12 lg:col-span-6 space-y-4">
-            <PrismicRichText field={data.zero_result_description} />
-          </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </>
   )
 }
 

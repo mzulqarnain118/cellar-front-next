@@ -37,7 +37,7 @@ const CheckoutConfirmationPage: NextPage = () => {
 
   return (
     <>
-      <NextSeo />
+      <NextSeo nofollow noindex title="Order confirmation" />
       <main>
         <div className="bg-[#f5f4f2]">
           <div className="container mx-auto flex flex-col items-center justify-center pb-20">

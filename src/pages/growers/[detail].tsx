@@ -1,9 +1,9 @@
 import { useMemo, useState } from 'react'
 
-import { asLink } from '@prismicio/client'
+import { asLink, asText } from '@prismicio/client'
 import { dehydrate } from '@tanstack/react-query'
 import { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType, NextPage } from 'next'
-import { NextSeo } from 'next-seo'
+import { NextSeo, NextSeoProps } from 'next-seo'
 
 import { GrowerDetailFooter } from '@/features/growers/components/details/footer'
 import { GrowerDetailHeading } from '@/features/growers/components/details/heading'
@@ -112,16 +112,32 @@ const GrowerDetailPage: NextPage<PageProps> = ({ page }) => {
     [page?.data.footer_image]
   )
 
+  const openGraph: NextSeoProps['openGraph'] = useMemo(() => {
+    const image = page?.data['grower-images'][0]?.['grower-image']
+
+    return {
+      images: [
+        {
+          alt: image?.alt || 'Grower Details',
+          height: image?.dimensions?.height,
+          url: image?.url || '',
+          width: image?.dimensions?.width,
+        },
+      ],
+    }
+  }, [page?.data])
+
   return (
     <>
-      <NextSeo description="" title="" />
+      <NextSeo
+        description={asText(page?.data['grower-name'])}
+        openGraph={openGraph}
+        title={`${asText(page?.data['grower-title'])} - Grower Detail`}
+      />
       <main>
         <GrowerDetailHeading data={headingData} />
         <GrowerDetailHistory data={historyData} />
         <GrowerDetailTerroir data={terroirData} />
-        {/* {growerProducts && growerProducts.length > 0 && (
-          <ProductCarousel products={growerProducts} setProductsEmpty={setEmpty} />
-        )} */}
         <GrowerDetailFooter data={footerData} />
       </main>
     </>

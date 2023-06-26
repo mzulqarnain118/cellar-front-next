@@ -141,7 +141,7 @@ export const GuestCheckout = () => {
 
   return (
     <>
-      <NextSeo />
+      <NextSeo noindex title="Checkout" />
       <div className="container mx-auto my-16 flex items-center justify-center">
         <div
           className={`

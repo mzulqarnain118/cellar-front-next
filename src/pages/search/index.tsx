@@ -123,7 +123,7 @@ const SearchPage = ({ page }: { page: Content.PlpDocument | null }) => {
 
   return (
     <>
-      <NextSeo />
+      <NextSeo title={`Search results for ${search}`} />
       <PlpShell
         categories={categories}
         enabledFilters={

@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 
 import { asText } from '@prismicio/client'
 import { GetStaticPropsContext, InferGetStaticPropsType, NextPage } from 'next'
+import { NextSeo } from 'next-seo'
 
 import { GrowerBox } from '@/features/growers/components/grower-box'
 import { GrowerHeading } from '@/features/growers/components/heading'
@@ -49,11 +50,14 @@ const OurGrowersPage: NextPage<PageProps> = ({ page }) => {
   )
 
   return (
-    <div className="mb-10">
-      <GrowerHeading data={headingData} />
-      <RegionSelect state={state} states={growerStates} onChange={setState} />
-      <GrowerBox data={filteredGrows} />
-    </div>
+    <>
+      <NextSeo title="Our growers" />
+      <main className="mb-10">
+        <GrowerHeading data={headingData} />
+        <RegionSelect state={state} states={growerStates} onChange={setState} />
+        <GrowerBox data={filteredGrows} />
+      </main>
+    </>
   )
 }
 

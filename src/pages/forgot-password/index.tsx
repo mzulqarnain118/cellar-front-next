@@ -61,7 +61,7 @@ const ForgotPasswordPage: NextPage = () => {
 
   return (
     <>
-      <NextSeo />
+      <NextSeo title="Forgot password" />
       <Script async defer src="https://www.google.com/recaptcha/api.js" />
 
       <main>

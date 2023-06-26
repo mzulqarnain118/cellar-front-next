@@ -38,7 +38,10 @@ const WinelistPage: NextPage<PageProps> = () => {
 
   return (
     <>
-      <NextSeo description="A complete list of all of our wines!" title="Winelist" />
+      <NextSeo
+        description="A complete list of all of our wines currently available."
+        title="Winelist"
+      />
       <main className="bg-neutral-50">
         <div className="container mx-auto my-10">
           <div className="inline-flex mb-4 items-center justify-end w-full">

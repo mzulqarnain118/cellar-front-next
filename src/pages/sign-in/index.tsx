@@ -137,7 +137,7 @@ const SignInPage: NextPage<PageProps> = () => {
 
   return (
     <>
-      <NextSeo />
+      <NextSeo title="Sign in" />
       <main className="py-16">
         <div className="container mx-auto">
           <div className="container">

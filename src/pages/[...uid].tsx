@@ -102,8 +102,8 @@ const RichContentPage = ({
     return (
       <>
         <NextSeo
-          description={asText(page?.data.meta_description)}
-          title={asText(page?.data.meta_title)}
+          description={asText(page?.data.meta_description) || undefined}
+          title={asText(page?.data.meta_title) || undefined}
         />
         <main>
           <SliceZone components={components} slices={page?.data.body} />

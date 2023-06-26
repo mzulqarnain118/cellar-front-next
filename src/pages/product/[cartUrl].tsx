@@ -4,11 +4,11 @@ import dynamic from 'next/dynamic'
 import Error from 'next/error'
 import { useRouter } from 'next/router'
 
-import { Content, asLink, filter } from '@prismicio/client'
+import { Content, asLink, asText, filter } from '@prismicio/client'
 import { asImageWidthSrcSet } from '@prismicio/helpers'
 import { QueryClient, dehydrate } from '@tanstack/react-query'
 import { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType, NextPage } from 'next'
-import { NextSeo } from 'next-seo'
+import { NextSeo, NextSeoProps } from 'next-seo'
 import { useIsMounted } from 'usehooks-ts'
 
 import { useIsDesktop } from '@/core/hooks/use-is-desktop'
@@ -128,6 +128,17 @@ const PDP: NextPage<PageProps> = ({ page }) => {
     [page?.data.images, product?.displayName, product?.pictureUrl]
   )
 
+  const seoProps: Partial<NextSeoProps> = useMemo(
+    () => ({
+      description: `${asText(page?.data.summary)?.substring(0, 161)}`,
+      openGraph: {
+        images: images.map(image => ({ alt: image.alt, url: image.src })),
+      },
+      title: product?.displayName,
+    }),
+    [images, page?.data.summary, product?.displayName]
+  )
+
   useEffect(() => {
     if (product !== null) {
       setSelectedProduct(product)
@@ -140,7 +151,7 @@ const PDP: NextPage<PageProps> = ({ page }) => {
 
   return (
     <>
-      <NextSeo />
+      <NextSeo {...seoProps} />
       <main className="bg-[#f7f3f4]">
         <div className="container mx-auto py-10">
           <Breadcrumbs cartUrl={cartUrl} />

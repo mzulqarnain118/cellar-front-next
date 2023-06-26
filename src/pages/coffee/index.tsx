@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import { useRouter } from 'next/router'
 
-import { Content } from '@prismicio/client'
+import { Content, asText } from '@prismicio/client'
 import { FilledContentRelationshipField } from '@prismicio/types'
 import { dehydrate } from '@tanstack/react-query'
 import { GetServerSideProps as GetStaticProps } from 'next'
@@ -99,7 +99,10 @@ const PLP = ({ page }: { page: Content.PlpDocument | null }) => {
 
   return (
     <>
-      <NextSeo />
+      <NextSeo
+        description={asText(page?.data.meta_description) || undefined}
+        title={asText(page?.data.meta_title) || undefined}
+      />
       <PlpShell
         categories={categories}
         enabledFilters={

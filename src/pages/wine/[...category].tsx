@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import { useRouter } from 'next/router'
 
-import { Content, FilledContentRelationshipField } from '@prismicio/client'
+import { Content, FilledContentRelationshipField, asText } from '@prismicio/client'
 import { asLink } from '@prismicio/helpers'
 import { dehydrate } from '@tanstack/react-query'
 import { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType, NextPage } from 'next'
@@ -127,7 +127,10 @@ const CategoryPage: NextPage<PageProps> = ({ page }) => {
 
   return (
     <>
-      <NextSeo />
+      <NextSeo
+        description={asText(page?.data.meta_description) || undefined}
+        title={asText(page?.data.meta_title) || undefined}
+      />
       <PlpShell
         categories={categories}
         enabledFilters={

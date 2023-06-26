@@ -19,7 +19,7 @@ type PageProps = InferGetStaticPropsType<typeof getStaticProps>
 
 const CreateAccountPage: NextPage<PageProps> = () => (
   <>
-    <NextSeo />
+    <NextSeo title="Create account" />
     <main className="container mx-auto flex items-center justify-center py-16">
       <div
         className={`
