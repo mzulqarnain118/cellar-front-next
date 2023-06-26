@@ -79,7 +79,7 @@ export const ImageAndText = ({ slice }: ImageAndTextProps) => {
           >
             <PrismicRichText field={slice.primary.headline} />
           </div>
-          <div className="prose leading-none">
+          <div>
             <PrismicRichText field={slice.primary.content} />
           </div>
           {linkText ? (
