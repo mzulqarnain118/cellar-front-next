@@ -33,7 +33,7 @@ deploy-preview:
     - main
   script:
     - SHELL="$(which bash)" pnpm setup
-    - pnpm add vercel
+    - pnpm add vercel -w -D
     - vercel pull --yes --environment=preview --token=$VERCEL_TOKEN
     - vercel build --token=$VERCEL_TOKEN
     - vercel deploy --prebuilt  --token=$VERCEL_TOKEN
@@ -44,7 +44,7 @@ deploy-production:
     - main
   script:
     - SHELL="$(which bash)" pnpm setup
-    - pnpm add vercel
+    - pnpm add vercel -w -D
     - vercel pull --yes --environment=production --token=$VERCEL_TOKEN
     - vercel build --prod --token=$VERCEL_TOKEN
     - vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN
