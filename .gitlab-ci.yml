@@ -7,7 +7,7 @@ default:
   image: node:18.16.0
   before_script:
     - corepack enable
-    - corepack prepare pnpm@latest-8 --active
+    - corepack prepare pnpm@latest-8 --activate
     - pnpm config set store-dir .pnpm-store
   cache: &cache
     key:
