@@ -9,8 +9,7 @@ default:
     - corepack enable
     - corepack prepare pnpm@latest-8 --activate
     - pnpm config set store-dir .pnpm-store
-    - pnpm config set script-shell "/usr/bin/bash"
-    - pnpm setup
+    - SHELL="$(which bash)" pnpm setup
   cache: &cache
     key:
       files:
