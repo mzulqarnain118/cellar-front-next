@@ -35,6 +35,7 @@ import { InternalLink } from 'prismic/internal-link'
 import { richTextComponents } from 'prismic/rich-text-components'
 import { theme } from 'theme'
 
+import TagManager from 'react-gtm-module'
 import '../globals.css'
 
 const ProgressBar = dynamic(
@@ -87,6 +88,9 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
       })
   )
 
+  const tagManagerArgs = {
+    gtmId: process?.env?.NEXT_PUBLIC_GTM_ID!
+  }
   useEffect(() => {
     if (process.env.NEXT_PUBLIC_IS_PRODUCTION === 'false') {
       window.toggleDevtools = () => setShowDevtools(prev => !prev)
@@ -96,6 +100,7 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
     if (!isInitialized()) {
       init({ orgId: process.env.NEXT_PUBLIC_FULLSTORY_ORG_ID || '' })
     }
+    TagManager.initialize(tagManagerArgs)
   }, [])
 
   return (

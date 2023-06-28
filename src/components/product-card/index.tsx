@@ -22,6 +22,7 @@ import { getProductButtonText } from '@/lib/utils/button'
 import { BlurImage } from '../blur-image'
 import { Price } from '../price'
 
+import { trackProductAddToCart, trackSelectedProduct } from '@/lib/utils/gtm-util'
 import { ProductImageLink } from './product-image-link'
 
 const Link = dynamic(() => import('src/components/link').then(module => module.Link), {
@@ -91,6 +92,8 @@ export const ProductCard = ({ className, priority = false, product }: ProductCar
 
   const handleAddToCart = useCallback(() => {
     addToCart({ item: product, quantity })
+    // Track Add to cart
+    trackProductAddToCart(product, quantity)
     toggleCartOpen()
   }, [addToCart, product, quantity, toggleCartOpen])
 
@@ -239,6 +242,7 @@ export const ProductCard = ({ className, priority = false, product }: ProductCar
   const productImageLink = useMemo(
     () => (
       <ProductImageLink
+        product={selectedProduct}
         key={selectedProduct.sku}
         cartUrl={selectedProduct.cartUrl}
         displayName={selectedProduct.displayName}
@@ -276,6 +280,7 @@ export const ProductCard = ({ className, priority = false, product }: ProductCar
               </div>
               <Link
                 className="card-title text-base font-semibold leading-normal !text-neutral-900"
+                onClick={() => trackSelectedProduct(product)}
                 href={`/product/${product.cartUrl}`}
               >
                 {selectedProduct.displayName}
