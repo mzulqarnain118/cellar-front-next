@@ -20,6 +20,7 @@ import { useConsultantStore } from '@/lib/stores/consultant'
 
 import { ProductCard } from '../product-card'
 
+import { trackPlpListProducts } from '@/lib/utils/gtm-util'
 import { FilterBar } from './filter/filter-bar'
 import { Filters } from './filters'
 
@@ -137,7 +138,7 @@ export const ProductListing = ({
       data?.products !== undefined ? (
         <div>
           <div
-            className={clsx(
+            className={clsx(  
               'transition-all grid gap-4 md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-4 3xl:grid-cols-5 relative'
             )}
           >
@@ -308,6 +309,14 @@ export const ProductListing = ({
       setShowFilters(true)
     }
   }, [isDesktop])
+
+  // Send PLP Listing Event to GTM
+  useEffect(() => {
+    if (data?.products !== undefined) {
+      trackPlpListProducts(data?.products);
+    }
+  }, [data?.products])
+
 
   if (isFetching || isLoading) {
     return (
