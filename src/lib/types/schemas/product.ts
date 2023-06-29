@@ -66,7 +66,10 @@ export const schema = z.object({
 
 const productSchema = schema.merge(z.object({ subscriptionProduct: schema.optional() }))
 
-export type ProductsSchema = z.infer<typeof productSchema>
+// * NOTE: I'd like to find a way to create the displayCategoriesMaps type with zod.
+export type ProductsSchema = z.infer<typeof productSchema> & {
+  displayCategoriesMaps?: [Record<string, number>, Record<number, string>]
+}
 
 interface ProductsSuccess {
   data: ProductsSchema[]
