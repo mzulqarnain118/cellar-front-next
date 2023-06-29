@@ -6,7 +6,7 @@
     "build": "next build",
     "codegen": "prismic-ts-codegen",
     "dev": "next dev",
-    "e2e:headless": "playwright test",
+    "e2e:headless": "npx playwright test",
     "lint": "eslint . --cache",
     "preinstall": "npx only-allow pnpm",
     "prepare": "husky install",
