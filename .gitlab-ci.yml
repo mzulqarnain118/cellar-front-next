@@ -36,7 +36,7 @@ deploy-preview:
     - pnpm add vercel -w -D
     - npx vercel pull --yes --environment=preview --token=$VERCEL_TOKEN
     - npx vercel build --token=$VERCEL_TOKEN
-    - npx vercel deploy --prebuilt  --token=$VERCEL_TOKEN
+    - npx vercel deploy --prebuilt --archive=tgz --token=$VERCEL_TOKEN
 
 deploy-production:
   stage: deploy
@@ -47,7 +47,7 @@ deploy-production:
     - pnpm add vercel -w -D
     - npx vercel pull --yes --environment=production --token=$VERCEL_TOKEN
     - npx vercel build --prod --token=$VERCEL_TOKEN
-    - npx vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN
+    - npx vercel deploy --prebuilt --archive=tgz --prod --token=$VERCEL_TOKEN
 
 release:
   stage: release
