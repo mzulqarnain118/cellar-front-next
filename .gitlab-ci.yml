@@ -35,9 +35,14 @@ test-e2e:
   when: on_success
   needs: ['install-dependencies']
   parallel: 7
+  before_script:
+    - corepack enable
+    - corepack prepare pnpm@latest-8 --activate
+    - pnpm config set store-dir .pnpm-store
+    - SHELL="$(which bash)" pnpm setup
   script:
+    - pnpm install
     - pnpm e2e:headless
-    # - npx playwright test --shard=$CI_NODE_INDEX/$CI_NODE_TOTAL:
   artifacts:
     when: always
     paths:
