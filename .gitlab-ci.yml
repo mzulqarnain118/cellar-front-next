@@ -25,7 +25,7 @@ install-dependencies:
     <<: *cache
     policy: push
   script:
-    - pnpm ci
+    - pnpm install
     - npx semantic-release@21
 
 test-e2e:
