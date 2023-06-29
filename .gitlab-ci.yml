@@ -33,7 +33,6 @@ test-e2e:
   interruptible: true
   image: mcr.microsoft.com/playwright:v1.35.0-jammy
   when: on_success
-  needs: ['install-dependencies']
   parallel: 7
   before_script:
     - corepack enable
@@ -42,7 +41,8 @@ test-e2e:
     - SHELL="$(which bash)" pnpm setup
   script:
     - pnpm install
-    - pnpm e2e:headless
+    - npx playwright install --with-deps
+    - npx playwright test
   artifacts:
     when: always
     paths:
