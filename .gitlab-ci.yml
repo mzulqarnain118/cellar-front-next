@@ -1,5 +1,6 @@
 stages:
   - prepare
+  - test
   - deploy
   - release
 
@@ -26,6 +27,31 @@ install-dependencies:
   script:
     - pnpm install
     - npx semantic-release@21
+
+test-e2e:
+  stage: test
+  interruptible: true
+  image: mcr.microsoft.com/playwright:v1.35.0-jammy
+  when: on_success
+  parallel: 7
+  before_script:
+    - corepack enable
+    - corepack prepare pnpm@latest-8 --activate
+    - pnpm config set store-dir .pnpm-store
+    - SHELL="$(which bash)" pnpm setup
+  script:
+    - pnpm install
+    - npx playwright install --with-deps
+    - npx playwright test
+  artifacts:
+    when: always
+    paths:
+      - playwright-report/
+      - test-results/
+      - results.xml
+    reports:
+      junit: results.xml
+    expire_in: 1 week
 
 deploy-preview:
   stage: deploy
