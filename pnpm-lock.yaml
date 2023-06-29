@@ -55,9 +55,6 @@ importers:
       '@mantine/notifications':
         specifier: ^6.0.14
         version: 6.0.14(@mantine/core@6.0.14)(@mantine/hooks@6.0.14)(react-dom@18.2.0)(react@18.2.0)
-      '@playwright/test':
-        specifier: ^1.35.1
-        version: 1.35.1
       '@popperjs/core':
         specifier: ^2.11.8
         version: 2.11.8
@@ -215,6 +212,9 @@ importers:
       '@commitlint/config-conventional':
         specifier: ^17.6.5
         version: 17.6.5
+      '@playwright/test':
+        specifier: ^1.35.1
+        version: 1.35.1
       '@prismicio/types':
         specifier: ^0.2.8
         version: 0.2.8
@@ -305,6 +305,9 @@ importers:
       lint-staged:
         specifier: ^13.2.2
         version: 13.2.2
+      playwright:
+        specifier: ^1.35.1
+        version: 1.35.1
       postcss:
         specifier: ^8.4.24
         version: 8.4.24
@@ -1758,7 +1761,7 @@ packages:
       playwright-core: 1.35.1
     optionalDependencies:
       fsevents: 2.3.2
-    dev: false
+    dev: true
 
   /@pnpm/config.env-replace@1.1.0:
     resolution: {integrity: sha512-htyl8TWnKL7K/ESFa1oW2UB5lVDxuF5DpM7tBi6Hu2LNL3mWkIzNLG6N4zoCUP1lCKNxWy/3iu8mS8MvToGd6w==}
@@ -10145,7 +10148,16 @@ packages:
     resolution: {integrity: sha512-pNXb6CQ7OqmGDRspEjlxE49w+4YtR6a3X6mT1hZXeJHWmsEz7SunmvZeiG/+y1yyMZdHnnn73WKYdtV1er0Xyg==}
     engines: {node: '>=16'}
     hasBin: true
-    dev: false
+    dev: true
+
+  /playwright@1.35.1:
+    resolution: {integrity: sha512-NbwBeGJLu5m7VGM0+xtlmLAH9VUfWwYOhUi/lSEDyGg46r1CA9RWlvoc5yywxR9AzQb0mOCm7bWtOXV7/w43ZA==}
+    engines: {node: '>=16'}
+    hasBin: true
+    requiresBuild: true
+    dependencies:
+      playwright-core: 1.35.1
+    dev: true
 
   /postcss-import@15.1.0(postcss@8.4.24):
     resolution: {integrity: sha512-hpr+J05B2FVYUAXHeK1YyI267J/dDDhMU6B6civm8hSY1jYJnBXxzKDKDswzJmtLHryrjhnDjqqp/49t8FALew==}
