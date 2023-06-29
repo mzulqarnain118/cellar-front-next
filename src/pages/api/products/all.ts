@@ -42,6 +42,7 @@ const handler = async (req: NextRequest) => {
         badges: { ImageURL: string; Name: string }[] | null
         cartUrl: string | null
         CatalogID: number
+        Categories: string[] | null
         CategoriesIDs: number[] | null
         comparePrice: string | null
         displayCategories: { displayCategoryID: number; displayOrder: number }[] | null
@@ -105,6 +106,26 @@ const handler = async (req: NextRequest) => {
           cartUrl: product.cartUrl || '',
           catalogId: product.CatalogID,
           displayCategories: product.CategoriesIDs || [],
+          displayCategoriesMaps:
+            !!product.CategoriesIDs && !!product.Categories
+              ? [
+                  product.Categories.reduce<Record<string, number>>((objMap, category, index) => {
+                    if (!!product.CategoriesIDs && !!product.Categories && !(category in objMap)) {
+                      objMap[category] = product.CategoriesIDs[index]
+                    }
+
+                    return objMap
+                  }, {}),
+                  product.Categories.reduce<Record<number, string>>((objMap, category, index) => {
+                    if (!!product.CategoriesIDs && !!product.Categories && !(category in objMap)) {
+                      const categoryId = product.CategoriesIDs[index]
+                      objMap[categoryId] = product.Categories[index]
+                    }
+
+                    return objMap
+                  }, {}),
+                ]
+              : undefined || undefined,
           displayCategoriesSortData: product.displayCategories?.map(category => ({
             id: category.displayCategoryID,
             order: category.displayOrder,
