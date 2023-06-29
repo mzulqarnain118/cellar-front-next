@@ -1,5 +1,6 @@
 stages:
   - prepare
+  - test
   - deploy
   - release
 
@@ -26,6 +27,26 @@ install-dependencies:
   script:
     - pnpm install
     - npx semantic-release@21
+
+test-e2e:
+  stage: test
+  interruptible: true
+  image: mcr.microsoft.com/playwright:v1.35.0-jammy
+  when: on_success
+  needs: ['install-dependencies']
+  parallel: 7
+  script:
+    - pnpm e2e:headless
+    # - npx playwright test --shard=$CI_NODE_INDEX/$CI_NODE_TOTAL:
+  artifacts:
+    when: always
+    paths:
+      - playwright-report/
+      - test-results/
+      - results.xml
+    reports:
+      junit: results.xml
+    expire_in: 1 week
 
 deploy-preview:
   stage: deploy
