@@ -257,6 +257,7 @@ export const Payment = memo(({ opened, refs, toggle }: PaymentProps) => {
               ref={cvvRef}
               noSpacing
               className="mt-0.5"
+              data-testid="cvv"
               error={errors?.payment?.cvv}
               inputClassName={clsx(errors?.payment?.cvv && '!border-error focus:!border-error')}
               label="CVV"
