@@ -20,10 +20,11 @@ default:
 install-dependencies:
   stage: prepare
   interruptible: true
-  if: $CI_COMMIT_BRANCH == 'main'
   cache:
     <<: *cache
     policy: push
+  rules:
+    - if: $CI_COMMIT_BRANCH == 'main'
   script:
     - pnpm install
     - npx semantic-release@21
@@ -56,6 +57,7 @@ test-e2e:
 release:
   stage: release
   needs: ['test']
-  if: $CI_COMMIT_BRANCH == 'main'
+  rules:
+    - if: $CI_COMMIT_BRANCH == 'main'
   script:
     - pnpm run semantic-release
