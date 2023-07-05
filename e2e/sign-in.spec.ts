@@ -5,7 +5,7 @@ test.describe('Sign in', () => {
     const context = await browser.newContext()
     const page = await context.newPage()
 
-    await page.goto('http://localhost:3000/')
+    await page.goto('/')
     await page.getByRole('button', { name: 'Yes, I am 21 years of age or older' }).click()
     await page.getByRole('button', { name: 'Sign in' }).click()
     await page.getByLabel('Email').click()
@@ -13,7 +13,7 @@ test.describe('Sign in', () => {
     await page.getByLabel('Email').press('Tab')
     await page.getByLabel('Password').fill('Password1')
     await page.getByTestId('signInButton').click()
-    await page.waitForURL('http://localhost:3000/')
+    await page.waitForURL('/')
     await context.close()
   })
 
@@ -21,7 +21,7 @@ test.describe('Sign in', () => {
     const context = await browser.newContext()
     const page = await context.newPage()
 
-    await page.goto('http://localhost:3000/')
+    await page.goto('/')
     await page.getByRole('button', { name: 'Yes, I am 21 years of age or older' }).click()
     await page.getByRole('button', { name: 'Sign in' }).click()
     await page.getByLabel('Email').click()

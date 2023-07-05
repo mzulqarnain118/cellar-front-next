@@ -57,6 +57,7 @@ export default defineConfig({
   testDir: './e2e',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
+    baseURL: process.env.CI_ENVIRONMENT_URL || 'http://localhost:3000',
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
   },
@@ -64,7 +65,7 @@ export default defineConfig({
   webServer: {
     command: 'pnpm dev',
     reuseExistingServer: process.env.CI === undefined,
-    url: 'http://localhost:3000',
+    url: process.env.CI_ENVIRONMENT_URL || 'http://localhost:3000',
   },
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI !== undefined ? 1 : undefined,
