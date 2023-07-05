@@ -12,12 +12,13 @@ stages:
 test-e2e:
   stage: test
   interruptible: true
-  image: mcr.microsoft.com/playwright:v1.35.0-jammy
+  image: mcr.microsoft.com/playwright:v1.35.1-jammy
+  parallel: 7
   extends: .install
   script:
     - CI=true pnpm i
     - CI=true pnpm playwright install
-    - CI=true pnpm playwright test
+    - CI=true pnpm playwright test --shard=$CI_NODE_INDEX/$CI_NODE_TOTAL
   artifacts:
     when: always
     paths:
@@ -31,6 +32,7 @@ test-e2e:
 release:
   stage: release
   interruptible: true
+  extends: .install
   cache:
     policy: push
   rules:
