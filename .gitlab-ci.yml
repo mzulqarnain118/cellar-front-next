@@ -16,8 +16,8 @@ test-e2e:
   extends: .install
   script:
     - CI=true pnpm i
-    - npx playwright install
-    - npx playwright test
+    - pnpm playwright install
+    - pnpm playwright test
   artifacts:
     when: always
     paths:
@@ -37,5 +37,5 @@ release:
     - if: $CI_COMMIT_BRANCH == 'main'
   script:
     - CI=true pnpm i
-    - npx semantic-release@21
+    - pnpm semantic-release@21
     - pnpm run semantic-release
