@@ -9,6 +9,8 @@ default:
     - corepack prepare pnpm@latest-8 --activate
     - pnpm config set store-dir .pnpm-store
     - SHELL="$(which bash)" pnpm setup
+  script:
+    - CI=true pnpm i
   cache: &cache
     key:
       files:
@@ -28,6 +30,7 @@ test-e2e:
     - pnpm config set store-dir .pnpm-store
     - SHELL="$(which bash)" pnpm setup
   script:
+    - CI=true pnpm i
     - npx playwright install --with-deps
     - npx playwright test --shard=$CI_NODE_INDEX/$CI_NODE_TOTAL
   artifacts:
@@ -49,6 +52,6 @@ release:
   rules:
     - if: $CI_COMMIT_BRANCH == 'main'
   script:
-    - pnpm install
+    - CI=true pnpm i
     - npx semantic-release@21
     - pnpm run semantic-release
