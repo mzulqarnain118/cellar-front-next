@@ -16,8 +16,8 @@ test-e2e:
   extends: .install
   script:
     - CI=true pnpm i
-    - pnpm playwright install
-    - pnpm playwright test
+    - CI=true pnpm playwright install
+    - CI=true pnpm playwright test
   artifacts:
     when: always
     paths:
