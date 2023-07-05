@@ -12,7 +12,7 @@ import { defineConfig, devices } from '@playwright/test'
  */
 export default defineConfig({
   /* Fail the build on CI if you accidentally left test.only in the source code. */
-  forbidOnly: !!process.env.CI,
+  forbidOnly: process.env.CI !== undefined,
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Configure projects for major browsers */
@@ -53,7 +53,7 @@ export default defineConfig({
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [['html'], ['junit', { outputFile: 'results.xml' }]],
   /* Retry on CI only */
-  retries: process.env.CI ? 2 : 0,
+  retries: process.env.CI !== undefined ? 2 : 0,
   testDir: './e2e',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
@@ -63,9 +63,9 @@ export default defineConfig({
   /* Run your local dev server before starting the tests */
   webServer: {
     command: 'pnpm dev',
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: process.env.CI === undefined,
     url: 'http://localhost:3000',
   },
   /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
+  workers: process.env.CI !== undefined ? 1 : undefined,
 })
