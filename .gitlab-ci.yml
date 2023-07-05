@@ -32,7 +32,6 @@ release:
   stage: release
   interruptible: true
   cache:
-    <<: *cache
     policy: push
   rules:
     - if: $CI_COMMIT_BRANCH == 'main'
