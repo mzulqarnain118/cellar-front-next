@@ -22,17 +22,21 @@ test-e2e:
   stage: test
   interruptible: true
   image: mcr.microsoft.com/playwright:v1.35.0-jammy
-  when: on_success
-  parallel: 1
-  before_script:
-    - corepack enable
-    - corepack prepare pnpm@latest-8 --activate
-    - pnpm config set store-dir .pnpm-store
-    - SHELL="$(which bash)" pnpm setup
+  parallel:
+    matrix:
+      - PROJECT: ['chromium']
+      - SHARD_INDEX: [1]
+      - SHARD_TOTAL: 1
+  # before_script:
+  #   - corepack enable
+  #   - corepack prepare pnpm@latest-8 --activate
+  #   - pnpm config set store-dir .pnpm-store
+  #   - SHELL="$(which bash)" pnpm setup
   script:
-    - CI=true pnpm i
-    - npx playwright install --with-deps
-    - npx playwright test --shard=$CI_NODE_INDEX/$CI_NODE_TOTAL
+    - npm install ci
+    - npm install -D @playwright/test
+    - npm ci
+    - npx playwright test --workers 1 --shard=$SHARD_INDEX/$SHARD_TOTAL
   artifacts:
     when: always
     paths:
