@@ -23,7 +23,7 @@ test-e2e:
   interruptible: true
   image: mcr.microsoft.com/playwright:v1.35.0-jammy
   when: on_success
-  parallel: 7
+  parallel: 1
   before_script:
     - corepack enable
     - corepack prepare pnpm@latest-8 --activate
