@@ -5,7 +5,7 @@ import { defineConfig, devices } from '@playwright/test'
  * https://github.com/motdotla/dotenv
  */
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-// require('dotenv').config()
+require('dotenv').config()
 
 /**
  * See https://playwright.dev/docs/test-configuration.
