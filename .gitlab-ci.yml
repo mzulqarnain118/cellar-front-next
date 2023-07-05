@@ -2,41 +2,22 @@ stages:
   - test
   - release
 
-default:
-  image: node:18.16.0
+.install:
   before_script:
     - corepack enable
     - corepack prepare pnpm@latest-8 --activate
     - pnpm config set store-dir .pnpm-store
     - SHELL="$(which bash)" pnpm setup
-  script:
-    - CI=true pnpm i
-  cache: &cache
-    key:
-      files:
-        - pnpm-lock.yaml
-    paths:
-      - .pnpm-store
 
 test-e2e:
   stage: test
   interruptible: true
   image: mcr.microsoft.com/playwright:v1.35.0-jammy
-  parallel:
-    matrix:
-      - PROJECT: ['chromium']
-      - SHARD_INDEX: [1]
-      - SHARD_TOTAL: 1
-  # before_script:
-  #   - corepack enable
-  #   - corepack prepare pnpm@latest-8 --activate
-  #   - pnpm config set store-dir .pnpm-store
-  #   - SHELL="$(which bash)" pnpm setup
+  extends: .install
   script:
-    - npm install ci
-    - npm install -D @playwright/test
-    - npm ci
-    - npx playwright test --workers 1 --shard=$SHARD_INDEX/$SHARD_TOTAL
+    - CI=true pnpm i
+    - npx playwright install
+    - npx playwright test --workers 1
   artifacts:
     when: always
     paths:
