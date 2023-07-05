@@ -28,9 +28,8 @@ test-e2e:
     - pnpm config set store-dir .pnpm-store
     - SHELL="$(which bash)" pnpm setup
   script:
-    - pnpm install
     - npx playwright install --with-deps
-    - npx playwright test
+    - npx playwright test --shard=$CI_NODE_INDEX/$CI_NODE_TOTAL
   artifacts:
     when: always
     paths:
