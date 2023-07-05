@@ -1,8 +1,10 @@
 import { test } from '@playwright/test'
 
 test.describe('Checkout', () => {
-  test.beforeEach(async ({ page }) => {
-    // Sign in first.
+  test('should place order successfully', async ({ browser }) => {
+    const context = await browser.newContext()
+    const page = await context.newPage()
+
     await page.goto('http://localhost:3000/')
     await page.getByRole('button', { name: 'Yes, I am 21 years of age or older' }).click()
     await page.getByRole('button', { name: 'Sign in' }).click()
@@ -12,9 +14,6 @@ test.describe('Checkout', () => {
     await page.getByLabel('Password').fill('Password1')
     await page.getByTestId('signInButton').click()
     await page.waitForURL('http://localhost:3000/')
-  })
-
-  test('should place order successfully', async ({ page }) => {
     await page.getByRole('link', { exact: true, name: 'Wine' }).first().click()
     await page
       .locator('div')
@@ -31,5 +30,6 @@ test.describe('Checkout', () => {
     await page
       .getByRole('heading', { name: 'Your Clean-Crafted™ product is on the way' })
       .isVisible()
+    await context.close()
   })
 })
