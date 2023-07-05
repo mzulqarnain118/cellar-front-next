@@ -17,7 +17,7 @@ test-e2e:
   script:
     - CI=true pnpm i
     - npx playwright install
-    - npx playwright test --workers 1
+    - npx playwright test
   artifacts:
     when: always
     paths:
