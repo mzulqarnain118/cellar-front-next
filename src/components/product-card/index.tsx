@@ -18,11 +18,11 @@ import { useCartQuery } from '@/lib/queries/cart'
 import { useProcessStore } from '@/lib/stores/process'
 import { CartItem, SubscriptionProduct } from '@/lib/types'
 import { getProductButtonText } from '@/lib/utils/button'
+import { trackProductAddToCart, trackSelectedProduct } from '@/lib/utils/gtm-util'
 
 import { BlurImage } from '../blur-image'
 import { Price } from '../price'
 
-import { trackProductAddToCart, trackSelectedProduct } from '@/lib/utils/gtm-util'
 import { ProductImageLink } from './product-image-link'
 
 const Link = dynamic(() => import('src/components/link').then(module => module.Link), {
@@ -239,18 +239,22 @@ export const ProductCard = ({ className, priority = false, product }: ProductCar
     }
   }, [handleAddToCart, handleQuantityChange, product, productCardButtonText, quantity, router])
 
+  const onProductClick = useCallback(() => {
+    trackSelectedProduct(product)
+  }, [product])
+
   const productImageLink = useMemo(
     () => (
       <ProductImageLink
-        product={selectedProduct}
         key={selectedProduct.sku}
         cartUrl={selectedProduct.cartUrl}
         displayName={selectedProduct.displayName}
         pictureUrl={selectedProduct.pictureUrl}
         priority={priority}
+        onProductClick={onProductClick}
       />
     ),
-    [priority, selectedProduct]
+    [priority, selectedProduct, onProductClick]
   )
 
   return (
@@ -280,8 +284,8 @@ export const ProductCard = ({ className, priority = false, product }: ProductCar
               </div>
               <Link
                 className="card-title text-base font-semibold leading-normal !text-neutral-900"
-                onClick={() => trackSelectedProduct(product)}
                 href={`/product/${product.cartUrl}`}
+                onClick={onProductClick}
               >
                 {selectedProduct.displayName}
               </Link>

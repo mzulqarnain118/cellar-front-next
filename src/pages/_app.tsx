@@ -23,6 +23,7 @@ import { SessionProvider } from 'next-auth/react'
 import { DefaultSeo } from 'next-seo'
 import { GoogleAnalytics, event } from 'nextjs-google-analytics'
 import { Theme } from 'react-daisyui'
+import TagManager, { TagManagerArgs } from 'react-gtm-module'
 
 import { RootLayout } from '@/components/layouts/root'
 import { modals } from '@/core/components/modals'
@@ -35,7 +36,6 @@ import { InternalLink } from 'prismic/internal-link'
 import { richTextComponents } from 'prismic/rich-text-components'
 import { theme } from 'theme'
 
-import TagManager from 'react-gtm-module'
 import '../globals.css'
 
 const ProgressBar = dynamic(
@@ -88,10 +88,11 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
       })
   )
 
-  const tagManagerArgs = {
-    gtmId: process?.env?.NEXT_PUBLIC_GTM_ID!
-  }
   useEffect(() => {
+    const tagManagerArgs: TagManagerArgs = {
+      gtmId: process.env.NEXT_PUBLIC_GTM_ID ?? '',
+    }
+
     if (process.env.NEXT_PUBLIC_IS_PRODUCTION === 'false') {
       window.toggleDevtools = () => setShowDevtools(prev => !prev)
       setShowDevtools(true)
