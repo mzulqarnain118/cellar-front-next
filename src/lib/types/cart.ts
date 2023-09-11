@@ -53,6 +53,29 @@ export interface Cart {
     retailDeliveryFee: number
   }
 }
+export interface GTMProduct {
+  name: string
+  price: number
+  id: string
+  quantity: number
+  category?: string
+}
+export interface CheckoutThanksData {
+  id?: string
+  revenue?: number
+  tax?: number
+  shipping?: number
+  discount?: number
+  products: GTMProduct[]
+  consultantName?: string
+  isSharedCart?: boolean
+  subTotal?: number
+  orderDate?: Date
+  shipToState?: string
+  deliveryMethod?: string
+  shippingMethod?: string
+  PURL?: string
+}
 
 export const DEFAULT_CART_STATE: Cart = {
   discounts: [],
