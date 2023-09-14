@@ -64,7 +64,7 @@ const CheckoutConfirmationPage: NextPage = () => {
       revenue: `${formatCurrency(total)}`, // Total transaction value (incl. tax and shipping)
       shipToState: fullAddress,
       shipping: `${formatCurrency(shipping)}`,
-      shippingMethod: 'checkoutThanksData?.shippingMethod',
+      shippingMethod: 'Ship to home',
       subTotal: `${formatCurrency(subtotal)}`,
       tax: `${formatCurrency(salesTax)}`,
     },
