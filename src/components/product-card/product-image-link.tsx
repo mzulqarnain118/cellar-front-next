@@ -1,12 +1,9 @@
 import { MouseEventHandler, memo } from 'react'
 
-import { CartItem, SubscriptionProduct } from '@/lib/types'
-
 import { BlurImage } from '../blur-image'
 import { Link } from '../link'
 
 interface ProductImageLinkProps {
-  product: SubscriptionProduct | CartItem
   cartUrl: string
   displayName: string
   pictureUrl?: string

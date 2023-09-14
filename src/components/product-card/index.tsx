@@ -251,7 +251,6 @@ export const ProductCard = ({ className, priority = false, product }: ProductCar
         displayName={selectedProduct.displayName}
         pictureUrl={selectedProduct.pictureUrl}
         priority={priority}
-        product={selectedProduct}
         onProductClick={onProductClick}
       />
     ),
