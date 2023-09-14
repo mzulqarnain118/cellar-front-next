@@ -6,7 +6,7 @@
  */
 
 import { GtmECommerceEvents } from '../constants/gtm-events'
-import { CartItem, SubscriptionProduct } from '../types'
+import { CartItem, CheckoutThanksData, SubscriptionProduct } from '../types'
 import { currenyCode, eComType, ecomItem } from '../types/gtm-types'
 
 import { trackEvent } from './gtm-service'
@@ -52,6 +52,7 @@ export const trackPlpListProducts = (products: [SubscriptionProduct | CartItem])
  *
  * @param {SubscriptionProduct | CartItem}product
  * @param {number} quantity
+ * @param {CheckoutThanksData} checkoutThanks
  *
  */
 export const trackProductAddToCart = (product: SubscriptionProduct | CartItem, quantity = 1) => {
@@ -90,5 +91,12 @@ export const trackSelectedProduct = (product: SubscriptionProduct | CartItem) =>
   trackEvent({
     ecommerce,
     event: GtmECommerceEvents.SELECT_ITEM,
+  })
+}
+
+export const trackCheckoutThanks = (checkoutThanks: CheckoutThanksData) => {
+  trackEvent({
+    ecommerce: checkoutThanks,
+    event: GtmECommerceEvents.CHECKOUT_THANKS,
   })
 }

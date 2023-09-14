@@ -1,10 +1,12 @@
+import { CheckoutThanksData } from './cart'
+
 export enum currenyCode {
   USD = 'USD',
 }
 
 export interface trackEventData {
   event: string
-  ecommerce?: eComType
+  ecommerce?: eComType | CheckoutThanksData
   dimension?: dimension
   parameterName?: string
   parameterValue?: string
