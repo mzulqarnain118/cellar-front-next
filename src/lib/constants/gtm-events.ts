@@ -3,6 +3,7 @@ export const GtmECommerceEvents = {
   ADD_SHIPPING_INFO: 'add_shipping_info',
   ADD_TO_CART: 'add_to_cart',
   BEGIN_CHECKOUT: 'begin_checkout',
+  CHECKOUT_THANKS: 'checkout_thanks',
   GENERATE_LEAD: 'generate_lead',
   PURCHASE: 'purchase',
   REMOVE_FROM_CART: 'remove_from_cart',

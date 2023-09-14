@@ -32,7 +32,7 @@ export const Footer = () => {
 
       return link || '/'
     },
-    [consultant.url]
+    [consultant?.url]
   )
 
   const columnOne = useMemo(

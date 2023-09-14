@@ -5,7 +5,7 @@
  * Utility class for Google Tag Manager-related functionality.
  */
 
-import { trackEventData } from '../types/gtm-types';
+import { trackEventData } from '../types/gtm-types'
 
 /**
  * Send custom event to GTM/GA.
@@ -18,7 +18,7 @@ export const trackEvent = (eventData: trackEventData) => {
   if (!isTrackingEnabled()) {
     return
   }
-    getDataLayer()?.push(eventData)
+  getDataLayer()?.push(eventData)
 }
 
 /**
@@ -27,8 +27,8 @@ export const trackEvent = (eventData: trackEventData) => {
  * @returns {{}}
  */
 function getDataLayer() {
-    window.dataLayer?.push({ ecommerce: null });  // Clear the previous ecommerce object.)
-    return window.dataLayer //TagManager.dataLayer(eventConfig)
+  window.dataLayer?.push({ ecommerce: null }) // Clear the previous ecommerce object.
+  return window.dataLayer
 }
 
 /**

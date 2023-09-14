@@ -17,10 +17,11 @@ import { usePaginatedSearch } from '@/features/search/queries'
 import { DISPLAY_CATEGORY } from '@/lib/constants/display-category'
 import { usePaginatedProducts } from '@/lib/queries/products'
 import { useConsultantStore } from '@/lib/stores/consultant'
+import { CartItem, SubscriptionProduct } from '@/lib/types'
+import { trackPlpListProducts } from '@/lib/utils/gtm-util'
 
 import { ProductCard } from '../product-card'
 
-import { trackPlpListProducts } from '@/lib/utils/gtm-util'
 import { FilterBar } from './filter/filter-bar'
 import { Filters } from './filters'
 
@@ -138,7 +139,7 @@ export const ProductListing = ({
       data?.products !== undefined ? (
         <div>
           <div
-            className={clsx(  
+            className={clsx(
               'transition-all grid gap-4 md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-4 3xl:grid-cols-5 relative'
             )}
           >
@@ -313,10 +314,9 @@ export const ProductListing = ({
   // Send PLP Listing Event to GTM
   useEffect(() => {
     if (data?.products !== undefined) {
-      trackPlpListProducts(data?.products);
+      trackPlpListProducts(data?.products as [CartItem | SubscriptionProduct])
     }
   }, [data?.products])
-
 
   if (isFetching || isLoading) {
     return (
