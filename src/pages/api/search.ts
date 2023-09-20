@@ -1,17 +1,17 @@
-import Fuse from 'fuse.js'
+// import Fuse from 'fuse.js'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { ProductsSchema } from '@/lib/types/schemas/product'
 
-export type FuseSearchResult = Fuse.FuseResult<ProductsSchema>
+// export type FuseSearchResult = Fuse.FuseResult<ProductsSchema>
 
-const options: Fuse.IFuseOptions<ProductsSchema> = {
-  findAllMatches: true,
-  includeMatches: true,
-  includeScore: true,
-  keys: ['displayName', 'sku', 'cartUrl'],
-  useExtendedSearch: false,
-}
+// const options: Fuse.IFuseOptions<ProductsSchema> = {
+//   findAllMatches: true,
+//   includeMatches: true,
+//   includeScore: true,
+//   keys: ['displayName', 'sku', 'cartUrl'],
+//   useExtendedSearch: false,
+// }
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -56,9 +56,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         const { data: productsData } = data
         let products = productsData
         products = products.filter(product => product.displayCategories.includes(1))
-        const fuse = new Fuse(products, options)
-        const result = fuse.search(q?.toString() || '')
-        const searchResults = result.map(result => result.item)
+        // const fuse = new Fuse(products, { keys: ['attributes'], useExtendedSearch: true })
+        // const result fuse.search(q)
+        const result = products.filter(
+          prod =>
+            prod?.displayName?.toUpperCase()?.includes(q?.toUpperCase()) ||
+            prod?.cartUrl?.toUpperCase()?.includes(q?.toUpperCase()) ||
+            prod?.sku?.toUpperCase()?.includes(q?.toUpperCase())
+        )
+
+        const searchResults = result.map(result => result)
         let filteredProducts =
           displayCategoryIds.length > 0
             ? searchResults.filter(product =>
@@ -121,6 +128,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 ],
                 totalNumberOfPages,
               },
+              products,
+              result,
               success: true,
             })
           return
