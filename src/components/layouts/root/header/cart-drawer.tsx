@@ -16,6 +16,7 @@ import { useCartOpen, useProcessStore } from '@/lib/stores/process'
 
 import { Link } from '@/components/link'
 import { useShareCartMutation } from '@/features/shared-cart/mutations/share-cart'
+import { trackCheckoutBegin } from '@/lib/utils/gtm-util'
 import { CartItem } from './cart-item'
 import { Ticker } from './ticker'
 
@@ -69,13 +70,13 @@ export const CartDrawer = () => {
         session?.user ? redirection : `${redirection}?redirectTo=${CHECKOUT_PAGE_PATH}`,
         redirection
       )
-      // generateGtmCheckout(
-      //   redirection,
-      //   !isLoggedIn ? { state: { redirect: CHECKOUT_URL } } : undefined
-      // )
+      if (cart?.items !== undefined) {
+        // Track either the user clicked on checkout button
+        trackCheckoutBegin(cart?.items, subtotal)
+      }
       toggleCartOpen()
     },
-    [router, session?.user, toggleCartOpen]
+    [cart?.items, router, session?.user, subtotal, toggleCartOpen]
   )
 
   const handleGoShoppingClick = useCallback(() => {

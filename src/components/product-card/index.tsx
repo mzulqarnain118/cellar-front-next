@@ -11,6 +11,7 @@ import { Button } from '@/core/components/button'
 import { NumberPicker } from '@/core/components/number-picker'
 import { Typography } from '@/core/components/typogrpahy'
 import { useIsDesktop } from '@/core/hooks/use-is-desktop'
+import { GtmCustomEvents } from '@/lib/constants/gtm-events'
 import { useAddToCartMutation } from '@/lib/mutations/cart/add-to-cart'
 import { useUpdateQuantityMutation } from '@/lib/mutations/cart/update-quantity'
 import { SCOUT_CIRCLE_PAGE_PATH } from '@/lib/paths'
@@ -18,6 +19,7 @@ import { useCartQuery } from '@/lib/queries/cart'
 import { useProcessStore } from '@/lib/stores/process'
 import { CartItem, SubscriptionProduct } from '@/lib/types'
 import { getProductButtonText } from '@/lib/utils/button'
+import { trackEvent } from '@/lib/utils/gtm-service'
 import { trackProductAddToCart, trackSelectedProduct } from '@/lib/utils/gtm-util'
 
 import { BlurImage } from '../blur-image'
@@ -94,6 +96,8 @@ export const ProductCard = ({ className, priority = false, product }: ProductCar
     addToCart({ item: product, quantity })
     // Track Add to cart
     trackProductAddToCart(product, quantity)
+    // Track that this Add to cart is coming from the product card
+    trackEvent({ event: GtmCustomEvents.PRODUCT_CARD_ADD_TO_CART })
     toggleCartOpen()
   }, [addToCart, product, quantity, toggleCartOpen])
 

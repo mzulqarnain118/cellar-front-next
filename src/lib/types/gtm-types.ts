@@ -37,7 +37,7 @@ export interface eComType {
   currency: currenyCode
   value?: number
   coupon?: string
-  items: [ecomItem]
+  items: ecomItem[]
 }
 
 export interface dimension {
