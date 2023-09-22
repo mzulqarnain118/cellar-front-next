@@ -23,6 +23,7 @@ import {
   getProductByCartUrl,
   useProductQuery,
 } from '@/lib/queries/products'
+import { trackProductView } from '@/lib/utils/gtm-util'
 import { createClient } from '@/prismic-io'
 
 const Brand = dynamic(() => import('@/features/pdp/components/brand').then(({ Brand }) => Brand), {
@@ -140,7 +141,9 @@ const PDP: NextPage<PageProps> = ({ page }) => {
   )
 
   useEffect(() => {
-    if (product !== null) {
+    if (product !== null && product !== undefined) {
+      // Track Product view on Page Load
+      trackProductView(product)
       setSelectedProduct(product)
     }
   }, [product, setSelectedProduct])

@@ -5,11 +5,14 @@ import { useWindowScroll } from '@mantine/hooks'
 import { Button } from '@/core/components/button'
 import { NumberPicker } from '@/core/components/number-picker'
 import { Typography } from '@/core/components/typogrpahy'
+import { GtmCustomEvents } from '@/lib/constants/gtm-events'
 import { useAddToCartMutation } from '@/lib/mutations/cart/add-to-cart'
 import { useUpdateQuantityMutation } from '@/lib/mutations/cart/update-quantity'
 import { useCartQuery } from '@/lib/queries/cart'
 import { useProcessStore } from '@/lib/stores/process'
 import { CartItem, SubscriptionProduct } from '@/lib/types'
+import { trackEvent } from '@/lib/utils/gtm-service'
+import { trackProductAddToCart } from '@/lib/utils/gtm-util'
 
 import { usePdpSelectedOption, usePdpSelectedProduct } from '../../store'
 
@@ -89,6 +92,9 @@ export const CtaActions = ({ className }: CtaActionsProps) => {
       handleQuantityChange(selectedProduct, quantity)
     } else {
       handleAddToCart()
+      selectedProduct !== undefined ? trackProductAddToCart(selectedProduct, quantity) : {}
+      //Track the custom event that this add to cart is coming from the Product Display Page
+      trackEvent({ event: GtmCustomEvents.PDP_ADD_TO_CART })
     }
   }, [selectedProduct, handleAddToCart, handleQuantityChange, quantity])
 

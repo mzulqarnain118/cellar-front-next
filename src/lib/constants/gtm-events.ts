@@ -19,3 +19,8 @@ export const GtmRegularEvents = {
   SHARE: 'share',
   SIGN_UP: 'sign_up',
 }
+
+export const GtmCustomEvents = {
+  PDP_ADD_TO_CART: 'PDP_Add_To_Cart',
+  PRODUCT_CARD_ADD_TO_CART: 'Product_Card_Add_To_Cart',
+}
