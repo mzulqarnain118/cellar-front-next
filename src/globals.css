@@ -85,4 +85,10 @@
   tr td:last-child {
     @apply text-right;
   }
+
+  ul {
+    padding-left: 30px;
+    list-style: disc;
+    list-style-position: outside;
+  }
 }
