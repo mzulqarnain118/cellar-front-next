@@ -15,7 +15,9 @@ interface BrandOriginProps {
 
 export const BrandOrigin = ({ cartUrl }: BrandOriginProps) => {
   const { data: product } = useProductQuery(cartUrl)
-  const { brandLandingData } = useBrand(product?.attributes?.Brand?.toLowerCase())
+  const { brandLandingData } = useBrand(
+    product?.attributes?.Brand?.split(' ').join('-').toLowerCase()
+  )
   const router = useRouter()
 
   const handleBrandClick = useCallback(() => {
