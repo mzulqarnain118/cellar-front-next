@@ -14,7 +14,7 @@ import { ProductsSchema } from '@/lib/types/schemas/product'
 
 interface AccordionsProps {
   attributes: ProductsSchema['attributes']
-  data: SliceZone<Content.PdpDocumentDataBodyAccordionSlice>
+  data: SliceZone<Content.PdpDocumentDataBodyAccordionSlice> | undefined
 }
 
 interface CustomAccordion {
@@ -30,6 +30,8 @@ const isCustomAccordion = (data: unknown): data is CustomAccordion =>
   (data.id === 'tasting-notes' || data.id === 'pairing-notes')
 
 export const Accordions = ({ attributes, data }: AccordionsProps) => {
+  console.log(data, attributes)
+
   const tastingNotes = useMemo(
     () =>
       attributes?.['Tasting Notes']?.map(note => (
