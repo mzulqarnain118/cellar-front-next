@@ -38,9 +38,11 @@ export const Description = memo(({ cartUrl, prismicData }: DescriptionProps) => 
       <div className="py-4 [&>p]:my-4">
         <PrismicRichText field={prismicData?.summary} />
       </div>
-      {prismicData?.body !== undefined && prismicData.body.length > 0 ? (
-        <Accordions attributes={flightData?.attributes} data={prismicData?.body} />
-      ) : undefined}
+      {/* {
+      prismicData?.body !== undefined && prismicData.body.length > 0 ? ( */}
+      <Accordions attributes={flightData?.attributes} data={prismicData?.body} />
+      {/* ) : undefined
+      } */}
     </div>
   )
 })

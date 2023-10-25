@@ -21,7 +21,7 @@ interface BrandProps {
 export const Brand = ({ cartUrl, className }: BrandProps) => {
   const { data: product } = useProductQuery(cartUrl)
   const { brandLandingData, imageAndTextData, productShowcaseData } = useBrand(
-    product?.attributes?.Brand?.toLowerCase()
+    product?.attributes?.Brand?.split(' ').join('-').toLowerCase()
   )
   const router = useRouter()
 

@@ -65,11 +65,13 @@ export const getStaticProps = async ({ params, previewData }: GetStaticPropsCont
       filters: [filter.fulltext('my.pdp.url', cartUrl.toString())],
       graphQuery,
     })
+    const pdpData = pdps[0].data
     const page = pdps.find(pdp => asLink(pdp) === cartUrl) || null
     return {
       props: {
         dehydratedState: dehydrate(queryClient),
         page: page || null,
+        pdpData,
       },
       revalidate: 120,
     }
@@ -97,7 +99,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 type PageProps = InferGetStaticPropsType<typeof getStaticProps>
 
-const PDP: NextPage<PageProps> = ({ page }) => {
+const PDP: NextPage<PageProps> = ({ page, pdpData }) => {
   const router = useRouter()
   const isMounted = useIsMounted()
   const { cartUrl } = router.query
@@ -159,8 +161,8 @@ const PDP: NextPage<PageProps> = ({ page }) => {
         <div className="container mx-auto py-10">
           <Breadcrumbs cartUrl={cartUrl} />
           <div className="grid gap-10 lg:grid-cols-2">
-            <MediaGallery className="self-start" images={images} videos={page?.data.videos} />
-            <Description cartUrl={cartUrl} prismicData={page?.data} />
+            <MediaGallery className="self-start" images={images} videos={pdpData?.videos} />
+            <Description cartUrl={cartUrl} prismicData={pdpData} />
           </div>
           <Brand cartUrl={cartUrl} className="py-4" />
         </div>
