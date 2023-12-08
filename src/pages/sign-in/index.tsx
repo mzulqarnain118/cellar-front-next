@@ -120,7 +120,8 @@ const SignInPage: NextPage<PageProps> = () => {
   )
 
   const handleProceedAsGuest = useCallback(() => {
-    router.push(GUEST_CHECKOUT_PAGE_PATH, CHECKOUT_PAGE_PATH)
+    // router.push(GUEST_CHECKOUT_PAGE_PATH, CHECKOUT_PAGE_PATH)
+    router.push(GUEST_CHECKOUT_PAGE_PATH)
   }, [router])
 
   const { ref: passwordFormRef, ...passwordRegister } = register('password')
