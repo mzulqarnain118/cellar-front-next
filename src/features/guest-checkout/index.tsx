@@ -1,4 +1,6 @@
-import { useCallback, useMemo, useState } from 'react'
+/* eslint-disable */
+
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import dynamic from 'next/dynamic'
 
@@ -71,6 +73,15 @@ export const GuestCheckout = () => {
   const { mutate: createGuestAccount, isLoading: isGuestCreatingAccount } =
     useCreateGuestAccountMutation()
   const { consultant } = useConsultantStore()
+
+  /* Hide chat icon on guest checkout page */
+  useEffect(() => {
+    const lincChat = document.getElementsByClassName('linc-web-chat')?.[0] as HTMLElement
+
+    if (lincChat) {
+      lincChat.style.display = 'none'
+    }
+  }, [])
 
   const defaultValues: Partial<GuestCheckoutSchema> = useMemo(
     () => ({

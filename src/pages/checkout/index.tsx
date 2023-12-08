@@ -343,6 +343,15 @@ const CheckoutPage: NextPage<PageProps> = () => {
     wineClubRef,
   ])
 
+  /* Hide chat icon on checkout page */
+  useEffect(() => {
+    const lincChat = document.getElementsByClassName('linc-web-chat')?.[0] as HTMLElement
+
+    if (lincChat) {
+      lincChat.style.display = 'none'
+    }
+  }, [])
+
   useEffect(() => {
     if (cart !== undefined) {
       setCartOwner()

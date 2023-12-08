@@ -1,5 +1,6 @@
-/* eslint-disable import/order */
-import { MouseEventHandler, useCallback, useMemo, useRef } from 'react'
+/* eslint-disable */
+
+import { MouseEventHandler, useCallback, useEffect, useMemo, useRef } from 'react'
 
 import { ChevronRightIcon } from '@heroicons/react/24/outline'
 import { CloseButton, Drawer } from '@mantine/core'
@@ -30,6 +31,17 @@ export const CartDrawer = () => {
   const { isMutatingCart } = useProcessStore()
   const footerRef = useRef<HTMLDivElement | null>(null)
   const { mutate: shareCart, isLoading: isSharingCart } = useShareCartMutation()
+
+  /* Hide chat icon when drawer is open */
+  useEffect(() => {
+    const lincChat = document.getElementsByClassName('linc-web-chat')?.[0] as HTMLElement
+
+    if (cartOpen && lincChat) {
+      lincChat.style.display = 'none'
+    } else if (!cartOpen && lincChat) {
+      lincChat.style.display = ''
+    }
+  })
 
   const handleShareCartClick = useCallback(() => {
     shareCart()
