@@ -1,0 +1,15 @@
+.root {
+  background-color: var(--notification-color, #672724);
+}
+.description,
+.title {
+  color: #fff;
+}
+
+.closeButton {
+  color: #fff;
+
+  @mixin hover {
+    background-color: #fff;
+  }
+}

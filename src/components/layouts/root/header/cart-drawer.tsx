@@ -11,13 +11,13 @@ import { Price } from '@/components/price'
 import { Button } from '@/core/components/button'
 import { Typography } from '@/core/components/typogrpahy'
 import { formatCurrency } from '@/core/utils'
-import { CHECKOUT_PAGE_PATH, SIGN_IN_PAGE_PATH, WINE_PAGE_PATH } from '@/lib/paths'
+import { WINE_PAGE_PATH } from '@/lib/paths'
 import { useCartQuery } from '@/lib/queries/cart'
 import { useCartOpen, useProcessStore } from '@/lib/stores/process'
 
 import { Link } from '@/components/link'
+import { useValidateCartStockMutation } from '@/features/checkout/mutations/validate-cart-stock'
 import { useShareCartMutation } from '@/features/shared-cart/mutations/share-cart'
-import { trackCheckoutBegin } from '@/lib/utils/gtm-util'
 import { CartItem } from './cart-item'
 import { Ticker } from './ticker'
 
@@ -31,6 +31,7 @@ export const CartDrawer = () => {
   const { isMutatingCart } = useProcessStore()
   const footerRef = useRef<HTMLDivElement | null>(null)
   const { mutate: shareCart, isLoading: isSharingCart } = useShareCartMutation()
+  const { mutate: vaildateCartStock } = useValidateCartStockMutation()
 
   /* Hide chat icon when drawer is open */
   useEffect(() => {
@@ -73,23 +74,11 @@ export const CartDrawer = () => {
     [cartItems, isMutatingCart, isSharingCart]
   )
 
-  const handleCheckoutClick: MouseEventHandler<HTMLButtonElement> = useCallback(
+  const handleCheckoutClick: MouseEventHandler<HTMLButtonElement> =
     event => {
       event.preventDefault()
-      const redirection = session?.user ? CHECKOUT_PAGE_PATH : SIGN_IN_PAGE_PATH
-
-      router.push(
-        session?.user ? redirection : `${redirection}?redirectTo=${CHECKOUT_PAGE_PATH}`,
-        redirection
-      )
-      if (cart?.items !== undefined) {
-        // Track either the user clicked on checkout button
-        trackCheckoutBegin(cart?.items, subtotal)
-      }
-      toggleCartOpen()
-    },
-    [cart?.items, router, session?.user, subtotal, toggleCartOpen]
-  )
+      vaildateCartStock()
+    }
 
   const handleGoShoppingClick = useCallback(() => {
     toggleCartOpen()

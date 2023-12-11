@@ -111,7 +111,7 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
           <MantineProvider withGlobalStyles withNormalizeCSS theme={theme}>
             <Theme dataTheme="garden">
               <ModalsProvider modals={modals}>
-                <Notifications position={isDesktop ? 'top-center' : 'bottom-center'} />
+                <Notifications position={isDesktop ? 'top-right' : 'top-right'} />
                 <PrismicProvider
                   internalLinkComponent={InternalLink}
                   linkResolver={linkResolver}
