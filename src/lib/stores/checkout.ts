@@ -1,13 +1,13 @@
-import { useCallback } from 'react'
+import { useCallback } from 'react';
 
-import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
-import { Cart } from '../types'
-import { Address } from '../types/address'
-import { CreditCard } from '../types/credit-card'
+import { Cart } from '../types';
+import { Address } from '../types/address';
+import { CreditCard } from '../types/credit-card';
 
-import { Setter } from './types'
+import { Setter } from './types';
 
 interface GiftMessage {
   message: string
@@ -51,11 +51,13 @@ interface CheckoutStoreState {
   errors?: Errors
   giftCardCode: Code
   giftMessage: GiftMessage
+  giftMessageCheckbox: boolean
   guestAddress?: Address
   guestCreditCard?: CreditCard
   isAddingAddress: boolean
   isAddingCreditCard: boolean
   isAddingGiftMessage: boolean
+  isEditingGiftMessage: boolean
   isGift: boolean
   isPickUp: boolean
   promoCode: Code
@@ -76,11 +78,13 @@ interface CheckoutStoreActions {
   setErrors: Setter<Errors | undefined>
   setGiftCardCode: Setter<Code>
   setGiftMessage: Setter<GiftMessage>
+  setGiftMessageCheckbox: Setter<boolean>
   setGuestAddress: (address: Address | undefined) => void
   setGuestCreditCard: (creditCard: CreditCard | undefined) => void
   setIsAddingAddress: Setter<boolean>
   setIsAddingCreditCard: Setter<boolean>
   setIsAddingGiftMessage: Setter<boolean>
+  setIsEditingGiftMessage: Setter<boolean>
   setIsGift: Setter<boolean>
   setIsPickUp: Setter<boolean>
   setPromoCode: Setter<Code>
@@ -88,6 +92,7 @@ interface CheckoutStoreActions {
   setSelectedPickUpAddress: Setter<Address | undefined>
   setSelectedPickUpOption: Setter<PickUpOption | undefined>
   toggleIsAddingGiftMessage: () => void
+  toggleIsEditingGiftMessage: () => void
 }
 
 export type CheckoutStore = CheckoutStoreState & { actions: CheckoutStoreActions }
@@ -109,11 +114,13 @@ const initialValues: CheckoutStoreState = {
     message: '',
     recipientEmail: '',
   },
+  giftMessageCheckbox: false,
   guestAddress: undefined,
   guestCreditCard: undefined,
   isAddingAddress: false,
   isAddingCreditCard: false,
   isAddingGiftMessage: false,
+  isEditingGiftMessage: false,
   isGift: false,
   isPickUp: false,
   promoCode: {
@@ -160,6 +167,13 @@ export const useCheckoutStore = create<CheckoutStore>()(
           typeof update === 'function'
             ? set(({ giftMessage }) => ({ giftMessage: update(giftMessage) }))
             : set(() => ({ giftMessage: update })),
+        setGiftMessageCheckbox: update => {
+          if (update) {
+            set({ isAddingGiftMessage: true, giftMessageCheckbox: true, isEditingGiftMessage: false, })
+          } else {
+            set({ giftMessage: initialValues.giftMessage, isAddingGiftMessage: false, giftMessageCheckbox: false, isEditingGiftMessage: false, });
+          }
+        },
         setGuestAddress: guestAddress => set(() => ({ guestAddress })),
         setGuestCreditCard: guestCreditCard => set(() => ({ guestCreditCard })),
         setIsAddingAddress: update =>
@@ -173,9 +187,15 @@ export const useCheckoutStore = create<CheckoutStore>()(
         setIsAddingGiftMessage: update =>
           typeof update === 'function'
             ? set(({ isAddingGiftMessage }) => ({
-                isAddingGiftMessage: update(isAddingGiftMessage),
-              }))
+              isAddingGiftMessage: update(isAddingGiftMessage),
+            }))
             : set(() => ({ isAddingGiftMessage: update })),
+        setIsEditingGiftMessage: update =>
+          typeof update === 'function'
+            ? set(({ isEditingGiftMessage }) => ({
+              isEditingGiftMessage: update(isEditingGiftMessage),
+            }))
+            : set(() => ({ isEditingGiftMessage: update })),
         setIsGift: update =>
           typeof update === 'function'
             ? set(({ isGift }) => ({ isGift: update(isGift) }))
@@ -195,19 +215,63 @@ export const useCheckoutStore = create<CheckoutStore>()(
         setSelectedPickUpAddress: update =>
           typeof update === 'function'
             ? set(({ selectedPickUpAddress }) => ({
-                selectedPickUpAddress: update(selectedPickUpAddress),
-              }))
+              selectedPickUpAddress: update(selectedPickUpAddress),
+            }))
             : set(() => ({ selectedPickUpAddress: update })),
         setSelectedPickUpOption: update =>
           typeof update === 'function'
             ? set(({ selectedPickUpOption }) => ({
-                selectedPickUpOption: update(selectedPickUpOption),
-              }))
+              selectedPickUpOption: update(selectedPickUpOption),
+            }))
             : set(() => ({ selectedPickUpOption: update })),
-        toggleIsAddingGiftMessage: () =>
-          set(({ isAddingGiftMessage }) => ({ isAddingGiftMessage: !isAddingGiftMessage })),
+        toggleIsAddingGiftMessage: () => {
+          set(({ giftMessage, isAddingGiftMessage, }) => {
+
+            // Check if isAddingGiftMessage is false and giftMessage is different from its initial value, then only return giftMessage with its initial values
+            if (isAddingGiftMessage === false && JSON.stringify(giftMessage) !== JSON.stringify(initialValues.giftMessage)) {
+              // Reset giftMessage if conditions are met
+              return {
+                giftMessage: {
+                  message: '',
+                  recipientEmail: '',
+                },
+                isEditingGiftMessage: false,
+              };
+            }
+
+            // Reset giftMessage if toggling from true to false or keep the existing value if toggling from false to true
+            return {
+              isAddingGiftMessage: !isAddingGiftMessage,
+              giftMessage: isAddingGiftMessage ? initialValues.giftMessage : giftMessage,
+              isEditingGiftMessage: false
+            };
+          });
+        },
+        toggleIsEditingGiftMessage: () => {
+          set(({ giftMessage, isEditingGiftMessage }) => {
+
+            const newIsEditingGiftMessage = !isEditingGiftMessage;
+
+            if (newIsEditingGiftMessage === true) {
+              set(() => ({ isAddingGiftMessage: false }));
+            }
+
+            if (newIsEditingGiftMessage && JSON.stringify(giftMessage) !== JSON.stringify(initialValues.giftMessage)) {
+              // Reset giftMessage if conditions are met
+              return {
+                isEditingGiftMessage: newIsEditingGiftMessage,
+              };
+            }
+
+            return {
+              giftMessage: giftMessage,
+              isEditingGiftMessage: newIsEditingGiftMessage,
+            };
+          });
+        }
       },
     }),
+
     {
       name: 'checkout',
       partialize: ({ appliedSkyWallet, giftCardCode, giftMessage, guestAddress, promoCode }) => ({
@@ -264,6 +328,11 @@ export const useCheckoutGiftMessage = () => {
   return useCheckoutStore(selector)
 }
 
+export const useCheckoutGiftMessageCheckbox = () => {
+  const selector = useCallback(({ giftMessageCheckbox }: CheckoutStore) => giftMessageCheckbox, [])
+  return useCheckoutStore(selector)
+}
+
 export const useCheckoutGuestAddress = () => {
   const selector = useCallback(({ guestAddress }: CheckoutStore) => guestAddress, [])
   return useCheckoutStore(selector)
@@ -286,6 +355,11 @@ export const useCheckoutIsAddingCreditCard = () => {
 
 export const useCheckoutIsAddingGiftMessage = () => {
   const selector = useCallback(({ isAddingGiftMessage }: CheckoutStore) => isAddingGiftMessage, [])
+  return useCheckoutStore(selector)
+}
+
+export const useCheckoutIsEditingGiftMessage = () => {
+  const selector = useCallback(({ isEditingGiftMessage }: CheckoutStore) => isEditingGiftMessage, [])
   return useCheckoutStore(selector)
 }
 

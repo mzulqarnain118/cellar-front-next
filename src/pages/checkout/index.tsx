@@ -174,7 +174,7 @@ const CheckoutPage: NextPage<PageProps> = () => {
         if (!prefersReducedMotion) {
           scrollGiftMessageIntoView()
         }
-      } else if (!giftMessage.message.length || !!giftMessage.recipientEmail.length) {
+      } else if (!giftMessage.message.length || !!giftMessage.recipientEmail?.length) {
         openContactInformation()
         await wait(300)
         if (!prefersReducedMotion) {
@@ -312,7 +312,7 @@ const CheckoutPage: NextPage<PageProps> = () => {
     giftCardCodes.isAdded,
     giftCardRef,
     giftMessage.message.length,
-    giftMessage.recipientEmail.length,
+    giftMessage.recipientEmail?.length,
     giftMessageRef,
     isAddingAddress,
     isAddingCreditCard,
