@@ -11,12 +11,11 @@ import { formatCurrency } from '@/core/utils'
 import { useCartQuery } from '@/lib/queries/cart'
 import { useCheckoutActions, useCheckoutAppliedSkyWallet } from '@/lib/stores/checkout'
 
-import { useSkyWalletQuery } from '../../queries/sky-wallet'
 
 const accountCreditIcon = <CurrencyDollarIcon className="mx-3 w-4 h-4" />
 
-export const SkyWallet = () => {
-  const { data: skyWallet, isFetching, isLoading } = useSkyWalletQuery()
+export const SkyWallet = ({ skyWallet, skyWalletFetching, skyWalletLoading }) => {
+  // const { data: skyWallet, isFetching: skyWalletFetching, isLoading: skyWalletLoading } = useSkyWalletQuery()
   const { data: cart } = useCartQuery()
   const [tooltipOpened, { close: closeTooltip, open: openTooltip }] = useDisclosure(false)
 
@@ -87,7 +86,7 @@ export const SkyWallet = () => {
     [handleApply]
   )
 
-  if (isLoading || isFetching) {
+  if (skyWalletLoading || skyWalletFetching) {
     return (
       <div className="grid gap-0.5">
         <div className="h-[1.375rem] animate-pulse rounded bg-neutral-300" />

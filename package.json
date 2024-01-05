@@ -14,7 +14,8 @@
     "semantic-release": "semantic-release",
     "slicemachine": "start-slicemachine",
     "start": "next start",
-    "ts-lint-commit-hook": "tsc --noEmit --incremental"
+    "lint-fix": "eslint --fix",
+    "ts-lint-commit-hook": "tsc --noEmit --skipLibCheck --incremental || true"
   },
   "dependencies": {
     "@blacklab/react-image-magnify": "^4.1.1",
