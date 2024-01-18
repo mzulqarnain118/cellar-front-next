@@ -13,6 +13,8 @@ import { Badge } from 'react-daisyui'
 
 import { Link } from '@/components/link'
 import { Typography } from '@/core/components/typogrpahy'
+import modalStyles from './modalStyles.module.css'
+
 import { wait } from '@/core/utils/time'
 import { ContactInformation } from '@/features/checkout/components/contact-information'
 import { Delivery } from '@/features/checkout/components/delivery'
@@ -31,11 +33,15 @@ import {
   useCheckoutIsAddingGiftMessage,
   useCheckoutIsPickUp,
   useCheckoutPromoCode,
+  useCheckoutRemovedCartItems,
   useCheckoutSelectedPickUpAddress,
   useCheckoutSelectedPickUpOption,
 } from '@/lib/stores/checkout'
 import { toastInfo } from '@/lib/utils/notifications'
 
+import { useValidateCartStockMutation } from '@/features/checkout/mutations/validate-cart-stock'
+import { List, Text } from '@mantine/core'
+import { modals } from '@mantine/modals'
 import { authOptions } from '../api/auth/[...nextauth]'
 
 const CartSummary = dynamic(
@@ -74,6 +80,8 @@ const scrollIntoViewSettings = { duration: 500, offset: 120 }
 
 const CheckoutPage: NextPage<PageProps> = () => {
   const { mutate: setCartOwner } = useSetCartOwnerMutation()
+  const { mutate: vaildateCartStock, data: validateCartStockResp, isLoading: validateCartStockLoading, isSuccess: validateCartStockSuccess } = useValidateCartStockMutation({ returnData: true });
+
   const { data: cart } = useCartQuery()
   const router = useRouter()
   const [scroll] = useWindowScroll()
@@ -132,6 +140,53 @@ const CheckoutPage: NextPage<PageProps> = () => {
     useScrollIntoView<HTMLInputElement>(scrollIntoViewSettings)
   const { targetRef: wineClubRef, scrollIntoView: scrollWineClubIntoView } =
     useScrollIntoView<HTMLInputElement>(scrollIntoViewSettings)
+
+  const handleValidateCart = async () => await vaildateCartStock();
+  const removedCartItems = useCheckoutRemovedCartItems()
+
+
+  useEffect(() => {
+    console.log("🚀 ~ useEffect ~ validateCartStockSuccess:", validateCartStockSuccess)
+    console.log("🚀 ~ removedCartItems:", removedCartItems)
+
+    if (validateCartStockSuccess && !validateCartStockResp?.Success) {
+
+      modals.openContextModal({
+        centered: true,
+        innerProps: {
+          body: (
+            <div className="grid gap-2">
+              <div className={`grid ${modalStyles.typography}`}>
+                <Text className={modalStyles.text} fz='md' lh="xl">One or more products from your cart are not available to purchase and will be removed:</Text>
+                <List className={modalStyles.listContainer}>
+                  {validateCartStockResp?.Response.map(item => <List.Item className={modalStyles.listItem} key={item.SKU}>{item.DisplayName}</List.Item>)}
+                </List>
+              </div>
+            </div>
+          ),
+          cancelText: 'Yes, Continue',
+          confirmText: 'Keep Shopping',
+          onCancel: () => {
+            modals.close;
+          },
+          onConfirm: () => {
+            console.log('Confirmed');
+          },
+          cancelButtonProps: {
+            className: `${modalStyles.cancelButton}`,
+          },
+          confirmButtonProps: {
+            className: `${modalStyles.confirmButton}`,
+          },
+        },
+        modal: 'confirmation',
+        title: 'Heads Up!',
+        classNames: {
+          title: modalStyles.title,
+        },
+      });
+    }
+  }, [validateCartStockResp, validateCartStockSuccess])
 
   const contactInformationRefs = useMemo(
     () => ({ giftMessageRef, isGiftRef, recipientEmailRef }),
@@ -373,6 +428,7 @@ const CheckoutPage: NextPage<PageProps> = () => {
     <>
       <NextSeo nofollow noindex title="Checkout" />
       <main>
+        <button onClick={handleValidateCart}>handle validate cart</button>
         <div className="mt-8 flex h-full flex-col-reverse rounded lg:flex-row">
           <div className="h-full flex-1 space-y-6 rounded">
             <ContactInformation

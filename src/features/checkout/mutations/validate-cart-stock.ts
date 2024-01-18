@@ -27,6 +27,9 @@ type ValidateCartStockResponse = ValidateCartStockSuccess | Failure
 type ValidateCartStockOptions = {
   CartId: string
 }
+type ValidateCartStockMutationOptions = {
+  returnData?: boolean
+}
 
 const fallbackErrorMessage = "Couldn't route to the checkout page, please try again!"
 
@@ -46,7 +49,7 @@ export const validateCartStock = async ({ CartId }: ValidateCartStockOptions) =>
 }
 
 
-export const useValidateCartStockMutation = () => {
+export const useValidateCartStockMutation = (returnData = false): ValidateCartStockMutationOptions => {
   const { data: session } = useSession()
   const { cartOpen, toggleCartOpen } = useCartOpen()
   const router = useRouter()
@@ -56,7 +59,12 @@ export const useValidateCartStockMutation = () => {
       const price = item.onSalePrice || item.price
       return price * (item.quantity || 1) + total
     }, 0) || 0
-  return useMutation({
+  const {
+    data,
+    error,
+    mutate,
+    isLoading, isSuccess
+  } = useMutation({
     mutationFn: () =>
       validateCartStock({
         CartId: cart?.id || '',
@@ -73,22 +81,41 @@ export const useValidateCartStockMutation = () => {
           session?.user ? redirection : `${redirection}?redirectTo=${CHECKOUT_PAGE_PATH}`,
           redirection
         )
+
         if (cart?.items !== undefined) {
           // Track either the user clicked on checkout button
           trackCheckoutBegin(cart?.items, subtotal)
         }
+
         toggleCartOpen()
+
       } else {
-        if (data?.Response?.length > 0) {
+        if (returnData) {
+          return { data };
+        }
+
+        else if (data?.Response?.length > 0) {
+
           const unAvailableProducts = data.Response.map(
             (errorMsg: any) => `<li>${errorMsg.DisplayName}</li>`
           ).join('')
+
           const message = `One or more products in your cart are not available for purchase. Please remove them in order to proceed.`
+
           toast("error", message, `\n<ul>${unAvailableProducts}</ul>`)
+
         } else {
+
           toast("error", data?.Response?.[0]?.Error?.Message || fallbackErrorMessage)
         }
       }
     },
   })
+  return {
+    data,
+    error,
+    mutate,
+    isLoading,
+    isSuccess
+  };
 }

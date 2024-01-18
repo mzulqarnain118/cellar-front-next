@@ -1,0 +1,43 @@
+/* Customize font-family for title */
+.title {
+  color: rgb(183, 113, 91);
+  font-family: proxima-nova, sans-serif !important;
+  font-size: 24px !important;
+  font-weight: 600 !important; /* Replace with your preferred title font-family */
+}
+
+/* Customize font-family for buttons */
+.buttonsContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.cancelButton,
+.confirmButton {
+  flex: 1;
+  font-family: proxima-nova, sans-serif; /* Replace with your preferred button font-family */
+  /* Add other button styles as needed */
+}
+
+.confirmButton {
+  color: #fff !important;
+  background-color: #000 !important;
+}
+
+.typography {
+  padding-top: 30px;
+  padding-bottom: 16px;
+}
+
+.text {
+  font-family: proxima-nova, sans-serif; /* Replace with your preferred typography font-family */
+  padding-bottom: 16px;
+}
+
+.listContainer {
+  padding-left: 40px;
+}
+
+.listItem {
+  font-weight: 600;
+}
