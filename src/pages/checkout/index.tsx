@@ -41,7 +41,8 @@ import {
 import { toastInfo } from '@/lib/utils/notifications'
 
 import { useValidateCartStockMutation } from '@/features/checkout/mutations/validate-cart-stock'
-import { List, Text } from '@mantine/core'
+import { useGetSubtotalQuery } from '@/lib/queries/checkout/get-subtotal'
+import { List, LoadingOverlay, Text } from '@mantine/core'
 import { modals } from '@mantine/modals'
 import { authOptions } from '../api/auth/[...nextauth]'
 
@@ -142,6 +143,8 @@ const CheckoutPage: NextPage<PageProps> = () => {
     useScrollIntoView<HTMLInputElement>(scrollIntoViewSettings)
   const { targetRef: wineClubRef, scrollIntoView: scrollWineClubIntoView } =
     useScrollIntoView<HTMLInputElement>(scrollIntoViewSettings)
+
+  const { isRefetching: isRefetchingSubTotal } = useGetSubtotalQuery()
 
   const handleValidateCart = async () => await vaildateCartStock();
   const removedCartItems = useCheckoutRemovedCartItems()
@@ -476,6 +479,7 @@ const CheckoutPage: NextPage<PageProps> = () => {
 
   return (
     <>
+      <LoadingOverlay visible={isRefetchingSubTotal} />
       <NextSeo nofollow noindex title="Checkout" />
       <main>
         <button onClick={handleValidateCart}>handle validate cart</button>

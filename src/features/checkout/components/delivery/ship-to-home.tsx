@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import dynamic from 'next/dynamic'
 
 import { PlusIcon } from '@heroicons/react/24/outline'
-import { Collapse, LoadingOverlay, Select, SelectProps, Skeleton } from '@mantine/core'
+import { Collapse, Select, SelectProps, Skeleton } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { modals } from '@mantine/modals'
 import { notifications } from '@mantine/notifications'
@@ -98,15 +98,15 @@ export const ShipToHome = ({ refs }: ShipToHomeProps) => {
     () =>
       !!data && data.addresses.length > 0
         ? data.addresses.map(data => {
-            const label =
-              !!data.FirstName && !!data.LastName ? `${data.FirstName} ${data.LastName}, ` : ''
+          const label =
+            !!data.FirstName && !!data.LastName ? `${data.FirstName} ${data.LastName}, ` : ''
 
-            return {
-              data,
-              label: `${label}${data.Street1}, ${data.City}, ${data.ProvinceAbbreviation} ${data.PostalCode}`,
-              value: data.AddressID.toString(),
-            }
-          })
+          return {
+            data,
+            label: `${label}${data.Street1}, ${data.City}, ${data.ProvinceAbbreviation} ${data.PostalCode}`,
+            value: data.AddressID.toString(),
+          }
+        })
         : [],
     [data]
   )
@@ -114,12 +114,12 @@ export const ShipToHome = ({ refs }: ShipToHomeProps) => {
     () =>
       shippingMethodsData !== undefined
         ? shippingMethodsData
-            .map(method => ({
-              data: method,
-              label: `${method.displayName} (${formatCurrency(method.shippingPrice)})`,
-              value: method.shippingMethodId.toString(),
-            }))
-            .filter(method => !isPickUpShippingMethodId(method.data.shippingMethodId))
+          .map(method => ({
+            data: method,
+            label: `${method.displayName} (${formatCurrency(method.shippingPrice)})`,
+            value: method.shippingMethodId.toString(),
+          }))
+          .filter(method => !isPickUpShippingMethodId(method.data.shippingMethodId))
         : [],
     [shippingMethodsData]
   )
@@ -211,7 +211,6 @@ export const ShipToHome = ({ refs }: ShipToHomeProps) => {
 
   return (
     <div className="space-y-4">
-      <LoadingOverlay visible={disabled} />
       <Collapse in={!addressFormOpen}>
         {data === undefined ? (
           <>
