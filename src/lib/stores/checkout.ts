@@ -62,6 +62,7 @@ interface CheckoutStoreState {
   isPickUp: boolean
   promoCode: Code
   removedCartItems: Cart['items']
+  removedCartItemsCheckout: Cart['items']
   selectedPickUpAddress?: Address
   selectedPickUpOption?: PickUpOption
 }
@@ -89,6 +90,7 @@ interface CheckoutStoreActions {
   setIsPickUp: Setter<boolean>
   setPromoCode: Setter<Code>
   setRemovedCartItems: Setter<Cart['items'] | undefined>
+  setRemovedCartItemsCheckout: Setter<Cart['items'] | undefined>
   setSelectedPickUpAddress: Setter<Address | undefined>
   setSelectedPickUpOption: Setter<PickUpOption | undefined>
   toggleIsAddingGiftMessage: () => void
@@ -128,6 +130,7 @@ const initialValues: CheckoutStoreState = {
     isAdded: false,
   },
   removedCartItems: [],
+  removedCartItemsCheckout: [],
 }
 
 export const useCheckoutStore = create<CheckoutStore>()(
@@ -212,6 +215,10 @@ export const useCheckoutStore = create<CheckoutStore>()(
           typeof update === 'function'
             ? set(({ removedCartItems }) => ({ removedCartItems: update(removedCartItems) }))
             : set(() => ({ removedCartItems: update })),
+        setRemovedCartItemsCheckout: update =>
+          typeof update === 'function'
+            ? set(({ removedCartItemsCheckout }) => ({ removedCartItemsCheckout: update(removedCartItemsCheckout) }))
+            : set(() => ({ removedCartItemsCheckout: update })),
         setSelectedPickUpAddress: update =>
           typeof update === 'function'
             ? set(({ selectedPickUpAddress }) => ({
@@ -274,16 +281,19 @@ export const useCheckoutStore = create<CheckoutStore>()(
 
     {
       name: 'checkout',
-      partialize: ({ appliedSkyWallet, giftCardCode, giftMessage, guestAddress, promoCode }) => ({
+      partialize: ({ appliedSkyWallet, giftCardCode, giftMessage, guestAddress, promoCode, removedCartItemsCheckout }) => ({
         appliedSkyWallet,
         giftCardCode,
         giftMessage,
         guestAddress,
         promoCode,
+        removedCartItemsCheckout,
       }),
     }
   )
 )
+
+
 
 export const useCheckoutActiveShippingAddress = () => {
   const selector = useCallback(
@@ -383,6 +393,14 @@ export const useCheckoutRemovedCartItems = () => {
   return useCheckoutStore(selector)
 }
 
+export const useCheckoutRemovedCartItemsCheckout = () => {
+  const selector = useCallback(
+    ({ removedCartItemsCheckout }: CheckoutStore) => removedCartItemsCheckout,
+    []
+  )
+  return useCheckoutStore(selector)
+}
+
 export const useCheckoutSelectedPickUpAddress = () => {
   const selector = useCallback(
     ({ selectedPickUpAddress }: CheckoutStore) => selectedPickUpAddress,
@@ -403,3 +421,10 @@ export const useCheckoutActions = () => {
   const selector = useCallback(({ actions }: CheckoutStore) => actions, [])
   return useCheckoutStore(selector)
 }
+
+
+// // Enable Zustand DevTools extension
+// if (process.env.NODE_ENV === 'development') {
+//   const { devtools } = require('zustand/middleware');
+//   useCheckoutStore.use(devtools);
+// }

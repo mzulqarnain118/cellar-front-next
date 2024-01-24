@@ -34,8 +34,9 @@ import {
   useCheckoutIsPickUp,
   useCheckoutPromoCode,
   useCheckoutRemovedCartItems,
+  useCheckoutRemovedCartItemsCheckout,
   useCheckoutSelectedPickUpAddress,
-  useCheckoutSelectedPickUpOption,
+  useCheckoutSelectedPickUpOption
 } from '@/lib/stores/checkout'
 import { toastInfo } from '@/lib/utils/notifications'
 
@@ -96,9 +97,10 @@ const CheckoutPage: NextPage<PageProps> = () => {
   const giftMessage = useCheckoutGiftMessage()
   const giftCardCodes = useCheckoutGiftCardCode()
   const promoCodes = useCheckoutPromoCode()
+  const removedCartItemsCheckout = useCheckoutRemovedCartItemsCheckout();
   const selectedPickUpAddress = useCheckoutSelectedPickUpAddress()
   const selectedPickUpOption = useCheckoutSelectedPickUpOption()
-  const { setErrors } = useCheckoutActions()
+  const { setErrors, setRemovedCartItemsCheckout } = useCheckoutActions()
   const guestCreditCard = useCheckoutGuestCreditCard()
   const creditCard = useMemo(
     () => guestCreditCard || activeCreditCard,
@@ -144,12 +146,55 @@ const CheckoutPage: NextPage<PageProps> = () => {
   const handleValidateCart = async () => await vaildateCartStock();
   const removedCartItems = useCheckoutRemovedCartItems()
 
+  console.log("🚀 ~ useEffect ~ removedCartItemsCheckout:", removedCartItemsCheckout)
+
+  const handleKeepShopping = () => {
+    console.log('cartData: ', cart)
+    modals.close
+  }
+
+  // const handleKeepShopping = async () => {
+  //   try {
+  //     setIsLoading(true)
+  //     let result
+  //     for (let product of removedCartProducts) {
+  //       await removeFromCart(product.OrderLineID)
+  //     }
+  //     setIsRemovedProductsModalOpen(false)
+
+  //     setIsLoading(false)
+  //     navigate('/wine')
+  //   } catch (e) {
+  //     showErrorNotification('Please Try Again')
+  //     setIsLoading(false)
+  //   }
+  // }
+  // const handleContinue = async () => {
+  //   try {
+  //     setIsLoading(true)
+  //     let result
+  //     for (let product of removedCartProducts) {
+  //       await removeFromCart(product.OrderLineID)
+  //     }
+  //     setIsRemovedProductsModalOpen(false)
+
+  //     setIsLoading(false)
+  //     if (cartData.items.length === 0) {
+  //       navigate('/wine')
+  //     }
+  //   } catch (e) {
+  //     showErrorNotification('Please Try Again')
+  //     setIsLoading(false)
+  //   }
+  // }
 
   useEffect(() => {
     console.log("🚀 ~ useEffect ~ validateCartStockSuccess:", validateCartStockSuccess)
-    console.log("🚀 ~ removedCartItems:", removedCartItems)
+    console.log("🚀 ~ useEffect ~ validateCartStockResp:", validateCartStockResp)
 
     if (validateCartStockSuccess && !validateCartStockResp?.Success) {
+
+      setRemovedCartItemsCheckout(validateCartStockResp?.Response)
 
       modals.openContextModal({
         centered: true,
@@ -159,7 +204,12 @@ const CheckoutPage: NextPage<PageProps> = () => {
               <div className={`grid ${modalStyles.typography}`}>
                 <Text className={modalStyles.text} fz='md' lh="xl">One or more products from your cart are not available to purchase and will be removed:</Text>
                 <List className={modalStyles.listContainer}>
-                  {validateCartStockResp?.Response.map(item => <List.Item className={modalStyles.listItem} key={item.SKU}>{item.DisplayName}</List.Item>)}
+                  {validateCartStockResp?.Response.map(item => {
+                    console.log('item: ', item)
+
+                    return <List.Item className={modalStyles.listItem} key={item.SKU}>{item.DisplayName}</List.Item>
+                  })
+                  }
                 </List>
               </div>
             </div>
@@ -167,11 +217,10 @@ const CheckoutPage: NextPage<PageProps> = () => {
           cancelText: 'Yes, Continue',
           confirmText: 'Keep Shopping',
           onCancel: () => {
+            debugger
             modals.close;
           },
-          onConfirm: () => {
-            console.log('Confirmed');
-          },
+          onConfirm: handleKeepShopping,
           cancelButtonProps: {
             className: `${modalStyles.cancelButton}`,
           },
@@ -187,6 +236,7 @@ const CheckoutPage: NextPage<PageProps> = () => {
       });
     }
   }, [validateCartStockResp, validateCartStockSuccess])
+
 
   const contactInformationRefs = useMemo(
     () => ({ giftMessageRef, isGiftRef, recipientEmailRef }),
