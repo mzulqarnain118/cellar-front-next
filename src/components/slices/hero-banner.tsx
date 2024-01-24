@@ -97,12 +97,12 @@ export const HeroBanner = ({ slice }: HeroBannerProps) => {
     <>
       <div
         className={clsx(
-          'relative mx-auto flex min-h-[500px] flex-col items-center justify-center bg-cover bg-center bg-no-repeat lg:min-h-[600px]'
+          'relative mx-auto flex flex-col items-center justify-center bg-cover bg-center bg-no-repeat lg:min-h-[600px]'
         )}
         style={{
           backgroundColor:
             !!bgVideoUrl && bgVideoUrl.length > 0
-              ? '#000000'
+              ? '#ffffff'
               : slice.primary.background_color || '#ffffff',
           backgroundImage:
             !!bgVideoUrl && bgVideoUrl.length > 0
@@ -116,7 +116,7 @@ export const HeroBanner = ({ slice }: HeroBannerProps) => {
             loop
             muted
             playsInline
-            className="h-[600px] w-screen object-cover"
+            className="top-0 left-0 min-h-[fit-content] w-screen object-contain md:object-cover lg:absolute lg:h-[600px]"
             style={{ opacity: bgOpacity }}
           >
             <source src={bgVideoUrl} type="video/mp4" />

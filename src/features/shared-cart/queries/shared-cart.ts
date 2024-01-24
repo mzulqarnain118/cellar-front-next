@@ -28,7 +28,7 @@ export const getSharedCart: QueryFunction<
     }
     useProcessStore.getState().toggleCartOpen()
     toastLoading({ message: 'Loading shared cart...' })
-    const response = await api('GetSharedCart', {
+    const response = await api('v2/GetSharedCart', {
       json: { ProvinceId: provinceId, SharedCartId: sharedCartId },
       method: 'post',
     }).json<GetSharedCartResponse>()

@@ -131,7 +131,7 @@ export const Header = () => {
     () =>
       !isFetchingCTA && !isLoadingCTA ? (
         <Button
-          className="mb-2 !bg-[#864f4f] text-lg text-[#f5f3f2] lg:mb-0 lg:w-max"
+          className="mb-2 !bg-[#085250] text-lg text-[#f5f3f2] lg:mb-0 lg:w-max"
           color="ghost"
           fullWidth={!isDesktop}
         >

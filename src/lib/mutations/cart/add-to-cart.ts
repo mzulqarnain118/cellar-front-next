@@ -13,7 +13,7 @@ import { CART_QUERY_KEY, useCartQuery } from '@/lib/queries/cart'
 import { GET_SUBTOTAL_QUERY, OrderPrice } from '@/lib/queries/checkout/get-subtotal'
 import { useCheckoutActions, useCheckoutAppliedSkyWallet } from '@/lib/stores/checkout'
 import { useShippingStateStore } from '@/lib/stores/shipping-state'
-import { clearAllToasts, toastError, toastInfo, toastLoading } from '@/lib/utils/notifications'
+import toast, { clearAllToasts, toastError, toastInfo, toastLoading } from '@/lib/utils/notifications'
 
 import { api } from '../../api'
 import { useProcessStore } from '../../stores/process'
@@ -31,7 +31,7 @@ export interface AddToCartOptions {
 }
 
 export const addToCart = async (options: AddToCartOptions) => {
-  toastLoading({ message: 'Adding to cart...' })
+  toast('loading','Adding to cart...' )
   const response = await api('v2/checkout/AddToCart', {
     json: {
       CartID: options.cartId,
@@ -47,7 +47,7 @@ export const addToCart = async (options: AddToCartOptions) => {
     return response
   } else {
     notifications.clean()
-    throw new Error(response.Error.Traceback?.Notifications?.[0]?.Message)
+    throw new Error(response?.Error?.Traceback?.Notifications?.[0]?.Message ?? response?.Error?.Message)
   }
 }
 
@@ -86,7 +86,7 @@ export const useAddToCartMutation = () => {
     onError: (error, _product, context) => {
       queryClient.setQueryData(queryKey, context?.previousCart)
       setCartStorage(context?.previousCart)
-      toastError({ message: error.message })
+      toast("error", error.message)
     },
     onMutate: async product => {
       setIsMutatingCart(true)
