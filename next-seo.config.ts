@@ -1,10 +1,9 @@
 import { DefaultSeoProps } from 'next-seo'
 
 const defaultSEOConfig: DefaultSeoProps = {
-  defaultTitle: 'Scout & Cellar - Discover the Difference of Clean-Crafted™',
+  defaultTitle: 'Scout & Cellar | Wine | Coffee | Cooking Products',
   description: `
-    We create an authentic, sustainable, and delicious approach to winemaking. Our wine is free of
-    toxic pesticides, artificial processing aids, and added sugar.
+  Everything that leaves our doors is created to taste great, to do better for our planet, and to improve the way we live. Live for Today. Care for Tomorrow ™.
   `,
   openGraph: {
     locale: 'en_US',
