@@ -311,6 +311,7 @@ export const CreditCardForm = ({ onCancel, onCreate }: CreditCardFormProps) => {
             />
             <Input
               dirty={dirtyFields.cvc}
+              touched={touchedFields.cvc}
               error={errors.cvc?.message}
               label="CVV"
               size="sm"
@@ -321,7 +322,6 @@ export const CreditCardForm = ({ onCancel, onCreate }: CreditCardFormProps) => {
               })}
               pattern="^\d{3,4}$"
               type="tel"
-                          touched={touchedFields.cvc}
               onFocus={handleInputFocus}
             />
             <Input

@@ -52,7 +52,6 @@ export const Input = forwardRef<HTMLInputElement, Props>(
     ref
   ) => {
     const valid = dirty && touched && !error
-
     let color = valid ? 'success' : selectedColor
     if (!valid && required) {
       color = 'error'
@@ -113,7 +112,7 @@ export const Input = forwardRef<HTMLInputElement, Props>(
                   {...register}
                 />
                 { label === "CVV" ? (
-                  valid?
+                  valid || (props?.name==="cvv" &&props?.value?.length>=3)?
                   <CheckCircleIcon
                     className={`
                     pointer-events-none absolute inset-y-0 right-1 top-1 z-50 h-8 w-8

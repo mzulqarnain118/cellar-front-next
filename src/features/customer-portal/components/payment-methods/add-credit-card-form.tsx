@@ -74,7 +74,7 @@ export const AddCreditCardForm = ({ handleClose }: AddCreditCardFormProps) => {
 
   const methods = useForm<CreditCardFormSchema>(formProps)
   const {
-    formState: { errors },
+    formState: { errors, dirtyFields, touchedFields },
     handleSubmit,
     register,
     setError,
@@ -266,6 +266,8 @@ export const AddCreditCardForm = ({ handleClose }: AddCreditCardFormProps) => {
             />
             <Input
               error={errors.cvc?.message}
+              dirty={dirtyFields.cvc}
+              touched={touchedFields.cvc}
               label="CVV"
               size="sm"
               {...register('cvc', {
