@@ -1,27 +1,27 @@
-import { useCallback, useEffect, useMemo, useRef } from 'react'
+import { useRouter } from 'next/router';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 
-import dynamic from 'next/dynamic'
-import { useRouter } from 'next/router'
+import dynamic from 'next/dynamic';
 
-import { useDisclosure, useReducedMotion, useScrollIntoView, useWindowScroll } from '@mantine/hooks'
-import { notifications } from '@mantine/notifications'
-import { useQueryClient } from '@tanstack/react-query'
-import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next'
-import { getServerSession } from 'next-auth'
-import { NextSeo } from 'next-seo'
-import { Badge } from 'react-daisyui'
+import { useDisclosure, useReducedMotion, useScrollIntoView, useWindowScroll } from '@mantine/hooks';
+import { notifications } from '@mantine/notifications';
+import { useQueryClient } from '@tanstack/react-query';
+import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next';
+import { getServerSession } from 'next-auth';
+import { NextSeo } from 'next-seo';
+import { Badge } from 'react-daisyui';
 
-import { Link } from '@/components/link'
-import { Typography } from '@/core/components/typogrpahy'
-import modalStyles from './modalStyles.module.css'
+import { Link } from '@/components/link';
+import { Typography } from '@/core/components/typogrpahy';
+import modalStyles from './modalStyles.module.css';
 
-import { wait } from '@/core/utils/time'
-import { ContactInformation } from '@/features/checkout/components/contact-information'
-import { Delivery } from '@/features/checkout/components/delivery'
-import { Payment } from '@/features/checkout/components/payment'
-import { useSetCartOwnerMutation } from '@/lib/mutations/cart/set-owner'
-import { SIGN_IN_PAGE_PATH, WINE_PAGE_PATH } from '@/lib/paths'
-import { CART_QUERY_KEY, useCartQuery } from '@/lib/queries/cart'
+import { wait } from '@/core/utils/time';
+import { ContactInformation } from '@/features/checkout/components/contact-information';
+import { Delivery } from '@/features/checkout/components/delivery';
+import { Payment } from '@/features/checkout/components/payment';
+import { useSetCartOwnerMutation } from '@/lib/mutations/cart/set-owner';
+import { SIGN_IN_PAGE_PATH, WINE_PAGE_PATH } from '@/lib/paths';
+import { CART_QUERY_KEY, useCartQuery } from '@/lib/queries/cart';
 import {
   useCheckoutActions,
   useCheckoutActiveCreditCard,
@@ -33,18 +33,17 @@ import {
   useCheckoutIsAddingGiftMessage,
   useCheckoutIsPickUp,
   useCheckoutPromoCode,
-  useCheckoutRemovedCartItems,
-  useCheckoutRemovedCartItemsCheckout,
   useCheckoutSelectedPickUpAddress,
   useCheckoutSelectedPickUpOption
-} from '@/lib/stores/checkout'
-import { toastInfo } from '@/lib/utils/notifications'
+} from '@/lib/stores/checkout';
+import { toastInfo } from '@/lib/utils/notifications';
 
-import { useValidateCartStockMutation } from '@/features/checkout/mutations/validate-cart-stock'
-import { useGetSubtotalQuery } from '@/lib/queries/checkout/get-subtotal'
-import { List, LoadingOverlay, Text } from '@mantine/core'
-import { modals } from '@mantine/modals'
-import { authOptions } from '../api/auth/[...nextauth]'
+import { useValidateCartStockMutation } from '@/features/checkout/mutations/validate-cart-stock';
+import { useRemoveFromCartMutation } from '@/lib/mutations/cart/remove-from-cart';
+import { useGetSubtotalQuery } from '@/lib/queries/checkout/get-subtotal';
+import { List, LoadingOverlay, Text } from '@mantine/core';
+import { modals } from '@mantine/modals';
+import { authOptions } from '../api/auth/[...nextauth]';
 
 const CartSummary = dynamic(
   () =>
@@ -98,7 +97,6 @@ const CheckoutPage: NextPage<PageProps> = () => {
   const giftMessage = useCheckoutGiftMessage()
   const giftCardCodes = useCheckoutGiftCardCode()
   const promoCodes = useCheckoutPromoCode()
-  const removedCartItemsCheckout = useCheckoutRemovedCartItemsCheckout();
   const selectedPickUpAddress = useCheckoutSelectedPickUpAddress()
   const selectedPickUpOption = useCheckoutSelectedPickUpOption()
   const { setErrors, setRemovedCartItemsCheckout } = useCheckoutActions()
@@ -147,58 +145,60 @@ const CheckoutPage: NextPage<PageProps> = () => {
   const { isRefetching: isRefetchingSubTotal } = useGetSubtotalQuery()
 
   const handleValidateCart = async () => await vaildateCartStock();
-  const removedCartItems = useCheckoutRemovedCartItems()
+  const { mutate: removeFromCart } = useRemoveFromCartMutation();
 
-  // console.log("🚀 ~ useEffect ~ removedCartItemsCheckout:", removedCartItemsCheckout)
+  const handleNavigateToWinePage = () => {
+    router.push('/wine');
+  };
 
   const handleKeepShopping = () => {
-    console.log('cartData: ', cart)
+    const products = [];
+
+    validateCartStockResp?.Response.forEach(item => {
+      const itemSKU = item.SKU.toLowerCase();
+
+      const product = cart?.items.find(cartItem => cartItem.sku === itemSKU);
+
+      products.push(product);
+    });
+
+    products.forEach((product, index) => {
+      if (index === products.length - 1) {
+        removeFromCart({ item: product, sku: product.sku, fetchSubtotal: true });
+      } else {
+        removeFromCart({ item: product, sku: product.sku, fetchSubtotal: false });
+      }
+    });
+
+    modals.close
+    handleNavigateToWinePage()
+  }
+
+  const handleContinue = () => {
+    const products = [];
+
+    validateCartStockResp?.Response.forEach(item => {
+      const itemSKU = item.SKU.toLowerCase();
+
+      const product = cart?.items.find(cartItem => cartItem.sku === itemSKU);
+
+      products.push(product);
+    });
+
+    products.forEach((product, index) => {
+      if (index === products.length - 1) {
+        removeFromCart({ item: product, sku: product.sku, fetchSubtotal: true });
+      } else {
+        removeFromCart({ item: product, sku: product.sku, fetchSubtotal: false });
+      }
+    });
+
     modals.close
   }
 
-  // const handleKeepShopping = async () => {
-  //   try {
-  //     setIsLoading(true)
-  //     let result
-  //     for (let product of removedCartProducts) {
-  //       await removeFromCart(product.OrderLineID)
-  //     }
-  //     setIsRemovedProductsModalOpen(false)
-
-  //     setIsLoading(false)
-  //     navigate('/wine')
-  //   } catch (e) {
-  //     showErrorNotification('Please Try Again')
-  //     setIsLoading(false)
-  //   }
-  // }
-  // const handleContinue = async () => {
-  //   try {
-  //     setIsLoading(true)
-  //     let result
-  //     for (let product of removedCartProducts) {
-  //       await removeFromCart(product.OrderLineID)
-  //     }
-  //     setIsRemovedProductsModalOpen(false)
-
-  //     setIsLoading(false)
-  //     if (cartData.items.length === 0) {
-  //       navigate('/wine')
-  //     }
-  //   } catch (e) {
-  //     showErrorNotification('Please Try Again')
-  //     setIsLoading(false)
-  //   }
-  // }
-
   useEffect(() => {
-    // console.log("🚀 ~ useEffect ~ validateCartStockSuccess:", validateCartStockSuccess)
-    // console.log("🚀 ~ useEffect ~ validateCartStockResp:", validateCartStockResp)
 
     if (validateCartStockSuccess && !validateCartStockResp?.Success) {
-
-      setRemovedCartItemsCheckout(validateCartStockResp?.Response)
-
       modals.openContextModal({
         centered: true,
         innerProps: {
@@ -208,8 +208,6 @@ const CheckoutPage: NextPage<PageProps> = () => {
                 <Text className={modalStyles.text} fz='md' lh="xl">One or more products from your cart are not available to purchase and will be removed:</Text>
                 <List className={modalStyles.listContainer}>
                   {validateCartStockResp?.Response.map(item => {
-                    console.log('item: ', item)
-
                     return <List.Item className={modalStyles.listItem} key={item.SKU}>{item.DisplayName}</List.Item>
                   })
                   }
@@ -219,10 +217,7 @@ const CheckoutPage: NextPage<PageProps> = () => {
           ),
           cancelText: 'Yes, Continue',
           confirmText: 'Keep Shopping',
-          onCancel: () => {
-            debugger
-            modals.close;
-          },
+          onCancel: handleContinue,
           onConfirm: handleKeepShopping,
           cancelButtonProps: {
             className: `${modalStyles.cancelButton}`,
@@ -411,6 +406,10 @@ const CheckoutPage: NextPage<PageProps> = () => {
       return false
     }
 
+    if (validateCartStockSuccess && !validateCartStockResp?.Success) {
+      return false
+    }
+
     return true
   }, [
     autoSipRef,
@@ -448,6 +447,8 @@ const CheckoutPage: NextPage<PageProps> = () => {
     selectedPickUpOption,
     setErrors,
     termsRef,
+    validateCartStockResp,
+    validateCartStockSuccess,
     wineClubRef,
   ])
 
@@ -482,7 +483,7 @@ const CheckoutPage: NextPage<PageProps> = () => {
       <LoadingOverlay visible={isRefetchingSubTotal} />
       <NextSeo nofollow noindex title="Checkout" />
       <main>
-        <button onClick={handleValidateCart}>handle validate cart</button>
+        {/* <button onClick={handleValidateCart}>handle validate cart</button> */}
         <div className="mt-8 flex h-full flex-col-reverse rounded lg:flex-row">
           <div className="h-full flex-1 space-y-6 rounded">
             <ContactInformation
@@ -492,7 +493,7 @@ const CheckoutPage: NextPage<PageProps> = () => {
             />
             <Delivery opened={deliveryOpened} refs={deliveryRefs} toggle={toggleDelivery} />
             <Payment opened={paymentOpened} refs={paymentRefs} toggle={togglePayment} />
-            <PayForOrder refs={payForOrderRefs} validate={validate} />
+            <PayForOrder refs={payForOrderRefs} validate={validate} handleValidateCart={handleValidateCart} />
           </div>
           <div className="flex-1">
             <div

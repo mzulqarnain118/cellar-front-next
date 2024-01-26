@@ -39,7 +39,7 @@ interface PayForOrderProps {
   validate: () => Promise<boolean>
 }
 
-export const PayForOrder = ({ refs, validate }: PayForOrderProps) => {
+export const PayForOrder = ({ refs, validate, handleValidateCart }: PayForOrderProps) => {
   const { data: cart } = useCartQuery()
   const errors = useCheckoutErrors()
   const { data: totalData } = useGetSubtotalQuery()
@@ -64,6 +64,7 @@ export const PayForOrder = ({ refs, validate }: PayForOrderProps) => {
   )
 
   const handleSubmit: MouseEventHandler<HTMLButtonElement> = useCallback(async () => {
+    handleValidateCart()
     const valid = await validate()
 
     if (valid) {
