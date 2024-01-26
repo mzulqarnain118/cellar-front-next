@@ -99,7 +99,7 @@ export const CreditCardForm = ({ onCancel, onCreate }: CreditCardFormProps) => {
   )
   const methods = useForm<CreditCardFormSchema>(formProps)
   const {
-    formState: { errors },
+    formState: { errors, dirtyFields, touchedFields },
     handleSubmit,
     register,
     setError,
@@ -113,7 +113,6 @@ export const CreditCardForm = ({ onCancel, onCreate }: CreditCardFormProps) => {
     name: '',
     number: '',
   })
-
   const handleInputChange: ChangeEventHandler<HTMLInputElement> = useCallback(({ target }) => {
     if (target.name === 'number') {
       target.value = formatCreditCardNumber(target.value)
@@ -311,6 +310,7 @@ export const CreditCardForm = ({ onCancel, onCreate }: CreditCardFormProps) => {
               onFocus={handleInputFocus}
             />
             <Input
+              dirty={dirtyFields.cvc}
               error={errors.cvc?.message}
               label="CVV"
               size="sm"
@@ -321,6 +321,7 @@ export const CreditCardForm = ({ onCancel, onCreate }: CreditCardFormProps) => {
               })}
               pattern="^\d{3,4}$"
               type="tel"
+                          touched={touchedFields.cvc}
               onFocus={handleInputFocus}
             />
             <Input

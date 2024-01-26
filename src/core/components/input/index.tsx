@@ -1,6 +1,6 @@
 import { ReactNode, forwardRef } from 'react'
 
-import { CheckCircleIcon } from '@heroicons/react/24/outline'
+import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline'
 import { Collapse, Loader } from '@mantine/core'
 import { clsx } from 'clsx'
 import { Input as DaisyInput, InputGroup, InputProps } from 'react-daisyui'
@@ -24,6 +24,7 @@ interface Props<TFieldValues extends FieldValues = FieldValues> extends InputPro
   right?: ReactNode
   size?: 'sm' | 'md'
   touched?: boolean
+  values?: any
 }
 
 export const Input = forwardRef<HTMLInputElement, Props>(
@@ -45,11 +46,13 @@ export const Input = forwardRef<HTMLInputElement, Props>(
       color: selectedColor = 'primary',
       size = 'md',
       touched = false,
+      values,
       ...props
     },
     ref
   ) => {
     const valid = dirty && touched && !error
+
     let color = valid ? 'success' : selectedColor
     if (!valid && required) {
       color = 'error'
@@ -109,11 +112,24 @@ export const Input = forwardRef<HTMLInputElement, Props>(
                   {...props}
                   {...register}
                 />
-                {right !== undefined ? (
+                { label === "CVV" ? (
+                  valid?
+                  <CheckCircleIcon
+                    className={`
+                    pointer-events-none absolute inset-y-0 right-1 top-1 z-50 h-8 w-8
+                    stroke-success stroke-2
+                  `}
+                  />: <XCircleIcon
+                    className={`
+                    pointer-events-none absolute inset-y-0 right-1 top-1 z-50 h-8 w-8
+                    stroke-error stroke-2
+                  `}
+                  />
+                ) : right !== undefined ? (
                   <Typography className="!rounded-r">{right}</Typography>
                 ) : undefined}
               </Wrapper>
-              {valid && !loading ? (
+              {valid && !loading && label !== "CVV" ? (
                 <CheckCircleIcon
                   className={`
                     pointer-events-none absolute inset-y-0 right-3 top-2.5 z-50 h-5 w-5
