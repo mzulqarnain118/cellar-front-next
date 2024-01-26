@@ -81,8 +81,6 @@ const scrollIntoViewSettings = { duration: 500, offset: 120 }
 
 const CheckoutPage: NextPage<PageProps> = () => {
   const { mutate: setCartOwner } = useSetCartOwnerMutation()
-  const { mutate: vaildateCartStock, data: validateCartStockResp, isLoading: validateCartStockLoading, isSuccess: validateCartStockSuccess } = useValidateCartStockMutation({ returnData: true });
-
   const { data: cart } = useCartQuery()
   const router = useRouter()
   const [scroll] = useWindowScroll()
@@ -141,10 +139,10 @@ const CheckoutPage: NextPage<PageProps> = () => {
     useScrollIntoView<HTMLInputElement>(scrollIntoViewSettings)
   const { targetRef: wineClubRef, scrollIntoView: scrollWineClubIntoView } =
     useScrollIntoView<HTMLInputElement>(scrollIntoViewSettings)
-
   const { isRefetching: isRefetchingSubTotal } = useGetSubtotalQuery()
-
+  const { mutate: vaildateCartStock, data: validateCartStockResp, isLoading: validateCartStockLoading, isSuccess: validateCartStockSuccess } = useValidateCartStockMutation({ returnData: true });
   const handleValidateCart = async () => await vaildateCartStock();
+
   const { mutate: removeFromCart } = useRemoveFromCartMutation();
 
   const handleNavigateToWinePage = () => {
@@ -196,46 +194,6 @@ const CheckoutPage: NextPage<PageProps> = () => {
     modals.close
   }
 
-  useEffect(() => {
-
-    if (validateCartStockSuccess && !validateCartStockResp?.Success) {
-      modals.openContextModal({
-        centered: true,
-        innerProps: {
-          body: (
-            <div className="grid gap-2">
-              <div className={`grid ${modalStyles.typography}`}>
-                <Text className={modalStyles.text} fz='md' lh="xl">One or more products from your cart are not available to purchase and will be removed:</Text>
-                <List className={modalStyles.listContainer}>
-                  {validateCartStockResp?.Response.map(item => {
-                    return <List.Item className={modalStyles.listItem} key={item.SKU}>{item.DisplayName}</List.Item>
-                  })
-                  }
-                </List>
-              </div>
-            </div>
-          ),
-          cancelText: 'Yes, Continue',
-          confirmText: 'Keep Shopping',
-          onCancel: handleContinue,
-          onConfirm: handleKeepShopping,
-          cancelButtonProps: {
-            className: `${modalStyles.cancelButton}`,
-          },
-          confirmButtonProps: {
-            className: `${modalStyles.confirmButton}`,
-          },
-        },
-        modal: 'confirmation',
-        title: 'Heads Up!',
-        classNames: {
-          title: modalStyles.title,
-        },
-      });
-    }
-  }, [validateCartStockResp, validateCartStockSuccess])
-
-
   const contactInformationRefs = useMemo(
     () => ({ giftMessageRef, isGiftRef, recipientEmailRef }),
     [giftMessageRef, recipientEmailRef]
@@ -260,6 +218,9 @@ const CheckoutPage: NextPage<PageProps> = () => {
     () => cart?.items.reduce((prev, item) => item.quantity + prev, 0) || 0,
     [cart?.items]
   )
+
+  console.log("🚀 ~ validate ~ validateCartStockSuccess:", validateCartStockSuccess)
+  console.log("🚀 ~ validate ~ validateCartStockResp?.Success:", validateCartStockResp?.Success)
 
   const validate = useCallback(async () => {
     if (isAddingGiftMessage) {
@@ -407,6 +368,40 @@ const CheckoutPage: NextPage<PageProps> = () => {
     }
 
     if (validateCartStockSuccess && !validateCartStockResp?.Success) {
+      modals.openContextModal({
+        centered: true,
+        innerProps: {
+          body: (
+            <div className="grid gap-2">
+              <div className={`grid ${modalStyles.typography}`}>
+                <Text className={modalStyles.text} fz='md' lh="xl">One or more products from your cart are not available to purchase and will be removed:</Text>
+                <List className={modalStyles.listContainer}>
+                  {validateCartStockResp?.Response.map(item => {
+                    return <List.Item className={modalStyles.listItem} key={item.SKU}>{item.DisplayName}</List.Item>
+                  })
+                  }
+                </List>
+              </div>
+            </div>
+          ),
+          cancelText: 'Yes, Continue',
+          confirmText: 'Keep Shopping',
+          onCancel: handleContinue,
+          onConfirm: handleKeepShopping,
+          cancelButtonProps: {
+            className: `${modalStyles.cancelButton}`,
+          },
+          confirmButtonProps: {
+            className: `${modalStyles.confirmButton}`,
+          },
+        },
+        modal: 'confirmation',
+        title: 'Heads Up!',
+        classNames: {
+          title: modalStyles.title,
+        },
+      });
+
       return false
     }
 
@@ -493,7 +488,7 @@ const CheckoutPage: NextPage<PageProps> = () => {
             />
             <Delivery opened={deliveryOpened} refs={deliveryRefs} toggle={toggleDelivery} />
             <Payment opened={paymentOpened} refs={paymentRefs} toggle={togglePayment} />
-            <PayForOrder refs={payForOrderRefs} validate={validate} handleValidateCart={handleValidateCart} />
+            <PayForOrder refs={payForOrderRefs} validate={validate} handleValidateCart={handleValidateCart} validateCartStockResp={validateCartStockResp} />
           </div>
           <div className="flex-1">
             <div

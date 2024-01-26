@@ -69,6 +69,7 @@ export const useValidateCartStockMutation = (returnData = false): ValidateCartSt
       validateCartStock({
         CartId: cart?.id || '',
       }),
+    mutationKey: 'validateCartStock',
     onMutate: () => {
       toast("loading", "Validating your cart...")
     },

@@ -99,9 +99,6 @@ export const CartItem = ({ product }: CartItemProps) => {
     [handleQuantityChange, product]
   )
 
-
-  console.log("🚀 ~ handleRemove ~ product:", product)
-
   const handleRemove = useCallback(() => {
     removeFromCart({ item: product, sku: product.sku })
   }, [product, removeFromCart])

@@ -39,7 +39,7 @@ interface PayForOrderProps {
   validate: () => Promise<boolean>
 }
 
-export const PayForOrder = ({ refs, validate, handleValidateCart }: PayForOrderProps) => {
+export const PayForOrder = ({ refs, validate, handleValidateCart, validateCartStockResp }: PayForOrderProps) => {
   const { data: cart } = useCartQuery()
   const errors = useCheckoutErrors()
   const { data: totalData } = useGetSubtotalQuery()
@@ -65,11 +65,7 @@ export const PayForOrder = ({ refs, validate, handleValidateCart }: PayForOrderP
 
   const handleSubmit: MouseEventHandler<HTMLButtonElement> = useCallback(async () => {
     handleValidateCart()
-    const valid = await validate()
 
-    if (valid) {
-      payForOrder({})
-    }
   }, [payForOrder, validate])
 
   useEffect(() => {
@@ -79,6 +75,20 @@ export const PayForOrder = ({ refs, validate, handleValidateCart }: PayForOrderP
       setLocked(false)
     }
   }, [isCheckingOut, setLocked])
+
+  useEffect(() => {
+    const functionCaller = async () => {
+      const valid = await validate()
+
+      if (valid) {
+        payForOrder({})
+      }
+    }
+
+    if (validateCartStockResp) {
+      functionCaller()
+    }
+  }, [validateCartStockResp])
 
   return (
     <>
