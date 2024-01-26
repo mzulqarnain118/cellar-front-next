@@ -149,7 +149,7 @@ const CheckoutPage: NextPage<PageProps> = () => {
   const handleValidateCart = async () => await vaildateCartStock();
   const removedCartItems = useCheckoutRemovedCartItems()
 
-  console.log("🚀 ~ useEffect ~ removedCartItemsCheckout:", removedCartItemsCheckout)
+  // console.log("🚀 ~ useEffect ~ removedCartItemsCheckout:", removedCartItemsCheckout)
 
   const handleKeepShopping = () => {
     console.log('cartData: ', cart)
@@ -192,8 +192,8 @@ const CheckoutPage: NextPage<PageProps> = () => {
   // }
 
   useEffect(() => {
-    console.log("🚀 ~ useEffect ~ validateCartStockSuccess:", validateCartStockSuccess)
-    console.log("🚀 ~ useEffect ~ validateCartStockResp:", validateCartStockResp)
+    // console.log("🚀 ~ useEffect ~ validateCartStockSuccess:", validateCartStockSuccess)
+    // console.log("🚀 ~ useEffect ~ validateCartStockResp:", validateCartStockResp)
 
     if (validateCartStockSuccess && !validateCartStockResp?.Success) {
 

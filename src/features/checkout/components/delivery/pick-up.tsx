@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 
 import dynamic from 'next/dynamic'
 
@@ -15,7 +15,7 @@ import {
 import { useUpdateShippingMethodMutation } from '@/lib/mutations/checkout/update-shipping-method'
 import { useGetSubtotalQuery } from '@/lib/queries/checkout/get-subtotal'
 import { useShippingMethodsQuery } from '@/lib/queries/checkout/shipping-methods'
-import { useCheckoutActions, useCheckoutErrors } from '@/lib/stores/checkout'
+import { useCheckoutActions, useCheckoutErrors, useCheckoutSelectedPickUpOption } from '@/lib/stores/checkout'
 
 import { ABC } from './abc'
 
@@ -32,7 +32,8 @@ interface PickUpProps {
 
 const radioClassNames: RadioProps['classNames'] = { label: 'text-14' }
 
-export const PickUp = ({ refs }: PickUpProps) => {
+export const PickUp = ({ refs
+}: PickUpProps) => {
   const errors = useCheckoutErrors()
   const { setErrors, setSelectedPickUpOption } = useCheckoutActions()
   const { mutate: updateShippingMethod, isLoading: isUpdatingShippingMethod } =
@@ -46,6 +47,7 @@ export const PickUp = ({ refs }: PickUpProps) => {
   const [lpuOpened, { close: closeLpu, toggle: toggleLpuOpened }] = useDisclosure(
     totalData?.shipping.methodId === LOCAL_PICK_UP_SHIPPING_METHOD_ID
   )
+  const selectedPickUpOption = useCheckoutSelectedPickUpOption()
 
   const handleLpuOpen = useCallback(() => {
     closeAbc()
@@ -101,6 +103,10 @@ export const PickUp = ({ refs }: PickUpProps) => {
     toggleAbcOpened,
     updateShippingMethod,
   ])
+
+  const pickupOptions = { lpu: handleLpuOpen, hal: handleHalOpen, abc: handleAbcOpen }
+
+  useEffect(() => { selectedPickUpOption && pickupOptions[selectedPickUpOption]() }, [])
 
   return (
     <div className="flex flex-col space-y-3">

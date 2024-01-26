@@ -27,6 +27,7 @@ export const Footer = () => {
         if (consultant?.url) {
           url.searchParams.append('u', consultant.url)
         }
+        console.log('URL: ', url)
         return url.toString()
       }
 

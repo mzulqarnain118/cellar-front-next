@@ -80,7 +80,7 @@ export const CartSummary = () => {
             Tax
           </Typography>
           <Typography noSpacing as="p" className="text-right">
-            {tax ? formatCurrency(tax) : '$--.--'}
+            {tax || tax === 0 ? formatCurrency(tax) : '$--.--'}
           </Typography>
         </div>
         {appliedSkyWallet ? (
@@ -102,7 +102,7 @@ export const CartSummary = () => {
           </Typography>
         </div>
         {shippingMethodId !== undefined &&
-        (SUMMER_PACKAGING.includes(shippingMethodId) || shippingMethodId > 39) ? (
+          (SUMMER_PACKAGING.includes(shippingMethodId) || shippingMethodId > 39) ? (
           <Typography as="em" className="block py-1 text-sm">
             * Orders with wine include a $5 shipping surcharge for EcoCoolPaks to protect your wine
             from summer heat.

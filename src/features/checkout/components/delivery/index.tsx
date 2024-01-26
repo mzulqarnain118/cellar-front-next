@@ -42,7 +42,6 @@ export const Delivery = memo(({ opened, refs, toggle }: DeliveryProps) => {
   const handleTabChange = useCallback(
     (tab: string) => {
       setValue(tab)
-
       if (tab === 'shipToHome' && value !== 'shipToHome') {
         updateShippingMethod({
           shippingMethodId:
@@ -55,10 +54,6 @@ export const Delivery = memo(({ opened, refs, toggle }: DeliveryProps) => {
 
   useEffect(() => {
     setIsPickUp(value === 'pickUp')
-
-    if (value === 'shipToHome') {
-      setSelectedPickUpOption(undefined)
-    }
   }, [setIsPickUp, setSelectedPickUpOption, value])
 
   return (

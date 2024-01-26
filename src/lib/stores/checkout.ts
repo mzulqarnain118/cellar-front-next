@@ -47,6 +47,7 @@ interface CheckoutStoreState {
   activeShippingAddress?: Address
   appliedSkyWallet: number
   contactInformation: ContactInformation
+  currentPickUpOption?: PickUpOption;
   cvv: string
   errors?: Errors
   giftCardCode: Code
@@ -75,6 +76,7 @@ interface CheckoutStoreActions {
   setActiveShippingAddress: (address: Address | undefined) => void
   setAppliedSkyWallet: Setter<number>
   setContactInformation: Setter<ContactInformation>
+  setCurrentPickUpOption: Setter<PickUpOption | undefined>;
   setCvv: Setter<string | undefined>
   setErrors: Setter<Errors | undefined>
   setGiftCardCode: Setter<Code>
@@ -107,6 +109,7 @@ const initialValues: CheckoutStoreState = {
     fullName: '',
     isLoading: true,
   },
+  currentPickUpOption: undefined,
   cvv: '',
   giftCardCode: {
     codes: [],
@@ -154,6 +157,10 @@ export const useCheckoutStore = create<CheckoutStore>()(
           typeof update === 'function'
             ? set(({ contactInformation }) => ({ contactInformation: update(contactInformation) }))
             : set(() => ({ contactInformation: update })),
+        setCurrentPickUpOption: update =>
+          typeof update === 'function'
+            ? set(({ currentPickUpOption }) => ({ currentPickUpOption: update(currentPickUpOption) }))
+            : set(() => ({ currentPickUpOption: update })),
         setCvv: update =>
           typeof update === 'function'
             ? set(({ cvv }) => ({ cvv: update(cvv) }))
@@ -281,8 +288,9 @@ export const useCheckoutStore = create<CheckoutStore>()(
 
     {
       name: 'checkout',
-      partialize: ({ appliedSkyWallet, giftCardCode, giftMessage, guestAddress, promoCode, removedCartItemsCheckout }) => ({
+      partialize: ({ appliedSkyWallet, currentPickUpOption, giftCardCode, giftMessage, guestAddress, promoCode, removedCartItemsCheckout }) => ({
         appliedSkyWallet,
+        currentPickUpOption,
         giftCardCode,
         giftMessage,
         guestAddress,
@@ -315,6 +323,11 @@ export const useCheckoutAppliedSkyWallet = () => {
 
 export const useCheckoutContactInformation = () => {
   const selector = useCallback(({ contactInformation }: CheckoutStore) => contactInformation, [])
+  return useCheckoutStore(selector)
+}
+
+export const useCheckoutCurrentPickUpOption = () => {
+  const selector = useCallback(({ currentPickUpOption }: CheckoutStore) => currentPickUpOption, [])
   return useCheckoutStore(selector)
 }
 

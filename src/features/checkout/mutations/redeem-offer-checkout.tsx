@@ -70,7 +70,6 @@ export const useRedeemOfferCheckoutMutation = () => {
       notifications.clean()
       if (data?.Success) {
         toastSuccess({ message: 'Coupon redeemed!' })
-        // console.log('subTotal: ', subtotalInfo)
       } else {
         toast("error", data?.Error.Message)
       }
