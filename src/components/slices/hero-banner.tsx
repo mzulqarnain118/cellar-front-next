@@ -116,7 +116,7 @@ export const HeroBanner = ({ slice }: HeroBannerProps) => {
             loop
             muted
             playsInline
-            className="top-0 left-0 min-h-[fit-content] w-screen object-contain md:object-cover lg:absolute lg:h-[600px]"
+            className="top-0 left-0 w-screen object-contain md:object-cover lg:absolute lg:h-[600px]"
             style={{ opacity: bgOpacity }}
           >
             <source src={bgVideoUrl} type="video/mp4" />
