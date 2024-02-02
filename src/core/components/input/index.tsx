@@ -111,19 +111,19 @@ export const Input = forwardRef<HTMLInputElement, Props>(
                   {...props}
                   {...register}
                 />
-                { label === "CVV" ? (
-                  valid || (props?.name==="cvv" &&props?.value?.length>=3)?
-                  <CheckCircleIcon
-                    className={`
-                    pointer-events-none absolute inset-y-0 right-1 top-1 z-50 h-8 w-8
+                {label === "CVV" ? (
+                  valid || (props?.name === "cvv" && props?.value?.length >= 3) ?
+                    <CheckCircleIcon
+                      className={`
+                    pointer-events-none absolute inset-y-0 right-1 top-1  h-8 w-8
                     stroke-success stroke-2
                   `}
-                  />: <XCircleIcon
-                    className={`
-                    pointer-events-none absolute inset-y-0 right-1 top-1 z-50 h-8 w-8
+                    /> : <XCircleIcon
+                      className={`
+                    pointer-events-none absolute inset-y-0 right-1 top-1 h-8 w-8
                     stroke-error stroke-2
                   `}
-                  />
+                    />
                 ) : right !== undefined ? (
                   <Typography className="!rounded-r">{right}</Typography>
                 ) : undefined}

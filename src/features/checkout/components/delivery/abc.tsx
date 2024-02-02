@@ -12,9 +12,14 @@ import {
   useCheckoutSelectedPickUpAddress,
 } from '@/lib/stores/checkout'
 
+import { ABC_STORE_SHIPPING_METHOD_ID } from '@/lib/constants/shipping-method'
 import { ABCStore, useAbcStoresQuery } from '../../queries/abc-stores'
 
-export const ABC = () => {
+interface ABC_Props {
+  updateShippingMethod: any
+}
+
+export const ABC = ({ updateShippingMethod }: ABC_Props) => {
   const activeCreditCard = useCheckoutActiveCreditCard()
   const selectedPickUpAddress = useCheckoutSelectedPickUpAddress()
   const { data: session } = useSession()
@@ -49,6 +54,8 @@ export const ABC = () => {
 
   const handleChange = useCallback(
     (value: string) => {
+
+      updateShippingMethod({ shippingMethodId: ABC_STORE_SHIPPING_METHOD_ID })
       const store = abcStores?.find(abc => abc.addressId.toString() === value)
 
       if (store !== undefined) {

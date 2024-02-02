@@ -93,7 +93,7 @@ export const useRedeemGiftCardCheckoutMutation = () => {
     onSettled: () => {
       queryClient.invalidateQueries([
         SKY_WALLET_QUERY_KEY,
-        { personDisplayId: session?.user?.displayId, personId: session?.user?.personId },
+        cart?.id || ''
       ])
     },
     onSuccess: (data) => {

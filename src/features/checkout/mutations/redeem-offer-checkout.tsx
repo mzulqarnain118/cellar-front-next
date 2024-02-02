@@ -2,7 +2,9 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 
 import { api } from '@/lib/api'
-import { useGetSubtotalQuery } from '@/lib/queries/checkout/get-subtotal'
+import { useCartQuery } from '@/lib/queries/cart'
+import { GET_SUBTOTAL_QUERY } from '@/lib/queries/checkout/get-subtotal'
+import { CART_INFO_QUERY_KEY, getCartInfo } from '@/lib/queries/get-info'
 import toast, { toastSuccess } from '@/lib/utils/notifications'
 import { notifications } from '@mantine/notifications'
 import { SKY_WALLET_QUERY_KEY } from '../queries/sky-wallet'
@@ -41,7 +43,7 @@ export const redeemOfferCheckout = async ({ CouponCode, CartId }: RedeemOfferOpt
 
 export const useRedeemOfferCheckoutMutation = () => {
   const { data: session } = useSession()
-  const { data: subtotalInfo } = useGetSubtotalQuery();
+  const { data: cart } = useCartQuery()
 
   const queryClient = useQueryClient()
 
@@ -63,13 +65,18 @@ export const useRedeemOfferCheckoutMutation = () => {
     onSettled: () => {
       queryClient.invalidateQueries([
         SKY_WALLET_QUERY_KEY,
-        { personDisplayId: session?.user?.displayId, personId: session?.user?.personId },
+        cart?.id || ''
       ])
     },
-    onSuccess: data => {
+    onSuccess: async data => {
       notifications.clean()
       if (data?.Success) {
-        toastSuccess({ message: 'Coupon redeemed!' })
+        await queryClient.invalidateQueries([GET_SUBTOTAL_QUERY, cart?.id])
+        await queryClient.fetchQuery({
+          queryKey: [CART_INFO_QUERY_KEY, cart?.id],
+          queryFn: getCartInfo
+        })
+        await toastSuccess({ message: 'Coupon redeemed!' })
       } else {
         toast("error", data?.Error.Message)
       }

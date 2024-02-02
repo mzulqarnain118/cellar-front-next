@@ -59,9 +59,10 @@ interface PaymentProps {
   opened: boolean
   refs: PaymentRefs
   toggle: () => void
+  cartTotalData: any
 }
 
-export const Payment = memo(({ opened, refs, toggle }: PaymentProps) => {
+export const Payment = memo(({ opened, refs, toggle, cartTotalData }: PaymentProps) => {
   const activeCreditCard = useCheckoutActiveCreditCard()
   const activeShippingAddress = useCheckoutActiveShippingAddress()
   const cvv = useCheckoutCvv()
@@ -308,7 +309,7 @@ export const Payment = memo(({ opened, refs, toggle }: PaymentProps) => {
         ) : undefined}
 
         <Collapse in={creditCardFormOpen}>
-          <CreditCardForm onCancel={handleCancelCreate} onCreate={handleCreateCreditCard} />
+          <CreditCardForm cartTotalData={cartTotalData} onCancel={handleCancelCreate} onCreate={handleCreateCreditCard} />
         </Collapse>
 
         {session?.user?.isGuest && !creditCardFormOpen ? (

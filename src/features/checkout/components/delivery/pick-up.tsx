@@ -13,12 +13,12 @@ import {
   LOCAL_PICK_UP_SHIPPING_METHOD_ID,
 } from '@/lib/constants/shipping-method'
 import { useUpdateShippingMethodMutation } from '@/lib/mutations/checkout/update-shipping-method'
-import { useGetSubtotalQuery } from '@/lib/queries/checkout/get-subtotal'
 import { useShippingMethodsQuery } from '@/lib/queries/checkout/shipping-methods'
 import { useCheckoutActions, useCheckoutErrors, useCheckoutSelectedPickUpOption } from '@/lib/stores/checkout'
 
 import { ABC } from './abc'
 
+import { useSession } from 'next-auth/react'
 import { DeliveryRefs } from '.'
 
 const HoldAtLocationLocator = dynamic(
@@ -28,26 +28,27 @@ const HoldAtLocationLocator = dynamic(
 
 interface PickUpProps {
   refs: DeliveryRefs
+  cartTotalData: any
 }
 
 const radioClassNames: RadioProps['classNames'] = { label: 'text-14' }
 
 export const PickUp = ({ refs
-}: PickUpProps) => {
+  , cartTotalData }: PickUpProps) => {
   const errors = useCheckoutErrors()
   const { setErrors, setSelectedPickUpOption } = useCheckoutActions()
   const { mutate: updateShippingMethod, isLoading: isUpdatingShippingMethod } =
     useUpdateShippingMethodMutation()
-  const { data: totalData } = useGetSubtotalQuery()
   const { data: shippingMethods } = useShippingMethodsQuery()
   const [abcOpened, { close: closeAbc, toggle: toggleAbcOpened }] = useDisclosure(
-    totalData?.shipping.methodId === ABC_STORE_SHIPPING_METHOD_ID
+    cartTotalData?.shipping.methodId === ABC_STORE_SHIPPING_METHOD_ID
   )
   const [halOpened, { close: closeHal, toggle: toggleHalOpened }] = useDisclosure(false)
   const [lpuOpened, { close: closeLpu, toggle: toggleLpuOpened }] = useDisclosure(
-    totalData?.shipping.methodId === LOCAL_PICK_UP_SHIPPING_METHOD_ID
+    cartTotalData?.shipping.methodId === LOCAL_PICK_UP_SHIPPING_METHOD_ID
   )
   const selectedPickUpOption = useCheckoutSelectedPickUpOption()
+  const { data: session } = useSession()
 
   const handleLpuOpen = useCallback(() => {
     closeAbc()
@@ -106,7 +107,12 @@ export const PickUp = ({ refs
 
   const pickupOptions = { lpu: handleLpuOpen, hal: handleHalOpen, abc: handleAbcOpen }
 
-  useEffect(() => { selectedPickUpOption && pickupOptions[selectedPickUpOption]() }, [])
+  useEffect(() => {
+
+    if (session?.user.isGuest) {
+      selectedPickUpOption && pickupOptions[selectedPickUpOption]()
+    }
+  }, [])
 
   return (
     <div className="flex flex-col space-y-3">
@@ -151,7 +157,6 @@ export const PickUp = ({ refs
         size="sm"
         onChange={handleHalOpen}
       />
-
       <Collapse in={halOpened}>
         <HoldAtLocationLocator ref={refs.halRef} />
       </Collapse>
@@ -165,7 +170,7 @@ export const PickUp = ({ refs
       </Button>
 
       <Collapse in={abcOpened}>
-        <ABC />
+        <ABC updateShippingMethod={updateShippingMethod} />
       </Collapse>
     </div>
   )

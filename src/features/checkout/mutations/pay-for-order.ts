@@ -8,7 +8,6 @@ import { api } from '@/lib/api'
 import { CORPORATE_CONSULTANT_ID } from '@/lib/constants'
 import { CHECKOUT_CONFIRMATION_PAGE_PATH } from '@/lib/paths'
 import { CART_QUERY_KEY, useCartQuery } from '@/lib/queries/cart'
-import { useGetSubtotalQuery } from '@/lib/queries/checkout/get-subtotal'
 import { useConsultantQuery } from '@/lib/queries/consultant'
 import {
   useCheckoutActions,
@@ -76,7 +75,7 @@ const signOutServerSide = async () => {
 }
 
 const PAY_FOR_ORDER_MUTATION_KEY = 'pay-for-order'
-export const useCheckoutPayForOrderMutation = () => {
+export const useCheckoutPayForOrderMutation = (cartTotalData: any) => {
   const activeShippingAddress = useCheckoutActiveShippingAddress()
   const appliedSkyWallet = useCheckoutAppliedSkyWallet()
   const guestAddress = useCheckoutGuestAddress()
@@ -85,7 +84,6 @@ export const useCheckoutPayForOrderMutation = () => {
   const router = useRouter()
   const { data: cart } = useCartQuery()
   const { data: consultant } = useConsultantQuery()
-  const { data: totalData } = useGetSubtotalQuery()
   const { data: session } = useSession()
   const { reset } = useCheckoutActions()
   const { setReceipt } = useReceiptActions()
@@ -121,17 +119,17 @@ export const useCheckoutPayForOrderMutation = () => {
           state: address?.ProvinceAbbreviation,
           zipCode: address?.PostalCode,
         },
-        deliveryMethodDisplayName: totalData?.shipping.displayName || '',
+        deliveryMethodDisplayName: cartTotalData?.shipping.displayName || '',
         discounts: cart?.discounts || [],
         isSharedCart: cart?.isSharedCart || false,
         orderDisplayId: cart?.orderDisplayId,
         prices: {
           appliedSkyWallet: 0,
-          retailDeliveryFee: totalData?.retailDeliveryFee || 0,
-          salesTax: totalData?.tax || 0,
-          shipping: totalData?.shipping.price || 0,
-          subtotal: totalData?.subtotal || 0,
-          subtotalAfterSavings: totalData?.subtotalAfterSavings || 0,
+          retailDeliveryFee: cartTotalData?.retailDeliveryFee || 0,
+          salesTax: cartTotalData?.tax || 0,
+          shipping: cartTotalData?.shipping.price || 0,
+          subtotal: cartTotalData?.subtotal || 0,
+          subtotalAfterSavings: cartTotalData?.subtotalAfterSavings || 0,
         },
       }
 

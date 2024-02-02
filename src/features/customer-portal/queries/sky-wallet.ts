@@ -69,6 +69,7 @@ export const getSkyWallet: QueryFunction<Response['result'] | null> = async ({ q
       return response.result
     }
 
+
     return null
   } catch {
     return null

@@ -18,7 +18,6 @@ import { useIsDesktop } from '@/core/hooks/use-is-desktop'
 import { formatCurrency } from '@/core/utils'
 import { TERMS_AND_CONDITIONS_PAGE_PATH } from '@/lib/paths'
 import { useCartQuery } from '@/lib/queries/cart'
-import { useGetSubtotalQuery } from '@/lib/queries/checkout/get-subtotal'
 import { useCheckoutActions, useCheckoutErrors } from '@/lib/stores/checkout'
 
 import { useCheckoutPayForOrderMutation } from '../../mutations/pay-for-order'
@@ -37,14 +36,14 @@ interface PayForOrderRefs {
 interface PayForOrderProps {
   refs: PayForOrderRefs
   validate: () => Promise<boolean>
+  cartTotalData: any
 }
 
-export const PayForOrder = ({ refs, validate, handleValidateCart, validateCartStockResp }: PayForOrderProps) => {
+export const PayForOrder = ({ refs, validate, cartTotalData, handleValidateCart, validateCartStockResp }: PayForOrderProps) => {
   const { data: cart } = useCartQuery()
   const errors = useCheckoutErrors()
-  const { data: totalData } = useGetSubtotalQuery()
   const { setErrors } = useCheckoutActions()
-  const { mutate: payForOrder, isLoading: isCheckingOut } = useCheckoutPayForOrderMutation()
+  const { mutate: payForOrder, isLoading: isCheckingOut } = useCheckoutPayForOrderMutation(cartTotalData)
   const [locked, setLocked] = useLockedBody(false, '__next')
   const isDesktop = useIsDesktop()
 
@@ -155,7 +154,7 @@ export const PayForOrder = ({ refs, validate, handleValidateCart, validateCartSt
           <div className="grid">
             <Typography className="text-neutral-600">TOTAL</Typography>
             <Typography className="text-2xl font-bold">
-              {totalData?.orderTotal ? formatCurrency(totalData?.orderTotal) : '$--.--'}
+              {cartTotalData?.orderTotal ? formatCurrency(cartTotalData?.orderTotal) : '$--.--'}
             </Typography>
           </div>
           <div className="ml-auto">

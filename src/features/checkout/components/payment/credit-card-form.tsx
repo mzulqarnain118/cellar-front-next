@@ -15,7 +15,6 @@ import { Typography } from '@/core/components/typogrpahy'
 import { PICK_UP_SHIPPING_METHOD_IDS } from '@/lib/constants/shipping-method'
 import { useValidateAddressMutation } from '@/lib/mutations/address/validate'
 import { useAddressesAndCreditCardsQuery } from '@/lib/queries/checkout/addreses-and-credit-cards'
-import { useGetSubtotalQuery } from '@/lib/queries/checkout/get-subtotal'
 import {
   useCheckoutActiveCreditCard,
   useCheckoutActiveShippingAddress,
@@ -61,9 +60,10 @@ const startIcon = <ChevronLeftIcon className="w-4 h-4" />
 interface CreditCardFormProps {
   onCancel?: () => void
   onCreate?: () => void
+  cartTotalData: any
 }
 
-export const CreditCardForm = ({ onCancel, onCreate }: CreditCardFormProps) => {
+export const CreditCardForm = ({ onCancel, onCreate, cartTotalData }: CreditCardFormProps) => {
   const activeCreditCard = useCheckoutActiveCreditCard()
   const activeShippingAddress = useCheckoutActiveShippingAddress()
   const checkoutErrors = useCheckoutErrors()
@@ -75,7 +75,6 @@ export const CreditCardForm = ({ onCancel, onCreate }: CreditCardFormProps) => {
   const { mutate: createCreditCard } = useCreateCreditCardMutation()
   const { mutate: validateAddress } = useValidateAddressMutation()
   const { data: addressesAndCreditCards } = useAddressesAndCreditCardsQuery()
-  const { data: subtotalData } = useGetSubtotalQuery()
   const { data: session } = useSession()
 
   const formProps: UseFormProps<CreditCardFormSchema> = useMemo(
@@ -86,16 +85,16 @@ export const CreditCardForm = ({ onCancel, onCreate }: CreditCardFormProps) => {
         expiry: '',
         name: '',
         number: '',
-        sameAsShipping: subtotalData?.shipping.methodId
-          ? PICK_UP_SHIPPING_METHOD_IDS.includes(subtotalData.shipping.methodId) ||
-            !addressesAndCreditCards?.addresses.length
+        sameAsShipping: cartTotalData?.shipping.methodId
+          ? PICK_UP_SHIPPING_METHOD_IDS.includes(cartTotalData.shipping.methodId) ||
+          !addressesAndCreditCards?.addresses.length
           : false,
       },
       mode: 'onBlur',
       reValidateMode: 'onChange',
       resolver: zodResolver(creditCardFormSchema),
     }),
-    [addressesAndCreditCards?.addresses.length, subtotalData?.shipping.methodId]
+    [addressesAndCreditCards?.addresses.length, cartTotalData?.shipping.methodId]
   )
   const methods = useForm<CreditCardFormSchema>(formProps)
   const {

@@ -115,6 +115,7 @@ export const CartProduct = ({ data }: CartProductProps) => {
     }
   }, [handleQuantityChange, data, quantity, removeFromCart])
 
+
   return (
     <div className="grid grid-cols-[auto_1fr] px-2 py-4">
       {data.pictureUrl ? (

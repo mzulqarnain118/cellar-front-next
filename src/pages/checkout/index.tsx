@@ -40,7 +40,8 @@ import { toastInfo } from '@/lib/utils/notifications';
 
 import { useValidateCartStockMutation } from '@/features/checkout/mutations/validate-cart-stock';
 import { useRemoveFromCartMutation } from '@/lib/mutations/cart/remove-from-cart';
-import { useGetSubtotalQuery } from '@/lib/queries/checkout/get-subtotal';
+import { GET_SUBTOTAL_QUERY, useGetSubtotalQuery } from '@/lib/queries/checkout/get-subtotal';
+import { CART_INFO_QUERY_KEY, getCartInfo } from '@/lib/queries/get-info';
 import { List, LoadingOverlay, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { authOptions } from '../api/auth/[...nextauth]';
@@ -86,6 +87,8 @@ const CheckoutPage: NextPage<PageProps> = () => {
   const [scroll] = useWindowScroll()
   const prefersReducedMotion = useReducedMotion()
   const queryClient = useQueryClient()
+  const { data: cartTotalData, isRefetching: isRefetchingSubTotal } = useGetSubtotalQuery();
+
 
   const activeCreditCard = useCheckoutActiveCreditCard()
   const isAddingAddress = useCheckoutIsAddingAddress()
@@ -139,8 +142,14 @@ const CheckoutPage: NextPage<PageProps> = () => {
     useScrollIntoView<HTMLInputElement>(scrollIntoViewSettings)
   const { targetRef: wineClubRef, scrollIntoView: scrollWineClubIntoView } =
     useScrollIntoView<HTMLInputElement>(scrollIntoViewSettings)
-  const { isRefetching: isRefetchingSubTotal } = useGetSubtotalQuery()
+
+  useEffect(() => {
+    // Optionally, you can prefetch the query here
+    queryClient.prefetchQuery([GET_SUBTOTAL_QUERY, cart?.id]);
+  }, [queryClient]);
+
   const { mutate: vaildateCartStock, data: validateCartStockResp, isLoading: validateCartStockLoading, isSuccess: validateCartStockSuccess } = useValidateCartStockMutation({ returnData: true });
+
   const handleValidateCart = async () => await vaildateCartStock();
 
   const { mutate: removeFromCart } = useRemoveFromCartMutation();
@@ -218,9 +227,6 @@ const CheckoutPage: NextPage<PageProps> = () => {
     () => cart?.items.reduce((prev, item) => item.quantity + prev, 0) || 0,
     [cart?.items]
   )
-
-  console.log("🚀 ~ validate ~ validateCartStockSuccess:", validateCartStockSuccess)
-  console.log("🚀 ~ validate ~ validateCartStockResp?.Success:", validateCartStockResp?.Success)
 
   const validate = useCallback(async () => {
     if (isAddingGiftMessage) {
@@ -312,7 +318,7 @@ const CheckoutPage: NextPage<PageProps> = () => {
       return false
     }
 
-    if (!promoCodes.isAdded && promoCodeRef.current?.value.length) {
+    if (!promoCodes.isAdded && promoCodeRef.current?.value.length > 0) {
       setErrors(prev => ({
         ...prev,
         payment: { ...prev?.payment, promoCode: "Don't forget to apply your promo code." },
@@ -325,6 +331,9 @@ const CheckoutPage: NextPage<PageProps> = () => {
       promoCodeRef.current?.focus()
       return false
     }
+
+    console.log("🚀 ~ validate ~ giftCardRef:", giftCardRef)
+    console.log("🚀 ~ validate ~ giftCardCodes:", giftCardCodes)
 
     if (!giftCardCodes.isAdded && giftCardRef.current?.value.length) {
       setErrors(prev => ({
@@ -473,8 +482,16 @@ const CheckoutPage: NextPage<PageProps> = () => {
     }
   }, [cart?.items.length, queryClient, router])
 
+  const handleViewCartInfo = async () => {
+    await queryClient.fetchQuery({
+      queryKey: [CART_INFO_QUERY_KEY, cart?.id],
+      queryFn: getCartInfo
+    })
+  }
+
   return (
     <>
+      <button onClick={handleViewCartInfo}>ViewCartInfo</button>
       <LoadingOverlay visible={isRefetchingSubTotal} />
       <NextSeo nofollow noindex title="Checkout" />
       <main>
@@ -486,9 +503,9 @@ const CheckoutPage: NextPage<PageProps> = () => {
               refs={contactInformationRefs}
               toggle={toggleContactInformation}
             />
-            <Delivery opened={deliveryOpened} refs={deliveryRefs} toggle={toggleDelivery} />
-            <Payment opened={paymentOpened} refs={paymentRefs} toggle={togglePayment} />
-            <PayForOrder refs={payForOrderRefs} validate={validate} handleValidateCart={handleValidateCart} validateCartStockResp={validateCartStockResp} />
+            <Delivery opened={deliveryOpened} cartTotalData={cartTotalData} refs={deliveryRefs} toggle={toggleDelivery} />
+            <Payment opened={paymentOpened} refs={paymentRefs} toggle={togglePayment} cartTotalData={cartTotalData} />
+            <PayForOrder cartTotalData={cartTotalData} refs={payForOrderRefs} validate={validate} handleValidateCart={handleValidateCart} validateCartStockResp={validateCartStockResp} />
           </div>
           <div className="flex-1">
             <div
@@ -511,7 +528,7 @@ const CheckoutPage: NextPage<PageProps> = () => {
                   {quantity}
                 </Badge>
               </div>
-              <CartSummary />
+              <CartSummary cartTotalData={cartTotalData} />
               <div className="text-center pt-2">
                 <Link href={WINE_PAGE_PATH}>Continue shopping</Link>
               </div>

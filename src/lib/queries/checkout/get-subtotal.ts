@@ -135,6 +135,9 @@ export const getSubtotal: QueryFunction<OrderPrice> = async ({ queryKey }) => {
 export const GET_SUBTOTAL_QUERY = 'get-subtotal'
 
 export const useGetSubtotalQuery = (cartId?: string) => {
+  // Log file name
+  // console.log(new Error().stack?.split("\n")[2].trim());
+
   const { data: cart } = useCartQuery()
   const { data: session } = useSession()
   const activeShippingAddress = useCheckoutActiveShippingAddress()

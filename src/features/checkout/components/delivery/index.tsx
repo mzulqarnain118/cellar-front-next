@@ -28,12 +28,13 @@ interface DeliveryProps {
   opened: boolean
   refs: DeliveryRefs
   toggle: () => void
+  cartTotalData: any
 }
 
-export const Delivery = memo(({ opened, refs, toggle }: DeliveryProps) => {
+export const Delivery = memo(({ opened, refs, cartTotalData, toggle }: DeliveryProps) => {
   const isPickUp = useCheckoutIsPickUp()
   const { data: shippingMethods } = useShippingMethodsQuery()
-  const { setIsPickUp, setSelectedPickUpOption } = useCheckoutActions()
+  const { setIsPickUp, setSelectedPickUpOption, setSelectedPickUpAddress } = useCheckoutActions()
   const { mutate: updateShippingMethod } = useUpdateShippingMethodMutation()
   const [value, setValue] = useState<string | null>(isPickUp ? 'pickUp' : 'shipToHome')
   const { data: session } = useSession()
@@ -49,12 +50,19 @@ export const Delivery = memo(({ opened, refs, toggle }: DeliveryProps) => {
         })
       }
     },
-    [shippingMethods, updateShippingMethod, value]
+    [shippingMethods?.[0]?.shippingMethodId, GROUND_SHIPPING_SHIPPING_METHOD_ID, value]
   )
 
   useEffect(() => {
     setIsPickUp(value === 'pickUp')
-  }, [setIsPickUp, setSelectedPickUpOption, value])
+
+    if (!session?.user.isGuest && value === 'shipToHome') {
+      setSelectedPickUpOption(undefined)
+      setSelectedPickUpAddress(undefined)
+    }
+
+
+  }, [value])
 
   return (
     <>
@@ -98,13 +106,13 @@ export const Delivery = memo(({ opened, refs, toggle }: DeliveryProps) => {
 
             <Tabs.Panel className="mt-4" value="shipToHome">
               {isGuest ? (
-                <GuestAddress shippingAddressRef={refs.shippingAddressRef} />
+                <GuestAddress cartTotalData={cartTotalData} shippingAddressRef={refs.shippingAddressRef} />
               ) : (
-                <ShipToHome refs={refs} />
+                <ShipToHome refs={refs} cartTotalData={cartTotalData} />
               )}
             </Tabs.Panel>
             <Tabs.Panel className="mt-4" value="pickUp">
-              <PickUp refs={refs} />
+              <PickUp refs={refs} cartTotalData={cartTotalData} />
             </Tabs.Panel>
           </Tabs>
         </div>

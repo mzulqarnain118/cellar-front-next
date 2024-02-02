@@ -2,38 +2,40 @@ import { useMemo } from 'react'
 
 import { Typography } from '@/core/components/typogrpahy'
 import { formatCurrency } from '@/core/utils'
-import { SUMMER_PACKAGING } from '@/lib/constants/shipping-method'
 import { useCartQuery } from '@/lib/queries/cart'
-import { useGetSubtotalQuery } from '@/lib/queries/checkout/get-subtotal'
 import { useCheckoutAppliedSkyWallet } from '@/lib/stores/checkout'
 
 import { CartProduct } from './cart-product'
-
-export const CartSummary = () => {
-  const { data: subtotalInfo } = useGetSubtotalQuery()
+interface CartSummaryProps {
+  cartTotalData: any
+}
+export const CartSummary = ({ cartTotalData }: CartSummaryProps) => {
   const { data: cart } = useCartQuery()
   const appliedSkyWallet = useCheckoutAppliedSkyWallet()
 
-  const subtotal = useMemo(() => subtotalInfo?.subtotal || 0, [subtotalInfo?.subtotal])
+  const discountTotal = cartTotalData?.discountTotals.reduce((accumulator: number, currentValue: { amount: number, description: string }) => accumulator + currentValue?.amount,
+    0)
+
+  const subtotal = useMemo(() => cartTotalData?.subtotal || 0, [cartTotalData?.subtotal])
   const shippingPrice = useMemo(
-    () => subtotalInfo?.shipping.price || 0,
-    [subtotalInfo?.shipping.price]
+    () => cartTotalData?.shipping.price || 0,
+    [cartTotalData?.shipping.price]
   )
   const retailDeliveryFee = useMemo(
-    () => subtotalInfo?.retailDeliveryFee || 0,
-    [subtotalInfo?.retailDeliveryFee]
+    () => cartTotalData?.retailDeliveryFee || 0,
+    [cartTotalData?.retailDeliveryFee]
   )
-  const tax = useMemo(() => subtotalInfo?.tax || 0, [subtotalInfo?.tax])
+  const tax = useMemo(() => cartTotalData?.tax || 0, [cartTotalData?.tax])
   const orderTotal = useMemo(() => {
-    const total = (subtotalInfo?.orderTotal || 0) - appliedSkyWallet
+    const total = (cartTotalData?.orderTotal || 0) - appliedSkyWallet
 
     if (total <= 0) {
       return 0
     }
 
     return total
-  }, [appliedSkyWallet, subtotalInfo?.orderTotal])
-  const shippingMethodId = subtotalInfo?.shipping.methodId
+  }, [appliedSkyWallet, cartTotalData?.orderTotal])
+  const shippingMethodId = cartTotalData?.shipping.methodId
 
   const cartItems = useMemo(
     () => (
@@ -75,6 +77,16 @@ export const CartSummary = () => {
             </Typography>
           </div>
         ) : undefined}
+        {discountTotal > 0 ? (
+          <div className="grid grid-cols-2 items-center">
+            <Typography noSpacing as="p" className="text-neutral-500">
+              Discount
+            </Typography>
+            <Typography noSpacing as="p" className="text-success text-right">
+              -{formatCurrency(discountTotal)}
+            </Typography>
+          </div>
+        ) : undefined}
         <div className="grid grid-cols-2 items-center">
           <Typography noSpacing as="p" className="text-neutral-500">
             Tax
@@ -98,16 +110,16 @@ export const CartSummary = () => {
             TOTAL
           </Typography>
           <Typography noSpacing as="p" className="text-right">
-            {subtotalInfo !== undefined || orderTotal ? formatCurrency(orderTotal) : '$--.--'}
+            {cartTotalData !== undefined || orderTotal ? formatCurrency(orderTotal) : '$--.--'}
           </Typography>
         </div>
-        {shippingMethodId !== undefined &&
+        {/* {shippingMethodId !== undefined &&
           (SUMMER_PACKAGING.includes(shippingMethodId) || shippingMethodId > 39) ? (
           <Typography as="em" className="block py-1 text-sm">
             * Orders with wine include a $5 shipping surcharge for EcoCoolPaks to protect your wine
             from summer heat.
           </Typography>
-        ) : undefined}
+        ) : undefined} */}
       </div>
     ),
     [
@@ -117,7 +129,7 @@ export const CartSummary = () => {
       shippingMethodId,
       shippingPrice,
       subtotal,
-      subtotalInfo,
+      cartTotalData,
       tax,
     ]
   )

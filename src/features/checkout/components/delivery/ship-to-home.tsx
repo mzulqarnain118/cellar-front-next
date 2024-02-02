@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 
 import dynamic from 'next/dynamic'
 
@@ -17,10 +17,8 @@ import { useApplyCheckoutSelectionsMutation } from '@/lib/mutations/checkout/app
 import { useUpdateShippingMethodMutation } from '@/lib/mutations/checkout/update-shipping-method'
 import { useCartQuery } from '@/lib/queries/cart'
 import { useAddressesAndCreditCardsQuery } from '@/lib/queries/checkout/addreses-and-credit-cards'
-import { GET_SUBTOTAL_QUERY, useGetSubtotalQuery } from '@/lib/queries/checkout/get-subtotal'
 import {
-  SHIPPING_METHODS_QUERY_KEY,
-  useShippingMethodsQuery,
+  useShippingMethodsQuery
 } from '@/lib/queries/checkout/shipping-methods'
 import {
   useCheckoutActions,
@@ -43,9 +41,10 @@ const plusIcon = <PlusIcon className="h-4 w-4" />
 
 interface ShipToHomeProps {
   refs: DeliveryRefs
+  cartTotalData: any
 }
 
-export const ShipToHome = ({ refs }: ShipToHomeProps) => {
+export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
   const [removedProductsModalBtnDisabled, setRemovedProductsModalBtnDisabled] = useState(false)
   const queryClient = useQueryClient()
   const { data } = useAddressesAndCreditCardsQuery()
@@ -56,7 +55,6 @@ export const ShipToHome = ({ refs }: ShipToHomeProps) => {
   const activeShippingAddress = useCheckoutActiveShippingAddress()
   const removedCartItems = useCheckoutRemovedCartItems()
   const { data: shippingMethodsData } = useShippingMethodsQuery()
-  const { data: cartTotalData } = useGetSubtotalQuery()
   const { mutate: updateShippingMethod, isLoading: isUpdatingShippingMethod } =
     useUpdateShippingMethodMutation()
   const [addressFormOpen, { close: closeAddressForm, toggle: toggleAddressForm }] =
@@ -130,11 +128,17 @@ export const ShipToHome = ({ refs }: ShipToHomeProps) => {
     setIsAddingAddress(addressFormOpen)
   }, [addressFormOpen, setIsAddingAddress])
 
-  useEffect(() => {
-    if (shippingMethods !== undefined && shippingMethods[0]) {
-      updateShippingMethod({ shippingMethodId: shippingMethods[0].data.shippingMethodId })
-    }
-  }, [shippingMethods, updateShippingMethod])
+  // const initializeShippingMethod = useCallback(() => {
+  //   const initialShippingMethodId = shippingMethods?.[0]?.data?.shippingMethodId;
+  //   if (initialShippingMethodId !== undefined) {
+  //     updateShippingMethod({ shippingMethodId: initialShippingMethodId });
+  //   }
+  // }, []);
+
+  // useEffect(() => {
+  //   initializeShippingMethod();
+  // }, [shippingMethods?.[0]?.data?.shippingMethodId]);
+
 
   useEffect(() => {
     if (removedCartItems.length > 0) {
@@ -172,10 +176,6 @@ export const ShipToHome = ({ refs }: ShipToHomeProps) => {
               removeFromCart({ fetchSubtotal: false, item, sku: item.sku })
             })
 
-            await queryClient.invalidateQueries([GET_SUBTOTAL_QUERY, cart?.id])
-            await queryClient.invalidateQueries({
-              queryKey: [SHIPPING_METHODS_QUERY_KEY],
-            })
             setRemovedCartItems([])
             notifications.clean()
             modals.closeAll()
@@ -258,4 +258,4 @@ export const ShipToHome = ({ refs }: ShipToHomeProps) => {
       </Collapse>
     </div>
   )
-}
+})

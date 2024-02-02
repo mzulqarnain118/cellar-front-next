@@ -100,8 +100,7 @@ export const updateShippingMethod = async ({
 export const useUpdateShippingMethodMutation = () => {
   const queryClient = useQueryClient()
   const { data: cart } = useCartQuery()
-  // const { activeShippingAddress } = useCheckoutActiveShippingAddress()
-  // const { setShippingMethod } = useCheckoutActions()
+
 
   return useMutation<UpdateShippingMethodResponse, Error, UpdateShippingMethodOptions>({
     mutationFn: data => updateShippingMethod({ ...data, cartId: cart?.id }),

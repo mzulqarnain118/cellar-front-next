@@ -11,7 +11,6 @@ import { Typography } from '@/core/components/typogrpahy'
 import { formatCurrency } from '@/core/utils'
 import { useApplyCheckoutSelectionsMutation } from '@/lib/mutations/checkout/apply-selections'
 import { useUpdateShippingMethodMutation } from '@/lib/mutations/checkout/update-shipping-method'
-import { useGetSubtotalQuery } from '@/lib/queries/checkout/get-subtotal'
 import { useShippingMethodsQuery } from '@/lib/queries/checkout/shipping-methods'
 import { useCheckoutActions, useCheckoutGuestAddress } from '@/lib/stores/checkout'
 import { Address } from '@/lib/types/address'
@@ -27,12 +26,12 @@ const dropdownClassNames = { input: 'h-10', item: 'text-14', label: 'text-14' }
 
 interface GuestAddressProps {
   shippingAddressRef: DeliveryRefs['shippingAddressRef']
+  cartTotalData: any
 }
 
-export const GuestAddress = ({ shippingAddressRef }: GuestAddressProps) => {
+export const GuestAddress = ({ shippingAddressRef, cartTotalData }: GuestAddressProps) => {
   const guestAddress = useCheckoutGuestAddress()
   const { isLoading: isApplyingSelections } = useApplyCheckoutSelectionsMutation()
-  const { data: cartTotalData } = useGetSubtotalQuery()
   const { data: shippingMethodsData } = useShippingMethodsQuery()
   const { mutate: updateShippingMethod, isLoading: isUpdatingShippingMethod } =
     useUpdateShippingMethodMutation()
@@ -58,12 +57,12 @@ export const GuestAddress = ({ shippingAddressRef }: GuestAddressProps) => {
     () =>
       shippingMethodsData !== undefined
         ? shippingMethodsData
-            .map(method => ({
-              data: method,
-              label: `${method.displayName} (${formatCurrency(method.shippingPrice)})`,
-              value: method.shippingMethodId.toString(),
-            }))
-            .filter(method => !isPickUpShippingMethodId(method.data.shippingMethodId))
+          .map(method => ({
+            data: method,
+            label: `${method.displayName} (${formatCurrency(method.shippingPrice)})`,
+            value: method.shippingMethodId.toString(),
+          }))
+          .filter(method => !isPickUpShippingMethodId(method.data.shippingMethodId))
         : [],
     [shippingMethodsData]
   )

@@ -38,6 +38,7 @@ export const getSkyWallet: QueryFunction<SkyWalletData[] | null, string[]> = asy
   } catch {
     return null
   }
+
 }
 
 export const SKY_WALLET_QUERY_KEY = 'checkout-sky-wallet'

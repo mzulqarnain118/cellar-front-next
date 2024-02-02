@@ -154,6 +154,7 @@ export const HoldAtLocationLocator = forwardRef<HTMLInputElement>((_props, ref) 
   )
 
   useLayoutEffect(() => {
+    alert(1)
     if (typeof window !== 'undefined') {
       singleWidgetManager?.events.subscribe(
         singleWidgetManager?.topics.subscribe.COLLECT_POINT_CONFIRMED,
@@ -179,6 +180,7 @@ export const HoldAtLocationLocator = forwardRef<HTMLInputElement>((_props, ref) 
           orchestrator?.eventCallbacks.launchSearchSubmit(searchValue)
         }}
       >
+        {console.log("🚀 ~ HoldAtLocationLocator ~ onConfirm:", onConfirm)}
         <Input
           ref={ref}
           label="Choose environmentally friendly shipping. Pick up at a location near you."
