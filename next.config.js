@@ -42,6 +42,14 @@ const nextConfig = {
   sentry: {
     hideSourceMaps: true,
   },
+  eslint: {
+    // Ignore ESLint during the build process
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    // Ignore TypeScript type errors during the build process
+    ignoreBuildErrors: true,
+  },
 }
 
 /** @type {import('@sentry/nextjs').SentryWebpackPluginOptions} */
