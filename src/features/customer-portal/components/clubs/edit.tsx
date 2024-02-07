@@ -3,7 +3,7 @@ import { ChangeEventHandler, useCallback, useEffect, useMemo, useState } from 'r
 import { useRouter } from 'next/router'
 
 import { CreditCardIcon, ForwardIcon, HomeIcon, XCircleIcon } from '@heroicons/react/24/outline'
-import { Select, SelectProps, Tabs, TabsPanelProps } from '@mantine/core'
+import { LoadingOverlay, Select, SelectProps, Tabs, TabsPanelProps } from '@mantine/core'
 import { DateInput } from '@mantine/dates'
 import { modals } from '@mantine/modals'
 import { Divider } from 'react-daisyui'
@@ -254,18 +254,18 @@ export const ClubsEdit = ({
     () =>
       subscription
         ? {
-            ...subscription,
-            AddressID: addressUsedForMembership || 0,
-            Frequency: frequency?.value || subscription?.Frequency,
-            NextProcessingDate: newNextOrderDate?.toISOString() || subscription?.NextProcessingDate,
-            PaymentToken: creditCardUsedForMembership || subscription?.PaymentToken,
-            Quantity: newQuantity || subscription?.Quantity,
-            ShippingMethod: newShippingData.Value || subscription?.ShippingMethod,
-            ShippingMethodID: newShippingData.Key || subscription?.ShippingMethodID,
-            SubscriptionFrequencyID:
-              parseInt(frequency?.label || '0') || subscription?.SubscriptionFrequencyID,
-            SubscriptionID: subscriptionId,
-          }
+          ...subscription,
+          AddressID: addressUsedForMembership || 0,
+          Frequency: frequency?.value || subscription?.Frequency,
+          NextProcessingDate: newNextOrderDate?.toISOString() || subscription?.NextProcessingDate,
+          PaymentToken: creditCardUsedForMembership || subscription?.PaymentToken,
+          Quantity: newQuantity || subscription?.Quantity,
+          ShippingMethod: newShippingData.Value || subscription?.ShippingMethod,
+          ShippingMethodID: newShippingData.Key || subscription?.ShippingMethodID,
+          SubscriptionFrequencyID:
+            parseInt(frequency?.label || '0') || subscription?.SubscriptionFrequencyID,
+          SubscriptionID: subscriptionId,
+        }
         : undefined,
     [
       subscription,
@@ -366,11 +366,11 @@ export const ClubsEdit = ({
     }
   }, [handleCancel, newSubscription, updateSubscription])
 
-  if (loading) {
-    return <>Loading...</>
-  }
 
-  return (
+
+
+  return (<>
+    <LoadingOverlay visible={loading} />
     <Tabs.Panel {...props}>
       <div className="mx-auto px-2">
         <div className="flex flex-col gap-4 lg:gap-6">
@@ -384,9 +384,9 @@ export const ClubsEdit = ({
               <Typography as="h6" className="mb-0">
                 Manage Membership
               </Typography>
-              {autoSip ? undefined : (
+              {!autoSip && (
                 <div className="space-x-4">
-                  {!subscription?.SKU?.toLowerCase().startsWith('promo') ? (
+                  {!subscription?.SKU?.toLowerCase().startsWith('promo') && (
                     <Button
                       className="gap-1 border-neutral-50 text-neutral-50"
                       color="ghost"
@@ -396,7 +396,7 @@ export const ClubsEdit = ({
                       <ForwardIcon className="h-4 w-4" />
                       <Typography className="group-hover:underline">Skip next shipment</Typography>
                     </Button>
-                  ) : undefined}
+                  )}
                   <Button
                     className="gap-1 border-neutral-50 text-neutral-50"
                     color="ghost"
@@ -642,5 +642,6 @@ export const ClubsEdit = ({
         </div>
       </div>
     </Tabs.Panel>
+  </>
   )
 }

@@ -1,16 +1,16 @@
+import { api } from '@/lib/api'
 import { useMutation } from '@tanstack/react-query'
 
-import { api } from '@/lib/api'
 
 interface Response {
   Error: { Message: string }
   Success: boolean
 }
 
-export const skipSubscription = async (subscriptionId: number) => {
+export const skipSubscription = async (subscriptionId: number, action: string) => {
   try {
     const response = await api('v2/chargebee/skip-or-cancel-subscription', {
-      json: { action: 'skip', subscriptionId },
+      json: { action, subscriptionId },
       method: 'post',
     }).json<Response>()
 
@@ -25,7 +25,7 @@ export const skipSubscription = async (subscriptionId: number) => {
 }
 
 export const useSkipSubscriptionMutation = () =>
-  useMutation<Response, Error, number>({
-    mutationFn: data => skipSubscription(data),
+  useMutation<Response, Error, { subscriptionId: number, action: string }>({
+    mutationFn: ({ subscriptionId, action }) => skipSubscription(subscriptionId, action),
     mutationKey: ['skip-subscription'],
   })
