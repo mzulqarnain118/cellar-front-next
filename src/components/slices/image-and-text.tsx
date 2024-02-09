@@ -19,13 +19,15 @@ export const ImageAndText = ({ slice }: ImageAndTextProps) => {
   const ctaLink = useMemo(() => {
     if (
       typeof window !== 'undefined' &&
-      asText(slice.primary.cta_link).startsWith('https://join')
+      (asText(slice.primary.cta_link).includes('join.scoutandcellar') ||
+        asText(slice.primary.cta_link).includes('join-staging.scoutandcellar'))
     ) {
       const url = new URL(asText(slice.primary.cta_link))
+      const urlConsultantPath = new URL(`${url.origin}/consultant`)
       if (consultant?.url) {
-        url.searchParams.append('u', consultant.url)
+        urlConsultantPath.searchParams.append('u', consultant.url)
       }
-      return url.toString()
+      return urlConsultantPath.toString()
     }
   }, [consultant?.url, slice.primary.cta_link])
 
@@ -61,11 +63,10 @@ export const ImageAndText = ({ slice }: ImageAndTextProps) => {
       }}
     >
       <div
-        className={`container mx-auto flex items-center p-4 md:space-x-20 [&>*]:flex-1 ${
-          slice.primary.text_on_left
-            ? 'flex-col-reverse md:flex-row-reverse'
-            : 'flex-col-reverse md:flex-row'
-        }`}
+        className={`container mx-auto flex items-center p-4 md:space-x-20 [&>*]:flex-1 ${slice.primary.text_on_left
+          ? 'flex-col-reverse md:flex-row-reverse'
+          : 'flex-col-reverse md:flex-row'
+          }`}
       >
         <div
           className={clsx('py-5 md:px-5 md:py-0', !!slice.primary.center_content && '!text-center')}
