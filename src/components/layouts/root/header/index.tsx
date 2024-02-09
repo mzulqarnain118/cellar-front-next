@@ -3,7 +3,7 @@
 import { useCallback, useMemo } from 'react'
 
 import { useRouter } from 'next/router'
-
+import Link from 'next/link'
 import { ShoppingCartIcon, UserIcon } from '@heroicons/react/20/solid'
 import { ChevronDownIcon } from '@heroicons/react/24/outline'
 import { Burger, Collapse, Popover, Skeleton } from '@mantine/core'
@@ -130,6 +130,7 @@ export const Header = () => {
   const ctaButton = useMemo(
     () =>
       !isFetchingCTA && !isLoadingCTA ? (
+        <Link href={cta?.data.link || cta?.data.uid}>
         <Button
           className="mb-2 !bg-[#085250] text-lg text-[#f5f3f2] lg:mb-0 lg:w-max"
           color="ghost"
@@ -137,6 +138,7 @@ export const Header = () => {
         >
           {asText(cta?.data.button_text)}
         </Button>
+        </Link>
       ) : (
         <Skeleton className="h-12 w-[13.75rem]" />
       ),
