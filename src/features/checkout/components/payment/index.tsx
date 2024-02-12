@@ -163,7 +163,6 @@ export const Payment = memo(({ opened, refs, toggle, cartTotalData }: PaymentPro
     if (redeemGiftCardCheckoutFinished || redeemOfferCheckoutFinished) {
       refetchSkyWallet()
     }
-
   }, [redeemGiftCardCheckoutFinished, redeemOfferCheckoutFinished])
 
   const handleInputChange: ChangeEventHandler<HTMLInputElement> = useCallback(

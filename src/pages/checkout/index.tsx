@@ -491,7 +491,6 @@ const CheckoutPage: NextPage<PageProps> = () => {
 
   return (
     <>
-      <button onClick={handleViewCartInfo}>ViewCartInfo</button>
       <LoadingOverlay visible={isRefetchingSubTotal} />
       <NextSeo nofollow noindex title="Checkout" />
       <main>

@@ -132,7 +132,7 @@ export const CartProduct = ({ data }: CartProductProps) => {
       ) : undefined}
       <div className="grid items-center">
         <div className="flex items-center justify-between">
-          <Typography className="font-bold">{data.displayName}</Typography>
+          <Typography className="font-bold">{data?.displayName}</Typography>
           <CloseButton
             className="hover:text-error"
             disabled={isMutatingCart}
