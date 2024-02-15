@@ -63,9 +63,10 @@ export const CartDrawer = () => {
 
   const subtotal =
     cart?.items?.reduce((total, item) => {
-      const price = item.onSalePrice || item.price
-      return price * (item.quantity || 1) + total
+      const price = item.price
+      return price * (item.quantity || 1) + total //item.onSalePrice || item.price
     }, 0) || 0
+
   const percentage = Math.round((subtotal / 150) * 100)
   const difference = 150 - subtotal
 
