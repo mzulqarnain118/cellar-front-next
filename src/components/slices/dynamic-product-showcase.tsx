@@ -23,7 +23,7 @@ export const DynamicProductShowcase = ({
 
    
   const productsSelectedInPrismic = useMemo(() => {
-    return slice?.items?.map(product => product?.display_order?.uid.toLowerCase() || '')
+    return slice?.items?.map(product => product?.display_order?.uid?.toLowerCase() ?? '')
   }, [slice?.items]);
 
   const products = useMemo(

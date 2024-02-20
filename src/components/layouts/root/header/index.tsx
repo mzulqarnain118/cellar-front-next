@@ -228,7 +228,7 @@ export const Header = () => {
           items:
             cartInfo?.OrderLines.map(item => {
               const product = products?.find(
-                productData => productData.sku === item.ProductSKU.toLowerCase()
+                productData => productData?.sku === item?.ProductSKU?.toLowerCase()
               )
               return {
                 ...product,
