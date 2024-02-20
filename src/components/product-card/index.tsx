@@ -38,6 +38,7 @@ interface ProductCardProps {
   className?: string
   priority?: boolean
   product: SubscriptionProduct | CartItem
+  prismicColor: string
 }
 
 const isCartProduct = (product: SubscriptionProduct | CartItem): product is CartItem =>
@@ -55,7 +56,7 @@ const selectStyles: SelectProps['styles'] = theme => ({
   },
 })
 
-export const ProductCard = ({ className, priority = false, product }: ProductCardProps) => {
+export const ProductCard = ({ className, priority = false, product,prismicColor }: ProductCardProps) => {
   const isDesktop = useIsDesktop()
   const [changedVariation, setChangedVariation] = useState(false)
   const [quantity, setQuantity] = useState(1)
@@ -320,6 +321,7 @@ export const ProductCard = ({ className, priority = false, product }: ProductCar
             disabled={numberPickerDisabled}
             size={isDesktop ? 'md' : 'sm'}
             onClick={onClick}
+            style={{ backgroundColor: prismicColor }}
           >
             {productCardButtonText}
           </Button>

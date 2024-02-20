@@ -7,10 +7,11 @@ import { Button as DaisyButton, ButtonProps as DaisyButtonProps } from 'react-da
 export interface ButtonProps extends DaisyButtonProps {
   dark?: boolean
   link?: boolean
+  style?: any
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, color, dark, link = false, ...props }, ref) => {
+  ({ className, color, dark,style, link = false, ...props }, ref) => {
     const prefersReducedMotion = useReducedMotion()
     const selectedColor = dark ? 'ghost' : color || 'primary'
 
@@ -18,6 +19,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       <DaisyButton
         {...props}
         ref={ref}
+        style={style}
         animation={!prefersReducedMotion}
         className={clsx(
           'rounded normal-case',
