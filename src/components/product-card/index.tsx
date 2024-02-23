@@ -231,7 +231,10 @@ export const ProductCard = ({ className, priority = false, product,prismicColor 
   )
 
   const onClick = useCallback(() => {
-    if (productCardButtonText === 'Add to Cart') {
+    if (selectedProduct?.ctaText) {
+    router.push(selectedProduct?.ctaLink)
+    } 
+    else if (productCardButtonText === 'Add to Cart') {
       if (isCartProduct(product)) {
         handleQuantityChange(product, quantity)
       } else {
@@ -257,6 +260,7 @@ export const ProductCard = ({ className, priority = false, product,prismicColor 
         pictureUrl={selectedProduct.pictureUrl}
         priority={priority}
         onProductClick={onProductClick}
+        ctaLink={selectedProduct?.ctaLink ?? ''}
       />
     ),
     [priority, selectedProduct, onProductClick]
@@ -323,10 +327,12 @@ export const ProductCard = ({ className, priority = false, product,prismicColor 
             onClick={onClick}
             style={{ backgroundColor: prismicColor }}
           >
-            {productCardButtonText}
+            {selectedProduct?.ctaText ?? productCardButtonText}
           </Button>
         </div>
       </div>
     </div>
   )
 }
+
+
