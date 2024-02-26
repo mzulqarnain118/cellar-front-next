@@ -8,6 +8,7 @@ import { components } from '@/components/slices'
 import { HOME_PAGE_PATH } from '@/lib/paths'
 import { getStaticNavigation } from '@/lib/queries/header'
 import { createClient } from '@/prismic-io'
+import { useEffect } from 'react'
 
 type PageProps = InferGetStaticPropsType<typeof getStaticProps>
 
@@ -65,19 +66,24 @@ export const getStaticPaths: GetStaticPaths = async () => {
 }
 
 const BrandPage = ({ page }: PageProps) => {
-  console.log('page: ', page)
 
-  return (
-    <>
-      <NextSeo
-        description={asText(page?.data.meta_description) || undefined}
-        title={asText(page?.data.meta_title) || undefined}
-      />
-      <main>
-        <SliceZone components={components} slices={page?.data.body} />
-      </main>
-    </>
-  )
+  useEffect(() => {
+    const client = createClient()
+    const pages = async () => {
+      return await client.getAllByType('rich_content_page')
+    }
+    console.log("🚀 ~ useEffect ~ pages:", pages())
+  }, [])
+
+  return <>
+    <NextSeo
+      description={asText(page?.data.meta_description) || undefined}
+      title={asText(page?.data.meta_title) || undefined}
+    />
+    <main>
+      <SliceZone components={components} slices={page?.data.body} />
+    </main>
+  </>
 }
 
 export default BrandPage

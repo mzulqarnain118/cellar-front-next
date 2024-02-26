@@ -165,6 +165,19 @@ export const Payment = memo(({ opened, refs, toggle, cartTotalData }: PaymentPro
     }
   }, [redeemGiftCardCheckoutFinished, redeemOfferCheckoutFinished])
 
+  useEffect(() => {
+    if (redeemOfferCheckoutFinished) {
+      refs.promoCodeRef.current.value = ''
+    }
+  }, [redeemOfferCheckoutFinished])
+
+
+  useEffect(() => {
+    if (redeemGiftCardCheckoutFinished) {
+      refs.giftCardRef.current.value = ''
+    }
+  }, [redeemGiftCardCheckoutFinished])
+
   const handleInputChange: ChangeEventHandler<HTMLInputElement> = useCallback(
     ({ target }) => {
       target.value = formatCVC(target.value)

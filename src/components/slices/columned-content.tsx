@@ -1,9 +1,9 @@
 import { CSSProperties, useMemo } from 'react'
 
-import { Content } from '@prismicio/client'
+import { Content, asText } from '@prismicio/client'
 import { PrismicNextImage } from '@prismicio/next'
 import { PrismicRichText, SliceComponentProps } from '@prismicio/react'
-
+import { Link } from '../link'
 
 type ColumnedContentProps =
   SliceComponentProps<Content.RichContentPageDocumentDataBodyColumnedContentSlice>
@@ -62,13 +62,13 @@ export const ColumnedContent = ({ slice }: ColumnedContentProps) => {
           >
             <PrismicRichText field={slice.primary.content} />
           </div>
-          {/* {asText(slice.primary.cta_text).length > 0 && (
+          {asText(slice.primary.cta_text).length > 0 && asText(slice.primary.cta_text) !== 'BECOME A CONSULTANT TODAY!' && (
             <div className="font-body">
               <Link button className="mt-4" href={asText(slice.primary.cta_link)} style={linkStyle}>
                 {asText(slice.primary.cta_text)}
               </Link>
             </div>
-          )} */}
+          )}
         </div>
       </div>
     </div>

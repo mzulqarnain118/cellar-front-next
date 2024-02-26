@@ -136,7 +136,7 @@ export const CartDrawer = () => {
         <>
           {cartItems !== undefined ? (
             <div className="h-[stretch] overflow-y-scroll pb-[6.25rem]">
-              <div className="mb-[6.25rem] divide-y divide-neutral-200 bg-neutral-50 px-4">
+              <div className="mb-[210px] divide-y divide-neutral-200 bg-neutral-50 px-4">
                 {cartItems}
               </div>
             </div>

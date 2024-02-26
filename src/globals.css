@@ -71,7 +71,7 @@
   }
 
   a {
-    @apply text-[#165250] hover:underline;
+    @apply text-[#0345fc] hover:underline;
   }
 
   table {

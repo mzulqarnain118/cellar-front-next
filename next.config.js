@@ -38,6 +38,171 @@ const nextConfig = {
       permanent: true,
       source: '/my-account',
     },
+    {
+      source: '/become-consultant',
+      destination: 'https://join.scoutandcellar.com/',
+      permanent: true,
+    },
+    {
+      source: '/log-in',
+      destination: '/sign-in',
+      permanent: true,
+    },
+    {
+      source: '/login',
+      destination: '/sign-in',
+      permanent: true,
+    },
+    {
+      source: '/signup',
+      destination: '/create-account',
+      permanent: true,
+    },
+    {
+      source: '/unrealholiday',
+      destination: '/product/holidaygiftset-unrealholiday-22q4-unrealhol',
+      permanent: true,
+    },
+    {
+      source: '/merch/category/giftcards',
+      destination: '/product/e-giftcard',
+      permanent: true,
+    },
+    {
+      source: '/giftcards',
+      destination: '/product/e-giftcard',
+      permanent: true,
+    },
+    {
+      source: '/coffee',
+      destination: '/brands/scouting-grounds',
+      permanent: true,
+    },
+    {
+      source: '/wine/category/circle',
+      destination: '/circle',
+      permanent: true,
+    },
+    {
+      source: '/product/4bottleclub30',
+      destination: '/product/scoutcircle-4bottle-mix-30',
+      permanent: true,
+    },
+    {
+      source: '/product/b4bottleclub30',
+      destination: '/product/scoutcircle-4bottle-mix-30-b',
+      permanent: true,
+    },
+    {
+      source: '/product/4bottleclub130',
+      destination: '/product/scoutcircle-4bottle-mix-130',
+      permanent: true,
+    },
+    {
+      source: '/product/b4bottleclub130',
+      destination: '/product/scoutcircle-4bottle-mix-130-b',
+      permanent: true,
+    },
+    {
+      source: '/product/6whiteclubparty30',
+      destination: '/product/scoutcircle-6bottle-white-30',
+      permanent: true,
+    },
+    {
+      source: '/product/b6whiteclubparty30',
+      destination: '/product/scoutcircle-6bottle-white-30-b',
+      permanent: true,
+    },
+    {
+      source: '/product/6whiteclubparty130',
+      destination: '/product/scoutcircle-6bottle-white-130',
+      permanent: true,
+    },
+    {
+      source: '/product/b6whiteclubparty130',
+      destination: '/product/scoutcircle-6bottle-white-130-b',
+      permanent: true,
+    },
+    {
+      source: '/product/6redclubparty30',
+      destination: '/product/scoutcircle-6bottle-red-30',
+      permanent: true,
+    },
+    {
+      source: '/product/b6redclubparty30',
+      destination: '/product/scoutcircle-6bottle-red-30-b',
+      permanent: true,
+    },
+    {
+      source: '/product/6redclubparty130',
+      destination: '/product/scoutcircle-6bottle-red-130',
+      permanent: true,
+    },
+    {
+      source: '/product/b6redclubparty130',
+      destination: '/product/scoutcircle-6bottle-red-130-b',
+      permanent: true,
+    },
+    {
+      source: '/product/6mixedclubparty30',
+      destination: '/product/scoutcircle-6bottle-mix-30',
+      permanent: true,
+    },
+    {
+      source: '/product/b6mixedclubparty30',
+      destination: '/product/scoutcircle-6bottle-mix-30-b',
+      permanent: true,
+    },
+    {
+      source: '/product/6mixedclubparty130',
+      destination: '/product/scoutcircle-6bottle-mix-130',
+      permanent: true,
+    },
+    {
+      source: '/product/b6mixedclubparty130',
+      destination: '/product/scoutcircle-6bottle-mix-130-b',
+      permanent: true,
+    },
+    {
+      source: '/product/12mixedclubparty30',
+      destination: '/product/scoutcircle-12bottle-red-30',
+      permanent: true,
+    },
+    {
+      source: '/product/b12redclubparty30',
+      destination: '/product/scoutcircle-12bottle-red-30-b',
+      permanent: true,
+    },
+    {
+      source: '/product/12redclubparty130',
+      destination: '/product/scoutcircle-12bottle-red-130',
+      permanent: true,
+    },
+    {
+      source: '/product/b12redclubparty130',
+      destination: '/product/scoutcircle-12bottle-red-130-b',
+      permanent: true,
+    },
+    {
+      source: '/product/12redclubparty30',
+      destination: '/product/scoutcircle-12bottle-mix-30',
+      permanent: true,
+    },
+    {
+      source: '/product/b12mixedclubparty30',
+      destination: '/product/scoutcircle-12bottle-mix-30-b',
+      permanent: true,
+    },
+    {
+      source: '/product/12redclubparty130',
+      destination: '/product/scoutcircle-12bottle-mix-130',
+      permanent: true,
+    },
+    {
+      source: '/product/b12mixedclubparty130',
+      destination: '/product/scoutcircle-12bottle-mix-130-b',
+      permanent: true,
+    },
   ],
   sentry: {
     hideSourceMaps: true,
@@ -62,6 +227,7 @@ const sentryWebpackPluginOptions = {
 }
 
 module.exports = withSentryConfig(nextConfig, sentryWebpackPluginOptions, {
+  trailingSlash: true,
   // Automatically tree-shake Sentry logger statements to reduce bundle size
   disableLogger: true,
   // Hides source maps from generated client bundles

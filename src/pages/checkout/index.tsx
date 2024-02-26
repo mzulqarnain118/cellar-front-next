@@ -332,9 +332,6 @@ const CheckoutPage: NextPage<PageProps> = () => {
       return false
     }
 
-    console.log("🚀 ~ validate ~ giftCardRef:", giftCardRef)
-    console.log("🚀 ~ validate ~ giftCardCodes:", giftCardCodes)
-
     if (!giftCardCodes.isAdded && giftCardRef.current?.value.length) {
       setErrors(prev => ({
         ...prev,

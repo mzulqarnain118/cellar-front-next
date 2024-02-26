@@ -19,10 +19,9 @@ import { PasswordInput } from '@/core/components/password-input'
 import { Typography } from '@/core/components/typogrpahy'
 import { useValidateEmailMutation } from '@/lib/mutations/validate-email'
 import {
-  CHECKOUT_PAGE_PATH,
   CREATE_ACCOUNT_PAGE_PATH,
   GUEST_CHECKOUT_PAGE_PATH,
-  HOME_PAGE_PATH,
+  HOME_PAGE_PATH
 } from '@/lib/paths'
 import { useCartQuery } from '@/lib/queries/cart'
 import { getStaticNavigation } from '@/lib/queries/header'
@@ -58,7 +57,7 @@ const SignInPage: NextPage<PageProps> = () => {
   const { data: cart } = useCartQuery()
 
   const hasSubscriptionInCart = useMemo(
-    () => cart?.items.some(item => item.subscribable),
+    () => cart?.items.some(item => item.isScoutCircleClub || item.isAutoSip),
     [cart?.items]
   )
 
@@ -199,7 +198,7 @@ const SignInPage: NextPage<PageProps> = () => {
               </div>
               {!fullName && (
                 <div className="space-y-3 border-x-0 pt-4 md:!border-y-0 md:border-x md:!pt-0 md:pl-16">
-                  {redirectTo === CHECKOUT_PAGE_PATH && !hasSubscriptionInCart && (
+                  {!hasSubscriptionInCart && (
                     <div className="pb-4 space-y-2">
                       <Typography as="h6">Are you ready to checkout?</Typography>
                       <Button onClick={handleProceedAsGuest}>Proceed as guest</Button>

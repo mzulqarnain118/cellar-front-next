@@ -46,6 +46,17 @@ export const Footer = () => {
     [consultant?.url]
   )
 
+  const getCorrectLink = (linkText: string) => {
+    switch (linkText) {
+      case '/news':
+        return '/in-the-news';
+      case '/circle':
+        return '/wine/circle-exclusives'
+      default:
+        return linkText;
+    }
+  };
+
   const columnOne = useMemo(
     () =>
       footer?.data.column_1.map(link => (

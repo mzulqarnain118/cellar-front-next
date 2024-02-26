@@ -50,6 +50,17 @@ export const ImageAndText = ({ slice }: ImageAndTextProps) => {
     }
   }, [linkText])
 
+  const getHref = (linkText: string) => {
+    switch (linkText) {
+      case '/coffee':
+        return '/brands/scouting-grounds';
+      case '/circle':
+        return '/wine/circle-exclusives'
+      default:
+        return linkText;
+    }
+  };
+
   return (
     <div
       style={{
@@ -102,9 +113,10 @@ export const ImageAndText = ({ slice }: ImageAndTextProps) => {
                 <Link
                   button
                   className="mt-4 font-body"
-                  href={linkText}
+                  href={getHref(linkText)}
                   style={linkStyle}
                   title={asText(slice.primary.cta_text)}
+                  onClick={() => console.log('Link Text', linkText)}
                 >
                   {asText(slice.primary.cta_text)}
                 </Link>

@@ -12,6 +12,7 @@ import { ContactForm } from '@/features/contact/components/form'
 import { HOME_PAGE_PATH } from '@/lib/paths'
 import { getStaticNavigation } from '@/lib/queries/header'
 import { createClient } from '@/prismic-io'
+import { useEffect } from 'react'
 
 export const getStaticProps = async ({
   params,
@@ -98,6 +99,21 @@ const RichContentPage = ({
 }: {
   page?: Content.RichContentPageDocument | Content.ContentPageDocument | null
 }) => {
+  const client = createClient()
+
+  useEffect(() => {
+
+    const pageFunc = async () => await Promise.all([
+      client.getAllByType('rich_content_page'),
+      client.getAllByType('content_page'),
+    ])
+
+
+    console.log('pages: ', pageFunc())
+
+  }, [])
+
+
   if (page?.type === 'rich_content_page') {
     return (
       <>
@@ -126,7 +142,7 @@ const RichContentPage = ({
         >
           <PrismicRichText field={page?.data.title} />
         </div>
-        <div className="container mx-auto my-24">
+        <div className="container mx-auto my-10 lg:w-[60vw]">
           <div className="justify-center grid">
             <div>
               <div className="[&>p]:my-4 [&>h6]:mb-2 [&>ul]:mb-4 [&>ul]:pl-10 [&>ul]:list-disc">

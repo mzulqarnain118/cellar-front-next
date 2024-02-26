@@ -100,6 +100,7 @@ export const ProductListing = ({
     () => (search.length > 0 ? { ...paginatedSearch } : { ...paginatedProducts }),
     [paginatedProducts, paginatedSearch, search.length]
   )
+  console.log("🚀 ~ data Products:", data?.products)
 
   const handleFilterClose = useCallback(() => setShowFilters(false), [])
   const onFilterToggle = useCallback(() => setShowFilters(prev => !prev), [])
@@ -151,6 +152,7 @@ export const ProductListing = ({
       ) : undefined,
     [data?.products]
   )
+  console.log("🚀 ~ data?.products:", data?.products)
 
   const onSortChange = useCallback((value: Sort) => {
     setSort(value)
