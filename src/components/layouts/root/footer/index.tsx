@@ -20,6 +20,16 @@ export const Footer = () => {
   const { data: footer } = useFooterQuery()
   const { data: consultant } = useConsultantQuery()
 
+  const getCorrectLink = linkText => {
+    switch (linkText) {
+      case '/consultant-login':
+        return 'https://team.scoutandcellar.com/Account/Login?ReturnUrl=%2F'
+      // Add more cases as needed
+      default:
+        return linkText
+    }
+  }
+
   const getLink = useCallback(
     (link: string | null) => {
       if (link?.startsWith('https://join')) {
@@ -55,7 +65,7 @@ export const Footer = () => {
       footer?.data.column_2.map(link => (
         <FooterLink
           key={asText(link.link_text)}
-          link={getLink(link.link_url)}
+          link={getCorrectLink(getLink(link.link_url))}
           target={link.open_in_new_tab ? '_blank' : '_self'}
         >
           {asText(link.link_text)}

@@ -64,16 +64,20 @@ export const getStaticPaths: GetStaticPaths = async () => {
   }
 }
 
-const BrandPage = ({ page }: PageProps) => (
-  <>
-    <NextSeo
-      description={asText(page?.data.meta_description) || undefined}
-      title={asText(page?.data.meta_title) || undefined}
-    />
-    <main>
-      <SliceZone components={components} slices={page?.data.body} />
-    </main>
-  </>
-)
+const BrandPage = ({ page }: PageProps) => {
+  console.log('page: ', page)
+
+  return (
+    <>
+      <NextSeo
+        description={asText(page?.data.meta_description) || undefined}
+        title={asText(page?.data.meta_title) || undefined}
+      />
+      <main>
+        <SliceZone components={components} slices={page?.data.body} />
+      </main>
+    </>
+  )
+}
 
 export default BrandPage

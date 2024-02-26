@@ -1,4 +1,4 @@
-import { CSSProperties, useMemo,useEffect } from 'react'
+import { CSSProperties, useMemo } from 'react'
 
 import { Carousel } from '@mantine/carousel'
 import { Skeleton } from '@mantine/core'
@@ -17,23 +17,25 @@ export const DynamicProductShowcase = ({
   slice,
 }: DynamicProductShowcaseProps & { excludedSku?: string }) => {
   const { data: allProducts, isFetching, isLoading } = useProductsQuery()
+  console.log('🚀 ~ allProducts:', allProducts)
   const brand = slice.primary.brand
-   
+
   const productsSelectedInPrismic = useMemo(() => {
     return slice?.items?.map(product => product?.display_order?.uid?.toLowerCase() ?? '')
-  }, [slice?.items]);
+  }, [slice?.items])
 
   const products = useMemo(
     () =>
-      allProducts?.filter(
-        product => brand ? product.attributes?.Brand === brand: productsSelectedInPrismic.includes(product.sku)
+      allProducts?.filter(product =>
+        brand
+          ? product.attributes?.Brand === brand
+          : productsSelectedInPrismic.includes(product.sku)
       ),
     [allProducts, excludedSku, slice.primary.brand]
   )
 
   if (isFetching || isLoading) {
     return (
-
       <div className="flex w-full gap-8">
         <Skeleton className="my-8 h-[640px] !w-1/4" />
         <Skeleton className="my-8 h-[640px] !w-1/4" />
@@ -42,6 +44,8 @@ export const DynamicProductShowcase = ({
       </div>
     )
   }
+
+  console.log('products: ', products)
   if (products === undefined || products.length === 0) {
     return <></>
   }
@@ -57,7 +61,11 @@ export const DynamicProductShowcase = ({
       <Carousel withControls withIndicators align="start" slideGap="lg" slideSize="25%">
         {products?.map(product => (
           <Carousel.Slide key={product.sku} className="py-8">
-            <ProductCard className="h-full" product={product} prismicColor={slice.primary.highlight_color}/>
+            <ProductCard
+              className="h-full"
+              product={product}
+              prismicColor={slice.primary.highlight_color}
+            />
           </Carousel.Slide>
         ))}
       </Carousel>

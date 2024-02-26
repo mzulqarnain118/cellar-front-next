@@ -18,6 +18,7 @@ import { createClient, linkResolver } from '@/prismic-io'
 export const getStaticProps = async ({ params, previewData }: GetStaticPropsContext) => {
   const client = createClient({ previewData })
   let uid
+
   if (params && params.category) {
     uid = params.category.toString()
   }
@@ -108,6 +109,7 @@ type PageProps = InferGetStaticPropsType<typeof getStaticProps>
 const CategoryPage: NextPage<PageProps> = ({ page }) => {
   const router = useRouter()
   const currentPage = router.query.page ? parseInt(router.query.page.toString()) : DEFAULT_PAGE
+  console.log('🚀 ~ currentPage:', currentPage)
   const categories = page?.data.display_categories
     .map(category => category.display_category_id)
     .map(Number)
