@@ -56,7 +56,12 @@ const selectStyles: SelectProps['styles'] = theme => ({
   },
 })
 
-export const ProductCard = ({ className, priority = false, product,prismicColor }: ProductCardProps) => {
+export const ProductCard = ({
+  className,
+  priority = false,
+  product,
+  prismicColor,
+}: ProductCardProps) => {
   const isDesktop = useIsDesktop()
   const [changedVariation, setChangedVariation] = useState(false)
   const [quantity, setQuantity] = useState(1)
@@ -232,9 +237,8 @@ export const ProductCard = ({ className, priority = false, product,prismicColor 
 
   const onClick = useCallback(() => {
     if (selectedProduct?.ctaText) {
-    router.push(selectedProduct?.ctaLink)
-    } 
-    else if (productCardButtonText === 'Add to Cart') {
+      router.push(selectedProduct?.ctaLink)
+    } else if (productCardButtonText === 'Add to Cart') {
       if (isCartProduct(product)) {
         handleQuantityChange(product, quantity)
       } else {
@@ -327,12 +331,10 @@ export const ProductCard = ({ className, priority = false, product,prismicColor 
             onClick={onClick}
             style={{ backgroundColor: prismicColor }}
           >
-            {selectedProduct?.ctaText ?? productCardButtonText}
+            {productCardButtonText}
           </Button>
         </div>
       </div>
     </div>
   )
 }
-
-

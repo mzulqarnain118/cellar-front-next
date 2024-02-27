@@ -1,6 +1,5 @@
-import { CSSProperties, useMemo, useEffect } from 'react'
+import { CSSProperties, useMemo } from 'react'
 
-import { Carousel } from '@mantine/carousel'
 import { Skeleton } from '@mantine/core'
 import type { Content } from '@prismicio/client'
 import { PrismicRichText, SliceComponentProps } from '@prismicio/react'
@@ -12,10 +11,18 @@ type ProductShowcaseProps =
 export const ProductShowcase = ({
   excludedSku = '',
   slice,
-}: ProductShowcaseProps & { excludedSku?: string }) => {               
+}: ProductShowcaseProps & { excludedSku?: string }) => {
   const products = useMemo(() => {
-    return slice.items.filter(product => !!product.image?.url)?.map(item => ({ displayName: item?.title?.[0]?.text ?? '', price: item?.price?.[0]?.text ?? '', pictureUrl: item?.image?.url ?? '',ctaLink:item?.cta_link?.[0]?.text ?? '',ctaText:item?.cta_text?.[0]?.text ?? '' }))
-  }, [slice?.items]);
+    return slice.items
+      .filter(product => !!product.image?.url)
+      ?.map(item => ({
+        displayName: item?.title?.[0]?.text ?? '',
+        price: item?.price?.[0]?.text ?? '',
+        pictureUrl: item?.image?.url ?? '',
+        ctaLink: item?.cta_link?.[0]?.text ?? '',
+        ctaText: item?.cta_text?.[0]?.text ?? '',
+      }))
+  }, [slice?.items])
 
   if (!products) {
     return (
@@ -30,7 +37,7 @@ export const ProductShowcase = ({
   if (products === undefined || products.length === 0) {
     return <></>
   }
-
+  console.log(products, 'products')
   return (
     <div className="py-8 lg:mx-auto container">
       <div
@@ -39,13 +46,20 @@ export const ProductShowcase = ({
       >
         <PrismicRichText field={slice.primary.heading} />
       </div>
-      <Carousel withControls withIndicators align="start" slideGap="lg" slideSize="25%">
+      {/* <Carousel withControls withIndicators align="start" slideGap="lg" slideSize="25%"> */}
+      <div className="flex flex-wrap gap-16 justify-center py-8">
         {products?.map(product => (
-          <Carousel.Slide key={product.sku} className="py-8">
-            <ProductCard className="h-full" product={product} prismicColor={slice.primary.highlight_color} />
-          </Carousel.Slide>
+          <div key={product.sku}>
+            <ProductCard
+              className="h-[500px] w-[350px] bg-white"
+              product={product}
+              prismicColor={slice.primary.highlight_color}
+            />
+          </div>
         ))}
-      </Carousel>
+      </div>
+
+      {/* </Carousel> */}
     </div>
   )
 }

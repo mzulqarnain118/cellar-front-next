@@ -20,11 +20,14 @@ export const Footer = () => {
   const { data: footer } = useFooterQuery()
   const { data: consultant } = useConsultantQuery()
 
-  const getCorrectLink = linkText => {
+  const getCorrectLink = (linkText: string) => {
     switch (linkText) {
       case '/consultant-login':
         return 'https://team.scoutandcellar.com/Account/Login?ReturnUrl=%2F'
-      // Add more cases as needed
+      case '/news':
+        return '/in-the-news'
+      case '/circle':
+        return '/wine/circle-exclusives'
       default:
         return linkText
     }
@@ -45,17 +48,6 @@ export const Footer = () => {
     },
     [consultant?.url]
   )
-
-  const getCorrectLink = (linkText: string) => {
-    switch (linkText) {
-      case '/news':
-        return '/in-the-news';
-      case '/circle':
-        return '/wine/circle-exclusives'
-      default:
-        return linkText;
-    }
-  };
 
   const columnOne = useMemo(
     () =>

@@ -4,7 +4,9 @@ export const getProductButtonText = (
   product: SubscriptionProduct | CartItem,
   isUserClubMember = false
 ) => {
-  if (
+  if (product?.ctaText) {
+    return product?.ctaText
+  } else if (
     (product.variations !== undefined && product.variations.length > 0) ||
     product.subscriptionProduct !== undefined
   ) {

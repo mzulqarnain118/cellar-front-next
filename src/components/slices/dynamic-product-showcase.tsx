@@ -1,6 +1,5 @@
 import { CSSProperties, useMemo } from 'react'
 
-import { Carousel } from '@mantine/carousel'
 import { Skeleton } from '@mantine/core'
 import type { Content } from '@prismicio/client'
 import { PrismicRichText, SliceComponentProps } from '@prismicio/react'
@@ -53,22 +52,24 @@ export const DynamicProductShowcase = ({
   return (
     <div className="py-8 lg:mx-auto container">
       <div
-        className="px-4 lg:text-center"
+        className="px-4 text-center"
         style={{ '--highlight': slice.primary.highlight_color } as CSSProperties}
       >
         <PrismicRichText field={slice.primary.heading} />
       </div>
-      <Carousel withControls withIndicators align="start" slideGap="lg" slideSize="25%">
+      {/* <Carousel align="start" slideGap="lg" slideSize="25%"> */}
+      <div className="flex flex-wrap gap-16 justify-center py-8">
         {products?.map(product => (
-          <Carousel.Slide key={product.sku} className="py-8">
+          <div key={product.sku}>
             <ProductCard
-              className="h-full"
+              className="h-[500px] w-[350px] bg-white"
               product={product}
               prismicColor={slice.primary.highlight_color}
             />
-          </Carousel.Slide>
+          </div>
         ))}
-      </Carousel>
+      </div>
+      {/* </Carousel> */}
     </div>
   )
 }
