@@ -62,7 +62,7 @@ export const DynamicProductShowcase = ({
         {products?.map(product => (
           <div key={product.sku}>
             <ProductCard
-              className="h-[500px] w-[350px] bg-white"
+              className="h-[500px] !w-[350px] bg-white"
               product={product}
               prismicColor={slice.primary.highlight_color}
             />

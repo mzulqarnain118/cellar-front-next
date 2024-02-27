@@ -37,11 +37,11 @@ export const ProductShowcase = ({
   if (products === undefined || products.length === 0) {
     return <></>
   }
-  console.log(products, 'products')
+  
   return (
     <div className="py-8 lg:mx-auto container">
       <div
-        className="px-4 lg:text-center"
+        className="px-4 text-center"
         style={{ '--highlight': slice.primary.highlight_color } as CSSProperties}
       >
         <PrismicRichText field={slice.primary.heading} />
@@ -51,14 +51,13 @@ export const ProductShowcase = ({
         {products?.map(product => (
           <div key={product.sku}>
             <ProductCard
-              className="h-[500px] w-[350px] bg-white"
+              className="h-[500px] !w-[350px] bg-white"
               product={product}
               prismicColor={slice.primary.highlight_color}
             />
           </div>
         ))}
       </div>
-
       {/* </Carousel> */}
     </div>
   )

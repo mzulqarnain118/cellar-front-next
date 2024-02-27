@@ -28,7 +28,7 @@ export const Footer = () => {
         return '/in-the-news'
       case '/circle':
         return '/wine/circle-exclusives'
-      default:
+      default:  
         return linkText
     }
   }
