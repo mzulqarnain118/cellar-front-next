@@ -23,6 +23,7 @@ import { NextSeo } from 'next-seo'
 import { Typography } from '@/core/components/typogrpahy'
 import { useIsDesktop } from '@/core/hooks/use-is-desktop'
 import { Clubs } from '@/features/customer-portal/components/clubs'
+import { ClubsEdit } from '@/features/customer-portal/components/clubs/edit'
 import { PaymentMethods } from '@/features/customer-portal/components/payment-methods'
 import { Profile } from '@/features/customer-portal/components/profile'
 import { ShippingAddresses } from '@/features/customer-portal/components/shipping-addresses'
@@ -35,7 +36,6 @@ import {
 import { useCustomerPortalIsLoading } from '@/features/store'
 import { MY_ACCOUNT_PAGE_PATH, SIGN_IN_PAGE_PATH } from '@/lib/paths'
 
-import { ClubsEdit } from '@/features/customer-portal/components/clubs/edit'
 import { authOptions } from '../api/auth/[...nextauth]'
 
 const OrderInvoicePanel = dynamic(() =>
@@ -108,6 +108,16 @@ const tabsClassNames = {
 }
 
 export const getServerSideProps: GetServerSideProps = async context => {
+  const SLUGS = [
+    'profile',
+    'shipping-addresses',
+    'payment-methods',
+    'orders',
+    'clubs',
+    'auto-sips',
+    'wallet',
+  ]
+
   const slug = context.query[0]?.toString()
 
   if (slug !== undefined && !SLUGS.includes(slug)) {
@@ -233,11 +243,12 @@ const MyAccountPage: NextPage<PageProps> = () => {
               }
 
               return (
-                url === slug && <Panel key={url} autoSip={url === 'auto-sips' ? true : false} className="lg:px-20" value={url}>
-                  {url}
-                </Panel>
+                url === slug && (
+                  <Panel key={url} autoSip={url === 'auto-sips'} className="lg:px-20" value={url}>
+                    {url}
+                  </Panel>
+                )
               )
-
             })}
           </Tabs>
         </div>

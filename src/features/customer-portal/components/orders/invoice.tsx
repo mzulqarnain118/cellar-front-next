@@ -4,7 +4,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 
 import { DocumentIcon, PrinterIcon } from '@heroicons/react/24/outline'
-import { Table, Tabs, TabsPanelProps } from '@mantine/core'
+import { LoadingOverlay, Table, Tabs, TabsPanelProps } from '@mantine/core'
 import format from 'date-fns/format'
 import parseISO from 'date-fns/parseISO'
 import html2canvas from 'html2canvas'
@@ -24,6 +24,7 @@ const printerIcon = <PrinterIcon className="h-4 w-4" />
 const documentIcon = <DocumentIcon className="h-4 w-4" />
 
 export const OrderInvoicePanel = (props: TabsPanelProps) => {
+  const router = useRouter()
   const { query } = useRouter()
   const { data: invoice, isFetching, isLoading } = useOrderInvoiceQuery(query.slug?.[1] || '')
   const componentRef = useRef<HTMLDivElement | null>(null)
@@ -33,6 +34,8 @@ export const OrderInvoicePanel = (props: TabsPanelProps) => {
     }),
     []
   )
+  const handleBack = () => router.push(`orders/`)
+
   const handlePrint = useReactToPrint(printProps)
 
   const handleSavePDF = useCallback(async () => {
@@ -128,7 +131,7 @@ export const OrderInvoicePanel = (props: TabsPanelProps) => {
   )
 
   if (isFetching || isLoading) {
-    return <>Loading...</>
+    return <LoadingOverlay visible={isFetching || isLoading} />
   }
 
   return (
@@ -284,6 +287,9 @@ export const OrderInvoicePanel = (props: TabsPanelProps) => {
         <Divider />
       </div>
       <div className="flex flex-col gap-4 print:hidden xl:flex-row xl:justify-end">
+        <Button dark startIcon={documentIcon} onClick={handleBack}>
+          Back
+        </Button>
         <Button color="ghost" startIcon={printerIcon} onClick={handlePrint}>
           Print
         </Button>

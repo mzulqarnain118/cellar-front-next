@@ -100,7 +100,6 @@ export const ProductListing = ({
     () => (search.length > 0 ? { ...paginatedSearch } : { ...paginatedProducts }),
     [paginatedProducts, paginatedSearch, search.length]
   )
-  console.log("🚀 ~ data Products:", data?.products)
 
   const handleFilterClose = useCallback(() => setShowFilters(false), [])
   const onFilterToggle = useCallback(() => setShowFilters(prev => !prev), [])
@@ -152,7 +151,7 @@ export const ProductListing = ({
       ) : undefined,
     [data?.products]
   )
-  console.log("🚀 ~ data?.products:", data?.products)
+  console.log('🚀 ~ data?.products:', data?.products)
 
   const onSortChange = useCallback((value: Sort) => {
     setSort(value)
@@ -330,7 +329,7 @@ export const ProductListing = ({
       >
         <div className="w-[16.25rem] max-w-[16.25rem]">{filters}</div>
         <div className="flex flex-col gap-4 py-10">
-          {bannerElement}
+          {/* {bannerElement} */}
           {paginationHeader}
           <div className="transition-all grid gap-4 md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-4 3xl:grid-cols-5 relative">
             <div className="animate-pulse rounded bg-neutral-300 h-[27.75rem]" />
@@ -376,7 +375,7 @@ export const ProductListing = ({
         <div className="w-[16.25rem] max-w-[16.25rem]">{filters}</div>
       ) : undefined}
       <div className="flex flex-col gap-4 py-10">
-        {bannerElement}
+        {/* {bannerElement} */}
         {paginationHeader}
         {productCards}
         <Pagination

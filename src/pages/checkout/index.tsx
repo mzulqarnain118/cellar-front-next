@@ -1,27 +1,31 @@
-import { useRouter } from 'next/router';
-import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react'
 
-import dynamic from 'next/dynamic';
+import dynamic from 'next/dynamic'
+import { useRouter } from 'next/router'
 
-import { useDisclosure, useReducedMotion, useScrollIntoView, useWindowScroll } from '@mantine/hooks';
-import { notifications } from '@mantine/notifications';
-import { useQueryClient } from '@tanstack/react-query';
-import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next';
-import { getServerSession } from 'next-auth';
-import { NextSeo } from 'next-seo';
-import { Badge } from 'react-daisyui';
+import { List, LoadingOverlay, Text } from '@mantine/core'
+import { useDisclosure, useReducedMotion, useScrollIntoView, useWindowScroll } from '@mantine/hooks'
+import { modals } from '@mantine/modals'
+import { notifications } from '@mantine/notifications'
+import { useQueryClient } from '@tanstack/react-query'
+import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next'
+import { getServerSession } from 'next-auth'
+import { NextSeo } from 'next-seo'
+import { Badge } from 'react-daisyui'
 
-import { Link } from '@/components/link';
-import { Typography } from '@/core/components/typogrpahy';
-import modalStyles from './modalStyles.module.css';
-
-import { wait } from '@/core/utils/time';
-import { ContactInformation } from '@/features/checkout/components/contact-information';
-import { Delivery } from '@/features/checkout/components/delivery';
-import { Payment } from '@/features/checkout/components/payment';
-import { useSetCartOwnerMutation } from '@/lib/mutations/cart/set-owner';
-import { SIGN_IN_PAGE_PATH, WINE_PAGE_PATH } from '@/lib/paths';
-import { CART_QUERY_KEY, useCartQuery } from '@/lib/queries/cart';
+import { Link } from '@/components/link'
+import { Typography } from '@/core/components/typogrpahy'
+import { wait } from '@/core/utils/time'
+import { ContactInformation } from '@/features/checkout/components/contact-information'
+import { Delivery } from '@/features/checkout/components/delivery'
+import { Payment } from '@/features/checkout/components/payment'
+import { useValidateCartStockMutation } from '@/features/checkout/mutations/validate-cart-stock'
+import { useRemoveFromCartMutation } from '@/lib/mutations/cart/remove-from-cart'
+import { useSetCartOwnerMutation } from '@/lib/mutations/cart/set-owner'
+import { SIGN_IN_PAGE_PATH, WINE_PAGE_PATH } from '@/lib/paths'
+import { CART_QUERY_KEY, useCartQuery } from '@/lib/queries/cart'
+import { GET_SUBTOTAL_QUERY, useGetSubtotalQuery } from '@/lib/queries/checkout/get-subtotal'
+import { CART_INFO_QUERY_KEY, getCartInfo } from '@/lib/queries/get-info'
 import {
   useCheckoutActions,
   useCheckoutActiveCreditCard,
@@ -34,17 +38,13 @@ import {
   useCheckoutIsPickUp,
   useCheckoutPromoCode,
   useCheckoutSelectedPickUpAddress,
-  useCheckoutSelectedPickUpOption
-} from '@/lib/stores/checkout';
-import { toastInfo } from '@/lib/utils/notifications';
+  useCheckoutSelectedPickUpOption,
+} from '@/lib/stores/checkout'
+import { toastInfo } from '@/lib/utils/notifications'
 
-import { useValidateCartStockMutation } from '@/features/checkout/mutations/validate-cart-stock';
-import { useRemoveFromCartMutation } from '@/lib/mutations/cart/remove-from-cart';
-import { GET_SUBTOTAL_QUERY, useGetSubtotalQuery } from '@/lib/queries/checkout/get-subtotal';
-import { CART_INFO_QUERY_KEY, getCartInfo } from '@/lib/queries/get-info';
-import { List, LoadingOverlay, Text } from '@mantine/core';
-import { modals } from '@mantine/modals';
-import { authOptions } from '../api/auth/[...nextauth]';
+import { authOptions } from '../api/auth/[...nextauth]'
+
+import modalStyles from './modalStyles.module.css'
 
 const CartSummary = dynamic(
   () =>
@@ -87,8 +87,7 @@ const CheckoutPage: NextPage<PageProps> = () => {
   const [scroll] = useWindowScroll()
   const prefersReducedMotion = useReducedMotion()
   const queryClient = useQueryClient()
-  const { data: cartTotalData, isRefetching: isRefetchingSubTotal } = useGetSubtotalQuery();
-
+  const { data: cartTotalData, isRefetching: isRefetchingSubTotal } = useGetSubtotalQuery()
 
   const activeCreditCard = useCheckoutActiveCreditCard()
   const isAddingAddress = useCheckoutIsAddingAddress()
@@ -145,60 +144,65 @@ const CheckoutPage: NextPage<PageProps> = () => {
 
   useEffect(() => {
     // Optionally, you can prefetch the query here
-    queryClient.prefetchQuery([GET_SUBTOTAL_QUERY, cart?.id]);
-  }, [queryClient]);
+    queryClient.prefetchQuery([GET_SUBTOTAL_QUERY, cart?.id])
+  }, [queryClient])
 
-  const { mutate: vaildateCartStock, data: validateCartStockResp, isLoading: validateCartStockLoading, isSuccess: validateCartStockSuccess } = useValidateCartStockMutation({ returnData: true });
+  const {
+    mutate: vaildateCartStock,
+    data: validateCartStockResp,
+    isLoading: validateCartStockLoading,
+    isSuccess: validateCartStockSuccess,
+  } = useValidateCartStockMutation({ returnData: true })
 
-  const handleValidateCart = async () => await vaildateCartStock();
+  const handleValidateCart = async () => await vaildateCartStock()
 
-  const { mutate: removeFromCart } = useRemoveFromCartMutation();
+  const { mutate: removeFromCart } = useRemoveFromCartMutation()
 
   const handleNavigateToWinePage = () => {
-    router.push('/wine');
-  };
+    router.push('/wine')
+  }
 
   const handleKeepShopping = () => {
-    const products = [];
+    const products = []
 
     validateCartStockResp?.Response.forEach(item => {
-      const itemSKU = item.SKU.toLowerCase();
+      const itemSKU = item.SKU.toLowerCase()
 
-      const product = cart?.items.find(cartItem => cartItem.sku === itemSKU);
+      const product = cart?.items.find(cartItem => cartItem.sku === itemSKU)
 
-      products.push(product);
-    });
+      products.push(product)
+    })
 
     products.forEach((product, index) => {
       if (index === products.length - 1) {
-        removeFromCart({ item: product, sku: product.sku, fetchSubtotal: true });
+        removeFromCart({ item: product, sku: product.sku, fetchSubtotal: true })
       } else {
-        removeFromCart({ item: product, sku: product.sku, fetchSubtotal: false });
+        removeFromCart({ item: product, sku: product.sku, fetchSubtotal: false })
       }
-    });
+    })
 
     modals.close
     handleNavigateToWinePage()
   }
 
   const handleContinue = () => {
-    const products = [];
+    const products = []
 
     validateCartStockResp?.Response.forEach(item => {
-      const itemSKU = item.SKU.toLowerCase();
+      const itemSKU = item.SKU.toLowerCase()
 
-      const product = cart?.items.find(cartItem => cartItem.sku === itemSKU);
+      const product = cart?.items.find(cartItem => cartItem.sku === itemSKU)
 
-      products.push(product);
-    });
+      products.push(product)
+    })
 
     products.forEach((product, index) => {
       if (index === products.length - 1) {
-        removeFromCart({ item: product, sku: product.sku, fetchSubtotal: true });
+        removeFromCart({ item: product, sku: product.sku, fetchSubtotal: true })
       } else {
-        removeFromCart({ item: product, sku: product.sku, fetchSubtotal: false });
+        removeFromCart({ item: product, sku: product.sku, fetchSubtotal: false })
       }
-    });
+    })
 
     modals.close
   }
@@ -303,7 +307,7 @@ const CheckoutPage: NextPage<PageProps> = () => {
       return false
     }
 
-    if (creditCard !== undefined && !cvvRef.current?.value.length) {
+    if (creditCard !== undefined && cvvRef.current?.value.length < 3) {
       openPayment()
       await wait(300)
 
@@ -380,12 +384,16 @@ const CheckoutPage: NextPage<PageProps> = () => {
           body: (
             <div className="grid gap-2">
               <div className={`grid ${modalStyles.typography}`}>
-                <Text className={modalStyles.text} fz='md' lh="xl">One or more products from your cart are not available to purchase and will be removed:</Text>
+                <Text className={modalStyles.text} fz="md" lh="xl">
+                  One or more products from your cart are not available to purchase and will be
+                  removed:
+                </Text>
                 <List className={modalStyles.listContainer}>
-                  {validateCartStockResp?.Response.map(item => {
-                    return <List.Item className={modalStyles.listItem} key={item.SKU}>{item.DisplayName}</List.Item>
-                  })
-                  }
+                  {validateCartStockResp?.Response.map(item => (
+                    <List.Item key={item.SKU} className={modalStyles.listItem}>
+                      {item.DisplayName}
+                    </List.Item>
+                  ))}
                 </List>
               </div>
             </div>
@@ -406,7 +414,7 @@ const CheckoutPage: NextPage<PageProps> = () => {
         classNames: {
           title: modalStyles.title,
         },
-      });
+      })
 
       return false
     }
@@ -482,7 +490,7 @@ const CheckoutPage: NextPage<PageProps> = () => {
   const handleViewCartInfo = async () => {
     await queryClient.fetchQuery({
       queryKey: [CART_INFO_QUERY_KEY, cart?.id],
-      queryFn: getCartInfo
+      queryFn: getCartInfo,
     })
   }
 
@@ -499,9 +507,25 @@ const CheckoutPage: NextPage<PageProps> = () => {
               refs={contactInformationRefs}
               toggle={toggleContactInformation}
             />
-            <Delivery opened={deliveryOpened} cartTotalData={cartTotalData} refs={deliveryRefs} toggle={toggleDelivery} />
-            <Payment opened={paymentOpened} refs={paymentRefs} toggle={togglePayment} cartTotalData={cartTotalData} />
-            <PayForOrder cartTotalData={cartTotalData} refs={payForOrderRefs} validate={validate} handleValidateCart={handleValidateCart} validateCartStockResp={validateCartStockResp} />
+            <Delivery
+              cartTotalData={cartTotalData}
+              opened={deliveryOpened}
+              refs={deliveryRefs}
+              toggle={toggleDelivery}
+            />
+            <Payment
+              cartTotalData={cartTotalData}
+              opened={paymentOpened}
+              refs={paymentRefs}
+              toggle={togglePayment}
+            />
+            <PayForOrder
+              cartTotalData={cartTotalData}
+              handleValidateCart={handleValidateCart}
+              refs={payForOrderRefs}
+              validate={validate}
+              validateCartStockResp={validateCartStockResp}
+            />
           </div>
           <div className="flex-1">
             <div

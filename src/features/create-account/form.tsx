@@ -21,6 +21,7 @@ import { ValidateEmail, useValidateEmailMutation } from '@/lib/mutations/validat
 import { HOME_PAGE_PATH, SIGN_IN_PAGE_PATH } from '@/lib/paths'
 import { useConsultantStore } from '@/lib/stores/consultant'
 
+import { ConsultantCheckbox } from './consultant/checkbox'
 import { MAX_DAYS, MONTH_MAP, is21OrOlder, isLeapYear } from './dob/util'
 
 const DateOfBirthPicker = dynamic(
@@ -320,6 +321,9 @@ export const CreateAccountForm = () => {
                 onVisibilityChange={setPasswordVisible}
                 {...register('confirmPassword')}
               />
+              <div className="col-span-2 grid">
+                <ConsultantCheckbox isChecked={!!defaultValues.shoppingWithConsultant} />
+              </div>
               <Button className="my-4" disabled={isValidatingEmail} type="submit">
                 Create my account
               </Button>
