@@ -260,11 +260,12 @@ export const ProductCard = ({
       <ProductImageLink
         key={selectedProduct.sku}
         cartUrl={selectedProduct.cartUrl}
+        // ctaLink={selectedProduct?.ctaLink ?? ''}
+        ctaLink={`/product/${product.cartUrl}`}
         displayName={selectedProduct.displayName}
         pictureUrl={selectedProduct.pictureUrl}
         priority={priority}
         onProductClick={onProductClick}
-        ctaLink={selectedProduct?.ctaLink ?? ''}
       />
     ),
     [priority, selectedProduct, onProductClick]
@@ -328,8 +329,8 @@ export const ProductCard = ({
             color="secondary"
             disabled={numberPickerDisabled}
             size={isDesktop ? 'md' : 'sm'}
-            onClick={onClick}
             style={{ backgroundColor: prismicColor }}
+            onClick={onClick}
           >
             {productCardButtonText}
           </Button>
