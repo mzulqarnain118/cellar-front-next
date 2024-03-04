@@ -3,7 +3,7 @@ import { Fragment, useCallback, useMemo, useRef } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
-import { DocumentIcon, PrinterIcon } from '@heroicons/react/24/outline'
+import { ArrowLeftIcon, DocumentIcon, PrinterIcon } from '@heroicons/react/24/outline'
 import { LoadingOverlay, Table, Tabs, TabsPanelProps } from '@mantine/core'
 import format from 'date-fns/format'
 import parseISO from 'date-fns/parseISO'
@@ -22,6 +22,7 @@ import { Transaction, useOrderInvoiceQuery } from '../../queries/order-invoice'
 
 const printerIcon = <PrinterIcon className="h-4 w-4" />
 const documentIcon = <DocumentIcon className="h-4 w-4" />
+const backIcon = <ArrowLeftIcon className="h-4 w-4" />
 
 export const OrderInvoicePanel = (props: TabsPanelProps) => {
   const router = useRouter()
@@ -287,7 +288,7 @@ export const OrderInvoicePanel = (props: TabsPanelProps) => {
         <Divider />
       </div>
       <div className="flex flex-col gap-4 print:hidden xl:flex-row xl:justify-end">
-        <Button dark startIcon={documentIcon} onClick={handleBack}>
+        <Button dark startIcon={backIcon} onClick={handleBack}>
           Back
         </Button>
         <Button color="ghost" startIcon={printerIcon} onClick={handlePrint}>

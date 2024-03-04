@@ -16,11 +16,14 @@ export const FooterLink = ({ children, link, target = '_self' }: FooterLinkProps
   }, [link, target])
 
   return link.startsWith('http') ? (
-    <button className="hover:underline text-left !m-0" onClick={handleExternalLinkClick}>
+    <button
+      className="hover:underline !m-0 text-center md:text-left"
+      onClick={handleExternalLinkClick}
+    >
       {children}
     </button>
   ) : (
-    <Link className="!m-0 !p-0" href={link}>
+    <Link className="!m-0 !p-0 text-center md:text-left" href={link}>
       {children}
     </Link>
   )

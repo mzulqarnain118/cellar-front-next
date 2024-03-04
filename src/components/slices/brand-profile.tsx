@@ -12,7 +12,7 @@ export const BrandProfile = ({ slice }: BrandProfileProps) => (
     style={{ backgroundColor: slice.primary.background_color || 'transparent' }}
   >
     <div
-      className="mb-2 h3 font-heading"
+      className="mb-8 md:mb-6 h3 font-heading"
       style={
         {
           '--highlight': slice.primary.highlight_color,

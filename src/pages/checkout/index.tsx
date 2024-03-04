@@ -542,7 +542,7 @@ const CheckoutPage: NextPage<PageProps> = () => {
                   className="!font-body !text-lg !font-bold lg:!text-3xl"
                   displayAs="h4"
                 >
-                  Your cart
+                  Order Summary
                 </Typography>
                 <Badge className="text-lg" color="info" size="lg">
                   {quantity}

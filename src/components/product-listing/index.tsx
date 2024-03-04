@@ -7,7 +7,6 @@ import { AdjustmentsHorizontalIcon } from '@heroicons/react/24/outline'
 import { Pagination, PaginationProps, Select, SelectProps } from '@mantine/core'
 import { useWindowScroll } from '@mantine/hooks'
 import { Content, FilledContentRelationshipField } from '@prismicio/client'
-import { PrismicNextImage } from '@prismicio/next'
 import { clsx } from 'clsx'
 
 import { Button } from '@/core/components/button'
@@ -164,14 +163,14 @@ export const ProductListing = ({
         {isFetching || isLoading ? (
           <div className="h-6 w-60 animate-pulse rounded bg-neutral-300" />
         ) : noResults ? (
-          <Typography>No results were found with the selected filters</Typography>
+          <h3>No results were found with the selected filters</h3>
         ) : (
           <Typography>
             Showing {search.length > 0 ? `search results for "${search}": ` : undefined}
             {data?.resultsShown?.[0]}-{data?.resultsShown?.[1]} results of {data?.results}.
           </Typography>
         )}
-        {isDesktop ? (
+        {isDesktop && !noResults ? (
           <div className="grid grid-cols-2 items-end gap-4 lg:gap-0 lg:grid-cols-[1fr_auto] justify-between w-full">
             <FilterBar />
             {search.length > 0 ? undefined : (
@@ -301,10 +300,10 @@ export const ProductListing = ({
     [scrollTo]
   )
 
-  const bannerElement = useMemo(
-    () => <PrismicNextImage className="mx-auto" field={banner?.data?.image} />,
-    [banner?.data?.image]
-  )
+  // const bannerElement = useMemo(
+  //   () => <PrismicNextImage className="mx-auto" field={banner?.data?.image} />,
+  //   [banner?.data?.image]
+  // )
 
   useEffect(() => {
     if (isDesktop) {
@@ -361,6 +360,19 @@ export const ProductListing = ({
 
   if (isError) {
     // ! TODO: Something bad happened.
+  }
+
+  if (noResults) {
+    return (
+      <div
+        className={clsx(
+          'grid place-items-center lg:h-[700px] h-[400px]',
+          enabledFilters.length === 0 && 'lg:!ml-10'
+        )}
+      >
+        <div className="flex flex-col gap-4 py-10 text-center">{paginationHeader}</div>
+      </div>
+    )
   }
 
   return (

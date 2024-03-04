@@ -38,22 +38,22 @@ const ConsultantPage = () => {
   return (
     <>
       <NextSeo title={`Consultants - ${consultant.displayName || consultant.url}`} />
-      <main className="bg-[#f5f3f2] mb-24">
-        <div className="container flex mx-1">
+      <main className="bg-[#f5f3f2] mb-24 flex items-center">
+        <div className="container flex mx-1 flex-col md:flex-row">
           <div className="container mx-auto flex flex-col items-center">
             <div className="consultant-heading my-12 px-4 text-center">
               <h1>Contact Us</h1>
             </div>
             <BlurImage
-              className="mx-16 max-w-xs"
               alt={consultant?.displayName || consultant?.url}
-              src={consultant?.imageUrl || ''}
+              className="max-w-xs"
               height={300}
+              src={consultant?.imageUrl || ''}
               width={300}
             />
           </div>
-          <div className="container mx-auto my-[156px]">
-            <Typography className="mb-6" as="h2" displayAs="h5">
+          <div className="container mx-auto my-[50px] md:my-[156px] text-center md:text-left">
+            <Typography as="h2" className="mb-6" displayAs="h5">
               {consultant?.displayName}
             </Typography>
             <ul className="list-none pl-0">
@@ -61,9 +61,9 @@ const ConsultantPage = () => {
                 {consultant?.emailAddress !== undefined ? (
                   <Link
                     className="font-semibold text-base text-black"
-                    href={'mailto: ' + consultant?.emailAddress}
+                    href={'mailto: ' + consultant?.emailAddress.toLowerCase()}
                   >
-                    {consultant?.emailAddress}
+                    {consultant?.emailAddress.toLowerCase()}
                   </Link>
                 ) : (
                   <></>
@@ -105,10 +105,12 @@ const ConsultantPage = () => {
                     </svg>
                     <Link
                       className="font-semibold text-base text-black"
+                      href={`https://${consultant?.profileWebsite.toLowerCase()}`}
+                      passHref={true}
                       rel="stylesheet"
-                      href={consultant?.profileWebsite}
+                      target="_blank"
                     >
-                      {consultant?.profileWebsite}
+                      {consultant?.profileWebsite.toLowerCase()}
                     </Link>
                   </div>
                 ) : (
@@ -118,8 +120,17 @@ const ConsultantPage = () => {
               <li>
                 {consultant?.socialLinks?.map((socialLink, key) =>
                   socialLink.url ? (
-                    <li className="font-semibold text-base text-black" key={key}>
-                      {socialLink.name}: {socialLink.baseUrl + socialLink.url}
+                    <li key={key} className="font-semibold text-base text-black">
+                      {socialLink.name}:{' '}
+                      <Link
+                        className="font-semibold text-base text-black"
+                        href={socialLink.baseUrl + socialLink.url}
+                        passHref={true}
+                        rel="stylesheet"
+                        target="_blank"
+                      >
+                        {socialLink.baseUrl + socialLink.url}
+                      </Link>
                     </li>
                   ) : (
                     ''
