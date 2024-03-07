@@ -21,6 +21,7 @@ import { Input } from '@/core/components/input'
 import { Typography } from '@/core/components/typogrpahy'
 import { wait } from '@/core/utils/time'
 import { useApplyCheckoutSelectionsMutation } from '@/lib/mutations/checkout/apply-selections'
+import { useCartQuery } from '@/lib/queries/cart'
 import { useAddressesAndCreditCardsQuery } from '@/lib/queries/checkout/addreses-and-credit-cards'
 import {
   useCheckoutActions,
@@ -31,10 +32,10 @@ import {
   useCheckoutGuestCreditCard,
 } from '@/lib/stores/checkout'
 
-import { useCartQuery } from '@/lib/queries/cart'
 import { useRedeemGiftCardCheckoutMutation } from '../../mutations/redeem-gift-card-checkout'
 import { useRedeemOfferCheckoutMutation } from '../../mutations/redeem-offer-checkout'
 import { useSkyWalletQuery } from '../../queries/sky-wallet'
+
 import { CreditCardForm } from './credit-card-form'
 import { formatCVC } from './utils'
 
@@ -90,10 +91,10 @@ export const Payment = memo(({ opened, refs, toggle, cartTotalData }: PaymentPro
     () =>
       addressesAndCreditCards?.creditCards !== undefined
         ? addressesAndCreditCards.creditCards.map(creditCard => ({
-          data: creditCard,
-          label: creditCard.FriendlyDescription,
-          value: creditCard.PaymentToken,
-        }))
+            data: creditCard,
+            label: creditCard.FriendlyDescription,
+            value: creditCard.PaymentToken,
+          }))
         : [],
     [addressesAndCreditCards?.creditCards]
   )
@@ -123,36 +124,56 @@ export const Payment = memo(({ opened, refs, toggle, cartTotalData }: PaymentPro
     ]
   )
 
-  const { data: skyWallet, isFetching: skyWalletFetching, isLoading: skyWalletLoading, refetch: refetchSkyWallet } = useSkyWalletQuery()
+  const {
+    data: skyWallet,
+    isFetching: skyWalletFetching,
+    isLoading: skyWalletLoading,
+    refetch: refetchSkyWallet,
+  } = useSkyWalletQuery()
 
   // Promo Code
-  const { mutate: redeemCouponCheckout, isSuccess: redeemOfferCheckoutFinished } = useRedeemOfferCheckoutMutation();
+  const { mutate: redeemCouponCheckout, isSuccess: redeemOfferCheckoutFinished } =
+    useRedeemOfferCheckoutMutation()
 
-  const handlePromoCodeSubmit = async (): Promise<void> => redeemCouponCheckout({
-    CouponCode: refs.promoCodeRef.current?.value,
-    CartId: cart?.id,
-  })
+  const handlePromoCodeSubmit = async (): Promise<void> =>
+    redeemCouponCheckout({
+      CouponCode: refs.promoCodeRef.current?.value,
+      CartId: cart?.id,
+    })
 
   const promoCodeSubmit = useMemo(
     () => (
-      <Button dark className="h-10 rounded-l-none" size="sm" type="button" onClick={handlePromoCodeSubmit}>
+      <Button
+        dark
+        className="h-10 rounded-l-none"
+        size="sm"
+        type="button"
+        onClick={handlePromoCodeSubmit}
+      >
         Apply
       </Button>
     ),
     [cart?.id]
   )
 
-
   // Gift Card Code
-  const { mutate: redeemGiftCardCheckout, isSuccess: redeemGiftCardCheckoutFinished } = useRedeemGiftCardCheckoutMutation();
+  const { mutate: redeemGiftCardCheckout, isSuccess: redeemGiftCardCheckoutFinished } =
+    useRedeemGiftCardCheckoutMutation()
 
-  const handleGiftCardSubmit = async (): Promise<void> => redeemGiftCardCheckout({
-    giftCard: refs.giftCardRef.current?.value
-  });
+  const handleGiftCardSubmit = async (): Promise<void> =>
+    redeemGiftCardCheckout({
+      giftCard: refs.giftCardRef.current?.value,
+    })
 
   const giftCardSubmit = useMemo(
     () => (
-      <Button dark className="h-10 rounded-l-none" size="sm" type="button" onClick={handleGiftCardSubmit}>
+      <Button
+        dark
+        className="h-10 rounded-l-none"
+        size="sm"
+        type="button"
+        onClick={handleGiftCardSubmit}
+      >
         Apply
       </Button>
     ),
@@ -170,7 +191,6 @@ export const Payment = memo(({ opened, refs, toggle, cartTotalData }: PaymentPro
       refs.promoCodeRef.current.value = ''
     }
   }, [redeemOfferCheckoutFinished])
-
 
   useEffect(() => {
     if (redeemGiftCardCheckoutFinished) {
@@ -295,7 +315,6 @@ export const Payment = memo(({ opened, refs, toggle, cartTotalData }: PaymentPro
                 onChange={handleCreditCardChange}
               />
             )}
-
             <Input
               ref={cvvRef}
               noSpacing
@@ -321,7 +340,11 @@ export const Payment = memo(({ opened, refs, toggle, cartTotalData }: PaymentPro
         ) : undefined}
 
         <Collapse in={creditCardFormOpen}>
-          <CreditCardForm cartTotalData={cartTotalData} onCancel={handleCancelCreate} onCreate={handleCreateCreditCard} />
+          <CreditCardForm
+            cartTotalData={cartTotalData}
+            onCancel={handleCancelCreate}
+            onCreate={handleCreateCreditCard}
+          />
         </Collapse>
 
         {session?.user?.isGuest && !creditCardFormOpen ? (
@@ -352,7 +375,11 @@ export const Payment = memo(({ opened, refs, toggle, cartTotalData }: PaymentPro
                 right={giftCardSubmit}
                 size="sm"
               />
-              <SkyWallet skyWallet={skyWallet} skyWalletFetching={skyWalletFetching} skyWalletLoading={skyWalletLoading} />
+              <SkyWallet
+                skyWallet={skyWallet}
+                skyWalletFetching={skyWalletFetching}
+                skyWalletLoading={skyWalletLoading}
+              />
             </div>
           </>
         </Collapse>

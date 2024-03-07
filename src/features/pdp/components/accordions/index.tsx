@@ -30,8 +30,6 @@ const isCustomAccordion = (data: unknown): data is CustomAccordion =>
   (data.id === 'tasting-notes' || data.id === 'pairing-notes')
 
 export const Accordions = ({ attributes, data }: AccordionsProps) => {
-  console.log(data, attributes)
-
   const tastingNotes = useMemo(
     () =>
       attributes?.['Tasting Notes']?.map(note => (

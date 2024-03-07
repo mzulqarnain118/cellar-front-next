@@ -37,7 +37,6 @@ interface CreateCreditCardOptions {
     expiry: string
     name: string
     number: string
-    zipCode: string
   }
   personDisplayId: string
   setAsDefault?: boolean

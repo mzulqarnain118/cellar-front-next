@@ -16,6 +16,7 @@ import { useAddToCartMutation } from '@/lib/mutations/cart/add-to-cart'
 import { useUpdateQuantityMutation } from '@/lib/mutations/cart/update-quantity'
 import { SCOUT_CIRCLE_PAGE_PATH } from '@/lib/paths'
 import { useCartQuery } from '@/lib/queries/cart'
+import { useConsultantStore } from '@/lib/stores/consultant'
 import { useProcessStore } from '@/lib/stores/process'
 import { CartItem, SubscriptionProduct } from '@/lib/types'
 import { getProductButtonText } from '@/lib/utils/button'
@@ -72,6 +73,7 @@ export const ProductCard = ({
 
   const { data: session } = useSession()
   const { data: cart } = useCartQuery()
+  const { consultant } = useConsultantStore()
   const { mutate: addToCart, isLoading: isAddingToCart } = useAddToCartMutation()
   const { mutate: updateQuantity, isLoading: isUpdatingQuantity } = useUpdateQuantityMutation()
   const numberPickerDisabled = isAddingToCart || isUpdatingQuantity
@@ -234,10 +236,24 @@ export const ProductCard = ({
     () => getProductButtonText(selectedProduct, session?.user?.isClubMember),
     [selectedProduct, session?.user?.isClubMember]
   )
+  console.log('consultant: ', consultant)
 
   const onClick = useCallback(() => {
     if (selectedProduct?.ctaText) {
-      router.push(selectedProduct?.ctaLink)
+      if (!selectedProduct?.ctaLink.startsWith('/')) {
+        const externalURL = new URL(selectedProduct?.ctaLink)
+        const isJoinConsultantLink = externalURL.host.includes('join')
+
+        if (isJoinConsultantLink) {
+          externalURL.searchParams.append('u', consultant.url)
+          const JoinConsultantLinkWithConsultant = externalURL.href
+          window.open(JoinConsultantLinkWithConsultant, '_blank')
+        } else {
+          window.open(externalURL.href, '_blank')
+        }
+      } else {
+        router.push(selectedProduct?.ctaLink)
+      }
     } else if (productCardButtonText === 'Add to Cart') {
       if (isCartProduct(product)) {
         handleQuantityChange(product, quantity)
@@ -249,7 +265,17 @@ export const ProductCard = ({
     } else {
       router.push(SCOUT_CIRCLE_PAGE_PATH)
     }
-  }, [handleAddToCart, handleQuantityChange, product, productCardButtonText, quantity, router])
+  }, [
+    consultant.url,
+    handleAddToCart,
+    handleQuantityChange,
+    product,
+    productCardButtonText,
+    quantity,
+    router,
+    selectedProduct?.ctaLink,
+    selectedProduct?.ctaText,
+  ])
 
   const onProductClick = useCallback(() => {
     trackSelectedProduct(product)

@@ -232,6 +232,13 @@ const CheckoutPage: NextPage<PageProps> = () => {
     [cart?.items]
   )
 
+  const removeError = (key: string) =>
+    setErrors(prevState => {
+      const newState = { ...prevState } as { [key: string]: string }
+      delete newState[key]
+      return newState
+    })
+
   const validate = useCallback(async () => {
     if (isAddingGiftMessage) {
       if (!recipientEmailRef.current?.value.length) {
@@ -368,7 +375,7 @@ const CheckoutPage: NextPage<PageProps> = () => {
       return false
     }
 
-    if (cart?.items.some(item => item.isScoutCircleClub) && !autoSipRef.current?.checked) {
+    if (cart?.items.some(item => item.isScoutCircleClub) && !wineClubRef.current?.checked) {
       if (!prefersReducedMotion) {
         scrollWineClubIntoView()
       }
@@ -430,6 +437,8 @@ const CheckoutPage: NextPage<PageProps> = () => {
     giftMessage.message.length,
     giftMessage.recipientEmail?.length,
     giftMessageRef,
+    handleContinue,
+    handleKeepShopping,
     isAddingAddress,
     isAddingCreditCard,
     isAddingGiftMessage,
@@ -456,7 +465,8 @@ const CheckoutPage: NextPage<PageProps> = () => {
     selectedPickUpOption,
     setErrors,
     termsRef,
-    validateCartStockResp,
+    validateCartStockResp?.Response,
+    validateCartStockResp?.Success,
     validateCartStockSuccess,
     wineClubRef,
   ])

@@ -2,6 +2,7 @@ import { ElementType, useCallback } from 'react'
 
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Script from 'next/script'
 
@@ -183,13 +184,21 @@ const MyAccountPage: NextPage<PageProps> = () => {
               {friendlyName}
             </Typography>
             {banner?.imageUrl ? (
-              <Image
-                alt={banner.title || 'Customer portal banner'}
-                className="object-contain lg:col-span-9"
-                height={isDesktop ? 146 : 88}
-                src={banner.imageUrl}
-                width={isDesktop ? 1012 : 609}
-              />
+              <Link
+                className={`${isDesktop ? 'h-[146px]' : 'h-[88px]'} ${
+                  isDesktop ? 'w-[1012px]' : 'w-[609px]'
+                } mb-5`}
+                href="/scoutcircle"
+                target="_blank"
+              >
+                <Image
+                  alt={banner.title || 'Customer portal banner'}
+                  className="object-contain lg:col-span-9"
+                  height={isDesktop ? 146 : 88}
+                  src={banner.imageUrl}
+                  width={isDesktop ? 1012 : 609}
+                />
+              </Link>
             ) : undefined}
           </div>
           <Tabs

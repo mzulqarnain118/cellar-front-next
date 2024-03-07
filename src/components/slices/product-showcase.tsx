@@ -3,6 +3,7 @@ import { CSSProperties, useMemo } from 'react'
 import { Skeleton } from '@mantine/core'
 import type { Content } from '@prismicio/client'
 import { PrismicRichText, SliceComponentProps } from '@prismicio/react'
+
 import { ProductCard } from '../product-card'
 
 type ProductShowcaseProps =
@@ -12,17 +13,19 @@ export const ProductShowcase = ({
   excludedSku = '',
   slice,
 }: ProductShowcaseProps & { excludedSku?: string }) => {
-  const products = useMemo(() => {
-    return slice.items
-      .filter(product => !!product.image?.url)
-      ?.map(item => ({
-        displayName: item?.title?.[0]?.text ?? '',
-        price: item?.price?.[0]?.text ?? '',
-        pictureUrl: item?.image?.url ?? '',
-        ctaLink: item?.cta_link?.[0]?.text ?? '',
-        ctaText: item?.cta_text?.[0]?.text ?? '',
-      }))
-  }, [slice?.items])
+  const products = useMemo(
+    () =>
+      slice.items
+        .filter(product => !!product.image?.url)
+        ?.map(item => ({
+          displayName: item?.title?.[0]?.text ?? '',
+          price: item?.price?.[0]?.text ?? '',
+          pictureUrl: item?.image?.url ?? '',
+          ctaLink: item?.cta_link?.[0]?.text ?? '',
+          ctaText: item?.cta_text?.[0]?.text ?? '',
+        })),
+    [slice?.items]
+  )
 
   if (!products) {
     return (
@@ -37,7 +40,7 @@ export const ProductShowcase = ({
   if (products === undefined || products.length === 0) {
     return <></>
   }
-  
+
   return (
     <div className="py-8 lg:mx-auto container">
       <div
@@ -52,8 +55,8 @@ export const ProductShowcase = ({
           <div key={product.sku}>
             <ProductCard
               className="h-[500px] !w-[350px] bg-white"
-              product={product}
               prismicColor={slice.primary.highlight_color}
+              product={product}
             />
           </div>
         ))}

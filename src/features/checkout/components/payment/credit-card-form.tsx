@@ -32,7 +32,6 @@ import {
   formatCVC,
   formatCreditCardNumber,
   formatExpirationDate,
-  formatZipCode,
 } from './utils'
 
 const creditCardFormSchema = z
@@ -87,7 +86,7 @@ export const CreditCardForm = ({ onCancel, onCreate, cartTotalData }: CreditCard
         number: '',
         sameAsShipping: cartTotalData?.shipping.methodId
           ? PICK_UP_SHIPPING_METHOD_IDS.includes(cartTotalData.shipping.methodId) ||
-          !addressesAndCreditCards?.addresses.length
+            !addressesAndCreditCards?.addresses.length
           : false,
       },
       mode: 'onBlur',
@@ -119,9 +118,10 @@ export const CreditCardForm = ({ onCancel, onCreate, cartTotalData }: CreditCard
       target.value = formatExpirationDate(target.value)
     } else if (target.name === 'cvc') {
       target.value = formatCVC(target.value)
-    } else if (target.name === 'cardZipCode') {
-      target.value = formatZipCode(target.value)
     }
+    // else if (target.name === 'cardZipCode') {
+    //   target.value = formatZipCode(target.value)
+    // }
     setState(prev => ({ ...prev, [target.name]: target.value }))
   }, [])
 
@@ -218,7 +218,6 @@ export const CreditCardForm = ({ onCancel, onCreate, cartTotalData }: CreditCard
                       expiry: data.expiry,
                       name: data.name,
                       number: data.number,
-                      zipCode: data.cardZipCode,
                     },
                     setAsDefault: data.default,
                   })
@@ -310,10 +309,10 @@ export const CreditCardForm = ({ onCancel, onCreate, cartTotalData }: CreditCard
             />
             <Input
               dirty={dirtyFields.cvc}
-              touched={touchedFields.cvc}
               error={errors.cvc?.message}
               label="CVV"
               size="sm"
+              touched={touchedFields.cvc}
               {...register('cvc', {
                 maxLength: 4,
                 minLength: 3,
@@ -323,7 +322,7 @@ export const CreditCardForm = ({ onCancel, onCreate, cartTotalData }: CreditCard
               type="tel"
               onFocus={handleInputFocus}
             />
-            <Input
+            {/* <Input
               error={errors.cardZipCode?.message}
               label="Zip code"
               size="sm"
@@ -331,7 +330,7 @@ export const CreditCardForm = ({ onCancel, onCreate, cartTotalData }: CreditCard
               pattern="^\d{5}$"
               type="tel"
               onFocus={handleInputFocus}
-            />
+            /> */}
           </div>
           <input name="issuer" type="hidden" value={state.issuer} />
           <div className="mt-4 space-y-4">

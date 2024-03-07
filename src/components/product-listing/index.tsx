@@ -99,6 +99,7 @@ export const ProductListing = ({
     () => (search.length > 0 ? { ...paginatedSearch } : { ...paginatedProducts }),
     [paginatedProducts, paginatedSearch, search.length]
   )
+  console.log('🚀 ~ data Products:', data)
 
   const handleFilterClose = useCallback(() => setShowFilters(false), [])
   const onFilterToggle = useCallback(() => setShowFilters(prev => !prev), [])

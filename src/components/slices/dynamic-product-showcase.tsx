@@ -19,9 +19,10 @@ export const DynamicProductShowcase = ({
   console.log('🚀 ~ allProducts:', allProducts)
   const brand = slice.primary.brand
 
-  const productsSelectedInPrismic = useMemo(() => {
-    return slice?.items?.map(product => product?.display_order?.uid?.toLowerCase() ?? '')
-  }, [slice?.items])
+  const productsSelectedInPrismic = useMemo(
+    () => slice?.items?.map(product => product?.display_order?.uid?.toLowerCase() ?? ''),
+    [slice?.items]
+  )
 
   const products = useMemo(
     () =>
@@ -44,7 +45,6 @@ export const DynamicProductShowcase = ({
     )
   }
 
-  console.log('products: ', products)
   if (products === undefined || products.length === 0) {
     return <></>
   }
@@ -63,8 +63,8 @@ export const DynamicProductShowcase = ({
           <div key={product.sku}>
             <ProductCard
               className="h-[500px] !w-[350px] bg-white"
-              product={product}
               prismicColor={slice.primary.highlight_color}
+              product={product}
             />
           </div>
         ))}

@@ -5,9 +5,11 @@ import {
   useCallback,
   useEffect,
   useMemo,
+  useState,
 } from 'react'
 
 import { CheckboxProps, LoadingOverlay } from '@mantine/core'
+import { useDisclosure } from '@mantine/hooks'
 import { useLockedBody } from 'usehooks-ts'
 
 import { Link } from '@/components/link'
@@ -21,6 +23,9 @@ import { useCartQuery } from '@/lib/queries/cart'
 import { useCheckoutActions, useCheckoutErrors } from '@/lib/stores/checkout'
 
 import { useCheckoutPayForOrderMutation } from '../../mutations/pay-for-order'
+
+import TermsContent from './terms'
+import TermsModal from './termsModal'
 
 const checkboxClassNames: CheckboxProps['classNames'] = {
   error: 'text-14',
@@ -39,13 +44,33 @@ interface PayForOrderProps {
   cartTotalData: any
 }
 
-export const PayForOrder = ({ refs, validate, cartTotalData, handleValidateCart, validateCartStockResp }: PayForOrderProps) => {
+interface ModalContentType {
+  title: string
+  content: string
+}
+
+export const PayForOrder = ({
+  refs,
+  validate,
+  cartTotalData,
+  handleValidateCart,
+  validateCartStockResp,
+}: PayForOrderProps) => {
   const { data: cart } = useCartQuery()
   const errors = useCheckoutErrors()
   const { setErrors } = useCheckoutActions()
-  const { mutate: payForOrder, isLoading: isCheckingOut } = useCheckoutPayForOrderMutation(cartTotalData)
+  const { mutate: payForOrder, isLoading: isCheckingOut } =
+    useCheckoutPayForOrderMutation(cartTotalData)
   const [locked, setLocked] = useLockedBody(false, '__next')
+  const [autoSipTermsOpened, setAutoSipTermsOpened] = useState(false)
   const isDesktop = useIsDesktop()
+  const [opened, { open, close }] = useDisclosure(false)
+  const [modalContent, setModalContent] = useState<ModalContentType>({ title: '', content: '' })
+
+  const openModal = (title: string, content: string) => {
+    setModalContent({ content, title })
+    open()
+  }
 
   const isAutoSipCart = useMemo(() => cart?.items.some(item => item.isAutoSip), [cart?.items])
   const isScoutCircleCart = useMemo(
@@ -64,7 +89,6 @@ export const PayForOrder = ({ refs, validate, cartTotalData, handleValidateCart,
 
   const handleSubmit: MouseEventHandler<HTMLButtonElement> = useCallback(async () => {
     handleValidateCart()
-
   }, [payForOrder, validate])
 
   useEffect(() => {
@@ -91,6 +115,12 @@ export const PayForOrder = ({ refs, validate, cartTotalData, handleValidateCart,
 
   return (
     <>
+      <TermsModal
+        content={modalContent.content}
+        opened={opened}
+        title={modalContent.title}
+        onClose={close}
+      />
       <LoadingOverlay visible={locked} />
       <div className="space-y-8">
         <div className="mb-24 space-y-4">
@@ -124,8 +154,16 @@ export const PayForOrder = ({ refs, validate, cartTotalData, handleValidateCart,
               error={errors?.autoSipTerms}
               label={
                 <>
-                  By clicking &quot;Place my order&quot; in checkout, I understand that I am
-                  enrolling in the Auto-Sip™ program and agree to the Terms & Conditions*
+                  By clicking "Place my order" in checkout, I understand that I am enrolling in the
+                  Auto-Sip™ program and agree to the{' '}
+                  <span
+                    className="text-primary hover:underline"
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => openModal('Auto-Sip™ Terms', <TermsContent type="autoSip" />)}
+                  >
+                    Terms & Conditions
+                  </span>
+                  *
                 </>
               }
               name="autoSipTerms"
@@ -142,7 +180,17 @@ export const PayForOrder = ({ refs, validate, cartTotalData, handleValidateCart,
                 <>
                   By joining the Wine Club, I agree to my first Wine Club purchase on the above
                   selected date and then upon future shipments based on the selected frequency,
-                  unless I change or cancel my Club Membership. Terms & Conditions*
+                  unless I change or cancel my Club Membership.{' '}
+                  <span
+                    className="text-primary hover:underline"
+                    style={{ cursor: 'pointer' }}
+                    onClick={() =>
+                      openModal('Scout Circle Agreement', <TermsContent type="wineClub" />)
+                    }
+                  >
+                    Terms & Conditions
+                  </span>
+                  *
                 </>
               }
               name="wineClubTerms"

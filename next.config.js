@@ -34,11 +34,11 @@ const nextConfig = {
   },
   reactStrictMode: true,
   redirects: async () => [
-    {
-      destination: '/my-account/profile',
-      permanent: true,
-      source: '/my-account',
-    },
+    // {
+    //   destination: '/my-account/profile',
+    //   permanent: true,
+    //   source: '/my-account',
+    // },
     {
       source: '/become-consultant',
       destination: 'https://join.scoutandcellar.com/',
