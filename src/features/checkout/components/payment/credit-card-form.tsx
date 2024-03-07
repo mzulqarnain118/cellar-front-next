@@ -36,7 +36,6 @@ import {
 
 const creditCardFormSchema = z
   .object({
-    cardZipCode: z.string().min(5, { message: 'Please enter the zip code.' }),
     cvc: z
       .string()
       .min(3, { message: 'Please enter the CVV.' })
@@ -103,7 +102,6 @@ export const CreditCardForm = ({ onCancel, onCreate, cartTotalData }: CreditCard
     setError,
   } = methods
   const [state, setState] = useState<CreditCardFormState>({
-    cardZipCode: '',
     cvc: '',
     expiry: '',
     focus: '',
@@ -238,7 +236,6 @@ export const CreditCardForm = ({ onCancel, onCreate, cartTotalData }: CreditCard
                       expiry: data.expiry,
                       name: data.name,
                       number: data.number,
-                      zipCode: data.cardZipCode,
                     },
                     setAsDefault: data.default,
                   })

@@ -2,7 +2,6 @@ import Payment from 'payment'
 import { Focused } from 'react-credit-cards-2'
 
 export interface CreditCardFormState {
-  cardZipCode: string
   cvc: string
   expiry: string
   focus: Focused

@@ -80,7 +80,6 @@ interface CreateCreditCardOptions {
     expiry: string
     name: string
     number: string
-    zipCode: string
   }
   setAsDefault?: boolean
 }
