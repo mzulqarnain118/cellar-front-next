@@ -1,28 +1,30 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import Link from 'next/link'
-import { useRouter } from 'next/router'
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useRouter } from 'next/router';
 
-import { AdjustmentsHorizontalIcon } from '@heroicons/react/24/outline'
-import { Pagination, PaginationProps, Select, SelectProps } from '@mantine/core'
-import { useWindowScroll } from '@mantine/hooks'
-import { Content, FilledContentRelationshipField } from '@prismicio/client'
-import { clsx } from 'clsx'
+import { AdjustmentsHorizontalIcon } from '@heroicons/react/24/outline';
+import { Pagination, PaginationProps, Select, SelectProps } from '@mantine/core';
+import { useWindowScroll } from '@mantine/hooks';
+import { Content, FilledContentRelationshipField } from '@prismicio/client';
+import { clsx } from 'clsx';
+import { useSession } from 'next-auth/react';
 
-import { Button } from '@/core/components/button'
-import { Typography } from '@/core/components/typogrpahy'
-import { useIsDesktop } from '@/core/hooks/use-is-desktop'
-import { usePaginatedSearch } from '@/features/search/queries'
-import { DISPLAY_CATEGORY } from '@/lib/constants/display-category'
-import { usePaginatedProducts } from '@/lib/queries/products'
-import { useConsultantStore } from '@/lib/stores/consultant'
-import { CartItem, SubscriptionProduct } from '@/lib/types'
-import { trackPlpListProducts } from '@/lib/utils/gtm-util'
+import { Button } from '@/core/components/button';
+import { Typography } from '@/core/components/typogrpahy';
+import { useIsDesktop } from '@/core/hooks/use-is-desktop';
+import { usePaginatedSearch } from '@/features/search/queries';
+import { DISPLAY_CATEGORY } from '@/lib/constants/display-category';
+import { usePaginatedProducts } from '@/lib/queries/products';
+import { useConsultantStore } from '@/lib/stores/consultant';
+import { CartItem, SubscriptionProduct } from '@/lib/types';
+import { trackPlpListProducts } from '@/lib/utils/gtm-util';
 
-import { ProductCard } from '../product-card'
+import { ProductCard } from '../product-card';
 
-import { FilterBar } from './filter/filter-bar'
-import { Filters } from './filters'
+import { FilterBar } from './filter/filter-bar';
+import { Filters } from './filters';
 
 export type Sort = 'relevant' | 'price-low-high' | 'price-high-low'
 
@@ -84,6 +86,11 @@ export const ProductListing = ({
   const isDesktop = useIsDesktop()
   const [active, setPage] = useState(initialPage)
   const [sort, setSort] = useState<Sort>(initialSort)
+  const { data: session } = useSession()
+  const pathname = usePathname();
+  // Extract the segment after the last '/'
+  const segments = pathname?.split('/') ?? [];
+  const circleExclusives = segments?.[segments?.length - 1];
 
   const [showFilters, setShowFilters] = useState(false)
   const [_, scrollTo] = useWindowScroll()
@@ -99,7 +106,6 @@ export const ProductListing = ({
     () => (search.length > 0 ? { ...paginatedSearch } : { ...paginatedProducts }),
     [paginatedProducts, paginatedSearch, search.length]
   )
-  console.log('🚀 ~ data Products:', data)
 
   const handleFilterClose = useCallback(() => setShowFilters(false), [])
   const onFilterToggle = useCallback(() => setShowFilters(prev => !prev), [])
@@ -133,25 +139,26 @@ export const ProductListing = ({
   )
 
   const noResults = useMemo(() => !data || data.products.length === 0, [data])
-
+  //! added clean crafted selections filter
+  const cleanCraftedSelections = useMemo(() => session?.user?.token && session?.user?.isClubMember, [session])
+  const filteredProducts = useMemo(() => circleExclusives === 'circle-exclusives' && !cleanCraftedSelections ? data?.products?.filter(product => product?.displayCategories?.includes(DISPLAY_CATEGORY['Clean Crafted Selections'])) : data?.products, [data])
   const productCards = useMemo(
     () =>
-      data?.products !== undefined ? (
+      filteredProducts !== undefined ? (
         <div>
           <div
             className={clsx(
               'transition-all grid gap-4 md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-4 3xl:grid-cols-5 relative'
             )}
           >
-            {data.products.map((product, index) => (
+            {filteredProducts?.map((product, index) => (
               <ProductCard key={product.sku} priority={index < 4} product={product} />
             ))}
           </div>
         </div>
       ) : undefined,
-    [data?.products]
+    [filteredProducts]
   )
-  console.log('🚀 ~ data?.products:', data?.products)
 
   const onSortChange = useCallback((value: Sort) => {
     setSort(value)

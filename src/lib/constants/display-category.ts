@@ -3,6 +3,7 @@ export const DISPLAY_CATEGORY = {
   'Auto-Sip': 46,
   'Cellar Sweep': 41,
   'Circle Exclusives': 33,
+  'Clean Crafted Selections': 65,
   Coffee: 54,
   'Gift Cards': 21,
   'Gift Sets': 37,
