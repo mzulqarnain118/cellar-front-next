@@ -11,7 +11,7 @@ import { useCartOpen } from '@/lib/stores/process'
 import { trackCheckoutBegin } from '@/lib/utils/gtm-util'
 import toast from '@/lib/utils/notifications'
 
-interface ValidateCartStockSuccess {
+interface ValidateCartStockCheckoutSuccess {
   Success: true
 }
 
@@ -25,24 +25,24 @@ interface Failure {
   }
 }
 
-type ValidateCartStockResponse = ValidateCartStockSuccess | Failure
-type ValidateCartStockOptions = {
+type ValidateCartStockCheckoutResponse = ValidateCartStockCheckoutSuccess | Failure
+type ValidateCartStockCheckoutOptions = {
   CartId: string
 }
-type ValidateCartStockMutationOptions = {
+type ValidateCartStockCheckoutMutationOptions = {
   returnData?: boolean
 }
 
 const fallbackErrorMessage = "Couldn't route to the checkout page, please try again!"
 
-export const validateCartStock = async ({ CartId }: ValidateCartStockOptions) => {
+export const validateCartStockCheckout = async ({ CartId }: ValidateCartStockCheckoutOptions) => {
   try {
     const response = await api('ValidateCartStock', {
       json: {
         CartId,
       },
       method: 'post',
-    }).json<ValidateCartStockResponse>()
+    }).json<ValidateCartStockCheckoutResponse>()
 
     return response
   } catch (error) {
@@ -50,9 +50,9 @@ export const validateCartStock = async ({ CartId }: ValidateCartStockOptions) =>
   }
 }
 
-export const useValidateCartStockMutation = (
+export const useValidateCartStockCheckoutMutation = (
   returnData = false
-): ValidateCartStockMutationOptions => {
+): ValidateCartStockCheckoutMutationOptions => {
   const { data: session } = useSession()
   const { cartOpen, toggleCartOpen } = useCartOpen()
   const router = useRouter()
@@ -64,17 +64,16 @@ export const useValidateCartStockMutation = (
     }, 0) || 0
   const { data, error, mutate, isLoading, isSuccess } = useMutation({
     mutationFn: () =>
-      validateCartStock({
+      validateCartStockCheckout({
         CartId: cart?.id || '',
       }),
-    mutationKey: 'validateCartStock',
+    mutationKey: 'validateCartStockCheckout',
     onMutate: () => {
       toast('loading', 'Validating your cart...')
     },
     onSuccess: data => {
       notifications.clean()
       if (data?.Success) {
-        toast('success', 'Validated cart successfully!')
         const redirection = session?.user ? CHECKOUT_PAGE_PATH : SIGN_IN_PAGE_PATH
         router.push(
           session?.user ? redirection : `${redirection}?redirectTo=${CHECKOUT_PAGE_PATH}`,
@@ -85,8 +84,6 @@ export const useValidateCartStockMutation = (
           // Track either the user clicked on checkout button
           trackCheckoutBegin(cart?.items, subtotal)
         }
-
-        toggleCartOpen()
       } else if (returnData) {
         return { data }
       } else if (data?.Response?.length > 0) {

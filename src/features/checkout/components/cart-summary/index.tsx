@@ -13,8 +13,11 @@ export const CartSummary = ({ cartTotalData }: CartSummaryProps) => {
   const { data: cart } = useCartQuery()
   const appliedSkyWallet = useCheckoutAppliedSkyWallet()
 
-  const discountTotal = cartTotalData?.discountTotals.reduce((accumulator: number, currentValue: { amount: number, description: string }) => accumulator + currentValue?.amount,
-    0)
+  const discountTotal = cartTotalData?.discountTotals.reduce(
+    (accumulator: number, currentValue: { amount: number; description: string }) =>
+      accumulator + currentValue?.amount,
+    0
+  )
 
   const subtotal = useMemo(() => cartTotalData?.subtotal || 0, [cartTotalData?.subtotal])
   const shippingPrice = useMemo(
@@ -39,7 +42,7 @@ export const CartSummary = ({ cartTotalData }: CartSummaryProps) => {
 
   const cartItems = useMemo(
     () => (
-      <div className="my-4 divide-y divide-neutral-light border-y border-y-neutral-light">
+      <div className="my-4 divide-y divide-neutral-light border-y border-y-neutral-light !max-h-[345px] overflow-y-auto">
         {cart?.items.map(product => (
           <CartProduct key={product.sku} data={product} />
         ))}
