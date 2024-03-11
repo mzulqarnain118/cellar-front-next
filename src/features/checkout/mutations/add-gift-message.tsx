@@ -1,10 +1,8 @@
-import { CheckIcon } from '@heroicons/react/24/outline'
 import { useMutation } from '@tanstack/react-query'
 
 import { api } from '@/lib/api'
 import { useCartQuery } from '@/lib/queries/cart'
 import { useCheckoutActions } from '@/lib/stores/checkout'
-import { toastSuccess } from '@/lib/utils/notifications'
 
 interface AddGiftMessageSuccess {
   Success: true
@@ -72,11 +70,6 @@ export const useAddGiftMessageMutation = () => {
       setGiftMessage({
         message,
         recipientEmail,
-      })
-
-      toastSuccess({
-        icon: <CheckIcon className="h-4 w-4" />,
-        message: 'Your gift message was successfully added.',
       })
     },
   })

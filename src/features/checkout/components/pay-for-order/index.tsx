@@ -18,10 +18,12 @@ import { Checkbox } from '@/core/components/checkbox'
 import { Typography } from '@/core/components/typogrpahy'
 import { useIsDesktop } from '@/core/hooks/use-is-desktop'
 import { formatCurrency } from '@/core/utils'
+import { useGiftMessageStorage } from '@/lib/hooks/use-gift-message-storage'
 import { TERMS_AND_CONDITIONS_PAGE_PATH } from '@/lib/paths'
 import { useCartQuery } from '@/lib/queries/cart'
 import { useCheckoutActions, useCheckoutErrors } from '@/lib/stores/checkout'
 
+import { useAddGiftMessageMutation } from '../../mutations/add-gift-message'
 import { useCheckoutPayForOrderMutation } from '../../mutations/pay-for-order'
 
 import TermsContent from './terms'
@@ -64,10 +66,11 @@ export const PayForOrder = ({
   const { mutate: payForOrder, isLoading: isCheckingOut } =
     useCheckoutPayForOrderMutation(cartTotalData)
   const [locked, setLocked] = useLockedBody(false, '__next')
-  const [autoSipTermsOpened, setAutoSipTermsOpened] = useState(false)
+  const { giftMessage, setGiftMessage } = useGiftMessageStorage()
   const isDesktop = useIsDesktop()
   const [opened, { open, close }] = useDisclosure(false)
   const [modalContent, setModalContent] = useState<ModalContentType>({ title: '', content: '' })
+  const { mutate: addGiftMessage } = useAddGiftMessageMutation()
 
   const openModal = (title: string, content: string) => {
     setModalContent({ content, title })
@@ -106,6 +109,13 @@ export const PayForOrder = ({
       const valid = await validate()
 
       if (valid) {
+        if (giftMessage.message && giftMessage.message !== '') {
+          addGiftMessage({
+            message: giftMessage.message,
+            recipientEmail: giftMessage.recipientEmail,
+          })
+          setGiftMessage({ message: '', recipientEmail: '' })
+        }
         payForOrder({})
       }
     }

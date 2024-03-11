@@ -7,7 +7,6 @@ import { useSession } from 'next-auth/react'
 import { api } from '@/lib/api'
 import { CHECKOUT_PAGE_PATH, SIGN_IN_PAGE_PATH } from '@/lib/paths'
 import { useCartQuery } from '@/lib/queries/cart'
-import { useCartOpen } from '@/lib/stores/process'
 import { trackCheckoutBegin } from '@/lib/utils/gtm-util'
 import toast from '@/lib/utils/notifications'
 
@@ -54,7 +53,6 @@ export const useValidateCartStockCheckoutMutation = (
   returnData = false
 ): ValidateCartStockCheckoutMutationOptions => {
   const { data: session } = useSession()
-  const { cartOpen, toggleCartOpen } = useCartOpen()
   const router = useRouter()
   const { data: cart } = useCartQuery()
   const subtotal =
@@ -68,9 +66,9 @@ export const useValidateCartStockCheckoutMutation = (
         CartId: cart?.id || '',
       }),
     mutationKey: 'validateCartStockCheckout',
-    onMutate: () => {
-      toast('loading', 'Validating your cart...')
-    },
+    // onMutate: () => {
+    //   toast('loading', 'Validating your cart...')
+    // },
     onSuccess: data => {
       notifications.clean()
       if (data?.Success) {

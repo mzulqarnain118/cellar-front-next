@@ -19,7 +19,7 @@ import { wait } from '@/core/utils/time'
 import { ContactInformation } from '@/features/checkout/components/contact-information'
 import { Delivery } from '@/features/checkout/components/delivery'
 import { Payment } from '@/features/checkout/components/payment'
-import { useValidateCartStockMutation } from '@/features/checkout/mutations/validate-cart-stock'
+import { useValidateCartStockCheckoutMutation } from '@/features/checkout/mutations/validate-cart-stock-checkout'
 import { useRemoveFromCartMutation } from '@/lib/mutations/cart/remove-from-cart'
 import { useSetCartOwnerMutation } from '@/lib/mutations/cart/set-owner'
 import { SIGN_IN_PAGE_PATH, WINE_PAGE_PATH } from '@/lib/paths'
@@ -87,7 +87,11 @@ const CheckoutPage: NextPage<PageProps> = () => {
   const [scroll] = useWindowScroll()
   const prefersReducedMotion = useReducedMotion()
   const queryClient = useQueryClient()
-  const { data: cartTotalData, isRefetching: isRefetchingSubTotal } = useGetSubtotalQuery()
+  const {
+    data: cartTotalData,
+    isRefetching: isRefetchingSubTotal,
+    refetch: refetchCartTotalData,
+  } = useGetSubtotalQuery()
 
   const activeCreditCard = useCheckoutActiveCreditCard()
   const isAddingAddress = useCheckoutIsAddingAddress()
@@ -152,7 +156,7 @@ const CheckoutPage: NextPage<PageProps> = () => {
     data: validateCartStockResp,
     isLoading: validateCartStockLoading,
     isSuccess: validateCartStockSuccess,
-  } = useValidateCartStockMutation({ returnData: true })
+  } = useValidateCartStockCheckoutMutation({ returnData: true })
 
   const handleValidateCart = async () => await vaildateCartStock()
 
@@ -520,6 +524,7 @@ const CheckoutPage: NextPage<PageProps> = () => {
             <Delivery
               cartTotalData={cartTotalData}
               opened={deliveryOpened}
+              refetchCartTotalData={refetchCartTotalData}
               refs={deliveryRefs}
               toggle={toggleDelivery}
             />

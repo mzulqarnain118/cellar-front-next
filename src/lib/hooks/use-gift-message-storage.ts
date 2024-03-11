@@ -4,12 +4,12 @@ import { useLocalStorage } from '@mantine/hooks'
 import type { IStorageProperties } from '@mantine/hooks/lib/use-local-storage/create-storage'
 
 interface GiftMessage {
-  giftMessage: string | undefined
+  message: string | undefined
   recipientEmail: string | undefined
 }
 
 const initialGiftMessage: GiftMessage = {
-  giftMessage: '',
+  message: '',
   recipientEmail: '',
 }
 
