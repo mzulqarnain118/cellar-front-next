@@ -42,6 +42,8 @@ interface PayForOrderProps {
   refs: PayForOrderRefs
   validate: () => Promise<boolean>
   cartTotalData: any
+  handleValidateCart: any
+  validateCartStockResp: any
 }
 
 interface ModalContentType {
@@ -133,7 +135,7 @@ export const PayForOrder = ({
               <>
                 I have read and agree to the{' '}
                 <Link
-                  className="text-primary hover:underline"
+                  className="text-[#b7715b] hover:underline"
                   href={TERMS_AND_CONDITIONS_PAGE_PATH}
                   target="_blank"
                 >
@@ -157,7 +159,7 @@ export const PayForOrder = ({
                   By clicking "Place my order" in checkout, I understand that I am enrolling in the
                   Auto-Sip™ program and agree to the{' '}
                   <span
-                    className="text-primary hover:underline"
+                    className="text-[#b7715b] hover:underline"
                     style={{ cursor: 'pointer' }}
                     onClick={() => openModal('Auto-Sip™ Terms', <TermsContent type="autoSip" />)}
                   >
@@ -182,7 +184,7 @@ export const PayForOrder = ({
                   selected date and then upon future shipments based on the selected frequency,
                   unless I change or cancel my Club Membership.{' '}
                   <span
-                    className="text-primary hover:underline"
+                    className="text-[#b7715b] hover:underline"
                     style={{ cursor: 'pointer' }}
                     onClick={() =>
                       openModal('Scout Circle Agreement', <TermsContent type="wineClub" />)
