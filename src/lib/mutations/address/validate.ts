@@ -4,6 +4,7 @@ import { api } from '@/lib/api'
 import { useCartQuery } from '@/lib/queries/cart'
 import { Failure } from '@/lib/types'
 import { Address } from '@/lib/types/address'
+import toast from '@/lib/utils/notifications'
 
 export const VALIDATE_ADDRESS_QUERY_KEY = ['validate-address']
 
@@ -25,6 +26,11 @@ interface ValidateAddressSuccess {
   Data: {
     OriginalAddress: Address
     ValidatedAddresses: Address[]
+  }
+  Error: {
+    Code: string
+    Message: string
+    Traceback?: Record<string, unknown>
   }
 }
 type ValidateAddressResponse = ValidateAddressSuccess | Failure
@@ -62,8 +68,12 @@ export const useValidateAddressMutation = () => {
     mutationFn: data => validateAddress({ ...data, cartId: data.cartId || cart?.id }),
     mutationKey: VALIDATE_ADDRESS_QUERY_KEY,
     onSuccess: (response, data) => {
-      if (data.callback !== undefined) {
-        data.callback(response)
+      if (response.Success) {
+        if (data.callback !== undefined) {
+          data.callback(response)
+        }
+      } else if (!response.Success) {
+        toast('error', response?.Error.Message)
       }
     },
   })
