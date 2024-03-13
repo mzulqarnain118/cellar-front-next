@@ -53,13 +53,13 @@ export const ImageAndText = ({ slice }: ImageAndTextProps) => {
   const getHref = (linkText: string) => {
     switch (linkText) {
       case '/coffee':
-        return '/brands/scouting-grounds';
+        return '/brands/scouting-grounds'
       case '/circle':
         return '/wine/circle-exclusives'
       default:
-        return linkText;
+        return linkText
     }
-  };
+  }
 
   return (
     <div
@@ -74,10 +74,11 @@ export const ImageAndText = ({ slice }: ImageAndTextProps) => {
       }}
     >
       <div
-        className={`container mx-auto flex items-center p-4 md:space-x-20 [&>*]:flex-1 ${slice.primary.text_on_left
-          ? 'flex-col-reverse md:flex-row-reverse'
-          : 'flex-col-reverse md:flex-row'
-          }`}
+        className={`container mx-auto flex items-center p-4 md:space-x-20 [&>*]:flex-1 ${
+          slice.primary.text_on_left
+            ? 'flex-col-reverse md:flex-row-reverse'
+            : 'flex-col-reverse md:flex-row'
+        }`}
       >
         <div
           className={clsx('py-5 md:px-5 md:py-0', !!slice.primary.center_content && '!text-center')}

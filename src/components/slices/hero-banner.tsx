@@ -57,7 +57,6 @@ export const HeroBanner = ({ slice }: HeroBannerProps) => {
             <div className="flex flex-col items-center justify-center">
               <PrismicNextImage
                 priority
-                className="!w-[17vw]"
                 field={slice.primary.logo}
                 style={imageStyle}
                 width={350}
