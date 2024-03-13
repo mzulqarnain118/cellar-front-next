@@ -1,19 +1,21 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import { useRouter } from 'next/router'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Content } from '@prismicio/client'
 import { PrismicRichText, PrismicText } from '@prismicio/react'
+import * as prismicT from '@prismicio/types'
 import algoliasearch from 'algoliasearch/lite'
 import { GetStaticProps } from 'next'
 import { NextSeo } from 'next-seo'
 import { FormProvider, UseFormProps, useForm } from 'react-hook-form'
-import { InstantSearch } from 'react-instantsearch-hooks-web'
+import { InstantSearch } from 'react-instantsearch'
 import { z } from 'zod'
 
+import Hits from '@/components/consultant/hits'
 import { Typography } from '@/core/components/typogrpahy'
-import { ConsultantSearch } from '@/features/create-account/consultant/search'
+import { ConsultantPageSearch } from '@/features/create-account/consultant/consultantPageSearch'
 import { CORPORATE_CONSULTANT_ID } from '@/lib/constants'
 import { CONSULTANTS_PAGE_PATH } from '@/lib/paths'
 import { Consultant } from '@/lib/types'
@@ -42,6 +44,8 @@ const schema = z.object({
   consultant: z.string(),
 })
 
+let zeroResultTips: prismicT.RichTextField
+
 const ConsultantsPage = ({ data: { data } }: { data: Content.ConsultantSearchPageDocument }) => {
   const formProps: UseFormProps = useMemo(
     () => ({
@@ -54,9 +58,12 @@ const ConsultantsPage = ({ data: { data } }: { data: Content.ConsultantSearchPag
     }),
     []
   )
+  zeroResultTips = data?.zero_result_description
+
   const methods = useForm(formProps)
   const { control } = methods
   const router = useRouter()
+  const [consultantInputValue, setConsultantInputValue] = useState('')
 
   const handleSelect = useCallback(
     (consultant?: Consultant) => {
@@ -76,35 +83,60 @@ const ConsultantsPage = ({ data: { data } }: { data: Content.ConsultantSearchPag
             <PrismicText field={data.title} />
           </Typography>
           <div className="grid grid-cols-12 gap-8 lg:gap-40">
-            <div className="rounded border border-neutral-light col-span-12 lg:col-span-4 h-max">
-              <Typography
-                as="h2"
-                className="p-6 rounded-t bg-neutral-dark w-full text-neutral-50"
-                displayAs="h4"
-              >
-                <PrismicText field={data.widget_name} />
-              </Typography>
-              <div className="p-6 bg-neutral-50 rounded-b">
-                <PrismicRichText field={data.instructions} />
-                <FormProvider {...methods}>
-                  <InstantSearch indexName={algoliaIndex} searchClient={searchClient}>
-                    <ConsultantSearch
+            <InstantSearch indexName={algoliaIndex} searchClient={searchClient}>
+              <div className="rounded border border-neutral-light col-span-12 lg:col-span-4 h-max">
+                <Typography
+                  as="h2"
+                  className="p-6 rounded-t bg-neutral-dark w-full text-neutral-50"
+                  displayAs="h4"
+                >
+                  <PrismicText field={data.widget_name} />
+                </Typography>
+                <div className="p-6 bg-neutral-50 rounded-b">
+                  <PrismicRichText field={data.instructions} />
+                  <FormProvider {...methods}>
+                    <ConsultantPageSearch
+                      consultantInputValue={consultantInputValue}
                       control={control}
                       handleSelect={handleSelect}
                       name="consultant"
+                      setConsultantInputValue={setConsultantInputValue}
                     />
-                  </InstantSearch>
-                </FormProvider>
+                  </FormProvider>
+                </div>
               </div>
-            </div>
-            <div className="col-span-12 lg:col-span-6 space-y-4">
-              <PrismicRichText field={data.zero_result_description} />
-            </div>
+              <div className="col-span-12 lg:col-span-6 space-y-4">
+                <Hits consultantInputValue={consultantInputValue} zeroResultDescription={data.zero_result_description}
+                setConsultantInputValue={setConsultantInputValue}
+                />
+              </div>
+            </InstantSearch>
           </div>
         </div>
       </main>
     </>
   )
 }
+
+// const Content = connectStateResults(({ searchState, searchResults }) => {
+//   if (searchState && searchState.query && searchResults) {
+//     if (searchResults.nbHits !== 0) {
+//       return (
+//         <div>
+//           <Hits hitComponent={Hit} />
+//           <div className="pagination">
+//             <Pagination />
+//           </div>
+//         </div>
+//       )
+//     } else {
+//       return <EmptySearchResult searchState={searchState} />
+//     }
+//   }
+//   if (searchState && !searchState.query && !!zeroResultTips) {
+//     return <PrismicRichText field={zeroResultTips} />
+//   }
+//   return <></>
+// })
 
 export default ConsultantsPage
