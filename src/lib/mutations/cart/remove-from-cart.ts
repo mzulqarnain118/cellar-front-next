@@ -67,7 +67,6 @@ export const useRemoveFromCartMutation = () => {
     [session?.user?.shippingState.provinceID, shippingState]
   )
   const router = useRouter()
-
   return useMutation<
     CartModificationResponse,
     Error,
@@ -133,6 +132,8 @@ export const useRemoveFromCartMutation = () => {
             tax: 0,
           },
         }
+
+        queryClient.invalidateQueries([...CART_QUERY_KEY])
 
         if (data.fetchSubtotal) {
           const prices = await queryClient.fetchQuery<OrderPrice>([GET_SUBTOTAL_QUERY, cart?.id])
