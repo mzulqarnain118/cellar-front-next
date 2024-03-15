@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 
 import { QueryFunction, useQuery } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
@@ -90,7 +90,6 @@ export const getSubtotal: QueryFunction<OrderPrice> = async ({ queryKey }) => {
       method: 'get',
       searchParams: { cartId },
     }).json<GetSubtotalInfoResponse>()
-
     if (response.Success) {
       const {
         DiscountTotals: discountTotals = [],
@@ -103,7 +102,6 @@ export const getSubtotal: QueryFunction<OrderPrice> = async ({ queryKey }) => {
         SubtotalAfterSavings: subtotalAfterSavings = 0,
         Tax: tax = 0,
       } = response.Data.Order
-
       const currentShippingMethod = shippingMethods.find(
         method => method.ShippingMethodID === shippingMethodId
       )
@@ -137,7 +135,6 @@ export const GET_SUBTOTAL_QUERY = 'get-subtotal'
 export const useGetSubtotalQuery = (cartId?: string) => {
   // Log file name
   // console.log(new Error().stack?.split("\n")[2].trim());
-
   const { data: cart } = useCartQuery()
   const { data: session } = useSession()
   const activeShippingAddress = useCheckoutActiveShippingAddress()
@@ -148,6 +145,19 @@ export const useGetSubtotalQuery = (cartId?: string) => {
     [activeShippingAddress, guestAddress, session?.user?.isGuest]
   )
   const { mutate: applyCheckoutSelections } = useApplyCheckoutSelectionsMutation()
+  const applySelectionsAndRefetch = async () => {
+    await applyCheckoutSelections({
+      addressId: address?.AddressID,
+      cartId: cartId || cart?.id,
+      paymentToken: activeCreditCard?.PaymentToken,
+    })
+  }
+
+  useEffect(() => {
+    if (!cartId && cart?.id) {
+      applySelectionsAndRefetch()
+    }
+  }, [cartId, cart?.id])
 
   return useQuery({
     onSuccess: data => {

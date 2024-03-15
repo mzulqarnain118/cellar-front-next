@@ -218,7 +218,7 @@ export const PayForOrder = ({
             </Typography>
           </div>
           <div className="ml-auto">
-            <Button size={isDesktop ? 'lg' : 'md'} onClick={handleSubmit}>
+            <Button disabled={!refs?.termsRef?.current?.checked} size={isDesktop ? 'lg' : 'md'} onClick={handleSubmit}>
               Place Your Order
             </Button>
           </div>

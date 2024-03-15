@@ -513,7 +513,6 @@ const CheckoutPage: NextPage<PageProps> = () => {
       <LoadingOverlay visible={isRefetchingSubTotal} />
       <NextSeo nofollow noindex title="Checkout" />
       <main>
-        {/* <button onClick={handleValidateCart}>handle validate cart</button> */}
         <div className="mt-8 flex h-full flex-col-reverse rounded lg:flex-row">
           <div className="h-full flex-1 space-y-6 rounded">
             <ContactInformation

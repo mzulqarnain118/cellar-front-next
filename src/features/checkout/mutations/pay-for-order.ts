@@ -15,6 +15,7 @@ import {
   useCheckoutAppliedSkyWallet,
   useCheckoutCvv,
   useCheckoutGuestAddress,
+  useCheckoutSelectedPickUpAddress,
 } from '@/lib/stores/checkout'
 import { Receipt, useReceiptActions } from '@/lib/stores/receipt'
 import { useShippingStateStore } from '@/lib/stores/shipping-state'
@@ -88,6 +89,9 @@ export const useCheckoutPayForOrderMutation = (cartTotalData: any) => {
   const { reset } = useCheckoutActions()
   const { setReceipt } = useReceiptActions()
   const { shippingState } = useShippingStateStore()
+  const selectedPickUpAddress = useCheckoutSelectedPickUpAddress()
+
+  console.log('🚀 ~ selectedPickUpAddress:', selectedPickUpAddress)
 
   return useMutation<unknown, Failure, Partial<PayForOrderOptions> | Record<string, never>>({
     mutationFn: options =>
@@ -132,7 +136,14 @@ export const useCheckoutPayForOrderMutation = (cartTotalData: any) => {
           subtotalAfterSavings: cartTotalData?.subtotalAfterSavings || 0,
         },
       }
-
+      if (selectedPickUpAddress !== undefined) {
+        await api('v2/checkout/SaveLastUsedAddress', {
+          json: {
+            data: selectedPickUpAddress,
+          },
+          method: 'post',
+        })
+      }
       reset()
 
       setReceipt(checkoutReceipt)

@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic'
 
 import { Collapse, Radio, RadioProps } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
+import { useSession } from 'next-auth/react'
 
 import { Button } from '@/core/components/button'
 import { Typography } from '@/core/components/typogrpahy'
@@ -18,7 +19,6 @@ import { useCheckoutActions, useCheckoutErrors, useCheckoutSelectedPickUpOption 
 
 import { ABC } from './abc'
 
-import { useSession } from 'next-auth/react'
 import { DeliveryRefs } from '.'
 
 const HoldAtLocationLocator = dynamic(
@@ -48,6 +48,9 @@ export const PickUp = ({ refs
     cartTotalData?.shipping.methodId === LOCAL_PICK_UP_SHIPPING_METHOD_ID
   )
   const selectedPickUpOption = useCheckoutSelectedPickUpOption()
+
+  console.log("🚀 ~ selectedPickUpOption:", selectedPickUpOption)
+
   const { data: session } = useSession()
 
   const handleLpuOpen = useCallback(() => {

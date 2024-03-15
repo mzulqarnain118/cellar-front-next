@@ -16,8 +16,11 @@ export const DynamicProductShowcase = ({
   slice,
 }: DynamicProductShowcaseProps & { excludedSku?: string }) => {
   const { data: allProducts, isFetching, isLoading } = useProductsQuery()
-  console.log('🚀 ~ allProducts:', allProducts)
+  console.log('🚀 ~ allProducts:', allProducts?.map(item => item?.attributes?.Brand ?? ""))
   const brand = slice.primary.brand
+
+  console.log("🚀 ~ brand:", brand)
+
 
   const productsSelectedInPrismic = useMemo(
     () => slice?.items?.map(product => product?.display_order?.uid?.toLowerCase() ?? ''),

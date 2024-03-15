@@ -108,7 +108,7 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
   }, [])
 
   useEffect(() => {
-    if (['/my-account/profile'].includes(pathname))
+    if (['/my-account/profile', 'my-account/orders'].includes(pathname))
       router.push(pathname)
   }, [])
 
