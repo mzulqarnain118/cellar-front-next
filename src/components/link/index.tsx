@@ -103,8 +103,11 @@ export const Link = forwardRef<HTMLAnchorElement, Props>(
           className={clsx(
             'inline-flex gap-1',
             button &&
-              `
-                bg-primary-light hover:bg-primary-dark py-3 px-4 rounded text-neutral-50
+              ` ${
+                href.pathname === '/test-sustainability'
+                  ? 'bg-[#000]'
+                  : 'bg-primary-light hover:bg-primary-dark'
+              } py-3 px-4 rounded text-neutral-50
                 inline-flex font-semibold items-center gap-1 no-underline transition-all
                 hover:gap-2 hover:no-underline max-w-80
               `,
