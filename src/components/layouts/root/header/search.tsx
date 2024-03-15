@@ -97,7 +97,7 @@ export const SearchNew = () => {
         filter={filter}
         icon={icon}
         itemComponent={SearchItem}
-        nothingFound="not found"
+        nothingFound={`${value} not found`}
         rightSection={rightSection}
         value={value}
         onChange={setValue}
