@@ -9,6 +9,7 @@ import { CORPORATE_CONSULTANT_ID } from '@/lib/constants'
 import { CHECKOUT_CONFIRMATION_PAGE_PATH } from '@/lib/paths'
 import { CART_QUERY_KEY, useCartQuery } from '@/lib/queries/cart'
 import { useConsultantQuery } from '@/lib/queries/consultant'
+import { useGetCartInfoQuery } from '@/lib/queries/get-info'
 import {
   useCheckoutActions,
   useCheckoutActiveShippingAddress,
@@ -84,6 +85,7 @@ export const useCheckoutPayForOrderMutation = (cartTotalData: any) => {
   const queryClient = useQueryClient()
   const router = useRouter()
   const { data: cart } = useCartQuery()
+  const { data: cartInfo } = useGetCartInfoQuery()
   const { data: consultant } = useConsultantQuery()
   const { data: session } = useSession()
   const { reset } = useCheckoutActions()
@@ -124,7 +126,7 @@ export const useCheckoutPayForOrderMutation = (cartTotalData: any) => {
           zipCode: address?.PostalCode,
         },
         deliveryMethodDisplayName: cartTotalData?.shipping.displayName || '',
-        discounts: cart?.discounts || [],
+        discounts: cartInfo?.DiscountTotals ?? cart?.discounts ?? [],
         isSharedCart: cart?.isSharedCart || false,
         orderDisplayId: cart?.orderDisplayId,
         prices: {

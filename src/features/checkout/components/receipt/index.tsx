@@ -8,6 +8,7 @@ import { useReceiptData } from '@/lib/stores/receipt'
 
 export const Receipt = () => {
   const data = useReceiptData()
+  console.log('🚀 ~ Receipt ~ data:', data)
   const subtotal = data?.prices.subtotal || 0
   const shipping = data?.prices.shipping || 0
   const retailDeliveryFee = data?.prices.retailDeliveryFee || 0
@@ -19,8 +20,9 @@ export const Receipt = () => {
     () => discounts.reduce((prev, current) => prev + current.amount, 0),
     [discounts]
   )
-  const total = subtotal + shipping + retailDeliveryFee + salesTax - totalDiscount
   const discount = subtotal - subtotalAfterSavings
+
+  const total = subtotal + shipping + retailDeliveryFee + salesTax - discount
 
   if (!data) {
     return <Skeleton className="mt-12 h-[28.25rem] w-full max-w-2xl" />
@@ -36,12 +38,15 @@ export const Receipt = () => {
           <Typography>Subtotal</Typography>
           <Typography as="strong">{formatCurrency(data.prices.subtotal)}</Typography>
         </div>
+
         {!!data.discounts.length &&
-          data.discounts.map(item => (
-            <div key={item.description} className="flex items-center justify-between">
-              <Typography className="basis-1/2">{item.description}</Typography>
+          data.discounts.map((item, index) => (
+            <div key={index} className="flex items-center justify-between">
+              <Typography className="basis-1/2">
+                {item?.description ?? item?.TotalDescription}
+              </Typography>
               <Typography as="strong" className="text-error">
-                -{formatCurrency(item.amount)}
+                -{formatCurrency(item?.amount ?? item?.TotalAmount)}
               </Typography>
             </div>
           ))}
