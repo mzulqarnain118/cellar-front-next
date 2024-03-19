@@ -8,6 +8,7 @@ import { api } from '@/lib/api'
 import { CORPORATE_CONSULTANT_ID } from '@/lib/constants'
 import { CHECKOUT_CONFIRMATION_PAGE_PATH } from '@/lib/paths'
 import { CART_QUERY_KEY, useCartQuery } from '@/lib/queries/cart'
+import { useGetSubtotalQuery } from '@/lib/queries/checkout/get-subtotal'
 import { useConsultantQuery } from '@/lib/queries/consultant'
 import { useGetCartInfoQuery } from '@/lib/queries/get-info'
 import {
@@ -86,6 +87,10 @@ export const useCheckoutPayForOrderMutation = (cartTotalData: any) => {
   const router = useRouter()
   const { data: cart } = useCartQuery()
   const { data: cartInfo } = useGetCartInfoQuery()
+  const { data: subTotal } = useGetSubtotalQuery()
+
+  console.log('🚀 ~ useCheckoutPayForOrderMutation ~ subTotal:', subTotal)
+
   const { data: consultant } = useConsultantQuery()
   const { data: session } = useSession()
   const { reset } = useCheckoutActions()
@@ -93,7 +98,9 @@ export const useCheckoutPayForOrderMutation = (cartTotalData: any) => {
   const { shippingState } = useShippingStateStore()
   const selectedPickUpAddress = useCheckoutSelectedPickUpAddress()
 
+  console.log('🚀 ~ useCheckoutPayForOrderMutation ~ cartInfo:', cartInfo)
   console.log('🚀 ~ selectedPickUpAddress:', selectedPickUpAddress)
+  console.log('cartInfo?.DiscountTotals: ', cartInfo?.DiscountTotals, cart?.discounts)
 
   return useMutation<unknown, Failure, Partial<PayForOrderOptions> | Record<string, never>>({
     mutationFn: options =>
@@ -126,7 +133,7 @@ export const useCheckoutPayForOrderMutation = (cartTotalData: any) => {
           zipCode: address?.PostalCode,
         },
         deliveryMethodDisplayName: cartTotalData?.shipping.displayName || '',
-        discounts: cartInfo?.DiscountTotals ?? cart?.discounts ?? [],
+        discounts: subTotal?.discountTotals ?? subTotal?.discounts ?? [],
         isSharedCart: cart?.isSharedCart || false,
         orderDisplayId: cart?.orderDisplayId,
         prices: {
