@@ -10,7 +10,7 @@ import { clsx } from 'clsx'
 
 import { Button } from '@/core/components/button'
 
-const imageStyle = { height: 'auto', width: 'auto' }
+const imageStyle = { height: 'auto', width: '18vw' }
 
 type HeroBannerProps = SliceComponentProps<Content.RichContentPageDocumentDataBodyHeroBannerSlice>
 
@@ -59,7 +59,7 @@ export const HeroBanner = ({ slice }: HeroBannerProps) => {
                 priority
                 field={slice.primary.logo}
                 style={imageStyle}
-                width={350}
+                width={200}
               />
               {asText(slice.primary.content).length > 0 ? (
                 <section
