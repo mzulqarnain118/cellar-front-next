@@ -55,12 +55,5 @@ export const middleware = async (request: NextRequest) => {
         return NextResponse.redirect(url)
       }
     }
-  } else if (match) {
-    const dynamicValue = match[1]
-    const u = searchParams.get('u')
-    // Construct an absolute URL for the redirection
-    const redirectUrl = `${appUrl}/?u=${u}&eventshare=${dynamicValue}`
-
-    return NextResponse.redirect(`${redirectUrl}`)
   }
 }

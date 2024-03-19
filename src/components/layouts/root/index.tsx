@@ -61,7 +61,7 @@ export const RootLayout = ({ children }: RootLayoutProps) => {
     if (cart?.id && consultant.displayId && eventshare && u) {
       tastingQuery()
     }
-  }, [cart?.id, consultant.displayId])
+  }, [cart?.id, consultant.displayId, eventshare, u])
 
   const handleClick = useCallback(() => {
     setAgeVerified('true')
