@@ -77,6 +77,24 @@ export interface CheckoutThanksData {
   PURL?: string
 }
 
+export interface Tasting {
+  AdditionalReturnObject: null | unknown
+  Notifications: string[] | unknown[]
+  ResultCode: null | number
+  ValidationResults: string[] | unknown[]
+  Value: {
+    AllowOrders?: boolean
+    AllowShipToHost?: boolean
+    AllowShipToOrderOwner?: boolean
+    DisplayID: null | string
+    EventDateTime: null | string
+    EventName: null | string
+    HostFirstName: null | string
+    HostPersonID?: null | number
+    PartyHostAddress: null | string
+  }
+}
+
 export const DEFAULT_CART_STATE: Cart = {
   discounts: [],
   id: '',

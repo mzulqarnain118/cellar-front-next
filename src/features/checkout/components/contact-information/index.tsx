@@ -1,4 +1,4 @@
-import { MutableRefObject, memo } from 'react'
+import { MutableRefObject } from 'react'
 
 import dynamic from 'next/dynamic'
 
@@ -9,7 +9,11 @@ import { useSession } from 'next-auth/react'
 
 import { Typography } from '@/core/components/typogrpahy'
 import { CORPORATE_CONSULTANT_ID } from '@/lib/constants'
+import { useCartQuery } from '@/lib/queries/cart'
 import { useConsultantQuery } from '@/lib/queries/consultant'
+import { useTastingsQuery } from '@/lib/queries/tastings'
+
+import { TastingSelect } from './tasting-select'
 
 const GiftMessageForm = dynamic(
   () => import('./gift-message-form').then(({ GiftMessageForm }) => GiftMessageForm),
@@ -28,9 +32,14 @@ interface ContactInformationProps {
   toggle: () => void
 }
 
-export const ContactInformation = memo(({ opened, refs, toggle }: ContactInformationProps) => {
+export const ContactInformation = ({ opened, refs, toggle }: ContactInformationProps) => {
   const { data: session } = useSession()
   const { data: consultant } = useConsultantQuery()
+  const { data: cart } = useCartQuery()
+
+  const { data: tastingsResponse } = useTastingsQuery({
+    consultantDisplayId: consultant?.displayId,
+  })
 
   return (
     <>
@@ -69,11 +78,20 @@ export const ContactInformation = memo(({ opened, refs, toggle }: ContactInforma
               </Typography>
             ) : undefined}
           </div>
+          {tastingsResponse && (
+            <TastingSelect
+              cartId={cart?.id}
+              consultantDisplayId={consultant?.displayId}
+              consultantUrl={consultant?.url}
+              refs={refs}
+              tastingsResponse={tastingsResponse}
+            />
+          )}
           <GiftMessageForm refs={refs} />
         </div>
       </Collapse>
     </>
   )
-})
+}
 
 ContactInformation.displayName = 'ContactInformation'

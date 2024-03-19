@@ -180,7 +180,6 @@ export const HoldAtLocationLocator = forwardRef<HTMLInputElement>((_props, ref) 
           orchestrator?.eventCallbacks.launchSearchSubmit(searchValue)
         }}
       >
-        {console.log("🚀 ~ HoldAtLocationLocator ~ onConfirm:", onConfirm)}
         <Input
           ref={ref}
           label="Choose environmentally friendly shipping. Pick up at a location near you."

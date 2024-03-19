@@ -8,6 +8,7 @@ import Hit from './hit'
 interface HitsProps {
   consultantInputValue: string
   setConsultantInputValue: (consultant: string) => void
+  zeroResultDescription: any
 }
 
 const Hits: React.FC<HitsProps> = ({

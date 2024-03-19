@@ -72,7 +72,6 @@ const BrandPage = ({ page }: PageProps) => {
     const pages = async () => {
       return await client.getAllByType('rich_content_page')
     }
-    console.log("🚀 ~ useEffect ~ pages:", pages())
   }, [])
 
   return <>

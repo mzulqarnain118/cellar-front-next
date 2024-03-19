@@ -236,7 +236,6 @@ export const ProductCard = ({
     () => getProductButtonText(selectedProduct, session?.user?.isClubMember),
     [selectedProduct, session?.user?.isClubMember]
   )
-  console.log('consultant: ', consultant)
 
   const onClick = useCallback(() => {
     if (selectedProduct?.ctaText) {

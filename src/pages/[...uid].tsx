@@ -108,9 +108,6 @@ const RichContentPage = ({
       client.getAllByType('content_page'),
     ])
 
-
-    console.log('pages: ', pageFunc())
-
   }, [])
 
 

@@ -43,10 +43,6 @@ const BrandsPage: NextPage<PageProps> = ({ page }) => {
 
   // const etnico = page?.data.brands?.filter(brandItem => brandItem.brand[0]?.text === 'Etnico')
   // console.log('Etnico: ', etnico)
-  page?.data.brands?.forEach(brand => console.log(
-    'brand: ', brand
-  ))
-
 
   return (
     <>

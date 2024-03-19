@@ -8,7 +8,6 @@ import { useReceiptData } from '@/lib/stores/receipt'
 
 export const Receipt = () => {
   const data = useReceiptData()
-  console.log('🚀 ~ Receipt ~ data:', data)
   const subtotal = data?.prices.subtotal || 0
   const shipping = data?.prices.shipping || 0
   const retailDeliveryFee = data?.prices.retailDeliveryFee || 0

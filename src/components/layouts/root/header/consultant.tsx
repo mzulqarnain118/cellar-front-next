@@ -27,7 +27,7 @@ export const Consultant = () => {
   }
 
   return (
-    <div className="flex animate-fade-in flex-col text-right duration-1000">
+    <div className="flex animate-fade-in flex-col text-left duration-1000">
       <Link
         className="!text-neutral-dark"
         href={
