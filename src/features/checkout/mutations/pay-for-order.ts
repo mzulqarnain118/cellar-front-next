@@ -10,7 +10,6 @@ import { CHECKOUT_CONFIRMATION_PAGE_PATH } from '@/lib/paths'
 import { CART_QUERY_KEY, useCartQuery } from '@/lib/queries/cart'
 import { useGetSubtotalQuery } from '@/lib/queries/checkout/get-subtotal'
 import { useConsultantQuery } from '@/lib/queries/consultant'
-import { useGetCartInfoQuery } from '@/lib/queries/get-info'
 import {
   useCheckoutActions,
   useCheckoutActiveShippingAddress,
@@ -86,10 +85,10 @@ export const useCheckoutPayForOrderMutation = (cartTotalData: any) => {
   const queryClient = useQueryClient()
   const router = useRouter()
   const { data: cart } = useCartQuery()
-  const { data: cartInfo } = useGetCartInfoQuery()
   const { data: subTotal } = useGetSubtotalQuery()
 
   console.log('🚀 ~ useCheckoutPayForOrderMutation ~ subTotal:', subTotal)
+  console.log('🚀 ~ useCheckoutPayForOrderMutation ~ cartTotalData:', cartTotalData)
 
   const { data: consultant } = useConsultantQuery()
   const { data: session } = useSession()
@@ -97,10 +96,6 @@ export const useCheckoutPayForOrderMutation = (cartTotalData: any) => {
   const { setReceipt } = useReceiptActions()
   const { shippingState } = useShippingStateStore()
   const selectedPickUpAddress = useCheckoutSelectedPickUpAddress()
-
-  console.log('🚀 ~ useCheckoutPayForOrderMutation ~ cartInfo:', cartInfo)
-  console.log('🚀 ~ selectedPickUpAddress:', selectedPickUpAddress)
-  console.log('cartInfo?.DiscountTotals: ', cartInfo?.DiscountTotals, cart?.discounts)
 
   return useMutation<unknown, Failure, Partial<PayForOrderOptions> | Record<string, never>>({
     mutationFn: options =>

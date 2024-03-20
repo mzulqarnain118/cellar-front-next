@@ -63,7 +63,7 @@ export const CartDrawer = () => {
 
   const subtotal =
     cart?.items?.reduce((total, item) => {
-      const price = item.price
+      const price = item?.onSalePrice
       return price * (item.quantity || 1) + total //item.onSalePrice || item.price
     }, 0) || 0
 
@@ -75,11 +75,10 @@ export const CartDrawer = () => {
     [cartItems, isMutatingCart, isSharingCart]
   )
 
-  const handleCheckoutClick: MouseEventHandler<HTMLButtonElement> =
-    event => {
-      event.preventDefault()
-      vaildateCartStock()
-    }
+  const handleCheckoutClick: MouseEventHandler<HTMLButtonElement> = event => {
+    event.preventDefault()
+    vaildateCartStock()
+  }
 
   const handleGoShoppingClick = useCallback(() => {
     toggleCartOpen()

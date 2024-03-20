@@ -75,7 +75,7 @@ export const Receipt = () => {
       <div className="mt-4">
         <div className="flex items-center justify-between bg-[#e6e0dd] px-4 py-2">
           <Typography>Total</Typography>
-          <Typography as="strong">{`${formatCurrency(total)}`}</Typography>
+          <Typography as="strong">{`${formatCurrency(subtotal)}`}</Typography>
         </div>
         {!!appliedSkyWallet && (
           <>

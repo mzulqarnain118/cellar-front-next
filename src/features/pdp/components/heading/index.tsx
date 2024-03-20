@@ -3,10 +3,11 @@ import { Skeleton } from '@mantine/core'
 import { Price } from '@/components/price'
 import { Typography } from '@/core/components/typogrpahy'
 
-import { usePdpSelectedProduct } from '../../store'
+import { usePdpSelectedOption, usePdpSelectedProduct } from '../../store'
 
 export const Heading = () => {
   const selectedProduct = usePdpSelectedProduct()
+  const selectedOption = usePdpSelectedOption()
 
   if (selectedProduct === undefined) {
     return (
@@ -32,6 +33,7 @@ export const Heading = () => {
       {selectedProduct.price !== undefined ? (
         <Price
           className="!text-3xl"
+          selectedOption={selectedOption}
           price={selectedProduct.price}
           onSalePrice={selectedProduct.onSalePrice}
         />

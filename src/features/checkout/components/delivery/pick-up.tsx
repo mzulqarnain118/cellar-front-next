@@ -4,10 +4,12 @@ import dynamic from 'next/dynamic'
 
 import { Collapse, Radio, RadioProps } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
+import { useQuery } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 
 import { Button } from '@/core/components/button'
 import { Typography } from '@/core/components/typogrpahy'
+import { api } from '@/lib/api'
 import {
   ABC_STORE_SHIPPING_METHOD_ID,
   GROUND_SHIPPING_SHIPPING_METHOD_ID,
@@ -15,7 +17,11 @@ import {
 } from '@/lib/constants/shipping-method'
 import { useUpdateShippingMethodMutation } from '@/lib/mutations/checkout/update-shipping-method'
 import { useShippingMethodsQuery } from '@/lib/queries/checkout/shipping-methods'
-import { useCheckoutActions, useCheckoutErrors, useCheckoutSelectedPickUpOption } from '@/lib/stores/checkout'
+import {
+  useCheckoutActions,
+  useCheckoutErrors,
+  useCheckoutSelectedPickUpOption,
+} from '@/lib/stores/checkout'
 
 import { ABC } from './abc'
 
@@ -33,8 +39,7 @@ interface PickUpProps {
 
 const radioClassNames: RadioProps['classNames'] = { label: 'text-14' }
 
-export const PickUp = ({ refs
-  , cartTotalData }: PickUpProps) => {
+export const PickUp = ({ refs, cartTotalData }: PickUpProps) => {
   const errors = useCheckoutErrors()
   const { setErrors, setSelectedPickUpOption } = useCheckoutActions()
   const { mutate: updateShippingMethod, isLoading: isUpdatingShippingMethod } =
@@ -49,10 +54,18 @@ export const PickUp = ({ refs
   )
   const selectedPickUpOption = useCheckoutSelectedPickUpOption()
 
-  console.log("🚀 ~ selectedPickUpOption:", selectedPickUpOption)
+  console.log('🚀 ~ selectedPickUpOption:', selectedPickUpOption)
 
   const { data: session } = useSession()
-
+  const getSCLocations = async () => {
+    const response = await api('v2/checkout/GetLocalPickupData').json()
+    return response?.Data?.[0] // Return the fetched data directly
+  }
+  const { data: localPickupData } = useQuery({
+    queryFn: getSCLocations,
+    queryKey: 'GetLocalPickupData',
+  })
+  
   const handleLpuOpen = useCallback(() => {
     closeAbc()
     closeHal()
@@ -111,7 +124,6 @@ export const PickUp = ({ refs
   const pickupOptions = { lpu: handleLpuOpen, hal: handleHalOpen, abc: handleAbcOpen }
 
   useEffect(() => {
-
     if (session?.user.isGuest) {
       selectedPickUpOption && pickupOptions[selectedPickUpOption]()
     }
@@ -144,9 +156,11 @@ export const PickUp = ({ refs
             <Typography as="h3" className="!font-body !font-semibold" displayAs="h6">
               Scout & Cellar Local Pick Up
             </Typography>
-            <p className="text-14">2261 Morgan Parkway</p>
-            <p className="text-14">STE 180</p>
-            <p className="text-14">Dallas, TX 75234</p>
+            <p className="text-14">{localPickupData?.address1 ?? ''}</p>
+            <p className="text-14">{localPickupData?.address2 ?? ''}</p>
+            <p className="text-14">{`${localPickupData?.City ?? ''}, ${
+              localPickupData?.Province ?? ''
+            }  ${localPickupData?.PostalCode ?? ''}`}</p>
           </div>
         </div>
       </Collapse>
