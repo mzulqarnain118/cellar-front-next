@@ -152,13 +152,7 @@ export const RootLayout = ({ children }: RootLayoutProps) => {
   useEffect(() => {
     const loginStatus = session
 
-    if (
-      !!u &&
-      !!eventshare &&
-      !!cart?.id &&
-      !!consultant?.displayId &&
-      !!tastingStorage?.Value?.DisplayID
-    ) {
+    if (!!u && !!eventshare && !!cart?.id && !!consultant?.displayId) {
       modals.open({
         centered: true,
         children: !!!tastingStorage?.Value.DisplayID ? (
