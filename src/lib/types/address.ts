@@ -3,6 +3,7 @@ export interface Address {
   City: string
   Company: string
   CountryName: string
+  DisplayName: string
   FirstName: string
   LastName: string
   NickName: string

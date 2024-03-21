@@ -15,11 +15,16 @@ import {
   GROUND_SHIPPING_SHIPPING_METHOD_ID,
   LOCAL_PICK_UP_SHIPPING_METHOD_ID,
 } from '@/lib/constants/shipping-method'
+import { useApplyCheckoutSelectionsMutation } from '@/lib/mutations/checkout/apply-selections'
 import { useUpdateShippingMethodMutation } from '@/lib/mutations/checkout/update-shipping-method'
+import { useAddressesAndCreditCardsQuery } from '@/lib/queries/checkout/addreses-and-credit-cards'
 import { useShippingMethodsQuery } from '@/lib/queries/checkout/shipping-methods'
 import {
   useCheckoutActions,
+  useCheckoutActiveCreditCard,
+  useCheckoutActiveShippingAddress,
   useCheckoutErrors,
+  useCheckoutSelectedPickUpAddress,
   useCheckoutSelectedPickUpOption,
 } from '@/lib/stores/checkout'
 
@@ -41,7 +46,7 @@ const radioClassNames: RadioProps['classNames'] = { label: 'text-14' }
 
 export const PickUp = ({ refs, cartTotalData }: PickUpProps) => {
   const errors = useCheckoutErrors()
-  const { setErrors, setSelectedPickUpOption } = useCheckoutActions()
+  const { setErrors, setSelectedPickUpOption, setActiveShippingAddress } = useCheckoutActions()
   const { mutate: updateShippingMethod, isLoading: isUpdatingShippingMethod } =
     useUpdateShippingMethodMutation()
   const { data: shippingMethods } = useShippingMethodsQuery()
@@ -52,20 +57,49 @@ export const PickUp = ({ refs, cartTotalData }: PickUpProps) => {
   const [lpuOpened, { close: closeLpu, toggle: toggleLpuOpened }] = useDisclosure(
     cartTotalData?.shipping.methodId === LOCAL_PICK_UP_SHIPPING_METHOD_ID
   )
-  const selectedPickUpOption = useCheckoutSelectedPickUpOption()
 
-  console.log('🚀 ~ selectedPickUpOption:', selectedPickUpOption)
+  const selectedPickUpOption = useCheckoutSelectedPickUpOption()
+  const { setSelectedPickUpAddress } = useCheckoutActions()
+  const selectedPickUpAddress = useCheckoutSelectedPickUpAddress()
+  const { data: addressesAndCreditCards } = useAddressesAndCreditCardsQuery()
+  const activeCreditCard = useCheckoutActiveCreditCard()
+  const activeShippingAddress = useCheckoutActiveShippingAddress()
+  const { mutate: applyCheckoutSelections } = useApplyCheckoutSelectionsMutation()
 
   const { data: session } = useSession()
+
+  const lpuPickUpAddress = addressesAndCreditCards?.userPickUpAddresses?.[0]?.Address
+
+  const orderAddress = {
+    AddressID: lpuPickUpAddress?.AddressID,
+    City: lpuPickUpAddress?.City,
+    Company: lpuPickUpAddress?.Company,
+    CountryName: lpuPickUpAddress?.CountryName,
+    FirstName: session?.user?.name.first || '',
+    LastName: session?.user?.name.last || '',
+    NickName: lpuPickUpAddress?.DisplayName,
+    PhoneNumber: '',
+    PostalCode: lpuPickUpAddress?.PostalCode,
+    Primary: false,
+    ProvinceAbbreviation: lpuPickUpAddress?.ProvinceAbbreviation,
+    ProvinceID: lpuPickUpAddress?.ProvinceID?.toString(),
+    ProvinceName: lpuPickUpAddress?.ProvinceName,
+    Residential: false,
+    Street1: lpuPickUpAddress?.Street1,
+    Street2: lpuPickUpAddress?.Street2,
+    Street3: '',
+  }
+
   const getSCLocations = async () => {
     const response = await api('v2/checkout/GetLocalPickupData').json()
     return response?.Data?.[0] // Return the fetched data directly
   }
+
   const { data: localPickupData } = useQuery({
     queryFn: getSCLocations,
     queryKey: 'GetLocalPickupData',
   })
-  
+
   const handleLpuOpen = useCallback(() => {
     closeAbc()
     closeHal()
@@ -73,16 +107,30 @@ export const PickUp = ({ refs, cartTotalData }: PickUpProps) => {
     setSelectedPickUpOption('lpu')
     setErrors(prev => ({ ...prev, delivery: '' }))
     updateShippingMethod({ shippingMethodId: LOCAL_PICK_UP_SHIPPING_METHOD_ID })
+    applyCheckoutSelections({
+      addressId: lpuPickUpAddress?.AddressID,
+      paymentToken: activeCreditCard?.PaymentToken,
+    })
+    setSelectedPickUpAddress(orderAddress)
+    setActiveShippingAddress(orderAddress)
   }, [
+    addressesAndCreditCards,
+    activeShippingAddress,
     closeAbc,
     closeHal,
     setErrors,
+    setActiveShippingAddress,
     setSelectedPickUpOption,
+    selectedPickUpAddress,
+    setSelectedPickUpAddress,
+    setSelectedPickUpAddress,
     toggleLpuOpened,
     updateShippingMethod,
   ])
 
   const handleHalOpen = useCallback(() => {
+    const lpuPickUpAddress = addressesAndCreditCards?.userPickUpAddresses?.[0]?.Address
+
     closeAbc()
     closeLpu()
     toggleHalOpened()
@@ -126,6 +174,8 @@ export const PickUp = ({ refs, cartTotalData }: PickUpProps) => {
   useEffect(() => {
     if (session?.user.isGuest) {
       selectedPickUpOption && pickupOptions[selectedPickUpOption]()
+    } else if (!session?.user.isGuest) {
+      pickupOptions.lpu()
     }
   }, [])
 
@@ -156,8 +206,8 @@ export const PickUp = ({ refs, cartTotalData }: PickUpProps) => {
             <Typography as="h3" className="!font-body !font-semibold" displayAs="h6">
               Scout & Cellar Local Pick Up
             </Typography>
-            <p className="text-14">{localPickupData?.address1 ?? ''}</p>
-            <p className="text-14">{localPickupData?.address2 ?? ''}</p>
+            <p className="text-14">{localPickupData?.Address1 ?? ''}</p>
+            <p className="text-14">{localPickupData?.Address2 ?? ''}</p>
             <p className="text-14">{`${localPickupData?.City ?? ''}, ${
               localPickupData?.Province ?? ''
             }  ${localPickupData?.PostalCode ?? ''}`}</p>

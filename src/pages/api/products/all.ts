@@ -66,7 +66,6 @@ const handler = async (req: NextRequest) => {
       result: boolean
     }
 
-    console.log('🚀 ~ handler ~ productsResponse.result:', productsResponse.result)
     if (productsResponse.result) {
       const data: ProductsSchema[] = productsResponse.data
         .filter(product => !!product.cartUrl && product.cartUrl !== null)

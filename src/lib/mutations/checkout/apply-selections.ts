@@ -96,9 +96,13 @@ export const useApplyCheckoutSelectionsMutation = () => {
             queryFn: getShippingAddressesAndCreditCards,
             queryKey: [ADDRESS_CREDIT_CARDS_QUERY_KEY, cart?.id, session?.user?.isGuest],
           })
-        let correspondingAddress = addressesAndCreditCards?.addresses.find(
-          address => address.AddressID === data.addressId
-        )
+        let correspondingAddress =
+          addressesAndCreditCards?.addresses.find(
+            address => address.AddressID === data.addressId
+          ) ||
+          addressesAndCreditCards?.userPickUpAddresses.find(
+            address => address?.Address?.AddressID === data.addressId
+          )
         let correspondingCreditCard = addressesAndCreditCards?.creditCards.find(
           creditCard => creditCard.PaymentToken === data.paymentToken
         )

@@ -17,9 +17,7 @@ import { useApplyCheckoutSelectionsMutation } from '@/lib/mutations/checkout/app
 import { useUpdateShippingMethodMutation } from '@/lib/mutations/checkout/update-shipping-method'
 import { useCartQuery } from '@/lib/queries/cart'
 import { useAddressesAndCreditCardsQuery } from '@/lib/queries/checkout/addreses-and-credit-cards'
-import {
-  useShippingMethodsQuery
-} from '@/lib/queries/checkout/shipping-methods'
+import { useShippingMethodsQuery } from '@/lib/queries/checkout/shipping-methods'
 import {
   useCheckoutActions,
   useCheckoutActiveCreditCard,
@@ -96,15 +94,15 @@ export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
     () =>
       !!data && data.addresses.length > 0
         ? data.addresses.map(data => {
-          const label =
-            !!data.FirstName && !!data.LastName ? `${data.FirstName} ${data.LastName}, ` : ''
+            const label =
+              !!data.FirstName && !!data.LastName ? `${data.FirstName} ${data.LastName}, ` : ''
 
-          return {
-            data,
-            label: `${label}${data.Street1}, ${data.City}, ${data.ProvinceAbbreviation} ${data.PostalCode}`,
-            value: data.AddressID.toString(),
-          }
-        })
+            return {
+              data,
+              label: `${label}${data.Street1}, ${data.City}, ${data.ProvinceAbbreviation} ${data.PostalCode}`,
+              value: data.AddressID.toString(),
+            }
+          })
         : [],
     [data]
   )
@@ -112,12 +110,12 @@ export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
     () =>
       shippingMethodsData !== undefined
         ? shippingMethodsData
-          .map(method => ({
-            data: method,
-            label: `${method.displayName} (${formatCurrency(method.shippingPrice)})`,
-            value: method.shippingMethodId.toString(),
-          }))
-          .filter(method => !isPickUpShippingMethodId(method.data.shippingMethodId))
+            .map(method => ({
+              data: method,
+              label: `${method.displayName} (${formatCurrency(method.shippingPrice)})`,
+              value: method.shippingMethodId.toString(),
+            }))
+            .filter(method => !isPickUpShippingMethodId(method.data.shippingMethodId))
         : [],
     [shippingMethodsData]
   )
@@ -138,7 +136,6 @@ export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
   // useEffect(() => {
   //   initializeShippingMethod();
   // }, [shippingMethods?.[0]?.data?.shippingMethodId]);
-
 
   useEffect(() => {
     if (removedCartItems.length > 0) {
@@ -222,7 +219,7 @@ export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
             classNames={dropdownClassNames}
             data={shippingAddresses}
             label="Shipping address"
-            value={activeShippingAddress?.AddressID.toString()}
+            value={activeShippingAddress?.AddressID?.toString()}
             onChange={handleAddressChange}
           />
         )}

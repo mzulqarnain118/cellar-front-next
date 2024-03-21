@@ -19,7 +19,7 @@ export const Receipt = () => {
     () => discounts.reduce((prev, current) => prev + current.amount, 0),
     [discounts]
   )
-  const discount = subtotal - subtotalAfterSavings
+  const discount = discounts?.[0]?.amount ?? 0
 
   const total = subtotal + shipping + retailDeliveryFee + salesTax - discount
 
@@ -75,7 +75,7 @@ export const Receipt = () => {
       <div className="mt-4">
         <div className="flex items-center justify-between bg-[#e6e0dd] px-4 py-2">
           <Typography>Total</Typography>
-          <Typography as="strong">{`${formatCurrency(subtotal)}`}</Typography>
+          <Typography as="strong">{`${formatCurrency(total)}`}</Typography>
         </div>
         {!!appliedSkyWallet && (
           <>

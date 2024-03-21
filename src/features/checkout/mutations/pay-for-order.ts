@@ -87,9 +87,6 @@ export const useCheckoutPayForOrderMutation = (cartTotalData: any) => {
   const { data: cart } = useCartQuery()
   const { data: subTotal } = useGetSubtotalQuery()
 
-  console.log('🚀 ~ useCheckoutPayForOrderMutation ~ subTotal:', subTotal)
-  console.log('🚀 ~ useCheckoutPayForOrderMutation ~ cartTotalData:', cartTotalData)
-
   const { data: consultant } = useConsultantQuery()
   const { data: session } = useSession()
   const { reset } = useCheckoutActions()
