@@ -53,12 +53,23 @@ export const CartDrawer = () => {
     [cart?.items]
   )
 
+  const disableRemoveButton = useMemo(() => {
+    return isMutatingCart || isSharingCart
+  }, [isMutatingCart, isSharingCart])
+
   const cartItems = useMemo(
     () =>
       cart?.items?.length
-        ? cart.items.map(product => <CartItem key={product.sku} product={product} />)
+        ? cart.items.map(product => (
+            <CartItem
+              key={product.sku}
+              product={product}
+              aria-disabled={disableRemoveButton}
+              disabled={disableRemoveButton}
+            />
+          ))
         : undefined,
-    [cart]
+    [cart, disableRemoveButton]
   )
 
   const subtotal =

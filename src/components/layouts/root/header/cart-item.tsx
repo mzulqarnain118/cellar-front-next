@@ -24,9 +24,10 @@ const MAX = 24
 
 interface CartItemProps {
   product: CartProduct
+  disabled: boolean
 }
 
-export const CartItem = ({ product }: CartItemProps) => {
+export const CartItem = ({ product, disabled }: CartItemProps) => {
   const { isMutatingCart } = useProcessStore()
   const { mutate: addToCart } = useAddToCartMutation()
   const { mutate: removeFromCart } = useRemoveFromCartMutation()
@@ -166,7 +167,7 @@ export const CartItem = ({ product }: CartItemProps) => {
             />
           </div>
           <div className="self-start">
-            <CloseButton size="md" onClick={handleRemove} />
+            <CloseButton disabled={disabled} size="md" onClick={handleRemove} />
           </div>
         </div>
       </div>

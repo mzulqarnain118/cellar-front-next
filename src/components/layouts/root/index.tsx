@@ -25,6 +25,7 @@ import { CheckoutLayout } from '../checkout'
 import FormatDate from '@/components/formatDate'
 import { useTastingEventStorage } from '@/lib/hooks/use-tasting-storage'
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 import { Footer } from './footer'
 import { Header } from './header'
 import { StatePicker } from './state-picker'
@@ -37,9 +38,16 @@ export const RootLayout = ({ children }: RootLayoutProps) => {
   const { ageVerified, setAgeVerified } = useAgeVerified()
   const router = useRouter()
   const [tastingStorage, setTastingStorage] = useTastingEventStorage()
+  const searchParams = useSearchParams()
+  let fullPath = null
+  if (typeof window !== 'undefined') fullPath = window.location.href 
+
+  let url = typeof window !== 'undefined' && new URL(fullPath)
+  let params = new URLSearchParams(url.search)
 
   const { eventshare, u } = router.query || { eventshare: null, u: null }
   const { data: session } = useSession()
+  const selectedConsultantUrl = typeof window !== 'undefined' && localStorage.getItem('u')
   const { data: consultant } = useConsultantQuery()
   const { data: cart } = useCartQuery()
   const { isFetching: isFetchingStates, isLoading: isLoadingStates } = useStatesQuery()
@@ -58,10 +66,24 @@ export const RootLayout = ({ children }: RootLayoutProps) => {
     setTastingStorage(tastingResponse)
   }
   useEffect(() => {
-    if (cart?.id && consultant.displayId && eventshare && u) {
+    if (cart?.id && consultant?.displayId && eventshare && u) {
       tastingQuery()
     }
-  }, [cart?.id, consultant.displayId, eventshare, u])
+  }, [cart?.id, consultant?.displayId, eventshare, u])
+
+  useEffect(() => {
+    if (!url.searchParams.size && !!selectedConsultantUrl) {
+      router.push(`${router.asPath}/?u=${selectedConsultantUrl}`)
+    } else if (!router.asPath.includes('u=')) {
+      params.set('u', selectedConsultantUrl)
+    } else {
+      params.set('u', selectedConsultantUrl)
+    }
+
+    if (searchParams.get('u') && searchParams.get('u') != selectedConsultantUrl) {
+      localStorage.setItem('u', searchParams.get('u'))
+    }
+  }, [searchParams.get('u')])
 
   const handleClick = useCallback(() => {
     setAgeVerified('true')

@@ -40,11 +40,6 @@ export const removeFromCart = async (options: RemoveFromCartOptions) => {
 
     if (response.Success) {
       return response
-
-      // if (newItems.length === 0 && localStorage.getItem('giftMessage')) {
-      //   queryClient.invalidateQueries(queryKey)
-      //   localStorage.removeItem('giftMessage')
-      // }
     } else {
       throw new Error(response.Error.Message)
     }
@@ -57,7 +52,7 @@ export const useRemoveFromCartMutation = () => {
   const appliedSkyWallet = useCheckoutAppliedSkyWallet()
   const { setAppliedSkyWallet } = useCheckoutActions()
   const { data: cart } = useCartQuery()
-  const [_, setCartStorage] = useCartStorage()
+  const [cartStorage, setCartStorage] = useCartStorage()
   const queryClient = useQueryClient()
   const { setIsMutatingCart } = useProcessStore()
   const { shippingState } = useShippingStateStore()
@@ -113,6 +108,7 @@ export const useRemoveFromCartMutation = () => {
     },
     onSuccess: async (response, data) => {
       if (response.Success) {
+        console.log('cart')
         const newItems = getNewCartItems(
           response.data?.cart.OrderLines || response.Data.Cart.Data.OrderLines,
           cart?.items || [],
@@ -133,7 +129,8 @@ export const useRemoveFromCartMutation = () => {
           },
         }
 
-        queryClient.invalidateQueries([...CART_QUERY_KEY])
+        // if (cartInfoData?.OrderLines?.length === 0)
+        // queryClient.invalidateQueries([...CART_QUERY_KEY])
 
         if (data.fetchSubtotal) {
           const prices = await queryClient.fetchQuery<OrderPrice>([GET_SUBTOTAL_QUERY, cart?.id])
@@ -144,6 +141,7 @@ export const useRemoveFromCartMutation = () => {
         }
         queryClient.setQueryData(queryKey, newCartData)
         setCartStorage(newCartData)
+        console.log('Cart Data: ', newCartData, cartStorage)
 
         if (router.asPath === CHECKOUT_PAGE_PATH && appliedSkyWallet > 0) {
           setAppliedSkyWallet(0)

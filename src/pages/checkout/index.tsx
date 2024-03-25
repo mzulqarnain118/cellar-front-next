@@ -20,6 +20,7 @@ import { ContactInformation } from '@/features/checkout/components/contact-infor
 import { Delivery } from '@/features/checkout/components/delivery'
 import { Payment } from '@/features/checkout/components/payment'
 import { useValidateCartStockCheckoutMutation } from '@/features/checkout/mutations/validate-cart-stock-checkout'
+import { useCartStorage } from '@/lib/hooks/use-cart-storage'
 import { useRemoveFromCartMutation } from '@/lib/mutations/cart/remove-from-cart'
 import { useSetCartOwnerMutation } from '@/lib/mutations/cart/set-owner'
 import { SIGN_IN_PAGE_PATH, WINE_PAGE_PATH } from '@/lib/paths'
@@ -161,6 +162,7 @@ const CheckoutPage: NextPage<PageProps> = () => {
   const handleValidateCart = async () => await vaildateCartStock()
 
   const { mutate: removeFromCart } = useRemoveFromCartMutation()
+  const [cartStorage, setCartStorage] = useCartStorage()
 
   const handleNavigateToWinePage = () => {
     router.push('/wine')
@@ -491,7 +493,7 @@ const CheckoutPage: NextPage<PageProps> = () => {
   }, [cart, setCartOwner])
 
   useEffect(() => {
-    if (cart?.items.length === 0) {
+    if (cartStorage?.items.length === 0) {
       notifications.clean()
       queryClient.invalidateQueries([...CART_QUERY_KEY])
       router.push(WINE_PAGE_PATH)
@@ -499,7 +501,7 @@ const CheckoutPage: NextPage<PageProps> = () => {
         message: 'You have no products in your cart. Return to checkout when you are ready!',
       })
     }
-  }, [cart?.items.length, queryClient, router])
+  }, [cart?.items.length, queryClient, router, cartStorage])
 
   const handleViewCartInfo = async () => {
     await queryClient.fetchQuery({

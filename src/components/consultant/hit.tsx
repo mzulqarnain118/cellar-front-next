@@ -59,6 +59,7 @@ const Hit = ({ hit: consultant, setConsultantInputValue }: HitProps) => {
         ),
         url: selectedConsultant.Url,
       } satisfies Consultant
+      localStorage.setItem('u', selectedConsultant.Url)
       setConsultant(newConsultant)
       queryClient.prefetchQuery([CONSULTANT_QUERY_KEY, selectedConsultant.Url], getConsultantData)
       handleSelect(newConsultant)
