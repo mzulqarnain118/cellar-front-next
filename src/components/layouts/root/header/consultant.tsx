@@ -1,8 +1,5 @@
-import { useEffect } from 'react'
 
 import dynamic from 'next/dynamic'
-import { usePathname, useSearchParams } from 'next/navigation'
-import { useRouter } from 'next/router'
 
 import { Typography } from '@/core/components/typogrpahy'
 import { CORPORATE_CONSULTANT_ID } from '@/lib/constants'
@@ -19,16 +16,7 @@ const Link = dynamic(() => import('src/components/link').then(module => module.L
 export const Consultant = () => {
   const { consultant } = useConsultantStore()
   const { isFetching, isLoading } = useConsultantQuery()
-  const searchParams = useSearchParams()
-  const pathname = usePathname()
-  const router = useRouter()
 
-  const selectedConsultantUrl = searchParams.get('u')
-  useEffect(() => {
-    if (selectedConsultantUrl && pathname === "/consultants") {
-      router.push(`${pathname}/${selectedConsultantUrl}?${selectedConsultantUrl}`)
-    }
-  }, [selectedConsultantUrl])
   if (isFetching || isLoading) {
     return (
       <div className="flex animate-pulse items-end space-y-2">
