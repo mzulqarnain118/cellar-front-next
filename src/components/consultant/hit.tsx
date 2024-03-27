@@ -25,7 +25,7 @@ const Hit = ({ hit: consultant, setConsultantInputValue }: HitProps) => {
   const handleSelect = useCallback(
     (consultant?: Consultant) => {
       if (consultant?.displayId !== CORPORATE_CONSULTANT_ID) {
-        router.push(`/${consultant?.url}`)
+        router.push(`/`)
       }
     },
     [router]
