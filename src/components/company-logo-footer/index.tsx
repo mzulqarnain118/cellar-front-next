@@ -7,13 +7,13 @@ import { clsx } from 'clsx'
 
 import { HOME_PAGE_PATH } from '@/lib/paths'
 
-interface CompanyLogoProps {
+interface CompanyLogoFooterProps {
   className?: string
   size?: 'md' | 'lg'
   white?: boolean
 }
 
-export const CompanyLogo = ({ className, size = 'md', white = false }: CompanyLogoProps) => {
+export const CompanyLogoFooter = ({ className, size = 'md', white = false }: CompanyLogoFooterProps) => {
   const router = useRouter()
 
   const handleClick = useCallback(() => {
@@ -23,7 +23,7 @@ export const CompanyLogo = ({ className, size = 'md', white = false }: CompanyLo
   return (
     <div
       className={clsx(
-        'relative h-[3.85rem] w-[10.25rem] lg:h-[3.5rem] lg:w-56',
+        'relative h-[9.884rem] w-[10.25rem] lg:h-[216px] lg:w-56',
         size === 'lg' && '!w-[21.75rem]',
         className
       )}
@@ -34,7 +34,7 @@ export const CompanyLogo = ({ className, size = 'md', white = false }: CompanyLo
         alt="Scout & Cellar Company Logo"
         className="cursor-pointer"
         sizes="(max-width: 640px) 11rem, (max-width: 1024px) 15rem"
-        src={white ? '/white-logo.svg' : '/updated-logo.png'}
+        src={white ? '/white-logo2.png' : '/logo.svg'}
         onClick={handleClick}
       />
     </div>

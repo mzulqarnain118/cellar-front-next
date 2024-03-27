@@ -77,7 +77,7 @@ export const Header = () => {
   const menu = useMemo(
     () =>
       !isFetchingNavigation && !isLoadingNavigation ? (
-        <div className="flex flex-col items-center gap-2 text-lg lg:flex-row lg:justify-evenly [&>*]:p-2 [&>*]:!tracking-[1px] [&>*]:lg:m-[0.625rem]">
+        <div className="flex flex-col items-center text-lg lg:flex-row lg:justify-evenly [&>*]:p-2 [&>*]:!tracking-[1px] [&>*]:lg:m-[0.625rem]">
           {navigation?.data.body?.map(link => {
             const hasChildren =
               link.items.length > 0 &&
@@ -380,7 +380,7 @@ export const Header = () => {
         <div className="container mx-auto flex items-center justify-between py-3 lg:w-full">
           {isDesktop ? (
             <>
-              <div className="flex w-full items-center gap-4">
+              <div className="flex w-full items-center">
                 <CompanyLogo />
                 <div className="flex flex-1 lg:justify-end">
                   {menu}

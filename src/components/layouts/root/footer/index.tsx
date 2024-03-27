@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic'
 
 import { asText } from '@prismicio/client'
 
-import { CompanyLogo } from '@/components/company-logo'
+import { CompanyLogoFooter } from '@/components/company-logo-footer'
 import { Typography } from '@/core/components/typogrpahy'
 import { useFooterQuery } from '@/features/footer/queries'
 import { HOME_PAGE_PATH } from '@/lib/paths'
@@ -28,7 +28,7 @@ export const Footer = () => {
         return '/in-the-news'
       case '/circle':
         return '/wine/circle-exclusives'
-      default:  
+      default:
         return linkText
     }
   }
@@ -101,7 +101,7 @@ export const Footer = () => {
       `}
         >
           <div className="md:w-full md:self-center">
-            <CompanyLogo white />
+            <CompanyLogoFooter white />
           </div>
           <div className="flex w-full flex-col">
             <div className="grid gap-4 [&>*]:block [&>*]:text-neutral-light">{columnOne}</div>
@@ -149,7 +149,7 @@ export const Footer = () => {
             </Link>
           </div>
           <Typography className="text-sm">
-            © {new Date().getFullYear()} Scout & Cellar | Clean-Crafted Commitment®
+            © {new Date().getFullYear()} Scout & Cellar | Wine | Coffee | Cooking Products®
           </Typography>
           <address className="text-sm not-italic">
             4531 Simonton Road Farmers Branch, TX 75244
