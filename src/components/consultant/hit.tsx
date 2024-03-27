@@ -8,7 +8,6 @@ import { Paper } from '@mantine/core'
 import { useQueryClient } from '@tanstack/react-query'
 
 import { CORPORATE_CONSULTANT_ID } from '@/lib/constants'
-import { CONSULTANTS_PAGE_PATH } from '@/lib/paths'
 import { CONSULTANT_QUERY_KEY, getConsultantData } from '@/lib/queries/consultant'
 import { useConsultantStore } from '@/lib/stores/consultant'
 import { Consultant } from '@/lib/types'
@@ -26,7 +25,7 @@ const Hit = ({ hit: consultant, setConsultantInputValue }: HitProps) => {
   const handleSelect = useCallback(
     (consultant?: Consultant) => {
       if (consultant?.displayId !== CORPORATE_CONSULTANT_ID) {
-        router.push(`${CONSULTANTS_PAGE_PATH}/${consultant?.url}`)
+        router.push(`/${consultant?.url}`)
       }
     },
     [router]
