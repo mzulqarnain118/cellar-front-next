@@ -40,7 +40,7 @@ export const RootLayout = ({ children }: RootLayoutProps) => {
   const [tastingStorage, setTastingStorage] = useTastingEventStorage()
   const searchParams = useSearchParams()
   let fullPath = null
-  if (typeof window !== 'undefined') fullPath = window.location.href 
+  if (typeof window !== 'undefined') fullPath = window.location.href
 
   let url = typeof window !== 'undefined' && new URL(fullPath)
   let params = new URLSearchParams(url.search)
@@ -75,8 +75,6 @@ export const RootLayout = ({ children }: RootLayoutProps) => {
     if (!url.searchParams.size && !!selectedConsultantUrl) {
       router.push(`${router.asPath}/?u=${selectedConsultantUrl}`)
     } else if (!router.asPath.includes('u=')) {
-      params.set('u', selectedConsultantUrl)
-    } else {
       params.set('u', selectedConsultantUrl)
     }
 

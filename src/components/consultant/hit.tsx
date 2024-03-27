@@ -25,7 +25,7 @@ const Hit = ({ hit: consultant, setConsultantInputValue }: HitProps) => {
   const handleSelect = useCallback(
     (consultant?: Consultant) => {
       if (consultant?.displayId !== CORPORATE_CONSULTANT_ID) {
-        router.push(`/`)
+        router.push(`/?u=${consultant?.url}`)
       }
     },
     [router]
@@ -35,7 +35,6 @@ const Hit = ({ hit: consultant, setConsultantInputValue }: HitProps) => {
     setConsultantInputValue('')
 
     const selectedConsultant = consultant
-
     if (selectedConsultant !== undefined) {
       const newConsultant = {
         address: {
@@ -58,13 +57,14 @@ const Hit = ({ hit: consultant, setConsultantInputValue }: HitProps) => {
         ),
         url: selectedConsultant.Url,
       } satisfies Consultant
-      localStorage.setItem('u', selectedConsultant.Url)
+      localStorage.setItem('u', selectedConsultant?.Url)
       setConsultant(newConsultant)
-      queryClient.prefetchQuery([CONSULTANT_QUERY_KEY, selectedConsultant.Url], getConsultantData)
+      queryClient.prefetchQuery([CONSULTANT_QUERY_KEY, selectedConsultant?.Url], getConsultantData)
       handleSelect(newConsultant)
     }
-
-    handleSelect()
+    else {
+      handleSelect()
+    }
   }
 
   return (
