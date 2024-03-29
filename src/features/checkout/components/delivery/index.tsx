@@ -1,15 +1,22 @@
 import { MutableRefObject, memo, useCallback, useEffect, useMemo, useState } from 'react'
 
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline'
-import { Collapse, Tabs } from '@mantine/core'
+import { Collapse, Skeleton, Tabs } from '@mantine/core'
 import { clsx } from 'clsx'
 import { useSession } from 'next-auth/react'
 
 import { Typography } from '@/core/components/typogrpahy'
 import { GROUND_SHIPPING_SHIPPING_METHOD_ID } from '@/lib/constants/shipping-method'
+import { useApplyCheckoutSelectionsMutation } from '@/lib/mutations/checkout/apply-selections'
 import { useUpdateShippingMethodMutation } from '@/lib/mutations/checkout/update-shipping-method'
 import { useShippingMethodsQuery } from '@/lib/queries/checkout/shipping-methods'
-import { useCheckoutActions, useCheckoutIsPickUp } from '@/lib/stores/checkout'
+import {
+  useCheckoutActions,
+  useCheckoutActiveCreditCard,
+  useCheckoutActiveShippingAddress,
+  useCheckoutIsPickUp,
+  useCheckoutSelectedShippingAddress,
+} from '@/lib/stores/checkout'
 
 import { GuestAddress } from './guest-address'
 import { PickUp } from './pick-up'
@@ -39,6 +46,11 @@ export const Delivery = memo(({ opened, refs, cartTotalData, toggle }: DeliveryP
   const [value, setValue] = useState<string | null>(isPickUp ? 'pickUp' : 'shipToHome')
   const { data: session } = useSession()
   const isGuest = useMemo(() => session?.user?.isGuest || false, [session?.user?.isGuest])
+  const { mutate: applyCheckoutSelections, isLoading: isApplyingSelections } =
+    useApplyCheckoutSelectionsMutation()
+  const activeCreditCard = useCheckoutActiveCreditCard()
+  const selectedShippingAddress = useCheckoutSelectedShippingAddress()
+  const activeShippingAddress = useCheckoutActiveShippingAddress()
 
   const handleTabChange = useCallback(
     (tab: string) => {
@@ -49,8 +61,19 @@ export const Delivery = memo(({ opened, refs, cartTotalData, toggle }: DeliveryP
             shippingMethods?.[0]?.shippingMethodId || GROUND_SHIPPING_SHIPPING_METHOD_ID,
         })
       }
+      applyCheckoutSelections({
+        addressId: selectedShippingAddress?.AddressID,
+        paymentToken: activeCreditCard?.PaymentToken,
+      })
     },
-    [shippingMethods?.[0]?.shippingMethodId, GROUND_SHIPPING_SHIPPING_METHOD_ID, value]
+    [
+      value,
+      applyCheckoutSelections,
+      selectedShippingAddress?.AddressID,
+      activeCreditCard?.PaymentToken,
+      updateShippingMethod,
+      shippingMethods,
+    ]
   )
 
   useEffect(() => {
@@ -60,8 +83,6 @@ export const Delivery = memo(({ opened, refs, cartTotalData, toggle }: DeliveryP
       setSelectedPickUpOption(undefined)
       setSelectedPickUpAddress(undefined)
     }
-
-
   }, [value])
 
   return (
@@ -95,24 +116,42 @@ export const Delivery = memo(({ opened, refs, cartTotalData, toggle }: DeliveryP
             variant="pills"
             onTabChange={handleTabChange}
           >
-            <Tabs.List grow className="h-14 rounded border border-base-dark">
-              <Tabs.Tab className="font-bold uppercase" value="shipToHome">
-                Ship to home
-              </Tabs.Tab>
-              <Tabs.Tab className="font-bold uppercase" value="pickUp">
-                Pick up
-              </Tabs.Tab>
-            </Tabs.List>
+            {!isPickUp ? (
+              activeShippingAddress ? (
+                <Tabs.List grow className="h-14 rounded border border-base-dark">
+                  <Tabs.Tab className="font-bold uppercase" value="shipToHome">
+                    Ship to home
+                  </Tabs.Tab>
+                  <Tabs.Tab className="font-bold uppercase" value="pickUp">
+                    Pick up
+                  </Tabs.Tab>
+                </Tabs.List>
+              ) : (
+                <Skeleton className="h-[54px]" />
+              )
+            ) : (
+              <Tabs.List grow className="h-14 rounded border border-base-dark">
+                <Tabs.Tab className="font-bold uppercase" value="shipToHome">
+                  Ship to home
+                </Tabs.Tab>
+                <Tabs.Tab className="font-bold uppercase" value="pickUp">
+                  Pick up
+                </Tabs.Tab>
+              </Tabs.List>
+            )}
 
             <Tabs.Panel className="mt-4" value="shipToHome">
               {isGuest ? (
-                <GuestAddress cartTotalData={cartTotalData} shippingAddressRef={refs.shippingAddressRef} />
+                <GuestAddress
+                  cartTotalData={cartTotalData}
+                  shippingAddressRef={refs.shippingAddressRef}
+                />
               ) : (
-                <ShipToHome refs={refs} cartTotalData={cartTotalData} />
+                <ShipToHome cartTotalData={cartTotalData} refs={refs} />
               )}
             </Tabs.Panel>
             <Tabs.Panel className="mt-4" value="pickUp">
-              <PickUp refs={refs} cartTotalData={cartTotalData} />
+              <PickUp cartTotalData={cartTotalData} refs={refs} />
             </Tabs.Panel>
           </Tabs>
         </div>

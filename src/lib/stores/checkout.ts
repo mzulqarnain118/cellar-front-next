@@ -64,6 +64,7 @@ interface CheckoutStoreState {
   promoCode: Code
   removedCartItems: Cart['items']
   removedCartItemsCheckout: Cart['items']
+  selectedShippingAddress?: Address
   selectedPickUpAddress?: Address
   selectedPickUpOption?: PickUpOption
 }
@@ -95,6 +96,7 @@ interface CheckoutStoreActions {
   setRemovedCartItemsCheckout: Setter<Cart['items'] | undefined>
   setSelectedPickUpAddress: Setter<Address | undefined>
   setSelectedPickUpOption: Setter<PickUpOption | undefined>
+  setSelectedShippingAddress: Setter<Address | undefined>
   toggleIsAddingGiftMessage: () => void
   toggleIsEditingGiftMessage: () => void
 }
@@ -148,11 +150,7 @@ export const useCheckoutStore = create<CheckoutStore>()(
           set(() => ({ contactInformation: initialValues.contactInformation })),
         resetGiftMessage: () => set(() => ({ giftMessage: initialValues.giftMessage })),
         setActiveCreditCard: activeCreditCard => set(() => ({ activeCreditCard })),
-        setActiveShippingAddress: activeShippingAddress =>
-          set(() => {
-            console.log('active update: ', activeShippingAddress)
-            return { activeShippingAddress }
-          }),
+        setActiveShippingAddress: activeShippingAddress => set(() => ({ activeShippingAddress })),
         setAppliedSkyWallet: update =>
           typeof update === 'function'
             ? set(({ appliedSkyWallet }) => ({ appliedSkyWallet }))
@@ -245,22 +243,22 @@ export const useCheckoutStore = create<CheckoutStore>()(
             : set(() => ({ removedCartItemsCheckout: update })),
         setSelectedPickUpAddress: update =>
           typeof update === 'function'
-            ? set(({ selectedPickUpAddress }) => {
-                console.log('update selectedPickUpAddress', selectedPickUpAddress)
-                return {
-                  selectedPickUpAddress: update(selectedPickUpAddress),
-                }
-              })
-            : set(() => {
-                console.log('selected update: ', update)
-                return { selectedPickUpAddress: update }
-              }),
+            ? set(({ selectedPickUpAddress }) => ({
+                selectedPickUpAddress: update(selectedPickUpAddress),
+              }))
+            : set(() => ({ selectedPickUpAddress: update })),
         setSelectedPickUpOption: update =>
           typeof update === 'function'
             ? set(({ selectedPickUpOption }) => ({
                 selectedPickUpOption: update(selectedPickUpOption),
               }))
             : set(() => ({ selectedPickUpOption: update })),
+        setSelectedShippingAddress: update =>
+          typeof update === 'function'
+            ? set(({ selectedShippingAddress }) => ({
+                selectedShippingAddress: update(selectedShippingAddress),
+              }))
+            : set(() => ({ selectedShippingAddress: update })),
         toggleIsAddingGiftMessage: () => {
           set(({ giftMessage, isAddingGiftMessage }) => {
             // Check if isAddingGiftMessage is false and giftMessage is different from its initial value, then only return giftMessage with its initial values
@@ -461,6 +459,14 @@ export const useCheckoutSelectedPickUpAddress = () => {
 export const useCheckoutSelectedPickUpOption = () => {
   const selector = useCallback(
     ({ selectedPickUpOption }: CheckoutStore) => selectedPickUpOption,
+    []
+  )
+  return useCheckoutStore(selector)
+}
+
+export const useCheckoutSelectedShippingAddress = () => {
+  const selector = useCallback(
+    ({ selectedShippingAddress }: CheckoutStore) => selectedShippingAddress,
     []
   )
   return useCheckoutStore(selector)

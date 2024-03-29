@@ -29,7 +29,7 @@ export const BrandProfile = ({ slice }: BrandProfileProps) => (
       {slice.items?.map(item => (
         <div
           key={JSON.stringify(item.attribute)}
-          className="border-black lg:px-10 lg:tracking-widest"
+          className={`border-[${slice.primary.highlight_color}] lg:px-10 lg:tracking-widest`}
           style={{ '--highlight': slice.primary.highlight_color } as CSSProperties}
         >
           <PrismicRichText field={item.attribute} />

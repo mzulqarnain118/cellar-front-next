@@ -91,4 +91,8 @@
     list-style: disc;
     list-style-position: outside;
   }
+
+  .prismic-content > p {
+    margin-bottom: 1rem;
+  }
 }

@@ -112,9 +112,13 @@ export const useApplyCheckoutSelectionsMutation = () => {
               queryFn: getShippingAddressesAndCreditCards,
               queryKey: [ADDRESS_CREDIT_CARDS_QUERY_KEY, cart?.id, session?.user?.isGuest],
             })
-          correspondingAddress = altAddressesAndCreditCards?.addresses.find(
-            address => address.AddressID === data.addressId
-          )
+          correspondingAddress =
+            altAddressesAndCreditCards?.addresses.find(
+              address => address.AddressID === data.addressId
+            ) ||
+            altAddressesAndCreditCards?.userPickUpAddresses.find(
+              address => address?.Address?.AddressID === data.addressId
+            )
           correspondingCreditCard = altAddressesAndCreditCards?.creditCards.find(
             creditCard => creditCard.PaymentToken === data.paymentToken
           )
@@ -122,7 +126,7 @@ export const useApplyCheckoutSelectionsMutation = () => {
 
         if (
           cart !== undefined &&
-          parseInt(correspondingAddress?.ProvinceID || shippingState.provinceID.toString()) !==
+          parseInt(correspondingAddress?.ProvinceID || shippingState.provinceID?.toString()) !==
             shippingState.provinceID
         ) {
           const removedCartItems: Cart['items'] = []
@@ -151,7 +155,7 @@ export const useApplyCheckoutSelectionsMutation = () => {
           parseInt(correspondingAddress.ProvinceID) !== shippingState.provinceID
         ) {
           const newState = states?.find(
-            state => state.provinceID.toString() === correspondingAddress?.ProvinceID.toString()
+            state => state.provinceID.toString() === correspondingAddress?.ProvinceID?.toString()
           )
           setShippingState(
             newState || {
@@ -164,6 +168,7 @@ export const useApplyCheckoutSelectionsMutation = () => {
           )
         }
       }
+
       await queryClient.invalidateQueries([GET_SUBTOTAL_QUERY, cart?.id])
       await queryClient.invalidateQueries({
         queryKey: [SHIPPING_METHODS_QUERY_KEY],

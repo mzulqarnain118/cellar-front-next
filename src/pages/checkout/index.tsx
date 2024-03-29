@@ -171,7 +171,7 @@ const CheckoutPage: NextPage<PageProps> = () => {
   const handleKeepShopping = () => {
     const products = []
 
-    validateCartStockResp?.Response.forEach(item => {
+    validateCartStockResp?.Response?.forEach(item => {
       const itemSKU = item.SKU.toLowerCase()
 
       const product = cart?.items.find(cartItem => cartItem.sku === itemSKU)
@@ -194,7 +194,7 @@ const CheckoutPage: NextPage<PageProps> = () => {
   const handleContinue = () => {
     const products = []
 
-    validateCartStockResp?.Response.forEach(item => {
+    validateCartStockResp?.Response?.forEach(item => {
       const itemSKU = item.SKU.toLowerCase()
 
       const product = cart?.items.find(cartItem => cartItem.sku === itemSKU)
@@ -402,7 +402,7 @@ const CheckoutPage: NextPage<PageProps> = () => {
                   removed:
                 </Text>
                 <List className={modalStyles.listContainer}>
-                  {validateCartStockResp?.Response.map(item => (
+                  {validateCartStockResp?.Response?.map(item => (
                     <List.Item key={item.SKU} className={modalStyles.listItem}>
                       {item.DisplayName}
                     </List.Item>

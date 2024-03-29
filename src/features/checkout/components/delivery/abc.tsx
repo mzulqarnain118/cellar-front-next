@@ -5,6 +5,7 @@ import { AutocompleteProps, Select } from '@mantine/core'
 import { useSession } from 'next-auth/react'
 
 import { Link } from '@/components/link'
+import { ABC_STORE_SHIPPING_METHOD_ID } from '@/lib/constants/shipping-method'
 import { useApplyCheckoutSelectionsMutation } from '@/lib/mutations/checkout/apply-selections'
 import {
   useCheckoutActions,
@@ -12,7 +13,6 @@ import {
   useCheckoutSelectedPickUpAddress,
 } from '@/lib/stores/checkout'
 
-import { ABC_STORE_SHIPPING_METHOD_ID } from '@/lib/constants/shipping-method'
 import { ABCStore, useAbcStoresQuery } from '../../queries/abc-stores'
 
 interface ABC_Props {
@@ -27,7 +27,7 @@ export const ABC = ({ updateShippingMethod }: ABC_Props) => {
   const { mutate: applyCheckoutSelections } = useApplyCheckoutSelectionsMutation()
   const { setSelectedPickUpAddress } = useCheckoutActions()
   const [value, setValue] = useState<string | null>(
-    selectedPickUpAddress?.AddressID.toString() || ''
+    selectedPickUpAddress?.AddressID?.toString() || ''
   )
 
   const data = useMemo(
@@ -54,7 +54,6 @@ export const ABC = ({ updateShippingMethod }: ABC_Props) => {
 
   const handleChange = useCallback(
     (value: string) => {
-
       updateShippingMethod({ shippingMethodId: ABC_STORE_SHIPPING_METHOD_ID })
       const store = abcStores?.find(abc => abc.addressId.toString() === value)
 

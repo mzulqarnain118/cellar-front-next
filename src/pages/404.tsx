@@ -14,7 +14,7 @@ const NotFoundPage = () => {
   const u = router.asPath?.split('?u=')
   const isEeventShare = eventShare?.[1] === 'eventshare'
   useLayoutEffect(() => {
-    if (['/my-account/profile', '/my-account/orders'].includes(router.asPath)) {
+    if (['/my-account/profile', '/my-account/orders'].includes(pathname)) {
       router.push(router.asPath)
     } else if (isEeventShare) {
       router.push(`/?u=${u[1]}&eventshare=${eventShare?.[2]}`)
@@ -22,7 +22,7 @@ const NotFoundPage = () => {
   }, [])
 
   // Check if the route is '/restricted-route' to show a specific message
-  if (!(['/my-account/profile', '/my-account/orders'].includes(router.asPath) || isEeventShare)) {
+  if (!(['/my-account/profile', '/my-account/orders'].includes(pathname) || isEeventShare)) {
     return (
       <div className="container mx-auto">
         <h1>Page Not Found</h1>

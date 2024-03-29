@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 
 import { Typography } from '@/core/components/typogrpahy'
 import { formatCurrency } from '@/core/utils'
+import { useCartStorage } from '@/lib/hooks/use-cart-storage'
 import { useCartQuery } from '@/lib/queries/cart'
 import { useCheckoutAppliedSkyWallet } from '@/lib/stores/checkout'
 
@@ -11,6 +12,7 @@ interface CartSummaryProps {
 }
 export const CartSummary = ({ cartTotalData }: CartSummaryProps) => {
   const { data: cart } = useCartQuery()
+  const [cartStorage, setCartStorage] = useCartStorage()
   const appliedSkyWallet = useCheckoutAppliedSkyWallet()
 
   const discountTotal = cartTotalData?.discountTotals.reduce(
@@ -43,12 +45,12 @@ export const CartSummary = ({ cartTotalData }: CartSummaryProps) => {
   const cartItems = useMemo(
     () => (
       <div className="my-4 divide-y divide-neutral-light border-y border-y-neutral-light !max-h-[345px] overflow-y-auto">
-        {cart?.items.map(product => (
+        {cartStorage?.items.map(product => (
           <CartProduct key={product.sku} data={product} />
         ))}
       </div>
     ),
-    [cart?.items]
+    [cartStorage]
   )
 
   const prices = useMemo(

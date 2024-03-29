@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 
 import dynamic from 'next/dynamic'
@@ -57,7 +58,8 @@ export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
     useUpdateShippingMethodMutation()
   const [addressFormOpen, { close: closeAddressForm, toggle: toggleAddressForm }] =
     useDisclosure(false)
-  const { setIsAddingAddress, setRemovedCartItems } = useCheckoutActions()
+  const { setIsAddingAddress, setRemovedCartItems, setSelectedShippingAddress } =
+    useCheckoutActions()
   const { mutate: removeFromCart } = useRemoveFromCartMutation()
 
   const handleAddressChange: SelectProps['onChange'] = useCallback(
@@ -71,6 +73,7 @@ export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
             addressId: correspondingAddress?.AddressID,
             paymentToken: activeCreditCard?.PaymentToken,
           })
+          setSelectedShippingAddress(correspondingAddress)
         }
       }
     },
@@ -225,10 +228,14 @@ export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
         )}
       </Collapse>
 
-      {addressFormOpen ? undefined : (
-        <Button color="ghost" size="sm" startIcon={plusIcon} onClick={toggleAddressForm}>
-          Add address
-        </Button>
+      {activeShippingAddress ? (
+        addressFormOpen ? undefined : (
+          <Button color="ghost" size="sm" startIcon={plusIcon} onClick={toggleAddressForm}>
+            Add address
+          </Button>
+        )
+      ) : (
+        <Skeleton className="h-[111px] mt-1" width={56} />
       )}
 
       <Collapse in={addressFormOpen}>
