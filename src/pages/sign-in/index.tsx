@@ -18,11 +18,7 @@ import { Input } from '@/core/components/input'
 import { PasswordInput } from '@/core/components/password-input'
 import { Typography } from '@/core/components/typogrpahy'
 import { useValidateEmailMutation } from '@/lib/mutations/validate-email'
-import {
-  CREATE_ACCOUNT_PAGE_PATH,
-  GUEST_CHECKOUT_PAGE_PATH,
-  HOME_PAGE_PATH
-} from '@/lib/paths'
+import { CREATE_ACCOUNT_PAGE_PATH, GUEST_CHECKOUT_PAGE_PATH, HOME_PAGE_PATH } from '@/lib/paths'
 import { useCartQuery } from '@/lib/queries/cart'
 import { getStaticNavigation } from '@/lib/queries/header'
 import { createClient } from '@/prismic-io'
@@ -91,7 +87,7 @@ const SignInPage: NextPage<PageProps> = () => {
         const response = await signIn('sign-in', { email, password, redirect: false })
 
         if (response?.ok) {
-          await router.push(redirectTo.toString() || HOME_PAGE_PATH)
+          await router.back()
         } else {
           setError('email', {
             message: 'Invalid email or password.',
