@@ -25,7 +25,7 @@ import { GoogleAnalytics, event } from 'nextjs-google-analytics'
 import { Theme } from 'react-daisyui'
 import TagManager, { TagManagerArgs } from 'react-gtm-module'
 
-import { RootLayout } from '@/components/layouts/root'
+import { RootLayout } from '@/components/layouts/root/main/[u]'
 import { modals } from '@/core/components/modals'
 import { useIsDesktop } from '@/core/hooks/use-is-desktop'
 import { useCartOpen } from '@/lib/stores/process'
@@ -77,6 +77,7 @@ export const reportWebVitals = ({ id, label, name, value }: NextWebVitalsMetric)
 const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
   const isDesktop = useIsDesktop()
   const router = useRouter()
+  console.log('session: ', session)
 
   const { cartOpen } = useCartOpen()
   const [showDevtools, setShowDevtools] = useState(false)

@@ -20,15 +20,15 @@ import { setTasting, useCartQuery } from '@/lib/queries/cart'
 import { useConsultantQuery } from '@/lib/queries/consultant'
 import { useStatesQuery } from '@/lib/queries/state'
 
-import { CheckoutLayout } from '../checkout'
+import { CheckoutLayout } from '../../checkout'
 
 import FormatDate from '@/components/formatDate'
 import { useTastingEventStorage } from '@/lib/hooks/use-tasting-storage'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
-import { Footer } from './footer'
-import { Header } from './header'
-import { StatePicker } from './state-picker'
+import { Footer } from '../footer'
+import { Header } from '../header'
+import { StatePicker } from '../state-picker'
 
 interface RootLayoutProps {
   children: ReactNode
