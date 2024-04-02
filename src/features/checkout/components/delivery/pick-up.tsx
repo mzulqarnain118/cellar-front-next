@@ -107,12 +107,12 @@ export const PickUp = ({ refs, cartTotalData }: PickUpProps) => {
     setSelectedPickUpOption('lpu')
     setErrors(prev => ({ ...prev, delivery: '' }))
     updateShippingMethod({ shippingMethodId: LOCAL_PICK_UP_SHIPPING_METHOD_ID })
+    setSelectedPickUpAddress(orderAddress)
+    setActiveShippingAddress(orderAddress)
     applyCheckoutSelections({
       addressId: lpuPickUpAddress?.AddressID,
       paymentToken: activeCreditCard?.PaymentToken,
     })
-    setSelectedPickUpAddress(orderAddress)
-    setActiveShippingAddress(orderAddress)
   }, [
     addressesAndCreditCards,
     activeShippingAddress,
@@ -129,8 +129,6 @@ export const PickUp = ({ refs, cartTotalData }: PickUpProps) => {
   ])
 
   const handleHalOpen = useCallback(() => {
-    const lpuPickUpAddress = addressesAndCreditCards?.userPickUpAddresses?.[0]?.Address
-
     closeAbc()
     closeLpu()
     toggleHalOpened()

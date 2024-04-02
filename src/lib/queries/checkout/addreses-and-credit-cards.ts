@@ -51,16 +51,16 @@ export const getShippingAddressesAndCreditCards: QueryFunction<
 > = async ({ queryKey }) => {
   try {
     const cartId = queryKey[1] as string | null
-    const isGuest = queryKey[2] as boolean | null
+    // const isGuest = queryKey[2] as boolean | null
 
-    if (!cartId || isGuest) {
-      return {
-        addresses: [],
-        creditCards: [],
-        userDateOfBirth: '',
-        userPickUpAddresses: [],
-      }
-    }
+    // if (!cartId || isGuest) {
+    //   return {
+    //     addresses: [],
+    //     creditCards: [],
+    //     userDateOfBirth: '',
+    //     userPickUpAddresses: [],
+    //   }
+    // }
     const userDetails = await api('v2/user/GetInformationDetailed', {
       searchParams: { cartId },
     }).json<GetDetailedUserInformationResponse>()
@@ -117,7 +117,7 @@ export const useAddressesAndCreditCardsQuery = () => {
   const { mutate: applyCheckoutSelections } = useApplyCheckoutSelectionsMutation()
 
   return useQuery({
-    enabled: !session?.user?.isGuest,
+    // enabled: !session?.user?.isGuest,
     onSuccess: data => {
       if (activeShippingAddress === undefined || activeCreditCard === undefined) {
         const address: Address | undefined =
@@ -126,10 +126,16 @@ export const useAddressesAndCreditCardsQuery = () => {
           activeCreditCard || data?.primaryCreditCard || data?.creditCards[0]
 
         if (address !== undefined) {
+          // if (session?.user?.isGuest) {
+          //   applyCheckoutSelections({
+          //     addressId: address.AddressID,
+          //   })
+          // } else {
           applyCheckoutSelections({
             addressId: address.AddressID,
             paymentToken: creditCard?.PaymentToken,
           })
+          // }
         }
       }
     },

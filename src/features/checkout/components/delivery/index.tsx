@@ -116,7 +116,7 @@ export const Delivery = memo(({ opened, refs, cartTotalData, toggle }: DeliveryP
             variant="pills"
             onTabChange={handleTabChange}
           >
-            {!isPickUp ? (
+            {!isPickUp && !isGuest ? (
               activeShippingAddress ? (
                 <Tabs.List grow className="h-14 rounded border border-base-dark">
                   <Tabs.Tab className="font-bold uppercase" value="shipToHome">

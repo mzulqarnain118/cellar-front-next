@@ -103,6 +103,11 @@ export const useApplyCheckoutSelectionsMutation = () => {
           addressesAndCreditCards?.userPickUpAddresses.find(
             address => address?.Address?.AddressID === data.addressId
           )
+
+        if (correspondingAddress && correspondingAddress.Address) {
+          correspondingAddress = correspondingAddress.Address
+        }
+
         let correspondingCreditCard = addressesAndCreditCards?.creditCards.find(
           creditCard => creditCard.PaymentToken === data.paymentToken
         )
@@ -119,6 +124,10 @@ export const useApplyCheckoutSelectionsMutation = () => {
             altAddressesAndCreditCards?.userPickUpAddresses.find(
               address => address?.Address?.AddressID === data.addressId
             )
+
+          if (correspondingAddress && correspondingAddress.Address) {
+            correspondingAddress = correspondingAddress.Address
+          } 
           correspondingCreditCard = altAddressesAndCreditCards?.creditCards.find(
             creditCard => creditCard.PaymentToken === data.paymentToken
           )

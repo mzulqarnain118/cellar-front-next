@@ -54,24 +54,24 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
       if (data.success) {
         const { data: productsData } = data
-        let products = productsData
-        products = products.filter(product => product.displayCategories.includes(1))
+        const products = productsData
+        // products = products.filter(product => product.displayCategories.includes(1))
         // const fuse = new Fuse(products, { keys: ['attributes'], useExtendedSearch: true })
         // const result fuse.search(q)
         const result = products.filter(
           prod =>
-            prod?.displayName?.toUpperCase()?.includes(q?.toUpperCase()) ||
-            prod?.cartUrl?.toUpperCase()?.includes(q?.toUpperCase()) ||
-            prod?.sku?.toUpperCase()?.includes(q?.toUpperCase())
+            prod?.displayName?.toLowerCase()?.includes(q?.toLowerCase()) ||
+            prod?.cartUrl?.toLowerCase()?.includes(q?.toLowerCase()) ||
+            prod?.sku?.toLowerCase()?.includes(q?.toLowerCase())
         )
 
-        const searchResults = result.map(result => result)
         let filteredProducts =
-          displayCategoryIds.length > 0
-            ? searchResults.filter(product =>
-                displayCategoryIds.every(category => product.displayCategories.includes(category))
-              )
-            : searchResults
+          // displayCategoryIds.length > 0 ?
+          //   searchResults.filter(product =>
+          //       displayCategoryIds.every(category => product.displayCategories.includes(category))
+          //     )
+          //   :
+          result
 
         filteredProducts = filteredProducts.filter(product =>
           product.availability?.some(state => state.enabled && state.provinceId === provinceId)
