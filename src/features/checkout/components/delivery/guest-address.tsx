@@ -57,12 +57,12 @@ export const GuestAddress = ({ shippingAddressRef, cartTotalData }: GuestAddress
     () =>
       shippingMethodsData !== undefined
         ? shippingMethodsData
-          .map(method => ({
-            data: method,
-            label: `${method.displayName} (${formatCurrency(method.shippingPrice)})`,
-            value: method.shippingMethodId.toString(),
-          }))
-          .filter(method => !isPickUpShippingMethodId(method.data.shippingMethodId))
+            .map(method => ({
+              data: method,
+              label: `${method.displayName} (${formatCurrency(method.shippingPrice)})`,
+              value: method.shippingMethodId.toString(),
+            }))
+            .filter(method => !isPickUpShippingMethodId(method.data.shippingMethodId))
         : [],
     [shippingMethodsData]
   )

@@ -74,6 +74,7 @@ export const CreditCardForm = ({ onCancel, onCreate, cartTotalData }: CreditCard
   const { mutate: validateAddress } = useValidateAddressMutation()
   const { data: addressesAndCreditCards } = useAddressesAndCreditCardsQuery()
   const { data: session } = useSession()
+  const isGuest = useMemo(() => session?.user?.isGuest || false, [session?.user?.isGuest])
 
   const formProps: UseFormProps<CreditCardFormSchema> = useMemo(
     () => ({
@@ -331,7 +332,7 @@ export const CreditCardForm = ({ onCancel, onCreate, cartTotalData }: CreditCard
           </div>
           <input name="issuer" type="hidden" value={state.issuer} />
           <div className="mt-4 space-y-4">
-            <BillingAddress />
+            <BillingAddress noCheckbox={isGuest} />
             {session?.user?.isGuest ? undefined : (
               <Checkbox color="dark" label="Set as default" {...register('default')} />
             )}

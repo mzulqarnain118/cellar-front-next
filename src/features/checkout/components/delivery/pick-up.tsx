@@ -28,6 +28,8 @@ import {
   useCheckoutSelectedPickUpOption,
 } from '@/lib/stores/checkout'
 
+import { MORGAN_ADDRESS } from '../../constants/local-pickup-address'
+
 import { ABC } from './abc'
 
 import { DeliveryRefs } from '.'
@@ -46,7 +48,8 @@ const radioClassNames: RadioProps['classNames'] = { label: 'text-14' }
 
 export const PickUp = ({ refs, cartTotalData }: PickUpProps) => {
   const errors = useCheckoutErrors()
-  const { setErrors, setSelectedPickUpOption, setActiveShippingAddress } = useCheckoutActions()
+  const { setErrors, setSelectedPickUpOption, setActiveShippingAddress, setGuestAddress } =
+    useCheckoutActions()
   const { mutate: updateShippingMethod, isLoading: isUpdatingShippingMethod } =
     useUpdateShippingMethodMutation()
   const { data: shippingMethods } = useShippingMethodsQuery()
@@ -68,26 +71,10 @@ export const PickUp = ({ refs, cartTotalData }: PickUpProps) => {
 
   const { data: session } = useSession()
 
-  const lpuPickUpAddress = addressesAndCreditCards?.userPickUpAddresses?.[0]?.Address
-
-  const orderAddress = {
-    AddressID: lpuPickUpAddress?.AddressID,
-    City: lpuPickUpAddress?.City,
-    Company: lpuPickUpAddress?.Company,
-    CountryName: lpuPickUpAddress?.CountryName,
+  const lpuOrderAddress = {
+    ...MORGAN_ADDRESS,
     FirstName: session?.user?.name.first || '',
     LastName: session?.user?.name.last || '',
-    NickName: lpuPickUpAddress?.DisplayName,
-    PhoneNumber: '',
-    PostalCode: lpuPickUpAddress?.PostalCode,
-    Primary: false,
-    ProvinceAbbreviation: lpuPickUpAddress?.ProvinceAbbreviation,
-    ProvinceID: lpuPickUpAddress?.ProvinceID?.toString(),
-    ProvinceName: lpuPickUpAddress?.ProvinceName,
-    Residential: false,
-    Street1: lpuPickUpAddress?.Street1,
-    Street2: lpuPickUpAddress?.Street2,
-    Street3: '',
   }
 
   const getSCLocations = async () => {
@@ -107,10 +94,11 @@ export const PickUp = ({ refs, cartTotalData }: PickUpProps) => {
     setSelectedPickUpOption('lpu')
     setErrors(prev => ({ ...prev, delivery: '' }))
     updateShippingMethod({ shippingMethodId: LOCAL_PICK_UP_SHIPPING_METHOD_ID })
-    setSelectedPickUpAddress(orderAddress)
-    setActiveShippingAddress(orderAddress)
+    setSelectedPickUpAddress(lpuOrderAddress)
+    setActiveShippingAddress(lpuOrderAddress)
+    setGuestAddress(lpuOrderAddress)
     applyCheckoutSelections({
-      addressId: lpuPickUpAddress?.AddressID,
+      addressId: lpuOrderAddress?.AddressID,
       paymentToken: activeCreditCard?.PaymentToken,
     })
   }, [

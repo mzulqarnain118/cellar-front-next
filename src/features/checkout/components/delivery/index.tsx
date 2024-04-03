@@ -1,4 +1,4 @@
-import { MutableRefObject, memo, useCallback, useEffect, useMemo, useState } from 'react'
+import { MutableRefObject, memo, useCallback, useEffect, useState } from 'react'
 
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline'
 import { Collapse, Skeleton, Tabs } from '@mantine/core'
@@ -45,7 +45,7 @@ export const Delivery = memo(({ opened, refs, cartTotalData, toggle }: DeliveryP
   const { mutate: updateShippingMethod } = useUpdateShippingMethodMutation()
   const [value, setValue] = useState<string | null>(isPickUp ? 'pickUp' : 'shipToHome')
   const { data: session } = useSession()
-  const isGuest = useMemo(() => session?.user?.isGuest || false, [session?.user?.isGuest])
+  const isGuest = session?.user?.isGuest
   const { mutate: applyCheckoutSelections, isLoading: isApplyingSelections } =
     useApplyCheckoutSelectionsMutation()
   const activeCreditCard = useCheckoutActiveCreditCard()
