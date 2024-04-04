@@ -135,7 +135,7 @@ export const StatePicker = ({ popup = false }: StatePickerProps) => {
       filter={filter}
       label={popup ? 'Select the state you are planning to ship to' : 'Shipping to'}
       size={popup ? 'sm' : 'xs'}
-      value={shippingState.provinceID?.toString()}
+      value={shippingState?.provinceID?.toString()}
       onChange={handleStateChange}
     />
   )
