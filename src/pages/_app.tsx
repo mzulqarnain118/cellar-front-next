@@ -25,7 +25,7 @@ import { GoogleAnalytics, event } from 'nextjs-google-analytics'
 import { Theme } from 'react-daisyui'
 import TagManager, { TagManagerArgs } from 'react-gtm-module'
 
-import { RootLayout } from '@/components/layouts/root/main/[u]'
+import { RootLayout } from '@/components/layouts/root'
 import { modals } from '@/core/components/modals'
 import { useIsDesktop } from '@/core/hooks/use-is-desktop'
 import { useCartOpen } from '@/lib/stores/process'

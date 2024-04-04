@@ -20,15 +20,16 @@ import { setTasting, useCartQuery } from '@/lib/queries/cart'
 import { useConsultantQuery } from '@/lib/queries/consultant'
 import { useStatesQuery } from '@/lib/queries/state'
 
-import { CheckoutLayout } from '../../checkout'
+import { CheckoutLayout } from '../checkout'
 
 import FormatDate from '@/components/formatDate'
 import { useTastingEventStorage } from '@/lib/hooks/use-tasting-storage'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
-import { Footer } from '../footer'
-import { Header } from '../header'
-import { StatePicker } from '../state-picker'
+import { Footer } from './footer'
+import { Header } from './header'
+import POSSIBLE_PAGES from './main/possible-pages'
+import { StatePicker } from './state-picker'
 
 interface RootLayoutProps {
   children: ReactNode
@@ -87,6 +88,36 @@ export const RootLayout = ({ children }: RootLayoutProps) => {
     setAgeVerified('true')
     modals.closeAll()
   }, [setAgeVerified])
+
+  const pathname = router.asPath
+  const rootPath = pathname.split('/')[1]
+
+  useEffect(() => {
+    const fetchConsultant = async () => {
+      const baseApiUrl = process.env.NEXT_PUBLIC_TOWER_API_URL
+      const pathname = router.asPath
+      const rootPath = pathname.split('/')[1]
+
+      if (!POSSIBLE_PAGES.includes(rootPath)) {
+        try {
+          const consultantResponse = await fetch(`${baseApiUrl}/api/info/rep/${rootPath}`)
+
+          if (consultantResponse.ok) {
+            const consultant = await consultantResponse.json()
+            if (consultant.DisplayID) {
+              const url = new URL(process.env.NEXT_PUBLIC_APP_URL)
+              url.searchParams.set('u', consultant.Url)
+              router.replace(url.toString()) // Redirect to consultant URL
+            }
+          }
+        } catch (error) {
+          console.error('Error fetching consultant:', error)
+        }
+      }
+    }
+
+    fetchConsultant()
+  }, [])
 
   useEffect(() => {
     if (ageVerified === undefined || ageVerified === 'false') {
