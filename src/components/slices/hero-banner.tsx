@@ -72,7 +72,7 @@ export const HeroBanner = ({ slice }: HeroBannerProps) => {
                 </section>
               ) : undefined}
               {asText(slice.primary.cta_text).length > 0 ? (
-                <Button className="mt-4" size="lg" style={style} onClick={handleBgClick}>
+                <Button className="mt-4 border-0" size="lg" style={style} onClick={handleBgClick}>
                   {asText(slice.primary.cta_text)}
                 </Button>
               ) : undefined}
