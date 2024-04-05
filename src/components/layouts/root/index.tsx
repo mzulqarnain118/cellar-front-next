@@ -98,7 +98,7 @@ export const RootLayout = ({ children }: RootLayoutProps) => {
       const pathname = router.asPath
       const rootPath = pathname.split('/')[1]
 
-      if (!POSSIBLE_PAGES.includes(rootPath)) {
+      if (!POSSIBLE_PAGES.includes(rootPath.split('?')[0])) {
         try {
           const consultantResponse = await fetch(`${baseApiUrl}/api/info/rep/${rootPath}`)
 

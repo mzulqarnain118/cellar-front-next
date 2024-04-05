@@ -40,6 +40,8 @@ export const getConsultantData: QueryFunction<Consultant> = async ({ queryKey })
       message:
         "We couldn't find that consultant. Go to scoutandcellar.com/consultants to find a consultant!",
     })
+    localStorage.setItem('u', '')
+    window.location.href = `${window.location.pathname}?u=`
     return DEFAULT_CONSULTANT_STATE
   }
 
@@ -74,7 +76,9 @@ export const useConsultantQuery = (url?: string) => {
   return useQuery({
     // cacheTime: 15 * (60 * 1000), // 15 mins
     initialData: DEFAULT_CONSULTANT_STATE,
-    onError: () => setConsultant(DEFAULT_CONSULTANT_STATE),
+    onError: data => {
+      setConsultant(DEFAULT_CONSULTANT_STATE)
+    },
     onSuccess: data => {
       setConsultant(data)
     },
