@@ -253,7 +253,7 @@ export const MediaGallery = ({
   if (isImage(activeMediaItem) && imageProps !== undefined && magnifiedImageProps !== undefined) {
     children = (
       <>
-        <div style={style}>
+        <div className="mb-10" style={style}>
           <ReactImageMagnify
             activationInteractionHint="hover"
             hintComponent={Hint}
