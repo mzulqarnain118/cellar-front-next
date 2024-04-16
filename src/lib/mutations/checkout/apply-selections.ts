@@ -21,10 +21,12 @@ import {
 } from '@/lib/stores/checkout'
 import { useShippingStateStore } from '@/lib/stores/shipping-state'
 import { Cart, Failure } from '@/lib/types'
+import { Address } from '@/lib/types/address'
 
 export const APPLY_CHECKOUT_SELECTIONS_MUTATION_KEY = ['apply-checkout-selections']
 
 export interface ApplyCheckoutSelectionsOptions {
+  address?: Address
   addressId: number
   cartId?: string
   paymentToken?: string
@@ -73,6 +75,7 @@ export const useApplyCheckoutSelectionsMutation = () => {
   const guestAddress = useCheckoutGuestAddress()
   const { setRemovedCartItems } = useCheckoutActions()
   const { setActiveCreditCard, setActiveShippingAddress } = useCheckoutActions()
+
   const address = useMemo(
     () => (session?.user?.isGuest ? guestAddress : activeShippingAddress),
     [activeShippingAddress, guestAddress, session?.user?.isGuest]
@@ -96,13 +99,21 @@ export const useApplyCheckoutSelectionsMutation = () => {
             queryFn: getShippingAddressesAndCreditCards,
             queryKey: [ADDRESS_CREDIT_CARDS_QUERY_KEY, cart?.id, session?.user?.isGuest],
           })
-        let correspondingAddress =
-          addressesAndCreditCards?.addresses.find(
-            address => address.AddressID === data.addressId
-          ) ||
-          addressesAndCreditCards?.userPickUpAddresses.find(
-            address => address?.Address?.AddressID === data.addressId
-          )
+
+        let correspondingAddress
+        console.log('apply selections Address: ', data.address)
+
+        if (data.address) {
+          correspondingAddress = data.address
+        } else {
+          correspondingAddress =
+            addressesAndCreditCards?.addresses.find(
+              address => address.AddressID === data.addressId
+            ) ||
+            addressesAndCreditCards?.userPickUpAddresses.find(
+              address => address?.Address?.AddressID === data.addressId
+            )
+        }
 
         if (correspondingAddress && correspondingAddress.Address) {
           correspondingAddress = correspondingAddress.Address
@@ -111,23 +122,30 @@ export const useApplyCheckoutSelectionsMutation = () => {
         let correspondingCreditCard = addressesAndCreditCards?.creditCards.find(
           creditCard => creditCard.PaymentToken === data.paymentToken
         )
+
         if (correspondingAddress === undefined || correspondingCreditCard === undefined) {
           const altAddressesAndCreditCards =
             await queryClient.ensureQueryData<ShippingAddressesAndCreditCards | null>({
               queryFn: getShippingAddressesAndCreditCards,
               queryKey: [ADDRESS_CREDIT_CARDS_QUERY_KEY, cart?.id, session?.user?.isGuest],
             })
-          correspondingAddress =
-            altAddressesAndCreditCards?.addresses.find(
-              address => address.AddressID === data.addressId
-            ) ||
-            altAddressesAndCreditCards?.userPickUpAddresses.find(
-              address => address?.Address?.AddressID === data.addressId
-            )
+
+          if (data.address) {
+            correspondingAddress = address
+          } else {
+            correspondingAddress =
+              addressesAndCreditCards?.addresses.find(
+                address => address.AddressID === data.addressId
+              ) ||
+              addressesAndCreditCards?.userPickUpAddresses.find(
+                address => address?.Address?.AddressID === data.addressId
+              )
+          }
 
           if (correspondingAddress && correspondingAddress.Address) {
             correspondingAddress = correspondingAddress.Address
-          } 
+          }
+
           correspondingCreditCard = altAddressesAndCreditCards?.creditCards.find(
             creditCard => creditCard.PaymentToken === data.paymentToken
           )
@@ -155,6 +173,8 @@ export const useApplyCheckoutSelectionsMutation = () => {
             return
           }
         }
+
+        console.log('corresponding Address apply slections:', correspondingAddress)
 
         setActiveShippingAddress(correspondingAddress)
         setActiveCreditCard(correspondingCreditCard)

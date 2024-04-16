@@ -96,3 +96,7 @@
     margin-bottom: 1rem;
   }
 }
+iframe {
+  height: 600px !important;
+  width: 800px !important;
+}

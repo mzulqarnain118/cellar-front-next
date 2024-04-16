@@ -10,6 +10,7 @@ import { notifications } from '@mantine/notifications'
 import { useQueryClient } from '@tanstack/react-query'
 import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next'
 import { getServerSession } from 'next-auth'
+import { useSession } from 'next-auth/react'
 import { NextSeo } from 'next-seo'
 import { Badge } from 'react-daisyui'
 
@@ -82,6 +83,7 @@ type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>
 const scrollIntoViewSettings = { duration: 500, offset: 120 }
 
 const CheckoutPage: NextPage<PageProps> = () => {
+  const { data: session } = useSession()
   const { mutate: setCartOwner } = useSetCartOwnerMutation()
   const { data: cart } = useCartQuery()
   const router = useRouter()

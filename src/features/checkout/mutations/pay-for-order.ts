@@ -93,6 +93,7 @@ export const useCheckoutPayForOrderMutation = (cartTotalData: any) => {
   const { setReceipt } = useReceiptActions()
   const { shippingState } = useShippingStateStore()
   const selectedPickUpAddress = useCheckoutSelectedPickUpAddress()
+  const isGuest = session?.user?.isGuest
 
   return useMutation<unknown, Failure, Partial<PayForOrderOptions> | Record<string, never>>({
     mutationFn: options =>
@@ -110,7 +111,14 @@ export const useCheckoutPayForOrderMutation = (cartTotalData: any) => {
     onSuccess: async () => {
       toastSuccess({ message: 'Your order has been placed successfully!' })
 
-      const address = guestAddress || activeShippingAddress
+      let address
+
+      if (isGuest) {
+        address = guestAddress
+      } else {
+        address = activeShippingAddress
+        console.log('🚀 ~ onSuccess payfororder: ~ activeShippingAddress:', activeShippingAddress)
+      }
 
       const checkoutReceipt: Receipt = {
         cartItems: cart?.items || [],
