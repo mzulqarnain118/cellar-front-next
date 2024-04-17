@@ -10,6 +10,8 @@ import {
 
 import { CheckboxProps, LoadingOverlay } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
+import { useQueryClient } from '@tanstack/react-query'
+import { useSession } from 'next-auth/react'
 import { useLockedBody } from 'usehooks-ts'
 
 import { Link } from '@/components/link'
@@ -19,9 +21,22 @@ import { Typography } from '@/core/components/typogrpahy'
 import { useIsDesktop } from '@/core/hooks/use-is-desktop'
 import { formatCurrency } from '@/core/utils'
 import { useGiftMessageStorage } from '@/lib/hooks/use-gift-message-storage'
+import { useCreateAddressMutation } from '@/lib/mutations/address/create'
+import { useApplyCheckoutSelectionsMutation } from '@/lib/mutations/checkout/apply-selections'
 import { TERMS_AND_CONDITIONS_PAGE_PATH } from '@/lib/paths'
 import { useCartQuery } from '@/lib/queries/cart'
-import { useCheckoutActions, useCheckoutErrors } from '@/lib/stores/checkout'
+import {
+  ADDRESS_CREDIT_CARDS_QUERY_KEY,
+  ShippingAddressesAndCreditCards,
+  getShippingAddressesAndCreditCards,
+} from '@/lib/queries/checkout/addreses-and-credit-cards'
+import {
+  useCheckoutActions,
+  useCheckoutActiveCreditCard,
+  useCheckoutErrors,
+  useCheckoutSelectedPickUpAddress,
+  useCheckoutSelectedPickUpOption,
+} from '@/lib/stores/checkout'
 
 import { useAddGiftMessageMutation } from '../../mutations/add-gift-message'
 import { useCheckoutPayForOrderMutation } from '../../mutations/pay-for-order'
@@ -60,7 +75,9 @@ export const PayForOrder = ({
   handleValidateCart,
   validateCartStockResp,
 }: PayForOrderProps) => {
+  const queryClient = useQueryClient()
   const { data: cart } = useCartQuery()
+  const { data: session } = useSession()
   const errors = useCheckoutErrors()
   const { setErrors } = useCheckoutActions()
   const { mutate: payForOrder, isLoading: isCheckingOut } =
@@ -71,6 +88,11 @@ export const PayForOrder = ({
   const [opened, { open, close }] = useDisclosure(false)
   const [modalContent, setModalContent] = useState<ModalContentType>({ title: '', content: '' })
   const { mutate: addGiftMessage } = useAddGiftMessageMutation()
+  const selectedPickUpOption = useCheckoutSelectedPickUpOption()
+  const selectedPickUpAddress = useCheckoutSelectedPickUpAddress()
+  const { mutate: createAddress } = useCreateAddressMutation()
+  const { mutate: applyCheckoutSelections } = useApplyCheckoutSelectionsMutation()
+  const activeCreditCard = useCheckoutActiveCreditCard()
 
   const openModal = (title: string, content: string) => {
     setModalContent({ content, title })
@@ -116,7 +138,41 @@ export const PayForOrder = ({
           })
           setGiftMessage({ message: '', recipientEmail: '' })
         }
-        payForOrder({})
+
+        if (selectedPickUpOption === 'hal') {
+          const addressesAndCreditCards =
+            await queryClient.ensureQueryData<ShippingAddressesAndCreditCards | null>({
+              queryFn: getShippingAddressesAndCreditCards,
+              queryKey: [ADDRESS_CREDIT_CARDS_QUERY_KEY, cart?.id, session?.user?.isGuest],
+            })
+
+          const existingAddress = addressesAndCreditCards?.userPickUpAddresses.find(
+            address => address?.Address?.Street2 === selectedPickUpAddress?.Street2
+          )
+
+          if (existingAddress) {
+            console.log('🚀 ~ functionCaller ~ existingAddress:', existingAddress)
+            await applyCheckoutSelections({
+              address: existingAddress.Address,
+              addressId: existingAddress?.Address?.AddressID,
+              paymentToken: activeCreditCard?.PaymentToken,
+            })
+
+            await payForOrder({})
+          } else {
+            try {
+              await createAddress({ address: selectedPickUpAddress })
+
+              await payForOrder({})
+            } catch (error) {
+              // Handle error
+              console.error('Error creating address:', error)
+            }
+          }
+        } else {
+          // Call payForOrder directly if selectedPickUpOption is not 'hal'
+          payForOrder({})
+        }
       }
     }
 
@@ -218,7 +274,11 @@ export const PayForOrder = ({
             </Typography>
           </div>
           <div className="ml-auto">
-            <Button disabled={!refs?.termsRef?.current?.checked} size={isDesktop ? 'lg' : 'md'} onClick={handleSubmit}>
+            <Button
+              disabled={!refs?.termsRef?.current?.checked}
+              size={isDesktop ? 'lg' : 'md'}
+              onClick={handleSubmit}
+            >
               Place Your Order
             </Button>
           </div>

@@ -29,6 +29,7 @@ import {
   useCheckoutActions,
   useCheckoutActiveCreditCard,
   useCheckoutSelectedPickUpAddress,
+  useCheckoutSelectedPickUpOption,
 } from '@/lib/stores/checkout'
 import { Address } from '@/lib/types/address'
 
@@ -85,6 +86,7 @@ export const HoldAtLocationLocator = forwardRef<HTMLInputElement>((_props, ref) 
   const activeCreditCard = useCheckoutActiveCreditCard()
   const selectedPickUpAddress = useCheckoutSelectedPickUpAddress()
   const { setSelectedPickUpAddress, setActiveShippingAddress } = useCheckoutActions()
+  const selectedPickUpOption = useCheckoutSelectedPickUpOption()
   const widgetContainer = useRef<HTMLDivElement>(null)
   const singleWidgetManager = new SingleWidgetManager({
     deferRender: true,
@@ -99,6 +101,8 @@ export const HoldAtLocationLocator = forwardRef<HTMLInputElement>((_props, ref) 
     },
   })
   const [dialogOpen, setDialogOpen] = useState(false)
+
+  const [searchValue, setSearchValue] = useState('')
   const [confirmAddress, setConfirmAddress] = useState<Address | null>(null)
 
   const primaryShippingMethod = useMemo(() => shippingMethods?.[0], [shippingMethods])
@@ -110,8 +114,6 @@ export const HoldAtLocationLocator = forwardRef<HTMLInputElement>((_props, ref) 
   //     selectedPickUpAddress !== undefined ? selectedPickUpAddress.PostalCode : '',
   //   [selectedPickUpAddress]
   // )
-
-  const [searchValue, setSearchValue] = useState('')
 
   const dialogRef = useRef(null)
 
@@ -128,6 +130,13 @@ export const HoldAtLocationLocator = forwardRef<HTMLInputElement>((_props, ref) 
       setDialogOpen(false)
     }
   }
+
+  useEffect(() => {
+    if (selectedPickUpOption !== 'hal') {
+      setConfirmAddress(null)
+      setSearchValue('')
+    }
+  }, [selectedPickUpOption])
 
   useEffect(() => {
     const widgetContainerRef = widgetContainer.current
@@ -188,9 +197,14 @@ export const HoldAtLocationLocator = forwardRef<HTMLInputElement>((_props, ref) 
         paymentToken: activeCreditCard?.PaymentToken,
       })
 
-      if (!addressesAndCreditCards?.addresses.length) {
-        createAddress({ address })
-      }
+      console.log('hal createAddress ', addressesAndCreditCards)
+      console.log('hal address: ', address)
+      console.log('selected Pickup: ', selectedPickUpAddress)
+
+      // if (!addressesAndCreditCards?.addresses.length) {
+      //   console.log('hal createAddress', addressesAndCreditCards)
+      //   createAddress({ address })
+      // }
 
       setSelectedPickUpAddress(address)
       sessionStorage.removeItem(HAL_SEARCH_KEY)

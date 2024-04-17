@@ -25,7 +25,7 @@ export const ABC = ({ updateShippingMethod }: ABC_Props) => {
   const { data: session } = useSession()
   const { data: abcStores } = useAbcStoresQuery()
   const { mutate: applyCheckoutSelections } = useApplyCheckoutSelectionsMutation()
-  const { setSelectedPickUpAddress } = useCheckoutActions()
+  const { setSelectedPickUpAddress, setActiveShippingAddress } = useCheckoutActions()
   const [value, setValue] = useState<string | null>(
     selectedPickUpAddress?.AddressID?.toString() || ''
   )
@@ -70,7 +70,8 @@ export const ABC = ({ updateShippingMethod }: ABC_Props) => {
           street2,
         } = store
         setValue(addressId.toString())
-        setSelectedPickUpAddress({
+
+        const address = {
           AddressID: addressId,
           City: city,
           Company: '',
@@ -88,8 +89,15 @@ export const ABC = ({ updateShippingMethod }: ABC_Props) => {
           Street1: street1,
           Street2: street2,
           Street3: '',
+        }
+
+        setSelectedPickUpAddress(address)
+        setActiveShippingAddress(address)
+        applyCheckoutSelections({
+          address,
+          addressId,
+          paymentToken: activeCreditCard?.PaymentToken,
         })
-        applyCheckoutSelections({ addressId, paymentToken: activeCreditCard?.PaymentToken })
       } else {
         setValue('')
       }
@@ -101,6 +109,7 @@ export const ABC = ({ updateShippingMethod }: ABC_Props) => {
       session?.user?.name.first,
       session?.user?.name.last,
       setSelectedPickUpAddress,
+      setActiveShippingAddress,
     ]
   )
 
