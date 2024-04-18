@@ -48,7 +48,7 @@ export const CreditCard = ({ data }: CreditCardProps) => {
       }),
     [data.PaymentToken, deleteCreditCard, scrollTo]
   )
-
+  console.log(data)
   return (
     <div>
       <div className="flex items-center justify-between py-2">
@@ -84,7 +84,7 @@ export const CreditCard = ({ data }: CreditCardProps) => {
         <Typography className="font-bold">Name on card</Typography>
         <Typography>{data.NameOnCard}</Typography>
         <Typography className="font-bold">Card number</Typography>
-        <Typography>{data.CardNumber}</Typography>
+        <Typography>{`**** **** **** ${data.DisplayNumber}`}</Typography>
         <Typography className="font-bold">Card type</Typography>
         <Typography>{data.CreditCardTypeName}</Typography>
         <Typography className="font-bold">Expiration date</Typography>
