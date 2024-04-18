@@ -50,6 +50,7 @@ const handler = async (req: NextRequest) => {
 
         if (req.method === 'POST') {
           const activeFilters = (await req.json()) as Filter[]
+          console.log('🚀 ~ handler ~ activeFilters:', activeFilters)
 
           if (activeFilters.length > 0) {
             filteredProducts = filteredProducts.filter(product =>
@@ -75,16 +76,36 @@ const handler = async (req: NextRequest) => {
                   // ! TODO Price
                   case 'price':
                     if (filter.value !== undefined) {
-                      if (filter.value[0] === 0 && filter.value[1] === 33) {
+                      if (filter.value[0] === 0 && filter.value[1] === 20) {
+                        return product.price <= 25
+                      } else if (filter.value[0] === 0 && filter.value[1] === 40) {
                         return product.price <= 50
-                      } else if (filter.value[0] === 0 && filter.value[1] === 66) {
+                      } else if (filter.value[0] === 0 && filter.value[1] === 60) {
                         return product.price <= 75
-                      } else if (filter.value[0] === 33 && filter.value[1] === 66) {
+                      } else if (filter.value[0] === 0 && filter.value[1] === 80) {
+                        return product.price <= 100
+                      } else if (filter.value[0] === 0 && filter.value[1] === 100) {
+                        return product.price >= 0
+                      } else if (filter.value[0] === 20 && filter.value[1] === 40) {
+                        return product.price >= 25 && product.price <= 50
+                      } else if (filter.value[0] === 20 && filter.value[1] === 60) {
                         return product.price >= 25 && product.price <= 75
-                      } else if (filter.value[0] === 33 && filter.value[1] === 99) {
-                        return product.price >= 25 && product.price >= 75
-                      } else if (filter.value[0] === 66 && filter.value[1] === 99) {
-                        return product.price >= 50 && product.price >= 75
+                      } else if (filter.value[0] === 20 && filter.value[1] === 80) {
+                        return product.price >= 25 && product.price <= 100
+                      } else if (filter.value[0] === 20 && filter.value[1] === 100) {
+                        return product.price >= 0
+                      } else if (filter.value[0] === 40 && filter.value[1] === 60) {
+                        return product.price >= 50 && product.price <= 75
+                      } else if (filter.value[0] === 40 && filter.value[1] === 80) {
+                        return product.price >= 50 && product.price <= 100
+                      } else if (filter.value[0] === 40 && filter.value[1] === 100) {
+                        return product.price >= 50
+                      } else if (filter.value[0] === 60 && filter.value[1] === 80) {
+                        return product.price >= 75 && product.price <= 100
+                      } else if (filter.value[0] === 60 && filter.value[1] === 100) {
+                        return product.price >= 75
+                      } else if (filter.value[0] === 80 && filter.value[1] === 100) {
+                        return product.price >= 100
                       }
                     }
                     return false

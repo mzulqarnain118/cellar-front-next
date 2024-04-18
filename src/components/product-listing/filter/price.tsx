@@ -6,40 +6,34 @@ import { Accordion } from '@/core/components/accordion'
 import { useFiltersStore } from '@/lib/stores/filters'
 
 const MARKS = [
-  {
-    label: 'Under $25',
-    value: 0,
-  },
-  {
-    label: '$25-$50',
-    value: 33,
-  },
-  {
-    label: '$50-$75',
-    value: 66,
-  },
-  {
-    label: 'Over $75',
-    value: 99,
-  },
+  { label: '$0', value: 0 },
+  { label: '$25', value: 20 },
+  { label: '$50', value: 40 },
+  { label: '$75', value: 60 },
+  { label: '$100', value: 80 },
+  { label: 'Over $100', value: 100 },
 ]
 
 const sliderClassNames = {
   markLabel: 'hidden',
 }
 
-const defaultValue: [number, number] = [0, 99]
+const defaultValue: [number, number] = [0, 100]
 
 interface PriceFilterProps {
   slug: string
 }
 
 export const PriceFilter = ({ slug }: PriceFilterProps) => {
-  const { activeFilters, removeFilter, toggleActiveFilter } = useFiltersStore()
+  const { activeFilters, toggleActiveFilter, previousPriceValue, setPreviousPriceValue } =
+    useFiltersStore()
 
   const value = useMemo(
-    () => activeFilters.find(element => element.name === 'price')?.value || defaultValue,
-    [activeFilters]
+    () =>
+      activeFilters.find(element => element.name === 'price')?.value ||
+      previousPriceValue ||
+      defaultValue,
+    [activeFilters, previousPriceValue]
   )
 
   const valueLabelFormat = useCallback(
@@ -49,13 +43,10 @@ export const PriceFilter = ({ slug }: PriceFilterProps) => {
 
   const handleChangeEnd: RangeSliderProps['onChangeEnd'] = useCallback(
     (value: [number, number]) => {
-      if (value[0] === 0 && value[1] === 99) {
-        removeFilter({ name: 'price', type: 'price' })
-      } else {
-        toggleActiveFilter({ name: 'price', type: 'price', value })
-      }
+      toggleActiveFilter({ name: 'price', type: 'price', value })
+      setPreviousPriceValue(value)
     },
-    [removeFilter, toggleActiveFilter]
+    [toggleActiveFilter, setPreviousPriceValue]
   )
 
   return (
@@ -67,7 +58,7 @@ export const PriceFilter = ({ slug }: PriceFilterProps) => {
           color="dark"
           label={valueLabelFormat}
           marks={MARKS}
-          step={33}
+          step={20}
           value={value}
           onChangeEnd={handleChangeEnd}
         />

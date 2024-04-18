@@ -68,7 +68,7 @@ export const BrandFilter = ({ slug, values }: BrandFilterProps) => {
           </div>
         </div>
       ) : undefined}
-      <div className="space-y-2">
+      <div className="space-y-2 mt-2">
         {popular !== undefined && !showAll
           ? undefined
           : otherFilters.map(brand => <FilterCheckbox key={brand.name} filter={brand} />)}

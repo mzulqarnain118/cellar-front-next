@@ -29,7 +29,7 @@ export const Price = ({ className, onSalePrice, price, subtext = true }: PricePr
   let prices
 
   if (onSalePrice) {
-    prices = findPrices(onSalePrice, price)
+    prices = findPrices(Number(onSalePrice), Number(price))
   }
 
   const onSale = !!onSalePrice
@@ -58,4 +58,3 @@ export const Price = ({ className, onSalePrice, price, subtext = true }: PricePr
     </div>
   )
 }
-

@@ -71,7 +71,7 @@ export const VarietalFilter = ({ slug, values }: VarietalFilterProps) => {
           </div>
         </div>
       ) : undefined}
-      <div className="space-y-2">
+      <div className="space-y-2 mt-2">
         {popular !== undefined && !showAll
           ? undefined
           : otherFilters.map(varietal => <FilterCheckbox key={varietal.name} filter={varietal} />)}

@@ -338,11 +338,11 @@ export const ProductCard = ({
             </div>
           </div>
         </div>
-        {lowStock ? (
+        {/* {lowStock ? (
           <Typography className="text-error text-right text-14 pb-2">
             Only {product.quantityAvailable - 20} available!
           </Typography>
-        ) : undefined}
+        ) : undefined} */}
         <div
           className={clsx(
             'flex items-center justify-between',

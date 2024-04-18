@@ -20,25 +20,45 @@ export interface Filter {
 
 interface FiltersStore {
   activeFilters: Filter[]
+  previousPriceValue: [number, number] | null
   clearAll: () => void
   removeFilter: (filter: Filter) => void
   toggleActiveFilter: (activeFilter: Filter) => void
+  setPreviousPriceValue: (value: [number, number]) => void
 }
 
 export const useFiltersStore = create<FiltersStore>(set => ({
   activeFilters: [],
-  clearAll: () => set(() => ({ activeFilters: [] })),
-  removeFilter: (filter: Filter) => {
-    set(({ activeFilters }) => ({
-      activeFilters: activeFilters.filter(activeFilter => activeFilter.name !== filter.name),
-    }))
-  },
-  toggleActiveFilter: (activeFilter: Filter) =>
-    set(({ activeFilters }) => {
-      if (activeFilters.some(filter => filter.name === activeFilter.name)) {
-        return { activeFilters: activeFilters.filter(filter => filter.name !== activeFilter.name) }
+  previousPriceValue: null,
+  clearAll: () => set({ activeFilters: [], previousPriceValue: null }),
+  removeFilter: filter =>
+    set(state => ({
+      activeFilters: state.activeFilters.filter(activeFilter => activeFilter.name !== filter.name),
+      previousPriceValue: filter.type === 'price' ? state.previousPriceValue : null,
+    })),
+  toggleActiveFilter: activeFilter =>
+    set(state => {
+      if (activeFilter.type === 'price') {
+        return {
+          activeFilters: [
+            ...state.activeFilters.filter(filter => filter.name !== activeFilter.name),
+            activeFilter,
+          ],
+          previousPriceValue:
+            state.activeFilters.find(filter => filter.name === 'price')?.value ||
+            state.previousPriceValue,
+        }
       }
 
-      return { activeFilters: [...activeFilters, activeFilter] }
+      if (state.activeFilters.some(filter => filter.name === activeFilter.name)) {
+        return {
+          activeFilters: state.activeFilters.filter(filter => filter.name !== activeFilter.name),
+        }
+      }
+
+      return {
+        activeFilters: [...state.activeFilters, activeFilter],
+      }
     }),
+  setPreviousPriceValue: value => set({ previousPriceValue: value }),
 }))
