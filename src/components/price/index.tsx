@@ -42,7 +42,7 @@ export const Price = ({ className, onSalePrice, price, subtext = true }: PricePr
           maximumFractionDigits: 2,
           minimumFractionDigits: 2,
         }).format(onSale ? prices?.onSalePrice : price)}
-        {onSale ? (
+        {onSale && onSalePrice !== price ? (
           <sup className="ml-1 font-medium text-neutral-500">
             <del>
               $

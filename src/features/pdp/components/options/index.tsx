@@ -38,8 +38,9 @@ export const Options = ({ cartUrl }: OptionsProps) => {
 
     if (flightData?.subscriptionProduct !== undefined) {
       const { subscriptionProduct } = flightData
-      const variationName = subscriptionProduct.variations?.filter(variation => variation.active)[0]
-        ?.variations?.[0]?.option
+      const variationName = subscriptionProduct.variations?.filter(
+        variation => variation.active && variation.variations && variation.variations.length > 0
+      )[0]?.variations?.[0]?.option
       setSelectedProduct({
         ...subscriptionProduct,
         displayName: `${subscriptionProduct.displayName} (${variationName})`,
