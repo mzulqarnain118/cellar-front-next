@@ -101,7 +101,6 @@ export const useApplyCheckoutSelectionsMutation = () => {
           })
 
         let correspondingAddress
-        console.log('apply selections Address: ', data.address)
 
         if (data.address) {
           correspondingAddress = data.address
@@ -173,8 +172,6 @@ export const useApplyCheckoutSelectionsMutation = () => {
             return
           }
         }
-
-        console.log('corresponding Address apply slections:', correspondingAddress)
 
         setActiveShippingAddress(correspondingAddress)
         setActiveCreditCard(correspondingCreditCard)

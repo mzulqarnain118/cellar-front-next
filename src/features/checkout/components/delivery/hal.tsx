@@ -197,10 +197,6 @@ export const HoldAtLocationLocator = forwardRef<HTMLInputElement>((_props, ref) 
         paymentToken: activeCreditCard?.PaymentToken,
       })
 
-      console.log('hal createAddress ', addressesAndCreditCards)
-      console.log('hal address: ', address)
-      console.log('selected Pickup: ', selectedPickUpAddress)
-
       // if (!addressesAndCreditCards?.addresses.length) {
       //   console.log('hal createAddress', addressesAndCreditCards)
       //   createAddress({ address })

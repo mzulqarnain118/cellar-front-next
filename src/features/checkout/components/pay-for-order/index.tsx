@@ -151,7 +151,6 @@ export const PayForOrder = ({
           )
 
           if (existingAddress) {
-            console.log('🚀 ~ functionCaller ~ existingAddress:', existingAddress)
             await applyCheckoutSelections({
               address: existingAddress.Address,
               addressId: existingAddress?.Address?.AddressID,

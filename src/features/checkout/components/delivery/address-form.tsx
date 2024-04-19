@@ -122,7 +122,12 @@ export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
                   confirmText: 'Use suggested address',
                   onCancel: () => {
                     createAddress({
-                      address: { ...entered, FirstName: firstName, LastName: lastName },
+                      address: {
+                        ...entered,
+                        FirstName: firstName,
+                        LastName: lastName,
+                        Primary: true,
+                      },
                       callback: response => {
                         if (response.Success && onCreateAddress !== undefined) {
                           onCreateAddress(response.Data.Value)
@@ -132,7 +137,12 @@ export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
                   },
                   onConfirm: () => {
                     createAddress({
-                      address: { ...suggested, FirstName: firstName, LastName: lastName },
+                      address: {
+                        ...suggested,
+                        FirstName: firstName,
+                        LastName: lastName,
+                        Primary: true,
+                      },
                       callback: response => {
                         if (response.Success && onCreateAddress !== undefined) {
                           onCreateAddress(response.Data.Value)

@@ -152,14 +152,8 @@ export const useCheckoutStore = create<CheckoutStore>()(
         setActiveCreditCard: activeCreditCard => set(() => ({ activeCreditCard })),
         setActiveShippingAddress: update =>
           typeof update === 'function'
-            ? set(({ activeShippingAddress }) => {
-                console.log('changed address: ', activeShippingAddress)
-                return { activeShippingAddress }
-              })
-            : set(() => {
-                console.log('changed address: ', update)
-                return { activeShippingAddress: update }
-              }),
+            ? set(({ activeShippingAddress }) => ({ activeShippingAddress }))
+            : set(() => ({ activeShippingAddress: update })),
         setAppliedSkyWallet: update =>
           typeof update === 'function'
             ? set(({ appliedSkyWallet }) => ({ appliedSkyWallet }))

@@ -96,7 +96,8 @@
     margin-bottom: 1rem;
   }
 }
-iframe {
+
+.hubbox {
   height: 600px !important;
   width: 800px !important;
 }
