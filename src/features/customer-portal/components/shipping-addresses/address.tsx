@@ -60,7 +60,7 @@ export const Address = ({ address }: AddressProps) => {
     <div>
       <div className="flex items-center justify-between py-2">
         <Typography as="h5">
-          {address.NickName} {address.Primary ? `(Default Address)` : undefined}
+          {address.NickName} {address.Primary ? `Address (Default Address)` : undefined}
         </Typography>
         <div className="flex items-center gap-2">
           <ActionIcon
@@ -85,31 +85,37 @@ export const Address = ({ address }: AddressProps) => {
           )}
         </div>
       </div>
-      <div className="grid auto-rows-auto grid-cols-2 border-y border-neutral-light p-4">
-        <Typography className="font-bold">Name</Typography>
+      <div className="grid gap-4 auto-rows-auto grid-cols-2 border-y border-neutral-light p-4">
+        <Typography className="font-bold">Street</Typography>
+        <Typography className="text-right">{address.Street1}</Typography>
+        <Typography className="font-bold">City</Typography>
+        <Typography className="text-right">{address.City}</Typography>
+        <Typography className="font-bold">State</Typography>
+        <Typography className="text-right">{address.ProvinceName}</Typography>
+        <Typography className="font-bold">Postal Code</Typography>
+        <Typography className="text-right">{address.PostalCode?.slice(0, 5)}</Typography>
+        <Typography className="font-bold">Country</Typography>
+        <Typography className="text-right">{address.CountryName}</Typography>
+        <Typography className="font-bold">Phone number</Typography>
+        <Typography className="text-right">{address.PhoneNumber}</Typography>
+        {/* <Typography className="font-bold">Name</Typography>
         <Typography>
           {address.FirstName} {address.LastName}
         </Typography>
-        <Typography className="font-bold">Street</Typography>
-        <Typography>{address.Street1}</Typography>
+
         {address.Street2 ? (
           <>
             <Typography className="font-bold">Street 2</Typography>
             <Typography>{address.Street2}</Typography>
           </>
-        ) : undefined}
-        <Typography className="font-bold">City</Typography>
-        <Typography>{address.City}</Typography>
-        <Typography className="font-bold">State</Typography>
-        <Typography>{address.ProvinceName}</Typography>
-        <Typography className="font-bold">Zip Code</Typography>
-        <Typography>{address.PostalCode?.slice(0, 5)}</Typography>
-        {!!address.PhoneNumber && address.PhoneNumber.length > 0 ? (
+        ) : undefined} */}
+
+        {/* {!!address.PhoneNumber && address.PhoneNumber.length > 0 ? (
           <>
             <Typography className="font-bold">Phone number</Typography>
             <Typography>{address.PhoneNumber}</Typography>
           </>
-        ) : undefined}
+        ) : undefined} */}
       </div>
     </div>
   )

@@ -52,7 +52,7 @@ export const DeliveryAddress = ({ address, checked, handleChecked }: DeliveryAdd
       modals.open({
         centered: true,
         children: <EditAddressForm address={address} handleClose={modals.closeAll} />,
-        size: 'lg',
+        size: 'xl',
         title: 'Edit address',
       }),
     [address]

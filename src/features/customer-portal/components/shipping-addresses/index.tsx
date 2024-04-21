@@ -33,7 +33,7 @@ export const ShippingAddresses = (props: TabsPanelProps) => {
       modals.open({
         centered: true,
         children: <AddAddressForm handleClose={modals.closeAll} />,
-        size: 'lg',
+        size: 'xl',
         title: 'Add address',
       }),
     []

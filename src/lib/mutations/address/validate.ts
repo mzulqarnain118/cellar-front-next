@@ -15,9 +15,12 @@ export interface ValidateAddressOptions {
   addressLineTwo: string
   city: string
   company: string
+  countryName: string
   firstName: string
   lastName: string
+  nickName?: string
   provinceId: number
+  residential: boolean
   zipCode: string
 }
 

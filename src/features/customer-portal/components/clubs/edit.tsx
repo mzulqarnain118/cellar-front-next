@@ -346,7 +346,7 @@ export const ClubsEdit = ({
         classNames: {
           title: '!text-lg',
         },
-        size: 'lg',
+        size: 'xl',
         title: 'Add address',
       }),
     []

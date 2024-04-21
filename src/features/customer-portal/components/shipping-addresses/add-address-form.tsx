@@ -5,7 +5,9 @@ import { modals } from '@mantine/modals'
 import { SubmitHandler } from 'react-hook-form'
 import { z } from 'zod'
 
+import { CountryDropdown } from '@/components/country-dropdown'
 import { Form } from '@/components/form'
+import { ResidentialDropdown } from '@/components/residential-dropdown'
 import { StateDropdown } from '@/components/state-dropdown'
 import { Button } from '@/core/components/button'
 import { Input } from '@/core/components/input'
@@ -19,9 +21,12 @@ const newAddressFormSchema = z.object({
   addressTwo: z.string().optional(),
   city: z.string().min(1, { message: 'Please enter the city.' }),
   company: z.string().optional(),
+  countryName: z.string().min(1, { message: 'Please select the Country' }),
   firstName: z.string().min(1, { message: 'Please enter the first name.' }),
   lastName: z.string().min(1, { message: 'Please enter the last name.' }),
+  nickName: z.string().optional(),
   phoneNumber: z.string().min(1, { message: 'Please enter a phone number.' }),
+  residential: z.string().min(1).optional(),
   state: z.string().min(1, { message: 'Please select the state.' }),
   zipCode: z
     .string()
@@ -34,9 +39,12 @@ type NewAddressFormSchema = z.infer<typeof newAddressFormSchema>
 const defaultValues: NewAddressFormSchema = {
   addressOne: '',
   city: '',
+  countryName: '',
   firstName: '',
   lastName: '',
+  nickName: '',
   phoneNumber: '',
+  residential: '',
   state: '',
   zipCode: '',
 }
@@ -55,9 +63,12 @@ export const AddAddressForm = ({ handleClose }: AddAddressFormProps) => {
       addressTwo: addressLineTwo = '',
       city,
       company = '',
+      countryName,
       firstName,
       lastName,
+      nickName,
       phoneNumber,
+      residential,
       state: provinceId,
       zipCode,
     }) => {
@@ -124,9 +135,12 @@ export const AddAddressForm = ({ handleClose }: AddAddressFormProps) => {
         },
         city,
         company,
+        countryName,
         firstName,
         lastName,
+        nickName,
         provinceId: parseInt(provinceId),
+        residential: !!residential,
         zipCode,
       })
     },
@@ -146,31 +160,56 @@ export const AddAddressForm = ({ handleClose }: AddAddressFormProps) => {
         <Input
           className="col-span-12 [&>div:first-child]:!pt-1"
           instructionLabel="optional"
-          label="Company"
-          name="company"
+          label="Nick Name"
+          name="nickName"
         />
         <Input
-          className="col-span-6 [&>div:first-child]:!pt-1"
+          className="col-span-12 md:col-span-6 [&>div:first-child]:!pt-1"
           label="First name"
           name="firstName"
         />
-        <Input className="col-span-6 [&>div:first-child]:!pt-1" label="Last name" name="lastName" />
         <Input
-          className="col-span-6 [&>div:first-child]:!pt-1"
-          label="Address 1"
-          name="addressOne"
+          className="col-span-12 md:col-span-6 [&>div:first-child]:!pt-1"
+          label="Last name"
+          name="lastName"
         />
         <Input
-          className="col-span-6 [&>div:first-child]:!pt-1"
+          className="col-span-12 [&>div:first-child]:!pt-1"
           instructionLabel="optional"
-          label="Address 2"
-          name="addressTwo"
+          label="Company"
+          name="company"
         />
-        <Input className="col-span-6 [&>div:first-child]:!pt-1" label="City" name="city" />
-        <StateDropdown className="col-span-6 pt-1" name="state" />
-        <Input className="col-span-6 [&>div:first-child]:!pt-1" label="Zip code" name="zipCode" />
+        <Input className="col-span-12 [&>div:first-child]:!pt-1" label="Street" name="addressOne" />
+        {/* <Input
+          className="col-span-12 md:col-span-6 [&>div:first-child]:!pt-1"
+          instructionLabel="optional"
+          label="Apt/Suite/Room"
+          name="addressTwo"
+        /> */}
         <Input
-          className="col-span-6 [&>div:first-child]:!pt-1"
+          className="col-span-12 md:col-span-6 [&>div:first-child]:!pt-1"
+          label="City"
+          name="city"
+        />
+        <Input
+          className="col-span-12 md:col-span-6 [&>div:first-child]:!pt-1"
+          label="Postal Code"
+          name="zipCode"
+        />
+        <StateDropdown
+          className="col-span-12 md:col-span-6 [&>div:first-child]:!pt-1"
+          name="state"
+        />
+        <CountryDropdown
+          className="col-span-12 md:col-span-6 [&>div:first-child]:!pt-1"
+          name="countryName"
+        />
+        <ResidentialDropdown
+          className="col-span-12 md:col-span-6 [&>div:first-child]:!pt-1"
+          name="residential"
+        />
+        <Input
+          className="col-span-12 md:col-span-6 [&>div:first-child]:!pt-1"
           label="Phone number"
           name="phoneNumber"
         />

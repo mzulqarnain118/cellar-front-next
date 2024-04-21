@@ -281,7 +281,7 @@ export const HoldAtLocationLocator = forwardRef<HTMLInputElement>((_props, ref) 
       {' '}
       {!confirmAddress ? (
         <>
-          <dialog ref={dialogRef}>
+          <dialog ref={dialogRef} className="hubbox">
             <div className="flex justify-end">
               <button className="" onClick={closeDialog}>
                 Close
