@@ -7,7 +7,6 @@ import { asText } from '@prismicio/client'
 import { CompanyLogoFooter } from '@/components/company-logo-footer'
 import { Typography } from '@/core/components/typogrpahy'
 import { useFooterQuery } from '@/features/footer/queries'
-import { HOME_PAGE_PATH } from '@/lib/paths'
 import { useConsultantQuery } from '@/lib/queries/consultant'
 
 import { FooterLink } from './link'
@@ -115,7 +114,12 @@ export const Footer = () => {
         </div>
         <div className="flex w-full flex-col items-center justify-center">
           <div className="mb-3 flex space-x-4">
-            <Link aria-label="Facebook" className="group" href={HOME_PAGE_PATH}>
+            <Link
+              aria-label="Facebook"
+              className="group"
+              href="https://www.facebook.com/scoutandcellar/"
+              target="_blank"
+            >
               <svg height="24" viewBox="0 0 310 310" width="24">
                 <path
                   className="fill-neutral-light transition group-hover:fill-neutral-50 group-active:fill-neutral-200"
@@ -123,7 +127,12 @@ export const Footer = () => {
                 />
               </svg>
             </Link>
-            <Link aria-label="Instagram" className="group" href={HOME_PAGE_PATH}>
+            <Link
+              aria-label="Instagram"
+              className="group"
+              href="https://www.instagram.com/scoutandcellar/"
+              target="_blank"
+            >
               <svg fill="none" height="24" viewBox="0 0 15 15" width="24">
                 <path
                   className="fill-neutral-light transition group-hover:fill-neutral-50 group-active:fill-neutral-200"
@@ -137,7 +146,12 @@ export const Footer = () => {
                 />
               </svg>
             </Link>
-            <Link aria-label="YouTube" className="group" href={HOME_PAGE_PATH}>
+            <Link
+              aria-label="YouTube"
+              className="group"
+              href="https://www.youtube.com/channel/UCLatNJbkphQqr0L2sO8l7oQ"
+              target="_blank"
+            >
               <svg fill="none" height="24" viewBox="0 0 24 24" width="24">
                 <path
                   className="fill-neutral-light transition group-hover:fill-neutral-50 group-active:fill-neutral-200"
