@@ -24,7 +24,9 @@ export const DateOfBirthPicker = ({ defaultValue, noSpacing = false }: DateOfBir
     formState: { errors },
     register,
     setFocus,
-  } = useFormContext()
+  } = useFormContext({
+    defaultValues: defaultValue
+  })
   const hasError = !!(errors.month?.message || errors.day?.message || errors.year?.message)
   const error = errors.month?.message || errors.day?.message || errors.year?.message
 
@@ -98,7 +100,7 @@ export const DateOfBirthPicker = ({ defaultValue, noSpacing = false }: DateOfBir
               }
             },
           })}
-          value={month}
+          // value={month}
           onFocus={handleFocus}
         />
         <Typography
@@ -119,6 +121,9 @@ export const DateOfBirthPicker = ({ defaultValue, noSpacing = false }: DateOfBir
             onBlur: () => setFocused(false),
             onChange: event => {
               const input = event.target.value
+
+              console.log("🚀 ~ DateOfBirthPicker ~ input:", input)
+
               const isNumber = !isNaN(+input)
               const firstNumber = parseInt(input.at(0) || '-1')
               const secondNumber = parseInt(input.at(1) || '-1')
@@ -143,7 +148,7 @@ export const DateOfBirthPicker = ({ defaultValue, noSpacing = false }: DateOfBir
               }
             },
           })}
-          value={day}
+          // value={day}
           onFocus={handleFocus}
         />
         <Typography
@@ -164,6 +169,9 @@ export const DateOfBirthPicker = ({ defaultValue, noSpacing = false }: DateOfBir
             onBlur: () => setFocused(false),
             onChange: event => {
               const input = event.target.value
+
+              console.log("🚀 ~ DateOfBirthPicker ~ input:", input)
+
               const isNumber = !isNaN(+input)
 
               if (input.length === 0) {
@@ -175,7 +183,7 @@ export const DateOfBirthPicker = ({ defaultValue, noSpacing = false }: DateOfBir
               }
             },
           })}
-          value={year}
+          // value={year}
           onFocus={handleFocus}
         />
       </div>
