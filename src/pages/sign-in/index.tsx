@@ -53,7 +53,10 @@ const SignInPage: NextPage<PageProps> = () => {
   const { data: cart } = useCartQuery()
 
   const hasSubscriptionInCart = useMemo(
-    () => cart?.items.some(item => item.isScoutCircleClub || item.isAutoSip),
+    () =>
+      cart?.items.some(
+        item => item.isScoutCircleClub || (item.isAutoSip && item.displayName.includes('Auto-Sip™'))
+      ),
     [cart?.items]
   )
 

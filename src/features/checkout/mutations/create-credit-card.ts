@@ -6,7 +6,12 @@ import { api } from '@/lib/api'
 import { useApplyCheckoutSelectionsMutation } from '@/lib/mutations/checkout/apply-selections'
 import { useCartQuery } from '@/lib/queries/cart'
 import { ADDRESS_CREDIT_CARDS_QUERY_KEY } from '@/lib/queries/checkout/addreses-and-credit-cards'
-import { useCheckoutActions, useCheckoutActiveShippingAddress } from '@/lib/stores/checkout'
+import {
+  useCheckoutActions,
+  useCheckoutActiveShippingAddress,
+  useCheckoutGuestAddress,
+  useCheckoutIsPickUp,
+} from '@/lib/stores/checkout'
 import { Failure } from '@/lib/types'
 import { Address } from '@/lib/types/address'
 
@@ -117,6 +122,8 @@ export const useCreateCreditCardMutation = () => {
   const queryClient = useQueryClient()
   const activeShippingAddress = useCheckoutActiveShippingAddress()
   const { setGuestCreditCard } = useCheckoutActions()
+  const isPickUp = useCheckoutIsPickUp()
+  const guestAddress = useCheckoutGuestAddress()
   const { mutate: applyCheckoutSelections } = useApplyCheckoutSelectionsMutation()
 
   return useMutation<
@@ -138,10 +145,25 @@ export const useCreateCreditCardMutation = () => {
       if (!session?.user?.isGuest) {
         queryClient.invalidateQueries([ADDRESS_CREDIT_CARDS_QUERY_KEY])
       }
-      applyCheckoutSelections({
-        addressId: activeShippingAddress?.AddressID,
-        paymentToken: response?.PaymentToken,
-      })
+
+      if (session?.user?.isGuest) {
+        if (isPickUp) {
+          applyCheckoutSelections({
+            addressId: activeShippingAddress?.AddressID,
+            paymentToken: response?.PaymentToken,
+          })
+        } else {
+          applyCheckoutSelections({
+            addressId: guestAddress?.AddressID,
+            paymentToken: response?.PaymentToken,
+          })
+        }
+      } else {
+        applyCheckoutSelections({
+          addressId: activeShippingAddress?.AddressID,
+          paymentToken: response?.PaymentToken,
+        })
+      }
 
       if (session?.user?.isGuest) {
         setGuestCreditCard({ ...response, FriendlyDescription: '' })

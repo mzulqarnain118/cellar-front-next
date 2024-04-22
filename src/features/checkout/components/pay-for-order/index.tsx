@@ -99,7 +99,10 @@ export const PayForOrder = ({
     open()
   }
 
-  const isAutoSipCart = useMemo(() => cart?.items.some(item => item.isAutoSip), [cart?.items])
+  const isAutoSipCart = useMemo(
+    () => cart?.items.some(item => item.isAutoSip && item.displayName.includes('Auto-Sip™')),
+    [cart?.items]
+  )
   const isScoutCircleCart = useMemo(
     () => cart?.items.some(item => item.isScoutCircleClub),
     [cart?.items]

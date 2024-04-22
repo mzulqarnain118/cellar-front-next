@@ -10,7 +10,6 @@ import { notifications } from '@mantine/notifications'
 import { useQueryClient } from '@tanstack/react-query'
 import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next'
 import { getServerSession } from 'next-auth'
-import { useSession } from 'next-auth/react'
 import { NextSeo } from 'next-seo'
 import { Badge } from 'react-daisyui'
 
@@ -27,7 +26,6 @@ import { useSetCartOwnerMutation } from '@/lib/mutations/cart/set-owner'
 import { SIGN_IN_PAGE_PATH, WINE_PAGE_PATH } from '@/lib/paths'
 import { CART_QUERY_KEY, useCartQuery } from '@/lib/queries/cart'
 import { GET_SUBTOTAL_QUERY, useGetSubtotalQuery } from '@/lib/queries/checkout/get-subtotal'
-import { CART_INFO_QUERY_KEY, getCartInfo } from '@/lib/queries/get-info'
 import {
   useCheckoutActions,
   useCheckoutActiveCreditCard,
@@ -83,7 +81,6 @@ type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>
 const scrollIntoViewSettings = { duration: 500, offset: 120 }
 
 const CheckoutPage: NextPage<PageProps> = () => {
-  const { data: session } = useSession()
   const { mutate: setCartOwner } = useSetCartOwnerMutation()
   const { data: cart } = useCartQuery()
   const router = useRouter()
@@ -106,7 +103,7 @@ const CheckoutPage: NextPage<PageProps> = () => {
   const promoCodes = useCheckoutPromoCode()
   const selectedPickUpAddress = useCheckoutSelectedPickUpAddress()
   const selectedPickUpOption = useCheckoutSelectedPickUpOption()
-  const { setErrors, setRemovedCartItemsCheckout } = useCheckoutActions()
+  const { setErrors } = useCheckoutActions()
   const guestCreditCard = useCheckoutGuestCreditCard()
   const creditCard = useMemo(
     () => guestCreditCard || activeCreditCard,
@@ -374,7 +371,10 @@ const CheckoutPage: NextPage<PageProps> = () => {
       return false
     }
 
-    if (cart?.items.some(item => item.isAutoSip) && !autoSipRef.current?.checked) {
+    if (
+      cart?.items.some(item => item.isAutoSip && item.displayName.includes('Auto-Sip™')) &&
+      !autoSipRef.current?.checked
+    ) {
       if (!prefersReducedMotion) {
         scrollAutoSipIntoView()
       }
@@ -504,13 +504,6 @@ const CheckoutPage: NextPage<PageProps> = () => {
       })
     }
   }, [cart?.items.length, queryClient, router, cartStorage])
-
-  const handleViewCartInfo = async () => {
-    await queryClient.fetchQuery({
-      queryKey: [CART_INFO_QUERY_KEY, cart?.id],
-      queryFn: getCartInfo,
-    })
-  }
 
   return (
     <>

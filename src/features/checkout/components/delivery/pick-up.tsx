@@ -48,8 +48,7 @@ const radioClassNames: RadioProps['classNames'] = { label: 'text-14' }
 
 export const PickUp = ({ refs, cartTotalData }: PickUpProps) => {
   const errors = useCheckoutErrors()
-  const { setErrors, setSelectedPickUpOption, setActiveShippingAddress, setGuestAddress } =
-    useCheckoutActions()
+  const { setErrors, setSelectedPickUpOption, setActiveShippingAddress } = useCheckoutActions()
   const { mutate: updateShippingMethod, isLoading: isUpdatingShippingMethod } =
     useUpdateShippingMethodMutation()
   const { data: shippingMethods } = useShippingMethodsQuery()
@@ -96,7 +95,6 @@ export const PickUp = ({ refs, cartTotalData }: PickUpProps) => {
     updateShippingMethod({ shippingMethodId: LOCAL_PICK_UP_SHIPPING_METHOD_ID })
     setSelectedPickUpAddress(lpuOrderAddress)
     setActiveShippingAddress(lpuOrderAddress)
-    setGuestAddress(lpuOrderAddress)
     applyCheckoutSelections({
       addressId: lpuOrderAddress?.AddressID,
       paymentToken: activeCreditCard?.PaymentToken,

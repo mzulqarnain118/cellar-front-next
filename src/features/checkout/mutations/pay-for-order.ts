@@ -16,6 +16,7 @@ import {
   useCheckoutAppliedSkyWallet,
   useCheckoutCvv,
   useCheckoutGuestAddress,
+  useCheckoutIsPickUp,
   useCheckoutSelectedPickUpAddress,
 } from '@/lib/stores/checkout'
 import { Receipt, useReceiptActions } from '@/lib/stores/receipt'
@@ -93,6 +94,7 @@ export const useCheckoutPayForOrderMutation = (cartTotalData: any) => {
   const { setReceipt } = useReceiptActions()
   const { shippingState } = useShippingStateStore()
   const selectedPickUpAddress = useCheckoutSelectedPickUpAddress()
+  const isPickUp = useCheckoutIsPickUp()
   const isGuest = session?.user?.isGuest
 
   return useMutation<unknown, Failure, Partial<PayForOrderOptions> | Record<string, never>>({
@@ -114,10 +116,13 @@ export const useCheckoutPayForOrderMutation = (cartTotalData: any) => {
       let address
 
       if (isGuest) {
-        address = guestAddress
+        if (isPickUp) {
+          address = activeShippingAddress
+        } else {
+          address = guestAddress
+        }
       } else {
         address = activeShippingAddress
-        console.log('🚀 ~ onSuccess payfororder: ~ activeShippingAddress:', activeShippingAddress)
       }
 
       const checkoutReceipt: Receipt = {

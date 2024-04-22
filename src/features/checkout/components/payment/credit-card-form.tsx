@@ -20,6 +20,7 @@ import {
   useCheckoutActiveShippingAddress,
   useCheckoutErrors,
   useCheckoutGuestAddress,
+  useCheckoutIsPickUp,
 } from '@/lib/stores/checkout'
 import { Address } from '@/lib/types/address'
 
@@ -74,6 +75,7 @@ export const CreditCardForm = ({ onCancel, onCreate, cartTotalData }: CreditCard
   const { mutate: validateAddress } = useValidateAddressMutation()
   const { data: addressesAndCreditCards } = useAddressesAndCreditCardsQuery()
   const { data: session } = useSession()
+  const isPickUp = useCheckoutIsPickUp()
   const isGuest = useMemo(() => session?.user?.isGuest || false, [session?.user?.isGuest])
 
   const formProps: UseFormProps<CreditCardFormSchema> = useMemo(
@@ -332,7 +334,7 @@ export const CreditCardForm = ({ onCancel, onCreate, cartTotalData }: CreditCard
           </div>
           <input name="issuer" type="hidden" value={state.issuer} />
           <div className="mt-4 space-y-4">
-            <BillingAddress noCheckbox={isGuest} />
+            <BillingAddress noCheckbox={isGuest || isPickUp} />
             {session?.user?.isGuest ? undefined : (
               <Checkbox color="dark" label="Set as default" {...register('default')} />
             )}
