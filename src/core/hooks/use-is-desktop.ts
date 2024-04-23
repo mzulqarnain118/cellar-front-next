@@ -3,4 +3,4 @@ import { UseMediaQueryOptions } from '@mantine/hooks/lib/use-media-query/use-med
 
 const mediaQueryOptions: UseMediaQueryOptions = { getInitialValueInEffect: false }
 
-export const useIsDesktop = () => useMediaQuery('(min-width: 64em)', false, mediaQueryOptions)
+export const useIsDesktop = () => useMediaQuery('(min-width: 73.75em)', false, mediaQueryOptions)

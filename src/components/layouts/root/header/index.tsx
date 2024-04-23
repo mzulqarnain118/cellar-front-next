@@ -100,12 +100,12 @@ export const Header = () => {
               <div
                 key={link.id}
                 className={clsx(
-                  'inline-flex w-[stretch] items-start justify-center transition-all duration-100 hover:border-b-4 hover:border-[#231f20] lg:mb-1 lg:h-12',
+                  'inline-flex w-[stretch] items-center justify-center transition-all duration-100 hover:border-b-4 hover:border-[#231f20] lg:mb-1 lg:h-12',
                   link.primary.bold && 'font-bold'
                 )}
               >
                 <PrismicLink
-                  className="w-max text-neutral-dark hover:no-underline"
+                  className="xl:w-max text-neutral-dark hover:no-underline"
                   field={link.primary.link}
                   onClick={toggleNavOpen}
                 >
@@ -133,7 +133,7 @@ export const Header = () => {
       !isFetchingCTA && !isLoadingCTA ? (
         <Link href={cta?.data.link || cta?.data.uid}>
           <Button
-            className="mb-2 !bg-[#085250] text-lg text-[#f5f3f2] lg:mb-0 lg:w-max"
+            className="mb-2 !bg-[#085250] text-lg text-[#f5f3f2] lg:mb-0 2xl:w-max !text-wrap"
             color="ghost"
             fullWidth={!isDesktop}
           >
@@ -283,8 +283,8 @@ export const Header = () => {
   const cartButton = useMemo(
     () =>
       curatedCart !== undefined &&
-      curatedCart.cartId.length > 0 &&
-      !curatedCart.messageDismissed ? (
+        curatedCart.cartId.length > 0 &&
+        !curatedCart.messageDismissed ? (
         <Popover
           withArrow
           arrowPosition="side"
@@ -377,7 +377,7 @@ export const Header = () => {
         </div>
       </div>
       <div className="bg-[#f5f3f2]">
-        <div className="container mx-auto flex items-center justify-between py-3 lg:w-full">
+        <div className="2xl:container mx-auto flex items-center  lg:pr-3 justify-between py-3 lg:w-full">
           {isDesktop ? (
             <>
               <div className="flex w-full items-center">

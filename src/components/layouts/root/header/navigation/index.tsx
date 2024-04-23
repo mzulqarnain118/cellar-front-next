@@ -73,7 +73,7 @@ export const Navigation = () => {
               <Menu key={link.id} withArrow closeDelay={400} openDelay={100} trigger="hover">
                 <Menu.Target>
                   <Button
-                    className="text-neutral-dark no-underline"
+                    className="text-neutral-dark no-underline text-wrap"
                     endIcon={endIcon}
                     variant="link"
                   >
@@ -184,7 +184,7 @@ export const Navigation = () => {
           </Drawer>
         </div>
       )}
-      <div className="mx-auto lg:mx-0 lg:flex lg:items-center lg:justify-between xl:gap-6">
+      <div className="">
         <Link href={HOME_PAGE_PATH}>
           <CompanyLogo size={isDesktop ? 'lg' : 'md'} />
         </Link>
