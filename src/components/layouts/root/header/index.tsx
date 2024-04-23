@@ -283,8 +283,8 @@ export const Header = () => {
   const cartButton = useMemo(
     () =>
       curatedCart !== undefined &&
-        curatedCart.cartId.length > 0 &&
-        !curatedCart.messageDismissed ? (
+      curatedCart.cartId.length > 0 &&
+      !curatedCart.messageDismissed ? (
         <Popover
           withArrow
           arrowPosition="side"
@@ -377,7 +377,7 @@ export const Header = () => {
         </div>
       </div>
       <div className="bg-[#f5f3f2]">
-        <div className="2xl:container mx-auto flex items-center xl:overflow-hidden  lg:pr-3 justify-between py-3 lg:w-full">
+        <div className="2xl:container mx-auto flex items-center lg:pr-3 justify-between py-3 lg:w-full">
           {isDesktop ? (
             <>
               <div className="flex w-full items-center">
