@@ -109,7 +109,7 @@ export const StatePicker = ({ popup = false }: StatePickerProps) => {
     () => ({
       input: popup
         ? 'w-full px-2 font-bold text-14'
-        : 'w-full lg:w-auto bg-[#e6e0dd] text-base border-0 p-0',
+        : 'w-full lg:w-auto bg-[#e6e0dd] text-base border-0 p-0 cursor-pointer',
       item: 'bg-[] text-base pl-4',
       root: 'flex flex-col lg:flex-row items-center gap-2 lg:grid lg:gap-0',
     }),
