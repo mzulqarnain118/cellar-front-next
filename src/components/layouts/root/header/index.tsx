@@ -100,12 +100,12 @@ export const Header = () => {
               <div
                 key={link.id}
                 className={clsx(
-                  'inline-flex w-[stretch] items-center justify-center transition-all duration-100 hover:border-b-4 hover:border-[#231f20] lg:mb-1 lg:h-12',
+                  'inline-flex w-[stretch] items-center justify-center transition-all duration-100 lg:mb-1 lg:h-12',
                   link.primary.bold && 'font-bold'
                 )}
               >
                 <PrismicLink
-                  className="min-[1460px]:w-max text-neutral-dark hover:no-underline"
+                  className="min-[1460px]:w-max text-neutral-dark hover:no-underline hover:border-b-4 hover:border-[#231f20]"
                   field={link.primary.link}
                   onClick={toggleNavOpen}
                 >
