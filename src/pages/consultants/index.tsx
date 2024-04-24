@@ -82,7 +82,7 @@ const ConsultantsPage = ({ data: { data } }: { data: Content.ConsultantSearchPag
           <Typography as="h1" className="my-12" displayAs="h2">
             <PrismicText field={data.title} />
           </Typography>
-          <div className="grid grid-cols-12 gap-8 lg:gap-40">
+          <div className="grid grid-cols-12 gap-8 lg:gap-20 min-[1535px]:gap-40">
             <InstantSearch indexName={algoliaIndex} searchClient={searchClient}>
               <div className="rounded border border-neutral-light col-span-12 lg:col-span-4 h-max">
                 <Typography
@@ -105,9 +105,11 @@ const ConsultantsPage = ({ data: { data } }: { data: Content.ConsultantSearchPag
                   </FormProvider>
                 </div>
               </div>
-              <div className="col-span-12 lg:col-span-6 space-y-4">
-                <Hits consultantInputValue={consultantInputValue} zeroResultDescription={data.zero_result_description}
-                setConsultantInputValue={setConsultantInputValue}
+              <div className="col-span-12 lg:col-span-8 min-[1535px]:col-span-6 space-y-4">
+                <Hits
+                  consultantInputValue={consultantInputValue}
+                  setConsultantInputValue={setConsultantInputValue}
+                  zeroResultDescription={data.zero_result_description}
                 />
               </div>
             </InstantSearch>
