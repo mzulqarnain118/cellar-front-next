@@ -105,7 +105,7 @@ export const Header = () => {
                 )}
               >
                 <PrismicLink
-                  className="xl:w-max text-neutral-dark hover:no-underline"
+                  className="min-[1460px]:w-max text-neutral-dark hover:no-underline"
                   field={link.primary.link}
                   onClick={toggleNavOpen}
                 >
