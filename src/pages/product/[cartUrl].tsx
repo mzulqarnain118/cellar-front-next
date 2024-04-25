@@ -169,7 +169,7 @@ const PDP: NextPage<PageProps> = ({ page, pdpData }) => {
         {isDesktop ? undefined : isMounted() ? (
           <CtaActions
             className={`
-              fixed bottom-0 left-0 w-full bg-neutral-50 p-4 border-t border-neutral-light
+              fixed z-10 bottom-0 left-0 w-full bg-neutral-50 p-4 border-t border-neutral-light
               shadow
             `}
           />
