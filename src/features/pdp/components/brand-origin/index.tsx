@@ -9,6 +9,8 @@ import { Typography } from '@/core/components/typogrpahy'
 import { useBrand } from '@/lib/hooks/use-brand'
 import { useProductQuery } from '@/lib/queries/products'
 
+import { ProductOriginFlag } from './origin-flag'
+
 interface BrandOriginProps {
   cartUrl: string
 }
@@ -41,7 +43,10 @@ export const BrandOrigin = ({ cartUrl }: BrandOriginProps) => {
         width={116}
         onClick={handleBrandClick}
       />
-      <Typography>{product?.attributes?.Origin}</Typography>
+      <div className="flex items-center justify-center gap-2">
+        <ProductOriginFlag origin={product?.attributes?.Origin} />
+        <Typography>{product?.attributes?.Origin}</Typography>
+      </div>
     </div>
   )
 }

@@ -50,7 +50,6 @@ const handler = async (req: NextRequest) => {
 
         if (req.method === 'POST') {
           const activeFilters = (await req.json()) as Filter[]
-          console.log('🚀 ~ handler ~ activeFilters:', activeFilters)
 
           if (activeFilters.length > 0) {
             filteredProducts = filteredProducts.filter(product =>
