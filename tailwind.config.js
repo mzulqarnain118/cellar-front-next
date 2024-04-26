@@ -116,6 +116,10 @@ module.exports = {
           },
         },
       },
+      screens: {
+        '1/2xl':'1180px',
+        '1xl': '1460px',
+      },
       transitionDuration: {
         DEFAULT: '300ms',
       },

@@ -73,7 +73,7 @@ export const NavigationItem = ({ data, isDesktop = false, onLinkClick }: Navigat
         <HoverCard.Target>
           <Link
             className={clsx(
-              'mb-1 flex h-12 w-[stretch] items-start leading-[31px] text-neutral-dark transition-all duration-100 hover:border-b-4 hover:border-[#231f20] hover:no-underline',
+              'text-center items-center leading-[31px] text-neutral-dark transition-all duration-100 hover:border-b-4 hover:border-[#231f20] hover:no-underline',
               data.primary.bold && 'font-bold'
             )}
             href={asLink(data.primary.link) || ''}

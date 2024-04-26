@@ -77,7 +77,7 @@ export const Header = () => {
   const menu = useMemo(
     () =>
       !isFetchingNavigation && !isLoadingNavigation ? (
-        <div className="flex flex-col items-center text-lg lg:flex-row lg:justify-evenly [&>*]:p-2 [&>*]:!tracking-[1px] [&>*]:lg:m-[0.625rem]">
+        <div className="flex flex-col items-center text-lg 1/2xl:flex-row lg:justify-evenly [&>*]:p-2 [&>*]:!tracking-[1px] [&>*]:lg:m-[0.625rem]">
           {navigation?.data.body?.map(link => {
             const hasChildren =
               link.items.length > 0 &&
@@ -105,7 +105,7 @@ export const Header = () => {
                 )}
               >
                 <PrismicLink
-                  className="min-[1460px]:w-max text-neutral-dark hover:no-underline hover:border-b-4 hover:border-[#231f20]"
+                  className="1xl:w-max text-center text-neutral-dark hover:no-underline hover:border-b-4 hover:border-[#231f20]"
                   field={link.primary.link}
                   onClick={toggleNavOpen}
                 >
