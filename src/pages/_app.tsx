@@ -77,7 +77,6 @@ export const reportWebVitals = ({ id, label, name, value }: NextWebVitalsMetric)
 const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
   const isDesktop = useIsDesktop()
   const router = useRouter()
-  console.log('session: ', session)
 
   const { cartOpen } = useCartOpen()
   const [showDevtools, setShowDevtools] = useState(false)

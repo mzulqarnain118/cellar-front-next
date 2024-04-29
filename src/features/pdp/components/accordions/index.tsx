@@ -35,7 +35,7 @@ export const Accordions = ({ attributes, data }: AccordionsProps) => {
       attributes?.['Tasting Notes']?.map(note => (
         <div key={note.name} className="flex items-center gap-2 capitalize">
           <BlurImage alt={note.name} height={40} src={note.imageUrl} width={40} />
-          <Typography>{note.name}</Typography>
+          <Typography>{note.name.replace('-', ' ')}</Typography>
         </div>
       )),
     [attributes]
@@ -58,7 +58,7 @@ export const Accordions = ({ attributes, data }: AccordionsProps) => {
       attributes?.['Pairing Notes']?.map(note => (
         <div key={note.name} className="flex items-center gap-2 capitalize">
           <BlurImage alt={note.name} height={40} src={note.imageUrl} width={40} />
-          <Typography>{note.name}</Typography>
+          <Typography>{note.name.replace('-', ' ')}</Typography>
         </div>
       )),
     [attributes]
@@ -107,13 +107,13 @@ export const Accordions = ({ attributes, data }: AccordionsProps) => {
         let children
         if (isCustomAccordion(accordion) && accordion.id === 'pairing-notes') {
           children = (
-            <div className="flex flex-wrap items-center [&>*]:basis-1/2 [&>*]:lg:basis-1/4">
+            <div className="flex flex-wrap items-center break-normal [&>*]:basis-1/2 [&>*]:lg:basis-1/4">
               {pairingNotes}
             </div>
           )
         } else if (isCustomAccordion(accordion) && accordion.id === 'tasting-notes') {
           children = (
-            <div className="flex flex-wrap items-center [&>*]:basis-1/2 [&>*]:lg:basis-1/4">
+            <div className="flex flex-wrap items-center break-normal [&>*]:basis-1/2 [&>*]:lg:basis-1/4">
               {tastingNotes}
             </div>
           )

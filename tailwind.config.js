@@ -101,8 +101,8 @@ module.exports = {
         h4: '2rem',
         h5: '1.75rem',
         h6: '1.5rem',
-        lg: '1.25rem',
-        md: '1.125rem',
+        lg: '1.125rem',
+        md: '1rem',
         sm: '0.75rem',
         xs: '0.625rem',
       },
@@ -115,6 +115,10 @@ module.exports = {
             opacity: '100%',
           },
         },
+      },
+      screens: {
+        '1/2xl':'1180px',
+        '1xl': '1460px',
       },
       transitionDuration: {
         DEFAULT: '300ms',
