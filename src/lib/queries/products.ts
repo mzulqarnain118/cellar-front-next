@@ -60,6 +60,10 @@ export const getPaginatedProducts: QueryFunction<
     data.categories = data.categories.toString()
   }
 
+  if (data.notcategories) {
+    data.notcategories = data.notcategories.toString()
+  }
+
   if (data.search) {
     data.categories = [1].toString()
     data.q = data.search
@@ -73,8 +77,6 @@ export const getPaginatedProducts: QueryFunction<
   })
 
   const result = (await response.json()) as PaginatedProductsResponse
-
-  console.log('🚀 ~ >= ~ result:', result)
 
   if (result.success) {
     return result.data

@@ -142,6 +142,7 @@ const CategoryPage: NextPage<PageProps> = ({ page }) => {
         }
         limit={limit}
         page={currentPage}
+        pageUrl={page?.url}
         sort={sort}
       />
     </>

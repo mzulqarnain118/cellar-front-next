@@ -12,10 +12,11 @@ const ProductListing = dynamic(
 interface PlpShellProps {
   banner?: FilledContentRelationshipField<'plp_banner', string, Content.PlpBannerDocumentData>
   categories?: number[]
+  notCategories?: number[]
   enabledFilters: FilledContentRelationshipField<'filter', string, Content.FilterDocumentData>[]
   limit: number
   page: number
-  search?: string
+  pageUrl?: string | null
   sort: Sort
 }
 
@@ -23,8 +24,10 @@ export const PlpShell = ({
   banner,
   categories,
   enabledFilters,
+  notCategories,
   limit,
   page: currentPage,
+  pageUrl,
   search = '',
   sort,
 }: PlpShellProps) => (
@@ -41,7 +44,9 @@ export const PlpShell = ({
           >[]
         }
         limit={limit}
+        notCategories={notCategories}
         page={currentPage}
+        pageUrl={pageUrl}
         search={search}
         sort={sort}
       />

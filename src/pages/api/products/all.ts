@@ -34,7 +34,7 @@ const handler = async (req: NextRequest) => {
 
   try {
     const productsResponse = (await (
-      await fetch(`${process.env.NEXT_PUBLIC_TOWER_API_URL}/api/shop/products`)
+      await fetch(`${process.env.NEXT_PUBLIC_TOWER_API_URL}/api/v2/shop/products`)
     ).json()) as {
       data: {
         attributes: { Name: string; Value: string }[] | null

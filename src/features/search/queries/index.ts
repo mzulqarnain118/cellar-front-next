@@ -10,6 +10,7 @@ interface SearchSuccess {
     page: number
     perPage: number
     products: ProductsSchema[]
+    allFilteredProducts: ProductsSchema[]
     results: number
     resultsShown: [number, number]
     totalNumberOfPages: number

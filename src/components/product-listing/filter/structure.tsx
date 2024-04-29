@@ -6,8 +6,8 @@ import type { Content, GroupField } from '@prismicio/client'
 import { Accordion } from '@/core/components/accordion'
 import { Button } from '@/core/components/button'
 import { Typography } from '@/core/components/typogrpahy'
-import { useProductsQuery } from '@/lib/queries/products'
 import { Filter } from '@/lib/stores/filters'
+import { ProductsSchema } from '@/lib/types/schemas/product'
 
 import type { Simplify } from 'prismicio-types'
 
@@ -16,19 +16,20 @@ import { FilterCheckbox } from './checkbox'
 interface StructureFilterProps {
   slug: string
   values?: GroupField<Simplify<Content.FilterDocumentDataValuesItem>>
+  products: ProductsSchema[]
 }
 
-export const StructureFilter = ({ slug, values }: StructureFilterProps) => {
+export const StructureFilter = ({ slug, values, products }: StructureFilterProps) => {
   const [showAll, { toggle: toggleShowAll }] = useDisclosure(false)
-  const { data: products } = useProductsQuery()
 
   const structures = useMemo(() => {
     let filterValues =
       products?.flatMap(product => product.attributes?.Structure?.split('|')).filter(Boolean) || []
-    filterValues = filterValues?.filter((value, index) => filterValues.indexOf(value) === index)
-    const manualValues = values?.map(value => value.display_name).filter(Boolean) || []
 
-    return [...manualValues, ...filterValues]
+    filterValues = filterValues?.filter((value, index) => filterValues.indexOf(value) === index)
+    // const manualValues = values?.map(value => value.display_name).filter(Boolean) || []
+
+    return [...filterValues]
       .reduce<string[]>((array, currentFilter) => {
         const index = array.findIndex(
           element => element.toLowerCase() === currentFilter.toLowerCase()
@@ -40,7 +41,7 @@ export const StructureFilter = ({ slug, values }: StructureFilterProps) => {
         return array
       }, [])
       .map(varietal => ({ name: varietal, type: 'structure' }))
-  }, [products, values]) satisfies Filter[]
+  }, [products]) satisfies Filter[]
 
   const showAllButton = useMemo(
     () => (

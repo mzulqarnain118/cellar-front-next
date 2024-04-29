@@ -141,7 +141,6 @@ export const useRemoveFromCartMutation = () => {
         }
         queryClient.setQueryData(queryKey, newCartData)
         setCartStorage(newCartData)
-        console.log('Cart Data: ', newCartData, cartStorage)
 
         if (router.asPath === CHECKOUT_PAGE_PATH && appliedSkyWallet > 0) {
           setAppliedSkyWallet(0)

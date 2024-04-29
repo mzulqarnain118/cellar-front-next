@@ -63,7 +63,6 @@ interface EditAddressProps {
 }
 
 export const EditAddressForm = ({ address, handleClose }: EditAddressProps) => {
-  console.log('🚀 ~ EditAddressForm ~ address:', address)
   const { mutate: validateAddress, isLoading: isValidatingAddress } = useValidateAddressMutation()
 
   const { mutate: updateAddress } = useUpdateAddressMutation()

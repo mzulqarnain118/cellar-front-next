@@ -80,9 +80,12 @@ export const getStaticProps: GetStaticProps = async ({ previewData, query }) => 
 const PLP = ({ page }: { page: Content.PlpDocument | null }) => {
   const router = useRouter()
   const currentPage = router.query.page ? parseInt(router.query.page.toString()) : DEFAULT_PAGE
+
+  const notCategories = useMemo(() => [21, 33], [])
   const categories = page?.data.display_categories
     .map(category => category.display_category_id)
     .map(Number)
+
   const limit = router.query.limit ? parseInt(router.query.limit.toString()) : DEFAULT_LIMIT
   const sort: Sort = router.query.sort ? (router.query.sort.toString() as Sort) : DEFAULT_SORT
   const enabledFilters = useMemo(
@@ -122,6 +125,7 @@ const PLP = ({ page }: { page: Content.PlpDocument | null }) => {
           >[]
         }
         limit={limit}
+        notCategories={notCategories}
         page={currentPage}
         sort={sort}
       />

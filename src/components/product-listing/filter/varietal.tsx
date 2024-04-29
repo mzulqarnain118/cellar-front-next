@@ -6,8 +6,8 @@ import type { Content, GroupField } from '@prismicio/client'
 import { Accordion } from '@/core/components/accordion'
 import { Button } from '@/core/components/button'
 import { Typography } from '@/core/components/typogrpahy'
-import { useProductsQuery } from '@/lib/queries/products'
 import { Filter } from '@/lib/stores/filters'
+import { ProductsSchema } from '@/lib/types/schemas/product'
 
 import type { Simplify } from 'prismicio-types'
 
@@ -16,18 +16,18 @@ import { FilterCheckbox } from './checkbox'
 interface VarietalFilterProps {
   slug: string
   values?: GroupField<Simplify<Content.FilterDocumentDataValuesItem>>
+  products: ProductsSchema[]
 }
 
-export const VarietalFilter = ({ slug, values }: VarietalFilterProps) => {
+export const VarietalFilter = ({ slug, values, products }: VarietalFilterProps) => {
   const [showAll, { toggle: toggleShowAll }] = useDisclosure(false)
-  const { data: products } = useProductsQuery()
 
   const varietals = useMemo(() => {
     let filterValues = products?.map(product => product.attributes?.Varietal).filter(Boolean) || []
     filterValues = filterValues?.filter((value, index) => filterValues.indexOf(value) === index)
-    const manualValues = values?.map(value => value.display_name).filter(Boolean) || []
+    // const manualValues = values?.map(value => value.display_name).filter(Boolean) || []
 
-    return [...manualValues, ...filterValues]
+    return [...filterValues]
       .reduce<string[]>((array, currentFilter) => {
         const index = array.findIndex(
           element => element.toLowerCase() === currentFilter.toLowerCase()
@@ -39,7 +39,7 @@ export const VarietalFilter = ({ slug, values }: VarietalFilterProps) => {
         return array
       }, [])
       .map(varietal => ({ name: varietal, type: 'varietal' }))
-  }, [products, values]) satisfies Filter[]
+  }, [products]) satisfies Filter[]
 
   const showAllButton = useMemo(
     () => (

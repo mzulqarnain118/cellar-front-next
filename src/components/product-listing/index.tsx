@@ -1,30 +1,31 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useRouter } from 'next/router';
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { useRouter } from 'next/router'
 
-import { AdjustmentsHorizontalIcon } from '@heroicons/react/24/outline';
-import { Pagination, PaginationProps, Select, SelectProps } from '@mantine/core';
-import { useWindowScroll } from '@mantine/hooks';
-import { Content, FilledContentRelationshipField } from '@prismicio/client';
-import { clsx } from 'clsx';
-import { useSession } from 'next-auth/react';
+import { AdjustmentsHorizontalIcon } from '@heroicons/react/24/outline'
+import { Pagination, PaginationProps, Select, SelectProps } from '@mantine/core'
+import { useWindowScroll } from '@mantine/hooks'
+import { Content, FilledContentRelationshipField } from '@prismicio/client'
+import { clsx } from 'clsx'
+import { useSession } from 'next-auth/react'
 
-import { Button } from '@/core/components/button';
-import { Typography } from '@/core/components/typogrpahy';
-import { useIsDesktop } from '@/core/hooks/use-is-desktop';
-import { usePaginatedSearch } from '@/features/search/queries';
-import { DISPLAY_CATEGORY } from '@/lib/constants/display-category';
-import { usePaginatedProducts } from '@/lib/queries/products';
-import { useConsultantStore } from '@/lib/stores/consultant';
-import { CartItem, SubscriptionProduct } from '@/lib/types';
-import { trackPlpListProducts } from '@/lib/utils/gtm-util';
+import { Button } from '@/core/components/button'
+import { Typography } from '@/core/components/typogrpahy'
+import { useIsDesktop } from '@/core/hooks/use-is-desktop'
+import { usePaginatedSearch } from '@/features/search/queries'
+import { DISPLAY_CATEGORY } from '@/lib/constants/display-category'
+import { usePaginatedProducts } from '@/lib/queries/products'
+import { useConsultantStore } from '@/lib/stores/consultant'
+import { CartItem, SubscriptionProduct } from '@/lib/types'
+import { trackPlpListProducts } from '@/lib/utils/gtm-util'
 
-import { ProductCard } from '../product-card';
+import { ProductCard } from '../product-card'
 
-import { FilterBar } from './filter/filter-bar';
-import { Filters } from './filters';
+import { FilterBar } from './filter/filter-bar'
+import filterAndModifyEnabledFilters from './filter/utils/filterAndModifyEnabledFilters'
+import { Filters } from './filters'
 
 export type Sort = 'relevant' | 'price-low-high' | 'price-high-low'
 
@@ -65,8 +66,10 @@ const selectStyles: SelectProps['styles'] = theme => ({
 interface ProductListingProps {
   banner?: FilledContentRelationshipField<'plp_banner', string, Content.PlpBannerDocumentData>
   categories?: number[]
+  notCategories?: number[]
   enabledFilters?: FilledContentRelationshipField<'filter', string, Content.FilterDocumentData>[]
   page?: number
+  pageUrl?: string | null
   limit?: number
   search?: string
   sort?: Sort
@@ -77,6 +80,8 @@ export const ProductListing = ({
   categories = [],
   enabledFilters = [],
   page: initialPage = 1,
+  pageUrl,
+  notCategories: notcategories,
   limit = 16,
   search = '',
   sort: initialSort = 'relevant',
@@ -87,32 +92,35 @@ export const ProductListing = ({
   const [active, setPage] = useState(initialPage)
   const [sort, setSort] = useState<Sort>(initialSort)
   const { data: session } = useSession()
-  const pathname = usePathname();
+  const pathname = usePathname()
   // Extract the segment after the last '/'
-  const segments = pathname?.split('/') ?? [];
-  const circleExclusives = segments?.[segments?.length - 1];
+  const segments = pathname?.split('/') ?? []
+  const circleExclusives = segments?.[segments?.length - 1]
 
   const [showFilters, setShowFilters] = useState(false)
   const [_, scrollTo] = useWindowScroll()
 
   const options = useMemo(
-    () => ({ categories, limit, page: active, search, sort }),
-    [categories, limit, active, search, sort]
+    () => ({ categories, limit, notcategories, page: active, search, sort }),
+    [categories, notcategories, limit, active, search, sort]
   )
 
   const paginatedProducts = usePaginatedProducts(options, search.length === 0)
   const paginatedSearch = usePaginatedSearch(options, search.length > 0)
   const { data, isError, isFetching, isLoading } = useMemo(
     () => (search.length > 0 ? { ...paginatedSearch } : { ...paginatedProducts }),
-    [paginatedProducts, paginatedSearch, search.length]
+    [paginatedProducts, paginatedSearch, search.length, options]
   )
+
+  const modifiedEnabledFilters =
+    data && filterAndModifyEnabledFilters(data?.allFilteredProducts, enabledFilters)
 
   const handleFilterClose = useCallback(() => setShowFilters(false), [])
   const onFilterToggle = useCallback(() => setShowFilters(prev => !prev), [])
 
   const filtersButton = useMemo(
     () =>
-      enabledFilters.length > 0 ? (
+      modifiedEnabledFilters?.length > 0 ? (
         <div className={clsx('flex', showFilters && 'lg:min-w-[15rem]')}>
           <Button
             dark
@@ -125,23 +133,47 @@ export const ProductListing = ({
           </Button>
         </div>
       ) : undefined,
-    [enabledFilters.length, onFilterToggle, showFilters]
+    [modifiedEnabledFilters?.length, onFilterToggle, showFilters]
   )
 
   const filters = useMemo(
     () => (
       <div className="grid gap-4 pt-4">
         {filtersButton}
-        <Filters enabledFilters={enabledFilters} show={showFilters} onClose={handleFilterClose} />
+        <Filters
+          enabledFilters={modifiedEnabledFilters}
+          products={data?.allFilteredProducts}
+          show={showFilters}
+          onClose={handleFilterClose}
+        />
       </div>
     ),
-    [enabledFilters, filtersButton, handleFilterClose, showFilters]
+    [
+      modifiedEnabledFilters,
+      filtersButton,
+      handleFilterClose,
+      showFilters,
+      data?.allFilteredProducts,
+    ]
   )
 
   const noResults = useMemo(() => !data || data.products.length === 0, [data])
   //! added clean crafted selections filter
-  const cleanCraftedSelections = useMemo(() => session?.user?.token && session?.user?.isClubMember, [session])
-  const filteredProducts = useMemo(() => circleExclusives === 'circle-exclusives' && !cleanCraftedSelections ? data?.products?.filter(product => product?.displayCategories?.includes(DISPLAY_CATEGORY['Clean Crafted Selections'])) : data?.products, [data])
+  const cleanCraftedSelections = useMemo(
+    () => session?.user?.token && session?.user?.isClubMember,
+    [session]
+  )
+
+  const filteredProducts = useMemo(
+    () =>
+      circleExclusives === 'circle-exclusives' && !cleanCraftedSelections
+        ? data?.products?.filter(product =>
+            product?.displayCategories?.includes(DISPLAY_CATEGORY['Clean Crafted Selections'])
+          )
+        : data?.products,
+    [data]
+  )
+
   const productCards = useMemo(
     () =>
       filteredProducts !== undefined ? (
@@ -198,7 +230,7 @@ export const ProductListing = ({
             className={clsx(
               'lg:grid lg:grid-cols-[auto_1fr] items-end justify-between',
               showFilters && 'lg:gap-10',
-              enabledFilters.length === 0 && 'grid-cols-1'
+              modifiedEnabledFilters?.length === 0 && 'grid-cols-1'
             )}
           >
             <div
@@ -226,7 +258,7 @@ export const ProductListing = ({
     [
       data?.results,
       data?.resultsShown,
-      enabledFilters.length,
+      modifiedEnabledFilters?.length,
       isDesktop,
       isFetching,
       isLoading,
@@ -375,7 +407,7 @@ export const ProductListing = ({
       <div
         className={clsx(
           'grid place-items-center lg:h-[700px] h-[400px]',
-          enabledFilters.length === 0 && 'lg:!ml-10'
+          modifiedEnabledFilters?.length === 0 && 'lg:!ml-10'
         )}
       >
         <div className="flex flex-col gap-4 py-10 text-center">{paginationHeader}</div>
@@ -388,10 +420,10 @@ export const ProductListing = ({
       className={clsx(
         'grid transition-all grid-cols-1 px-4 lg:px-0 lg:mx-10',
         showFilters && 'lg:grid-cols-[auto_1fr] lg:ml-2 lg:gap-10',
-        enabledFilters.length === 0 && 'lg:!ml-10'
+        modifiedEnabledFilters?.length === 0 && 'lg:!ml-10'
       )}
     >
-      {enabledFilters.length > 0 ? (
+      {modifiedEnabledFilters?.length > 0 ? (
         <div className="w-[16.25rem] max-w-[16.25rem]">{filters}</div>
       ) : undefined}
       <div className="flex flex-col gap-4 py-10">

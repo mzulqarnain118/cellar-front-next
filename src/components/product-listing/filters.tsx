@@ -6,6 +6,7 @@ import { clsx } from 'clsx'
 
 import { Typography } from '@/core/components/typogrpahy'
 import { useIsDesktop } from '@/core/hooks/use-is-desktop'
+import { ProductsSchema } from '@/lib/types/schemas/product'
 
 import { Filter } from './filter'
 
@@ -21,17 +22,18 @@ export interface FiltersProps {
   enabledFilters?: FilledContentRelationshipField<'filter', string, Content.FilterDocumentData>[]
   onClose: () => void
   show: boolean
+  products: ProductsSchema[]
 }
 
-export const Filters = ({ enabledFilters, onClose, show }: FiltersProps) => {
+export const Filters = ({ enabledFilters, onClose, show, products }: FiltersProps) => {
   const isDesktop = useIsDesktop()
 
   const enabledFiltersElements = useMemo(
     () =>
       enabledFilters !== undefined && enabledFilters.length > 0
-        ? enabledFilters.map(filter => <Filter key={filter.id} data={filter} />)
+        ? enabledFilters.map(filter => <Filter key={filter.id} data={filter} products={products} />)
         : undefined,
-    [enabledFilters]
+    [enabledFilters, products]
   )
 
   const Wrapper = useMemo(() => (isDesktop ? 'div' : Drawer), [isDesktop])

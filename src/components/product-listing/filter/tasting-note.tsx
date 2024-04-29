@@ -7,8 +7,8 @@ import { BlurImage } from '@/components/blur-image'
 import { Accordion } from '@/core/components/accordion'
 import { Button } from '@/core/components/button'
 import { Typography } from '@/core/components/typogrpahy'
-import { useProductsQuery } from '@/lib/queries/products'
 import { Filter } from '@/lib/stores/filters'
+import { ProductsSchema } from '@/lib/types/schemas/product'
 
 import type { Simplify } from 'prismicio-types'
 
@@ -17,29 +17,29 @@ import { FilterCheckbox } from './checkbox'
 interface TastingNoteFilterProps {
   slug: string
   values?: GroupField<Simplify<Content.FilterDocumentDataValuesItem>>
+  products: ProductsSchema[]
 }
 
-export const TastingNoteFilter = ({ slug, values }: TastingNoteFilterProps) => {
+export const TastingNoteFilter = ({ slug, values, products }: TastingNoteFilterProps) => {
   const [showAll, { toggle: toggleShowAll }] = useDisclosure(false)
-  const { data: products } = useProductsQuery()
 
   const tastingNotes = useMemo(() => {
     let filterValues =
       products?.map(product => product.attributes?.['Tasting Notes']).filter(Boolean) || []
     filterValues = filterValues?.filter((value, index) => filterValues.indexOf(value) === index)
 
-    const manualValues =
-      values
-        ?.map(value => value.display_name)
-        .filter(Boolean)
-        .map(value =>
-          filterValues.find(filter =>
-            filter.find(filterValue => filterValue.name.toLowerCase() === value.toLowerCase())
-          )
-        )
-        .filter(Boolean) || []
+    // const manualValues =
+    //   values
+    //     ?.map(value => value.display_name)
+    //     .filter(Boolean)
+    //     .map(value =>
+    //       filterValues.find(filter =>
+    //         filter.find(filterValue => filterValue.name.toLowerCase() === value.toLowerCase())
+    //       )
+    //     )
+    //     .filter(Boolean) || []
 
-    return [...manualValues, ...filterValues]
+    return [...filterValues]
       .reduce((array, note) => {
         if (!array.find(item => item?.name.toLowerCase() === note[0].name.toLowerCase())) {
           array.push(note[0])
@@ -48,7 +48,7 @@ export const TastingNoteFilter = ({ slug, values }: TastingNoteFilterProps) => {
       }, [])
       .filter(Boolean)
       .map(note => ({ imageUrl: note.imageUrl, name: note.name, type: 'tasting-note' }))
-  }, [products, values]) satisfies Filter[]
+  }, [products]) satisfies Filter[]
 
   const showAllButton = useMemo(
     () => (

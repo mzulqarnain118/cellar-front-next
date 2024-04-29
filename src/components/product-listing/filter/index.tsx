@@ -2,6 +2,8 @@ import dynamic from 'next/dynamic'
 
 import type { Content, FilledContentRelationshipField } from '@prismicio/client'
 
+import { ProductsSchema } from '@/lib/types/schemas/product'
+
 const BrandFilter = dynamic(() => import('./brand').then(({ BrandFilter }) => BrandFilter))
 const CountryFilter = dynamic(() =>
   import('./country').then(({ CountryFilter: RegionFilter }) => RegionFilter)
@@ -23,24 +25,25 @@ const VarietalFilter = dynamic(() =>
 
 interface FilterProps {
   data: FilledContentRelationshipField<'filter', string, Content.FilterDocumentData>
+  products: ProductsSchema[]
 }
 
-export const Filter = ({ data }: FilterProps) => {
+export const Filter = ({ data, products }: FilterProps) => {
   switch (data.slug) {
     case 'brand':
-      return <BrandFilter slug={data.slug} values={data.data?.values} />
+      return <BrandFilter products={products} slug={data.slug} values={data.data?.values} />
     case 'pairing-notes':
-      return <PairingNoteFilter slug={data.slug} values={data.data?.values} />
+      return <PairingNoteFilter products={products} slug={data.slug} values={data.data?.values} />
     case 'price':
       return <PriceFilter slug={data.slug} />
     case 'country':
       return <CountryFilter slug={data.slug} values={data.data?.values} />
     case 'tasting-notes':
-      return <TastingNoteFilter slug={data.slug} values={data.data?.values} />
+      return <TastingNoteFilter products={products} slug={data.slug} values={data.data?.values} />
     case 'varietal':
-      return <VarietalFilter slug={data.slug} values={data.data?.values} />
+      return <VarietalFilter products={products} slug={data.slug} values={data.data?.values} />
     case 'structure':
-      return <StructureFilter slug={data.slug} values={data.data?.values} />
+      return <StructureFilter products={products} slug={data.slug} values={data.data?.values} />
     default:
       return data.data ? <CustomFilter filter={data?.data} /> : <></>
   }

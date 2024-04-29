@@ -1,7 +1,7 @@
 import type { NextRequest } from 'next/server'
 
 import { Filter } from '@/lib/stores/filters'
-import { ProductsResponse } from '@/lib/types/schemas/product'
+import { ProductsResponse, ProductsSchema } from '@/lib/types/schemas/product'
 
 export const config = {
   runtime: 'edge',
@@ -26,9 +26,12 @@ const handler = async (req: NextRequest) => {
   }
 
   const { searchParams } = new URL(req.url)
+
   const page = parseInt(searchParams.get('page') || '0') || 1
   const perPage = parseInt(searchParams.get('limit') || '0') || 16
   const displayCategoryIds = searchParams.get('categories')?.split(',').map(Number) || [1]
+  const notDisplayCategoryIds = searchParams.get('notcategories')?.split(',').map(Number) || []
+
   const sort: 'relevant' | 'price-low-high' | 'price-high-low' =
     (searchParams.get('sort') as 'relevant' | 'price-low-high' | 'price-high-low') || 'relevant'
   const provinceId = parseInt(searchParams.get('provinceId') || '48')
@@ -41,12 +44,22 @@ const handler = async (req: NextRequest) => {
 
       if (data.success) {
         const { data: productsData } = data
-        let filteredProducts =
+        let filteredProducts: ProductsSchema[] =
           displayCategoryIds.length > 0
             ? productsData.filter(product =>
                 displayCategoryIds.some(category => product.displayCategories.includes(category))
               )
             : productsData
+
+        filteredProducts =
+          notDisplayCategoryIds.length > 0
+            ? filteredProducts.filter(
+                product =>
+                  !product.displayCategories.some(category =>
+                    notDisplayCategoryIds.includes(category)
+                  )
+              )
+            : filteredProducts
 
         if (req.method === 'POST') {
           const activeFilters = (await req.json()) as Filter[]
@@ -64,6 +77,8 @@ const handler = async (req: NextRequest) => {
                     return filter.displayCategoryIds?.some(category =>
                       product.displayCategories.includes(category)
                     )
+                  case 'structure':
+                    return product.attributes?.Structure?.includes(filter.name)
                   case 'pairing-note':
                     return (
                       !!product.attributes?.['Pairing Notes'] &&
@@ -133,7 +148,6 @@ const handler = async (req: NextRequest) => {
             )
           }
         }
-        console.log('🚀 ~ handler ~ filteredProducts:', filteredProducts)
 
         filteredProducts = filteredProducts
           .sort((left, right) => {
@@ -200,6 +214,7 @@ const handler = async (req: NextRequest) => {
                         : ''
                     }`,
               products,
+              allFilteredProducts: filteredProducts,
               results: filteredProducts.length,
               resultsShown: [
                 page <= 1 ? 1 : perPage * (page - 1) + 1,

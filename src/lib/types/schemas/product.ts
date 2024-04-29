@@ -92,6 +92,7 @@ export type ProductsResponse = ProductsSuccess | Failure
 export type ProductResponse = ProductSuccess | Failure
 
 export const paginatedProductsSchema = z.object({
+  allFilteredProducts: z.array(schema),
   nextPageUrl: z.string().optional(),
   page: z.number().positive(),
   perPage: z.number().positive(),
