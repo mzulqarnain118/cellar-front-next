@@ -121,9 +121,6 @@ export const DateOfBirthPicker = ({ defaultValue, noSpacing = false }: DateOfBir
             onBlur: () => setFocused(false),
             onChange: event => {
               const input = event.target.value
-
-              console.log("🚀 ~ DateOfBirthPicker ~ input:", input)
-
               const isNumber = !isNaN(+input)
               const firstNumber = parseInt(input.at(0) || '-1')
               const secondNumber = parseInt(input.at(1) || '-1')
@@ -169,9 +166,6 @@ export const DateOfBirthPicker = ({ defaultValue, noSpacing = false }: DateOfBir
             onBlur: () => setFocused(false),
             onChange: event => {
               const input = event.target.value
-
-              console.log("🚀 ~ DateOfBirthPicker ~ input:", input)
-
               const isNumber = !isNaN(+input)
 
               if (input.length === 0) {

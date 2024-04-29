@@ -19,7 +19,6 @@ export const BrandTile = ({ item }: BrandTileProps) => {
   const router = useRouter()
 
   const handleClick = useCallback(() => {
-    console.log('🚀 ~ handleClick ~ item:', item)
     // Identify brand on base of name, If name is not available trigger event with image alt
     // If image alt is not available then identify the brand with brand link
     if (item.link) {

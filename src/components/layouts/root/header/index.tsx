@@ -50,6 +50,7 @@ export const Header = () => {
   const router = useRouter()
   const { toggleCartOpen } = useCartOpen()
   const { data: cart } = useCartQuery()
+
   const {
     data: navigation,
     isFetching: isFetchingNavigation,
@@ -283,8 +284,8 @@ export const Header = () => {
   const cartButton = useMemo(
     () =>
       curatedCart !== undefined &&
-      curatedCart.cartId.length > 0 &&
-      !curatedCart.messageDismissed ? (
+        curatedCart.cartId.length > 0 &&
+        !curatedCart.messageDismissed ? (
         <Popover
           withArrow
           arrowPosition="side"

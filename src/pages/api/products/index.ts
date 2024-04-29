@@ -134,6 +134,7 @@ const handler = async (req: NextRequest) => {
             )
           }
         }
+        console.log('🚀 ~ handler ~ filteredProducts:', filteredProducts)
 
         filteredProducts = filteredProducts
           .sort((left, right) => {

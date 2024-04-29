@@ -1,8 +1,13 @@
 import { FocusEventHandler, FormEventHandler, useCallback, useMemo } from 'react'
 
+import { usePathname } from 'next/navigation'
+import { useRouter } from 'next/router'
+
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
 import { Input } from '@mantine/core'
 import { clsx } from 'clsx'
+
+import { useFiltersStore } from '@/lib/stores/filters'
 
 interface SearchProps {
   className?: string
@@ -16,10 +21,15 @@ const classNames = {
 }
 
 export const Search = ({ className, id, onBlur, onFocus }: SearchProps) => {
+  const router = useRouter()
+  const { searchValue, setSearchValue } = useFiltersStore()
+  const pathname = usePathname();
+
   const handleSearch: FormEventHandler = useCallback(event => {
     event.preventDefault()
-  }, [])
-
+    router.push(`/search?q=${searchValue}`)
+    pathname !== '/search' && localStorage.setItem('searchedPage', pathname)
+  }, [searchValue])
   const rightSection = useMemo(
     () => (
       <button
@@ -43,7 +53,9 @@ export const Search = ({ className, id, onBlur, onFocus }: SearchProps) => {
           placeholder="What can we help you find?"
           rightSection={rightSection}
           type="search"
+          value={searchValue}
           onBlur={onBlur}
+          onChange={(e) => setSearchValue(e.target.value)}
           onFocus={onFocus}
         />
       </form>

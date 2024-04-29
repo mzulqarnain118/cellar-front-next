@@ -48,7 +48,6 @@ export const CreditCard = ({ data }: CreditCardProps) => {
       }),
     [data.PaymentToken, deleteCreditCard, scrollTo]
   )
-  console.log(data)
   return (
     <div>
       <div className="flex items-center justify-between py-2">

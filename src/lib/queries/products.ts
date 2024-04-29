@@ -74,6 +74,8 @@ export const getPaginatedProducts: QueryFunction<
 
   const result = (await response.json()) as PaginatedProductsResponse
 
+  console.log('🚀 ~ >= ~ result:', result)
+
   if (result.success) {
     return result.data
   }

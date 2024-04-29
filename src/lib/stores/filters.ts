@@ -20,16 +20,22 @@ export interface Filter {
 
 interface FiltersStore {
   activeFilters: Filter[]
+  searchValue: string // Added searchValue property
+
   previousPriceValue: [number, number] | null
   clearAll: () => void
   removeFilter: (filter: Filter) => void
   toggleActiveFilter: (activeFilter: Filter) => void
   setPreviousPriceValue: (value: [number, number]) => void
+  setSearchValue: (value: string) => void // Added setSearchValue function
+  clearSearchValue: () => void // Added clearSearchValue function
 }
 
 export const useFiltersStore = create<FiltersStore>(set => ({
   activeFilters: [],
   previousPriceValue: null,
+  searchValue: '',
+
   clearAll: () => set({ activeFilters: [], previousPriceValue: null }),
   removeFilter: filter =>
     set(state => ({
@@ -61,4 +67,6 @@ export const useFiltersStore = create<FiltersStore>(set => ({
       }
     }),
   setPreviousPriceValue: value => set({ previousPriceValue: value }),
+  setSearchValue: value => set({ searchValue: value }), // Added setSearchValue function
+  clearSearchValue: () => set({ searchValue: '' }), // Added clearSearchValue function
 }))
