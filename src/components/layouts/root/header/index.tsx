@@ -134,7 +134,7 @@ export const Header = () => {
       !isFetchingCTA && !isLoadingCTA ? (
         <Link href={cta?.data.link || cta?.data.uid}>
           <Button
-            className="mb-2 !bg-[#085250] text-lg text-[#f5f3f2] lg:mb-0 2xl:w-max !text-wrap"
+            className="mb-2 !bg-[#085250] text-lg text-[#f5f3f2] lg:mb-0 xl:w-max"
             color="ghost"
             fullWidth={!isDesktop}
           >
@@ -284,8 +284,8 @@ export const Header = () => {
   const cartButton = useMemo(
     () =>
       curatedCart !== undefined &&
-        curatedCart.cartId.length > 0 &&
-        !curatedCart.messageDismissed ? (
+      curatedCart.cartId.length > 0 &&
+      !curatedCart.messageDismissed ? (
         <Popover
           withArrow
           arrowPosition="side"

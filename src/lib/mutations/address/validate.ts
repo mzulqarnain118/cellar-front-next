@@ -48,6 +48,7 @@ const validateAddress = async (data: ValidateAddressOptions) => {
         CountryName: 'United States',
         FirstName: data.firstName,
         LastName: data.lastName,
+        NickName: data.nickName,
         PostalCode: data.zipCode,
         ProvinceID: data.provinceId,
         Street1: data.addressLineOne,

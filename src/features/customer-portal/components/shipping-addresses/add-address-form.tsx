@@ -22,9 +22,9 @@ const newAddressFormSchema = z.object({
   city: z.string().min(1, { message: 'Please enter the city.' }),
   company: z.string().optional(),
   countryName: z.string().min(1, { message: 'Please select the Country' }),
-  firstName: z.string().min(1, { message: 'Please enter the first name.' }),
-  lastName: z.string().min(1, { message: 'Please enter the last name.' }),
-  nickName: z.string().optional(),
+  firstName: z.string().min(1, { message: 'Please enter your first name.' }),
+  lastName: z.string().min(1, { message: 'Please enter your last name.' }),
+  nickName: z.string().min(1, { message: 'Please enter your nick name.' }),
   phoneNumber: z.string().min(1, { message: 'Please enter a phone number.' }),
   residential: z.string().min(1).optional(),
   state: z.string().min(1, { message: 'Please select the state.' }),
@@ -159,7 +159,6 @@ export const AddAddressForm = ({ handleClose }: AddAddressFormProps) => {
       >
         <Input
           className="col-span-12 [&>div:first-child]:!pt-1"
-          instructionLabel="optional"
           label="Nick Name"
           name="nickName"
         />

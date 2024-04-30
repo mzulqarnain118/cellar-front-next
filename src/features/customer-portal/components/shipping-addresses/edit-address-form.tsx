@@ -22,9 +22,9 @@ const editAddressSchema = z.object({
   city: z.string().min(1, { message: 'Please enter the city.' }),
   company: z.string().optional(),
   countryName: z.string().min(1, { message: 'Please select the Country' }),
-  firstName: z.string().min(1, { message: 'Please enter the first name.' }),
-  lastName: z.string().min(1, { message: 'Please enter the last name.' }),
-  nickName: z.string().optional(),
+  firstName: z.string().min(1, { message: 'Please your first name.' }),
+  lastName: z.string().min(1, { message: 'Please your last name.' }),
+  nickName: z.string().min(1, { message: 'Please enter your nick name' }),
   phoneNumber: z.string().min(1, { message: 'Please enter a phone number.' }),
   residential: z.string().min(1).optional(),
   setAsDefault: z.boolean(),
@@ -237,7 +237,6 @@ export const EditAddressForm = ({ address, handleClose }: EditAddressProps) => {
       <Input
         className="col-span-2"
         error={errors?.nickName?.message}
-        instructionLabel="optional"
         label="Nick Name"
         {...register('nickName')}
       />
