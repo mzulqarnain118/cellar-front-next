@@ -39,7 +39,6 @@ export const SearchNew = () => {
     isLoading: isSearching,
   } = useSearchQuery(searchProps)
   const router = useRouter()
-  console.log('🚀 ~ SearchNew ~ searchResults:', searchResults)
 
   const classNames: AutocompleteProps['classNames'] = useMemo(
     () => ({
@@ -82,6 +81,7 @@ export const SearchNew = () => {
     () => (!!searchResults && searchResults?.map(buildOptions)) || [],
     [searchResults]
   )
+  console.log('🚀 ~ data ~ data:', data)
 
   const onSubmit: FormEventHandler<HTMLFormElement> = useCallback(
     event => {
@@ -102,6 +102,7 @@ export const SearchNew = () => {
         filter={filter}
         icon={icon}
         itemComponent={SearchItem}
+        limit={16}
         nothingFound={`${value} not found`}
         rightSection={rightSection}
         value={value}

@@ -18,6 +18,7 @@ import { usePaginatedSearch } from '@/features/search/queries'
 import { DISPLAY_CATEGORY } from '@/lib/constants/display-category'
 import { usePaginatedProducts } from '@/lib/queries/products'
 import { useConsultantStore } from '@/lib/stores/consultant'
+import { useFiltersStore } from '@/lib/stores/filters'
 import { CartItem, SubscriptionProduct } from '@/lib/types'
 import { trackPlpListProducts } from '@/lib/utils/gtm-util'
 
@@ -112,8 +113,12 @@ export const ProductListing = ({
     [paginatedProducts, paginatedSearch, search.length, options]
   )
 
+  const { activeFilters } = useFiltersStore()
+
   const modifiedEnabledFilters =
-    data && filterAndModifyEnabledFilters(data?.allFilteredProducts, enabledFilters)
+    data &&
+    enabledFilters &&
+    filterAndModifyEnabledFilters(data?.allFilteredProducts, enabledFilters)
 
   const handleFilterClose = useCallback(() => setShowFilters(false), [])
   const onFilterToggle = useCallback(() => setShowFilters(prev => !prev), [])
@@ -196,6 +201,12 @@ export const ProductListing = ({
     setSort(value)
     setPage(1)
   }, [])
+
+  useEffect(() => {
+    if (activeFilters.length > 0) {
+      setPage(1)
+    }
+  }, [activeFilters])
 
   const paginationHeader = useMemo(
     () => (

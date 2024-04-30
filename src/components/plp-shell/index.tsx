@@ -13,7 +13,7 @@ interface PlpShellProps {
   banner?: FilledContentRelationshipField<'plp_banner', string, Content.PlpBannerDocumentData>
   categories?: number[]
   notCategories?: number[]
-  enabledFilters: FilledContentRelationshipField<'filter', string, Content.FilterDocumentData>[]
+  enabledFilters?: FilledContentRelationshipField<'filter', string, Content.FilterDocumentData>[]
   limit: number
   page: number
   pageUrl?: string | null
