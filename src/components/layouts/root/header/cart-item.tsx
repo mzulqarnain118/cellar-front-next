@@ -147,7 +147,7 @@ export const CartItem = ({ product, disabled }: CartItemProps) => {
         )}
         <div className="flex items-center justify-between">
           <div className="flex flex-col gap-2 px-1">
-            <div className="flex flex-col">
+            <div className="flex  flex-col">
               <div>
                 <Link
                   className="font-bold !text-neutral-900 transition-all hover:underline"
