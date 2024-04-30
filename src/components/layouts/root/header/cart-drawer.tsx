@@ -104,14 +104,18 @@ export const CartDrawer = () => {
       onClose={toggleCartOpen}
     >
       <div className="h-[inherit] overflow-y-hidden">
-        <CloseButton className="absolute right-4 top-4 z-10" size="lg" onClick={toggleCartOpen} />
+        <CloseButton
+          className="absolute text-secondary-light right-4 top-3 z-10 hover:text-primary"
+          size="lg"
+          onClick={toggleCartOpen}
+        />
         <div
           className={`
-            sticky left-0 top-0 flex w-full flex-col border-b border-base-dark bg-base-light pt-4
+            sticky left-0 top-0 flex w-full flex-col border-b border-base-dark bg-base-light
             lg:grid lg:grid-rows-[auto_1fr_auto]
           `}
         >
-          <Typography as="h1" className="h4 text-center">
+          <Typography as="h1" className="h4 text-center py-2 bg-primary text-secondary-light">
             Your Cart {cartQuantity === 0 ? undefined : `(${cartQuantity})`}
           </Typography>
           <div

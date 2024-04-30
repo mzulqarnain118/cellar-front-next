@@ -10,17 +10,18 @@ import { useCartPromoMessagesQuery } from '@/features/cart/queries'
 
 const useStyles = createStyles(() => ({
   controls: {
-    opacity: 0,
+    opacity: 1,
     ref: getStylesRef('controls'),
+    top: '99%',
     transition: 'opacity 150ms ease',
   },
-
   root: {
-    '&:hover': {
-      [`& .${getStylesRef('controls')}`]: {
-        opacity: 1,
-      },
-    },
+    // '&:hover': {
+    //   [`& .${getStylesRef('controls')}`]: {
+    //     opacity: 1,
+    //   },
+    // },
+    marginBottom: '32px',
   },
 }))
 
