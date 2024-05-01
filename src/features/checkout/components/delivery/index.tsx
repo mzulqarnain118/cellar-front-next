@@ -14,7 +14,9 @@ import {
   useCheckoutActions,
   useCheckoutActiveCreditCard,
   useCheckoutActiveShippingAddress,
+  useCheckoutAppliedSkyWallet,
   useCheckoutIsPickUp,
+  useCheckoutSelectedPickUpOption,
   useCheckoutSelectedShippingAddress,
 } from '@/lib/stores/checkout'
 
@@ -41,7 +43,8 @@ interface DeliveryProps {
 export const Delivery = memo(({ opened, refs, cartTotalData, toggle }: DeliveryProps) => {
   const isPickUp = useCheckoutIsPickUp()
   const { data: shippingMethods } = useShippingMethodsQuery()
-  const { setIsPickUp, setSelectedPickUpOption, setSelectedPickUpAddress } = useCheckoutActions()
+  const { setIsPickUp, setSelectedPickUpOption, setSelectedPickUpAddress, setAppliedSkyWallet } =
+    useCheckoutActions()
   const { mutate: updateShippingMethod } = useUpdateShippingMethodMutation()
   const [value, setValue] = useState<string | null>(isPickUp ? 'pickUp' : 'shipToHome')
   const { data: session } = useSession()
@@ -51,6 +54,8 @@ export const Delivery = memo(({ opened, refs, cartTotalData, toggle }: DeliveryP
   const activeCreditCard = useCheckoutActiveCreditCard()
   const selectedShippingAddress = useCheckoutSelectedShippingAddress()
   const activeShippingAddress = useCheckoutActiveShippingAddress()
+  const selectedPickUpOption = useCheckoutSelectedPickUpOption()
+  const appliedSkyWallet = useCheckoutAppliedSkyWallet()
 
   const handleTabChange = useCallback(
     (tab: string) => {
@@ -84,6 +89,13 @@ export const Delivery = memo(({ opened, refs, cartTotalData, toggle }: DeliveryP
       setSelectedPickUpAddress(undefined)
     }
   }, [value])
+
+  useEffect(() => {
+    console.log('Order Total: ', cartTotalData?.orderTotal)
+    if (appliedSkyWallet > 0) {
+      setAppliedSkyWallet(0)
+    }
+  }, [isPickUp, selectedPickUpOption, cartTotalData?.orderTotal])
 
   return (
     <>

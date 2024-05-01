@@ -81,7 +81,6 @@ export const SearchNew = () => {
     () => (!!searchResults && searchResults?.map(buildOptions)) || [],
     [searchResults]
   )
-  console.log('🚀 ~ data ~ data:', data)
 
   const onSubmit: FormEventHandler<HTMLFormElement> = useCallback(
     event => {

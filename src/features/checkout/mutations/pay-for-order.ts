@@ -144,7 +144,7 @@ export const useCheckoutPayForOrderMutation = (cartTotalData: any) => {
         isSharedCart: cart?.isSharedCart || false,
         orderDisplayId: cart?.orderDisplayId,
         prices: {
-          appliedSkyWallet: 0,
+          appliedSkyWallet,
           retailDeliveryFee: cartTotalData?.retailDeliveryFee || 0,
           salesTax: cartTotalData?.tax || 0,
           shipping: cartTotalData?.shipping.price || 0,

@@ -28,11 +28,11 @@ export const Receipt = () => {
   }
 
   return (
-    <div className="mt-12 w-full max-w-2xl rounded border border-neutral-light bg-white px-6 py-10">
-      <Typography as="h2" className="mb-4 text-center" displayAs="h4">
+    <div className="mt-12 w-full max-w-2xl rounded border border-neutral-light bg-white py-10">
+      <Typography as="h2" className="mb-4 text-center px-6" displayAs="h4">
         Your Order
       </Typography>
-      <div>
+      <div className="px-6">
         <div className="flex items-center justify-between">
           <Typography>Subtotal</Typography>
           <Typography as="strong">{formatCurrency(data.prices.subtotal)}</Typography>
@@ -72,8 +72,8 @@ export const Receipt = () => {
           <Typography as="strong">{`${formatCurrency(salesTax)}`}</Typography>
         </div>
       </div>
-      <div className="mt-4">
-        <div className="flex items-center justify-between bg-[#e6e0dd] px-4 py-2">
+      <div className="mt-4 bg-[#e6e0dd] px-6 py-4">
+        <div className="flex items-center justify-between py-2">
           <Typography>Total</Typography>
           <Typography as="strong">{`${formatCurrency(total)}`}</Typography>
         </div>
@@ -90,7 +90,7 @@ export const Receipt = () => {
           </>
         )}
       </div>
-      <div className="mt-12 grid grid-cols-12 gap-4 lg:gap-0">
+      <div className="mt-12 grid grid-cols-12 gap-4 lg:gap-0 px-6">
         {data?.deliveryAddress.addressLineOne && (
           <div className="col-span-12 lg:col-span-6">
             <Typography as="h6">To be delivered to:</Typography>
@@ -123,7 +123,7 @@ export const Receipt = () => {
           </Typography>
         </div>
       </div>
-      <div className="mt-4 grid grid-cols-2">
+      <div className="mt-4 grid grid-cols-2 px-6">
         <Typography as="h6">OrderID</Typography>
 
         <Typography as="h6" className="text-right">

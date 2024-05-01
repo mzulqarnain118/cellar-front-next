@@ -379,6 +379,7 @@ export const Payment = memo(({ opened, refs, toggle, cartTotalData }: PaymentPro
                 skyWallet={skyWallet}
                 skyWalletFetching={skyWalletFetching}
                 skyWalletLoading={skyWalletLoading}
+                cartTotalData={cartTotalData}
               />
             </div>
           </>

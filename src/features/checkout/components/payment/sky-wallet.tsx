@@ -8,28 +8,26 @@ import { Button } from '@/core/components/button'
 import { Input } from '@/core/components/input'
 import { Typography } from '@/core/components/typogrpahy'
 import { formatCurrency } from '@/core/utils'
-import { useCartQuery } from '@/lib/queries/cart'
 import { useCheckoutActions, useCheckoutAppliedSkyWallet } from '@/lib/stores/checkout'
-
 
 const accountCreditIcon = <CurrencyDollarIcon className="mx-3 w-4 h-4" />
 
-export const SkyWallet = ({ skyWallet, skyWalletFetching, skyWalletLoading }) => {
+export const SkyWallet = ({ skyWallet, skyWalletFetching, skyWalletLoading, cartTotalData }) => {
   // const { data: skyWallet, isFetching: skyWalletFetching, isLoading: skyWalletLoading } = useSkyWalletQuery()
-  const { data: cart } = useCartQuery()
+
   const [tooltipOpened, { close: closeTooltip, open: openTooltip }] = useDisclosure(false)
 
   const appliedSkyWallet = useCheckoutAppliedSkyWallet()
   const { setAppliedSkyWallet } = useCheckoutActions()
 
-  const orderTotal = useMemo(() => {
-    const total = cart?.prices.orderTotal || 0
+  // const orderTotal = useMemo(() => {
+  //   const total = cart?.prices.orderTotal || 0
 
-    if (total - appliedSkyWallet <= 0) {
-      return 0
-    }
-    return total - appliedSkyWallet
-  }, [appliedSkyWallet, cart?.prices.orderTotal])
+  //   if (total - appliedSkyWallet <= 0) {
+  //     return 0
+  //   }
+  //   return total - appliedSkyWallet
+  // }, [appliedSkyWallet, cart?.prices.orderTotal])
 
   const eligibleBalance = useMemo(() => {
     const balance =
@@ -37,13 +35,13 @@ export const SkyWallet = ({ skyWallet, skyWalletFetching, skyWalletLoading }) =>
 
     if (appliedSkyWallet > 0 && balance - appliedSkyWallet <= 0) {
       return 0
-    } else if (appliedSkyWallet > 0 && balance - appliedSkyWallet >= orderTotal) {
-      return orderTotal
+    } else if (appliedSkyWallet > 0 && balance - appliedSkyWallet >= cartTotalData?.orderTotal) {
+      return cartTotalData?.orderTotal
     }
     return balance - appliedSkyWallet
-  }, [appliedSkyWallet, orderTotal, skyWallet])
+  }, [appliedSkyWallet, cartTotalData?.orderTotal, skyWallet])
 
-  const [value, setValue] = useInputState(eligibleBalance || '')
+  const [value, setValue] = useInputState(0)
   const [error, setError] = useState<string | undefined>()
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = useCallback(
@@ -57,14 +55,14 @@ export const SkyWallet = ({ skyWallet, skyWalletFetching, skyWalletLoading }) =>
 
         if (numberValue > eligibleBalance) {
           setError('Value cannot be greater than the eligible balance.')
-        } else if (numberValue > orderTotal) {
+        } else if (numberValue > cartTotalData?.orderTotal) {
           setError('Value cannot be greater than the order total.')
         } else {
           setError(undefined)
         }
       }
     },
-    [eligibleBalance, orderTotal, setValue]
+    [eligibleBalance, cartTotalData?.orderTotal, setValue]
   )
 
   const handleFocus: FocusEventHandler<HTMLInputElement> = useCallback(() => {
@@ -72,7 +70,7 @@ export const SkyWallet = ({ skyWallet, skyWalletFetching, skyWalletLoading }) =>
   }, [eligibleBalance, setValue])
 
   const handleApply = useCallback(() => {
-    if (!!value && error === undefined) {
+    if (value >= 0 && error === undefined) {
       setAppliedSkyWallet(parseFloat(value.toString()))
     }
   }, [error, setAppliedSkyWallet, value])
