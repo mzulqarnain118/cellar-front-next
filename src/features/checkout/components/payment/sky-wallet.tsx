@@ -30,15 +30,13 @@ export const SkyWallet = ({ skyWallet, skyWalletFetching, skyWalletLoading, cart
   // }, [appliedSkyWallet, cart?.prices.orderTotal])
 
   const eligibleBalance = useMemo(() => {
-    const balance =
-      skyWallet?.reduce((total, balance) => balance.BalanceAvailableToUse + total, 0) || 0
+    const balance = skyWallet && skyWallet[0].BalanceAvailableToUse - appliedSkyWallet
 
-    if (appliedSkyWallet > 0 && balance - appliedSkyWallet <= 0) {
-      return 0
-    } else if (appliedSkyWallet > 0 && balance - appliedSkyWallet >= cartTotalData?.orderTotal) {
+    if (balance >= cartTotalData?.orderTotal) {
       return cartTotalData?.orderTotal
     }
-    return balance - appliedSkyWallet
+
+    return balance
   }, [appliedSkyWallet, cartTotalData?.orderTotal, skyWallet])
 
   const [value, setValue] = useInputState(0)
