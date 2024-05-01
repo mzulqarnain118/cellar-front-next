@@ -13,6 +13,7 @@ import { useCheckoutActions, useCheckoutAppliedSkyWallet } from '@/lib/stores/ch
 const accountCreditIcon = <CurrencyDollarIcon className="mx-3 w-4 h-4" />
 
 export const SkyWallet = ({ skyWallet, skyWalletFetching, skyWalletLoading, cartTotalData }) => {
+  console.log('🚀 ~ SkyWal ~ skyWallet:', skyWallet)
   // const { data: skyWallet, isFetching: skyWalletFetching, isLoading: skyWalletLoading } = useSkyWalletQuery()
 
   const [tooltipOpened, { close: closeTooltip, open: openTooltip }] = useDisclosure(false)
@@ -29,8 +30,35 @@ export const SkyWallet = ({ skyWallet, skyWalletFetching, skyWalletLoading, cart
   //   return total - appliedSkyWallet
   // }, [appliedSkyWallet, cart?.prices.orderTotal])
 
+  // const eligibleBalance = useMemo(() => {
+  //   const balance = skyWallet?.reduce((total, balance) => {
+  //     console.log('🚀 ~ skyWallet?.reduce ~ balance:', balance)
+  //     console.log('🚀 ~ skyWallet?.reduce ~ total:', total)
+  //     return balance.BalanceAvailableToUse + total
+  //   }, 0)
+
+  //   console.log('🚀 ~ eligibleBalance ~ balance - appliedSkyWallet:', balance - appliedSkyWallet)
+  //   console.log('🚀 ~ eligibleBalance ~ appliedSkyWallet:', appliedSkyWallet)
+
+  //   if (appliedSkyWallet > 0 && balance - appliedSkyWallet <= 0) {
+  //     return 0
+  //   } else if (appliedSkyWallet > 0 && balance - appliedSkyWallet >= cartTotalData?.orderTotal) {
+  //     return cartTotalData?.orderTotal
+  //   }
+  //   return balance - appliedSkyWallet
+  // }, [appliedSkyWallet, cartTotalData?.orderTotal, skyWallet])
+
+  // const eligibleBalancee = useMemo(()=> {
+
+  // })
+
   const eligibleBalance = useMemo(() => {
-    const balance = skyWallet && skyWallet[0].BalanceAvailableToUse - appliedSkyWallet
+    const balanceAvailableToUse = skyWallet?.reduce(
+      (total, balance) => balance.BalanceAvailableToUse + total,
+      0
+    )
+
+    const balance = balanceAvailableToUse - appliedSkyWallet
 
     if (balance >= cartTotalData?.orderTotal) {
       return cartTotalData?.orderTotal
