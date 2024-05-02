@@ -91,7 +91,6 @@ export const Delivery = memo(({ opened, refs, cartTotalData, toggle }: DeliveryP
   }, [value])
 
   useEffect(() => {
-    console.log('Order Total: ', cartTotalData?.orderTotal)
     if (appliedSkyWallet > 0) {
       setAppliedSkyWallet(0)
     }
