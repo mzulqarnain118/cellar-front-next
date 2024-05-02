@@ -40,6 +40,7 @@ import {
 
 import { useAddGiftMessageMutation } from '../../mutations/add-gift-message'
 import { useCheckoutPayForOrderMutation } from '../../mutations/pay-for-order'
+import { PaymentRefs } from '../payment'
 
 import TermsContent from './terms'
 import TermsModal from './termsModal'
@@ -57,6 +58,7 @@ interface PayForOrderRefs {
 
 interface PayForOrderProps {
   refs: PayForOrderRefs
+  paymentRefs: PaymentRefs
   validate: () => Promise<boolean>
   cartTotalData: any
   handleValidateCart: any
@@ -70,6 +72,7 @@ interface ModalContentType {
 
 export const PayForOrder = ({
   refs,
+  paymentRefs,
   validate,
   cartTotalData,
   handleValidateCart,
@@ -277,7 +280,9 @@ export const PayForOrder = ({
           </div>
           <div className="ml-auto">
             <Button
-              disabled={!refs?.termsRef?.current?.checked}
+              disabled={(!refs?.termsRef?.current?.checked
+
+                || paymentRefs.cvvRef.current?.value.length <= 2)}
               size={isDesktop ? 'lg' : 'md'}
               onClick={handleSubmit}
             >

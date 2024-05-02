@@ -533,6 +533,7 @@ const CheckoutPage: NextPage<PageProps> = () => {
             <PayForOrder
               cartTotalData={cartTotalData}
               handleValidateCart={handleValidateCart}
+              paymentRefs={paymentRefs}
               refs={payForOrderRefs}
               validate={validate}
               validateCartStockResp={validateCartStockResp}
