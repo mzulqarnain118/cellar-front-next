@@ -23,7 +23,7 @@ const NotFoundPage = () => {
 
     setTimeout(() => {
       setShow404(true)
-    }, 5000)
+    }, 7500)
   }, [])
 
   // Check if the route is '/restricted-route' to show a specific message
