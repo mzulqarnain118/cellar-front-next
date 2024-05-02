@@ -90,11 +90,9 @@ const SignInPage: NextPage<PageProps> = () => {
         const response = await signIn('sign-in', { email, password, redirect: false })
 
         if (response?.ok) {
-          if (redirectTo.toString()) {
-            await router.push(redirectTo.toString())
-          } else {
-            router.back()
-          }
+          await router.push(
+            redirectTo.toString() || localStorage.getItem('beforeSignInPath') || HOME_PAGE_PATH
+          )
         } else {
           setError('email', {
             message: 'Invalid email or password.',

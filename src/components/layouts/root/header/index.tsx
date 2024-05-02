@@ -154,6 +154,7 @@ export const Header = () => {
     }
 
     if (session?.user === undefined) {
+      localStorage.setItem('beforeSignInPath', router.asPath)
       router.push(SIGN_IN_PAGE_PATH)
     }
   }, [queryClient, router, session?.user])
