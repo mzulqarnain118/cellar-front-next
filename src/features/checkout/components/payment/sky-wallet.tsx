@@ -12,8 +12,12 @@ import { useCheckoutActions, useCheckoutAppliedSkyWallet } from '@/lib/stores/ch
 
 const accountCreditIcon = <CurrencyDollarIcon className="mx-3 w-4 h-4" />
 
+interface Balance {
+  BalanceAvailableToUse: number
+  BalanceTypeName: stringå
+}
+
 export const SkyWallet = ({ skyWallet, skyWalletFetching, skyWalletLoading, cartTotalData }) => {
-  console.log('🚀 ~ SkyWal ~ skyWallet:', skyWallet)
   // const { data: skyWallet, isFetching: skyWalletFetching, isLoading: skyWalletLoading } = useSkyWalletQuery()
 
   const [tooltipOpened, { close: closeTooltip, open: openTooltip }] = useDisclosure(false)
@@ -54,17 +58,15 @@ export const SkyWallet = ({ skyWallet, skyWalletFetching, skyWalletLoading, cart
 
   const eligibleBalance = useMemo(() => {
     const balanceAvailableToUse = skyWallet?.reduce(
-      (total, balance) => balance.BalanceAvailableToUse + total,
+      (total: number, balance: Balance) => balance?.BalanceAvailableToUse + total,
       0
     )
 
-    const balance = balanceAvailableToUse - appliedSkyWallet
-
-    if (balance >= cartTotalData?.orderTotal) {
-      return cartTotalData?.orderTotal
+    if (balanceAvailableToUse > cartTotalData?.orderTotal) {
+      return cartTotalData?.orderTotal - appliedSkyWallet
+    } else {
+      return balanceAvailableToUse - appliedSkyWallet
     }
-
-    return balance
   }, [appliedSkyWallet, cartTotalData?.orderTotal, skyWallet])
 
   const [value, setValue] = useInputState(0)
