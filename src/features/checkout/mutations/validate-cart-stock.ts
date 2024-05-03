@@ -75,11 +75,12 @@ export const useValidateCartStockMutation = (
       notifications.clean()
       if (data?.Success) {
         toast('success', 'Validated cart successfully!')
-        const redirection = session?.user ? CHECKOUT_PAGE_PATH : SIGN_IN_PAGE_PATH
-        router.push(
-          session?.user ? redirection : `${redirection}?redirectTo=${CHECKOUT_PAGE_PATH}`,
-          redirection
-        )
+
+        if (session?.user) {
+          router.push(CHECKOUT_PAGE_PATH)
+        } else {
+          router.push(`${SIGN_IN_PAGE_PATH}?redirectTo=${CHECKOUT_PAGE_PATH}`)
+        }
 
         if (cart?.items !== undefined) {
           // Track either the user clicked on checkout button
