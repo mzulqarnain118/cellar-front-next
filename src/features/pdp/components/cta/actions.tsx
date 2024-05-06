@@ -1,5 +1,7 @@
 import { ChangeEventHandler, useCallback, useState } from 'react'
 
+import { useRouter } from 'next/router'
+
 import { useWindowScroll } from '@mantine/hooks'
 
 import { Button } from '@/core/components/button'
@@ -9,6 +11,7 @@ import { GtmCustomEvents } from '@/lib/constants/gtm-events'
 import { useAddToCartMutation } from '@/lib/mutations/cart/add-to-cart'
 import { useUpdateQuantityMutation } from '@/lib/mutations/cart/update-quantity'
 import { useCartQuery } from '@/lib/queries/cart'
+import { useProductQuery } from '@/lib/queries/products'
 import { useProcessStore } from '@/lib/stores/process'
 import { CartItem, SubscriptionProduct } from '@/lib/types'
 import { trackEvent } from '@/lib/utils/gtm-service'
@@ -27,6 +30,9 @@ interface CtaActionsProps {
 }
 
 export const CtaActions = ({ className }: CtaActionsProps) => {
+  const router = useRouter()
+  const { cartUrl } = router.query
+  const { data: product } = useProductQuery(cartUrl?.toString() || '')
   const [quantity, setQuantity] = useState(1)
 
   const selectedProduct = usePdpSelectedProduct()
@@ -122,7 +128,7 @@ export const CtaActions = ({ className }: CtaActionsProps) => {
       ) : undefined}
       <div className="grid auto-rows-auto grid-cols-[auto_1fr] gap-4">
         <NumberPicker
-          disabled={numberPickerDisabled}
+          disabled={product && product?.quantityAvailable <= 0 ? true : numberPickerDisabled}
           handleAdd={handleAdd}
           handleChange={handleChange}
           handleMinus={handleRemove}
@@ -130,9 +136,15 @@ export const CtaActions = ({ className }: CtaActionsProps) => {
           min={MIN}
           value={quantity}
         />
-        <Button dark className="text-lg" onClick={handleAddToCartClick}>
-          Add to cart
-        </Button>
+        {product && product?.quantityAvailable <= 0 ? (
+          <Button className="text-lg" disabled={true}>
+            Sold Out
+          </Button>
+        ) : (
+          <Button dark className="text-lg" onClick={handleAddToCartClick}>
+            Add to cart
+          </Button>
+        )}
       </div>
     </div>
   )
