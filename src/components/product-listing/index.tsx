@@ -171,11 +171,14 @@ export const ProductListing = ({
 
   const filteredProducts = useMemo(
     () =>
-      circleExclusives === 'circle-exclusives' && !cleanCraftedSelections
+      circleExclusives === 'circle-exclusives' && cleanCraftedSelections
         ? data?.products?.filter(product =>
             product?.displayCategories?.includes(DISPLAY_CATEGORY['Clean Crafted Selections'])
           )
-        : data?.products,
+        : data?.products?.filter(
+            product =>
+              !product?.displayCategories?.includes(DISPLAY_CATEGORY['Clean Crafted Selections'])
+          ),
     [data]
   )
 
