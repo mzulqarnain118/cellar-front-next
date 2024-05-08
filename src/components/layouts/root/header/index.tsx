@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -74,6 +74,10 @@ export const Header = () => {
     curatedCart !== undefined && curatedCart.cartId.length > 0 ? curatedCart.cartId : undefined
   )
   const { shippingState } = useShippingStateStore()
+
+  useEffect(() => {
+    console.log('session', session)
+  }, [session])
 
   const menu = useMemo(
     () =>
@@ -149,7 +153,7 @@ export const Header = () => {
 
   const handleUserClick = useCallback(() => {
     if (session?.user !== undefined && session.user.isGuest) {
-      signOut(queryClient, false)
+      handleSignOut(false)
       router.push(SIGN_IN_PAGE_PATH)
     }
 
@@ -157,7 +161,16 @@ export const Header = () => {
       localStorage.setItem('beforeSignInPath', router.asPath)
       router.push(SIGN_IN_PAGE_PATH)
     }
-  }, [queryClient, router, session?.user])
+  }, [router, session?.user])
+
+  const handleSignOut = (redirect: boolean) => {
+    if (queryClient !== undefined) {
+      localStorage.removeItem('cart')
+      queryClient.invalidateQueries(CART_QUERY_KEY)
+    }
+
+    signOut(redirect, router)
+  }
 
   const userButton = useMemo(
     () =>
@@ -187,7 +200,7 @@ export const Header = () => {
                   </button>
                 </Menu.Item>
                 <Menu.Item>
-                  <button className="!rounded" onClick={() => signOut(queryClient)}>
+                  <button className="!rounded" onClick={handleSignOut}>
                     Sign out
                   </button>
                 </Menu.Item>
