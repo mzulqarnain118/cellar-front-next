@@ -165,17 +165,20 @@ export const ProductListing = ({
   const noResults = useMemo(() => !data || data.products.length === 0, [data])
   //! added clean crafted selections filter
   const cleanCraftedSelections = useMemo(
-    () => session?.user?.token && session?.user?.isClubMember,
+    () => !!session?.user?.token && !!session?.user?.isClubMember,
     [session]
   )
 
   const filteredProducts = useMemo(
     () =>
       circleExclusives === 'circle-exclusives' && cleanCraftedSelections
-        ? data?.products?.filter(product =>
-            product?.displayCategories?.includes(DISPLAY_CATEGORY['Clean Crafted Selections'])
+        ? data?.products
+        : circleExclusives === 'circle-exclusives'
+          ? data?.products?.filter(
+            product =>
+              !product?.displayCategories?.includes(DISPLAY_CATEGORY['Clean Crafted Selections'])
           )
-        : data?.products?.filter(
+          : data?.products?.filter(
             product =>
               !product?.displayCategories?.includes(DISPLAY_CATEGORY['Clean Crafted Selections'])
           ),

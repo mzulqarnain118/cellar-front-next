@@ -82,7 +82,26 @@ export const CartSummary = ({ cartTotalData }: CartSummaryProps) => {
             </Typography>
           </div>
         ) : undefined}
-        {discountTotal > 0 ? (
+        {!!cartTotalData?.discountTotals.length &&
+          cartTotalData?.discountTotals.map((item, index) => (
+            <div key={index} className="flex items-center justify-between">
+              <Typography className="text-neutral-500 basis-1/2">
+                {item?.description ?? item?.TotalDescription}
+              </Typography>
+              <Typography as="strong" className="text-success text-right">
+                -{formatCurrency(item?.amount ?? item?.TotalAmount)}
+              </Typography>
+            </div>
+          ))}
+        {!!discountTotal && (
+          <div className="flex items-center justify-between">
+            <Typography className="text-neutral-500">Total Discounts</Typography>
+            <Typography as="strong" className="text-success text-right">{`-${formatCurrency(
+              discountTotal
+            )}`}</Typography>
+          </div>
+        )}
+        {/* {discountTotal > 0 ? (
           <div className="grid grid-cols-2 items-center">
             <Typography noSpacing as="p" className="text-neutral-500">
               Discount
@@ -91,7 +110,7 @@ export const CartSummary = ({ cartTotalData }: CartSummaryProps) => {
               -{formatCurrency(discountTotal)}
             </Typography>
           </div>
-        ) : undefined}
+        ) : undefined} */}
         <div className="grid grid-cols-2 items-center">
           <Typography noSpacing as="p" className="text-neutral-500">
             Tax
