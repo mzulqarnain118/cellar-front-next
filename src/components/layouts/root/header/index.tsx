@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -74,10 +74,6 @@ export const Header = () => {
     curatedCart !== undefined && curatedCart.cartId.length > 0 ? curatedCart.cartId : undefined
   )
   const { shippingState } = useShippingStateStore()
-
-  useEffect(() => {
-    console.log('session', session)
-  }, [session])
 
   const menu = useMemo(
     () =>

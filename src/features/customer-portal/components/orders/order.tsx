@@ -22,7 +22,6 @@ interface OrderProps {
 const NON_CANCELABLE_ORDER_STATUSES = [3, 4, 5, 6]
 
 export const Order = ({ data }: OrderProps) => {
-  console.log('🚀 ~ Order ~ data:', data)
   const router = useRouter()
   const [enabled, setEnabled] = useState(false)
   const { data: tracking, isFetching, isLoading } = useOrderTrackingQuery(data.DisplayID, enabled)
