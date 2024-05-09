@@ -49,14 +49,6 @@ export const Receipt = () => {
               </Typography>
             </div>
           ))}
-        {!!discount && (
-          <div className="flex items-center justify-between">
-            <Typography>Total Discounts</Typography>
-            <Typography as="strong" className="text-error">{`-${formatCurrency(
-              discount
-            )}`}</Typography>
-          </div>
-        )}
         <div className="flex items-center justify-between">
           <Typography>Shipping</Typography>
           <Typography as="strong">{`${formatCurrency(shipping)}`}</Typography>
