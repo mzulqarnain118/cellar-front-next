@@ -22,6 +22,7 @@ interface OrderProps {
 const NON_CANCELABLE_ORDER_STATUSES = [3, 4, 5, 6]
 
 export const Order = ({ data }: OrderProps) => {
+  console.log('🚀 ~ Order ~ data:', data)
   const router = useRouter()
   const [enabled, setEnabled] = useState(false)
   const { data: tracking, isFetching, isLoading } = useOrderTrackingQuery(data.DisplayID, enabled)
@@ -37,36 +38,38 @@ export const Order = ({ data }: OrderProps) => {
 
   const products = useMemo(
     () =>
-      data.OrderLines.map(product => (
-        <div key={product.SKU} className="grid grid-cols-2 py-4 lg:grid-cols-[auto_1fr] lg:gap-4">
+      data?.OrderLines?.map(product => (
+        <div key={product?.SKU} className="grid grid-cols-2 py-4 lg:grid-cols-[auto_1fr] lg:gap-4">
           <div className="relative h-44 w-28">
-            <BlurImage
-              fill
-              alt={product.SKU}
-              className="object-contain"
-              src={product.ProductImageURL}
-            />
+            {product?.ProductImageURL && (
+              <BlurImage
+                fill
+                alt={product?.SKU}
+                className="object-contain"
+                src={product?.ProductImageURL}
+              />
+            )}
           </div>
           <div className="space-y-4">
             <div>
               <Typography as="h6" className="mb-1">
-                {product.DisplayName}
+                {product?.DisplayName}
               </Typography>
               <Typography className="rounded bg-primary p-1 text-sm text-neutral-50">
-                {product.SKU.toLowerCase()}
+                {product?.SKU?.toLowerCase()}
               </Typography>
             </div>
             <div>
               <Typography as="h6">Order price</Typography>
               <Typography>
-                {formatCurrency(product.LinePrice)} x {product.Quantity} ={' '}
-                {formatCurrency(product.LinePrice * product.Quantity)}
+                {formatCurrency(product?.LinePrice)} x {product?.Quantity} ={' '}
+                {formatCurrency(product?.LinePrice * product?.Quantity)}
               </Typography>
             </div>
           </div>
         </div>
       )),
-    [data.OrderLines]
+    [data?.OrderLines]
   )
 
   useEffect(() => {
