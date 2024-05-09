@@ -149,7 +149,7 @@ export const Header = () => {
 
   const handleUserClick = useCallback(() => {
     if (session?.user !== undefined && session.user.isGuest) {
-      handleSignOut(false)
+      signOut(queryClient, router, false)
       router.push(SIGN_IN_PAGE_PATH)
     }
 
@@ -158,15 +158,6 @@ export const Header = () => {
       router.push(SIGN_IN_PAGE_PATH)
     }
   }, [router, session?.user])
-
-  const handleSignOut = (redirect: boolean) => {
-    if (queryClient !== undefined) {
-      localStorage.removeItem('cart')
-      queryClient.invalidateQueries(CART_QUERY_KEY)
-    }
-
-    signOut(redirect, router)
-  }
 
   const userButton = useMemo(
     () =>
@@ -196,7 +187,7 @@ export const Header = () => {
                   </button>
                 </Menu.Item>
                 <Menu.Item>
-                  <button className="!rounded" onClick={handleSignOut}>
+                  <button className="!rounded" onClick={() => signOut(queryClient, router)}>
                     Sign out
                   </button>
                 </Menu.Item>
