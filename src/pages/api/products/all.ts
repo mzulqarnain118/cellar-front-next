@@ -189,7 +189,7 @@ const handler = async (req: NextRequest) => {
               product =>
                 !!product.displayCategories &&
                 !!product.sku &&
-                product.quantityAvailable >= 20 &&
+                // product.quantityAvailable >= 20 &&
                 !product.displayCategories?.includes(53)
             )
             .sort((left, right) => {

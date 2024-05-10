@@ -149,7 +149,7 @@ export const Header = () => {
 
   const handleUserClick = useCallback(() => {
     if (session?.user !== undefined && session.user.isGuest) {
-      signOut(queryClient, false)
+      signOut(queryClient, router, false)
       router.push(SIGN_IN_PAGE_PATH)
     }
 
@@ -157,7 +157,7 @@ export const Header = () => {
       localStorage.setItem('beforeSignInPath', router.asPath)
       router.push(SIGN_IN_PAGE_PATH)
     }
-  }, [queryClient, router, session?.user])
+  }, [router, session?.user])
 
   const userButton = useMemo(
     () =>
@@ -187,7 +187,7 @@ export const Header = () => {
                   </button>
                 </Menu.Item>
                 <Menu.Item>
-                  <button className="!rounded" onClick={() => signOut(queryClient)}>
+                  <button className="!rounded" onClick={() => signOut(queryClient, router)}>
                     Sign out
                   </button>
                 </Menu.Item>

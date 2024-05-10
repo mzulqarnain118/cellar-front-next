@@ -233,8 +233,11 @@ export const ProductCard = ({
   )
 
   const productCardButtonText = useMemo(
-    () => getProductButtonText(selectedProduct, session?.user?.isClubMember),
-    [selectedProduct, session?.user?.isClubMember]
+    () =>
+      product && product?.quantityAvailable <= 0
+        ? 'Details'
+        : getProductButtonText(selectedProduct, session?.user?.isClubMember),
+    [selectedProduct, session?.user?.isClubMember, product]
   )
 
   const onClick = useCallback(() => {
@@ -357,7 +360,7 @@ export const ProductCard = ({
             style={{ backgroundColor: prismicColor }}
             onClick={onClick}
           >
-            {productCardButtonText}
+            {product && product?.quantityAvailable <= 0 ? 'Details' : productCardButtonText}
           </Button>
         </div>
       </div>
