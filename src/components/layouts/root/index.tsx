@@ -144,61 +144,7 @@ export const RootLayout = ({ children }: RootLayoutProps) => {
         withCloseButton: false,
       })
     }
-  }, [ageVerified, handleClick, isFetchingStates, isLoadingStates, setAgeVerified])
-
-  useEffect(() => {
-    if (ageVerified === undefined || ageVerified === 'false') {
-      modals.open({
-        centered: true,
-        children: (
-          <div key="age-verified" className="space-y-2">
-            <Typography as="p">
-              We know it&apos;s rude to ask, but we&apos;re a licensed, bonded winery. You must be
-              over 21 years of age to enter.
-            </Typography>
-            <StatePicker popup />
-            <Button fullWidth disabled={isFetchingStates || isLoadingStates} onClick={handleClick}>
-              Yes, I am 21 years of age or older
-            </Button>
-          </div>
-        ),
-        classNames: {
-          title: '!h4',
-        },
-        closeOnClickOutside: false,
-        closeOnEscape: false,
-        title: 'Are you 21 or older?',
-        withCloseButton: false,
-      })
-    }
-  }, [ageVerified, handleClick, isFetchingStates, isLoadingStates, setAgeVerified])
-
-  useEffect(() => {
-    if (ageVerified === undefined || ageVerified === 'false') {
-      modals.open({
-        centered: true,
-        children: (
-          <div key="age-verified" className="space-y-2">
-            <Typography as="p">
-              We know it&apos;s rude to ask, but we&apos;re a licensed, bonded winery. You must be
-              over 21 years of age to enter.
-            </Typography>
-            <StatePicker popup />
-            <Button fullWidth disabled={isFetchingStates || isLoadingStates} onClick={handleClick}>
-              Yes, I am 21 years of age or older
-            </Button>
-          </div>
-        ),
-        classNames: {
-          title: '!h4',
-        },
-        closeOnClickOutside: false,
-        closeOnEscape: false,
-        title: 'Are you 21 or older?',
-        withCloseButton: false,
-      })
-    }
-  }, [ageVerified, handleClick, isFetchingStates, isLoadingStates, setAgeVerified])
+  }, [ageVerified, handleClick, isFetchingStates, isLoadingStates, setAgeVerified])  
 
   useEffect(() => {
     const loginStatus = session
