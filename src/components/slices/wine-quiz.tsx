@@ -50,7 +50,7 @@ export const getProductCategory = (displayCategoriesIds: number[], isGift = fals
 }
 
 export const WineQuiz = () => {
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoadingData, setIsLoading] = useState(true)
   const [sku, setSku] = useWineQuiz()
   const { mutate: addToCart } = useAddToCartMutation()
   const { data: consultant } = useConsultantQuery()
@@ -59,7 +59,7 @@ export const WineQuiz = () => {
     () => (consultant?.displayId !== CORPORATE_CONSULTANT_ID ? consultant.url : undefined),
     [consultant?.displayId, consultant.url]
   )
-  const { data: products } = useProductsQuery()
+  const { data: products, isLoading } = useProductsQuery()
   const productData = products?.find(product => product.sku === sku?.toLowerCase())
 
   const handleStorageChange = useCallback(async () => {
@@ -132,9 +132,9 @@ export const WineQuiz = () => {
       setSku(undefined)
       sessionStorage.removeItem('tastry-sku')
     }
-  }, [setSku, sku])
+  }, [setSku, sku, products, productData])
 
-  if (isLoading) {
+  if (isLoading || isLoadingData) {
     return (
       <div className="mx-auto flex h-[40rem] max-w-2xl flex-col items-center py-4 px-16 md:px-0">
         <div className="h-8 w-56 animate-pulse rounded bg-[#864f4f]" />
