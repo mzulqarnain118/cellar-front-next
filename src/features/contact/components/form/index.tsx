@@ -1,8 +1,9 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { ArrowUpOnSquareIcon } from '@heroicons/react/24/outline'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { FileInput, FileInputProps, Select } from '@mantine/core'
+import { FileInputProps, Select } from '@mantine/core'
+import { useInputState } from '@mantine/hooks'
 import { SubmitHandler, UseFormProps, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -10,6 +11,8 @@ import { Button } from '@/core/components/button'
 import { Input } from '@/core/components/input'
 import { Textarea } from '@/core/components/textarea'
 import { Typography } from '@/core/components/typogrpahy'
+import { api } from '@/lib/api'
+import { toastError, toastSuccess } from '@/lib/utils/notifications'
 
 const classNames: FileInputProps['classNames'] = {
   input: 'bg-base-light',
@@ -81,6 +84,11 @@ export const ContactForm = () => {
     []
   )
 
+  const [selectedSubject, setSelectedSubject] = useInputState('')
+  const [reasonOptions, setReasonOptions] = useState([])
+  const [selectedReason, setSelectedReason] = useState<string>('')
+  const [file, setFile] = useState<File | null>(null)
+
   const formProps: UseFormProps<ContactFormSchema> = useMemo(
     () => ({
       defaultValues,
@@ -96,11 +104,15 @@ export const ContactForm = () => {
     formState: { errors },
     handleSubmit,
     register,
+    unregister,
     setError,
+    getValues,
     setValue,
+    reset,
+    watch,
   } = useForm<ContactFormSchema>(formProps)
 
-  const temporaryData = useMemo(() => [], [])
+  const subjectWatch = watch('subject')
 
   const handleAttachmentChange: FileInputProps['onChange'] = useCallback(
     (file: File | null) => {
@@ -129,8 +141,18 @@ export const ContactForm = () => {
     [clearErrors, setError]
   )
 
-  const onSubmit: SubmitHandler<ContactFormSchema> = useCallback(
-    async ({
+  const onSubmit: SubmitHandler<ContactFormSchema> = async ({
+    attachment,
+    body,
+    consultantName,
+    email,
+    fullName,
+    phoneNumber,
+    orderNumber,
+    reason,
+    subject,
+  }) => {
+    console.log(
       attachment,
       body,
       consultantName,
@@ -139,26 +161,95 @@ export const ContactForm = () => {
       phoneNumber,
       orderNumber,
       reason,
+      subject
+    )
+    console.log('🚀 ~ ContactForm ~ attachment:', attachment)
+
+    const formData = new FormData()
+    if (attachment !== undefined) {
+      formData.set('attachment', file)
+    }
+
+    if (orderNumber !== undefined || orderNumber !== '') {
+      formData.set('ordernumber', orderNumber)
+    }
+    if (consultantName !== undefined || consultantName !== '') {
+      formData.set('consultantname', consultantName)
+    }
+    formData.set('howcanwehelpyou', body)
+    formData.set('emailaddress', email)
+    formData.set('fullname', fullName)
+    formData.set('phonenumber', phoneNumber)
+    formData.set('reason', reason)
+    formData.set('subject', subject)
+
+    const payload = {
+      attachment,
+      ordernumber: orderNumber,
+      consultantname: consultantName,
+      howcanwehelpyou: body,
+      emailaddress: email,
+      fullname: fullName,
+      phonenumber: phoneNumber,
+      reason,
       subject,
-    }) => {
-      const formData = new FormData()
-      if (attachment !== undefined) {
-        formData.set('attachment', attachment)
+    }
+
+    console.log('formData: ', formData)
+
+    try {
+      for (const key of formData?.entries()) {
+        console.log(key[0] + ', ' + key[1])
       }
-      if (orderNumber !== undefined) {
-        formData.set('orderNumber', orderNumber)
+      const response = await api('v2/ContactUs', { body: formData, method: 'post' }).json()
+      console.log('🚀 ~ ContactForm ~ response:', response)
+
+      if (response?.Success) {
+        toastSuccess({ message: response?.Data || 'Email sent successfully' })
+        setSelectedReason('')
+        setSelectedSubject('')
+        setValue('reason', '')
+        setValue('subject', '')
+        reset()
+      } else {
+        toastError('error', response?.Error?.Message)
       }
-      if (consultantName !== undefined) {
-        formData.set('consultantName', consultantName)
-      }
-      formData.set('body', body)
-      formData.set('email', email)
-      formData.set('fullName', fullName)
-      formData.set('phoneNumber', phoneNumber)
-      formData.set('reason', reason)
-      formData.set('subject', subject)
-    },
-    []
+    } catch {
+      toastError('error', 'There was an error updating the contact us form.')
+    }
+  }
+
+  useEffect(() => {
+    if (selectedSubject && subjectReasonMap[selectedSubject]) {
+      setReasonOptions(
+        subjectReasonMap[selectedSubject].map(reason => ({
+          value: reason,
+          label: reason,
+        }))
+      )
+      setSelectedReason('') // Clear selected reason when subject changes
+    } else {
+      setReasonOptions([])
+      setSelectedReason('')
+    }
+  }, [selectedSubject, subjectWatch])
+
+  const reasonSelect = useMemo(
+    () => (
+      <Select
+        data={reasonOptions}
+        error={errors.reason?.message}
+        label="Reason"
+        size="md"
+        value={selectedReason}
+        {...register('reason')}
+        onChange={value => {
+          setValue('reason', value)
+          setSelectedReason(value)
+        }}
+      />
+    ),
+    [selectedSubject, selectedReason, reasonOptions]
   )
 
   return (
@@ -193,20 +284,41 @@ export const ContactForm = () => {
           {...register('consultantName')}
         />
         <Select
-          data={temporaryData}
+          data={[
+            { value: 'Account Inquiry', label: 'Account Inquiry' },
+            { value: 'General Inquiry', label: 'General Inquiry' },
+            { value: 'Order Inquiry', label: 'Order Inquiry' },
+            { value: 'Product Inquiry', label: 'Product Inquiry' },
+          ]}
           error={errors.subject?.message}
           label="Subject"
-          name="subject"
           size="md"
+          onChange={value => {
+            setValue('subject', value)
+            setSelectedSubject(value)
+            setSelectedReason('')
+          }}
         />
-        <Select data={temporaryData} error={errors.reason?.message} label="Reason" size="md" />
+        {reasonSelect}
+        {/* <Select
+          data={reasonOptions}
+          disabled={!selectedSubject}
+          error={errors.reason?.message}
+          label="Reason"
+          name="reason"
+          size="md"
+          onChange={value => {
+            setValue('reason', value)
+            setSelectedReason(value)
+          }}
+        /> */}
         <Textarea
           className="lg:col-span-2"
           error={errors.body?.message}
           label="How can we help you?"
           {...register('body')}
         />
-        <FileInput
+        {/* <FileInput
           clearable
           accept={FILE_TYPES.join(',')}
           className="col-span-1"
@@ -215,9 +327,10 @@ export const ContactForm = () => {
           error={errors.attachment?.message}
           icon={icon}
           label="Attachment"
+          name="attachment"
           size="md"
           onChange={handleAttachmentChange}
-        />
+        /> */}
         <div className="col-span-1" />
         <Button dark className="col-span-2 lg:col-span-1 mt-4" type="submit">
           Send message

@@ -29,12 +29,12 @@ const addTowerKeyAndAuthHeaders: BeforeRequestHook = async (request, _options) =
     request.headers.set('Authorization', `Bearer ${newGuestToken}`)
   }
 
-  if (
-    request.method === 'POST' &&
-    (request.body instanceof Object || Array.isArray(request.body))
-  ) {
-    request.headers.set('Content-Type', 'application/json')
-  }
+  // if (
+  //   request.method === 'POST' &&
+  //   (request.body instanceof Object || Array.isArray(request.body))
+  // ) {
+  //   request.headers.set('Content-Type', 'application/json')
+  // }
   // // Add X-Frame-Options header to prevent clickjacking
   // request.headers.set('X-Frame-Options', 'SAMEORIGIN')
 }
