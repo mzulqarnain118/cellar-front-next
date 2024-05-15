@@ -7,6 +7,7 @@ import { QueryFunction, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 
 import { api } from '@/lib/api'
+import { useCartStorage } from '@/lib/hooks/use-cart-storage'
 import { CART_QUERY_KEY } from '@/lib/queries/cart'
 import { useProductsQuery } from '@/lib/queries/products'
 import { useProcessStore } from '@/lib/stores/process'
@@ -47,6 +48,7 @@ export const useSharedCartQuery = () => {
   const queryClient = useQueryClient()
   const { data: session } = useSession()
   const { data: products } = useProductsQuery()
+  const [_, setCartStorage] = useCartStorage()
 
   return useQuery({
     enabled: !!sharedCartId,
@@ -54,39 +56,42 @@ export const useSharedCartQuery = () => {
       if (response?.Success) {
         notifications.clean()
         const { Cart, CartId } = response.Data
+
+        const updatedCartData = {
+          discounts: [],
+          id: CartId,
+          isSharedCart: true,
+          items: Cart.OrderLines.map(item => {
+            const product = products?.find(product => product.sku === item.ProductSKU.toLowerCase())
+
+            if (product) {
+              return {
+                ...product,
+                orderId: item.OrderID,
+                orderLineId: item.OrderLineID,
+                quantity: item.Quantity,
+              } satisfies CartItem
+            } else {
+              return undefined
+            }
+          }).filter(Boolean),
+          orderDisplayId: Cart.DisplayID,
+          prices: {
+            orderTotal: 0,
+            retailDeliveryFee: 0,
+            shipping: 0,
+            subtotal: Cart.Subtotal,
+            subtotalAfterSavings: Cart.SubtotalAfterSavings,
+            tax: Cart.TaxTotal,
+          },
+        }
+
         queryClient.setQueryData(
           [...CART_QUERY_KEY, shippingState.provinceID || session?.user?.shippingState.provinceID],
-          {
-            discounts: [],
-            id: CartId,
-            isSharedCart: true,
-            items: Cart.OrderLines.map(item => {
-              const product = products?.find(
-                product => product.sku === item.ProductSKU.toLowerCase()
-              )
-
-              if (product) {
-                return {
-                  ...product,
-                  orderId: item.OrderID,
-                  orderLineId: item.OrderLineID,
-                  quantity: item.Quantity,
-                } satisfies CartItem
-              } else {
-                return undefined
-              }
-            }).filter(Boolean),
-            orderDisplayId: Cart.DisplayID,
-            prices: {
-              orderTotal: 0,
-              retailDeliveryFee: 0,
-              shipping: 0,
-              subtotal: Cart.Subtotal,
-              subtotalAfterSavings: Cart.SubtotalAfterSavings,
-              tax: Cart.TaxTotal,
-            },
-          } satisfies Cart
+          updatedCartData satisfies Cart
         )
+
+        setCartStorage(updatedCartData)
       }
     },
     queryFn: getSharedCart,

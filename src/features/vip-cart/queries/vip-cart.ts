@@ -5,6 +5,7 @@ import { QueryFunction, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 
 import { api } from '@/lib/api'
+import { useCartStorage } from '@/lib/hooks/use-cart-storage'
 import { CART_QUERY_KEY } from '@/lib/queries/cart'
 import { useProductsQuery } from '@/lib/queries/products'
 import { useProcessStore } from '@/lib/stores/process'
@@ -32,6 +33,8 @@ export const getVipCart: QueryFunction<VIPCart | null, (string | undefined)[]> =
       },
     }).json<VIPCartResponse>()
 
+    console.log('response', response)
+
     notifications.clean()
     if (response.Success) {
       toastSuccess({ message: 'VIP cart loaded successfully!' })
@@ -55,6 +58,7 @@ export const useVipCartQuery = () => {
   const { data: products } = useProductsQuery()
   const { data: session } = useSession()
   const { shippingState } = useShippingStateStore()
+  const [_, setCartStorage] = useCartStorage()
 
   return useQuery({
     enabled: !!orderDisplayId,
@@ -62,40 +66,43 @@ export const useVipCartQuery = () => {
       if (data) {
         notifications.clean()
         const { CartID, cart_information } = data
+
+        const updatedCartData = {
+          discounts: [],
+          id: CartID,
+          isSharedCart: true,
+          items: cart_information.OrderLines.map(item => {
+            const product = products?.find(product => product.sku === item.ProductSKU.toLowerCase())
+
+            if (product) {
+              return {
+                ...product,
+                isVip: true,
+                orderId: item.OrderID,
+                orderLineId: item.OrderLineID,
+                quantity: item.Quantity,
+              } satisfies CartItem
+            } else {
+              return undefined
+            }
+          }).filter(Boolean),
+          orderDisplayId: cart_information.DisplayID,
+          prices: {
+            orderTotal: 0,
+            retailDeliveryFee: 0,
+            shipping: 0,
+            subtotal: cart_information.Subtotal,
+            subtotalAfterSavings: cart_information.SubtotalAfterSavings,
+            tax: cart_information.TaxTotal,
+          },
+        }
+
         queryClient.setQueryData(
           [...CART_QUERY_KEY, shippingState.provinceID || session?.user?.shippingState.provinceID],
-          {
-            discounts: [],
-            id: CartID,
-            isSharedCart: true,
-            items: cart_information.OrderLines.map(item => {
-              const product = products?.find(
-                product => product.sku === item.ProductSKU.toLowerCase()
-              )
-
-              if (product) {
-                return {
-                  ...product,
-                  isVip: true,
-                  orderId: item.OrderID,
-                  orderLineId: item.OrderLineID,
-                  quantity: item.Quantity,
-                } satisfies CartItem
-              } else {
-                return undefined
-              }
-            }).filter(Boolean),
-            orderDisplayId: cart_information.DisplayID,
-            prices: {
-              orderTotal: 0,
-              retailDeliveryFee: 0,
-              shipping: 0,
-              subtotal: cart_information.Subtotal,
-              subtotalAfterSavings: cart_information.SubtotalAfterSavings,
-              tax: cart_information.TaxTotal,
-            },
-          } satisfies Cart
+          updatedCartData satisfies Cart
         )
+
+        setCartStorage(updatedCartData)
         toastSuccess({ message: 'VIP cart loaded' })
       }
     },
