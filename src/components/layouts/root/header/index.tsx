@@ -156,7 +156,7 @@ export const Header = () => {
     }
 
     if (session?.user === undefined) {
-      localStorage.setItem('beforeSignInPath', router.asPath)
+      localStorage.setItem('beforeSignInPath', router.pathname)
       router.push(SIGN_IN_PAGE_PATH)
     }
   }, [router, session?.user])
@@ -233,7 +233,7 @@ export const Header = () => {
             const product = products?.find(
               productData => productData?.sku === item?.ProductSKU?.toLowerCase()
             )
-            
+
             return {
               ...product,
               cartUrl: product?.cartUrl || '',

@@ -5,7 +5,7 @@ import { useRouter } from 'next/router'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LoadingOverlay } from '@mantine/core'
-import { dehydrate } from '@tanstack/react-query'
+import { dehydrate, useQueryClient } from '@tanstack/react-query'
 import { clsx } from 'clsx'
 import { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next'
 import { signIn, useSession } from 'next-auth/react'
@@ -17,10 +17,13 @@ import { Button } from '@/core/components/button'
 import { Input } from '@/core/components/input'
 import { PasswordInput } from '@/core/components/password-input'
 import { Typography } from '@/core/components/typogrpahy'
+import { api } from '@/lib/api'
 import { useValidateEmailMutation } from '@/lib/mutations/validate-email'
 import { CREATE_ACCOUNT_PAGE_PATH, GUEST_CHECKOUT_PAGE_PATH, HOME_PAGE_PATH } from '@/lib/paths'
-import { useCartQuery } from '@/lib/queries/cart'
+import { CART_QUERY_KEY, useCartQuery } from '@/lib/queries/cart'
 import { getStaticNavigation } from '@/lib/queries/header'
+import { VIPCartResponse, ValidateCartOwnerResponse } from '@/lib/types'
+import toast from '@/lib/utils/notifications'
 import { createClient } from '@/prismic-io'
 
 const Link = dynamic(() => import('src/components/link').then(module => module.Link), {
@@ -51,6 +54,7 @@ const SignInPage: NextPage<PageProps> = () => {
   const { data: session } = useSession()
   const router = useRouter()
   const { data: cart } = useCartQuery()
+  const queryClient = useQueryClient()
 
   const hasSubscriptionInCart = useMemo(
     () =>
@@ -90,9 +94,55 @@ const SignInPage: NextPage<PageProps> = () => {
         const response = await signIn('sign-in', { email, password, redirect: false })
 
         if (response?.ok) {
-          await router.push(
-            redirectTo.toString() || localStorage.getItem('beforeSignInPath') || HOME_PAGE_PATH
-          )
+          if (cart?.orderDisplayId) {
+            const vipCartCheck = await api('v2/GetCartInfoFromOrderDisplayId', {
+              method: 'get',
+              searchParams: { OrderDisplayId: cart?.orderDisplayId },
+            }).json<VIPCartResponse>()
+
+            if (vipCartCheck.Success) {
+              const cartOwnerCheck = await api('v2/ValidateCartOwnerSuccess', {
+                json: {
+                  cartId: cart?.id || '',
+                },
+                method: 'post',
+              }).json<ValidateCartOwnerResponse>()
+
+              if (cartOwnerCheck?.Success) {
+                await router.push(
+                  redirectTo.toString() ||
+                    localStorage.getItem('beforeSignInPath') ||
+                    HOME_PAGE_PATH
+                )
+              } else if (!cartOwnerCheck?.Success) {
+                await queryClient.invalidateQueries(CART_QUERY_KEY)
+
+                await router.push(
+                  redirectTo.toString() ||
+                    localStorage.getItem('beforeSignInPath') ||
+                    HOME_PAGE_PATH
+                )
+                toast(
+                  'error',
+                  'This cart is no longer valid. Please contact your Indepdent Consultant for more information.'
+                )
+              } else {
+                await router.push(
+                  redirectTo.toString() ||
+                    localStorage.getItem('beforeSignInPath') ||
+                    HOME_PAGE_PATH
+                )
+              }
+            } else {
+              await router.push(
+                redirectTo.toString() || localStorage.getItem('beforeSignInPath') || HOME_PAGE_PATH
+              )
+            }
+          } else {
+            await router.push(
+              redirectTo.toString() || localStorage.getItem('beforeSignInPath') || HOME_PAGE_PATH
+            )
+          }
         } else {
           setError('email', {
             message: 'Invalid email or password.',
