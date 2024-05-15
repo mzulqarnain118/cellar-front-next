@@ -81,7 +81,7 @@ const PLP = ({ page }: { page: Content.PlpDocument | null }) => {
   const router = useRouter()
   const currentPage = router.query.page ? parseInt(router.query.page.toString()) : DEFAULT_PAGE
 
-  const notCategories = useMemo(() => [21, 33], [])
+  const notCategories = useMemo(() => [21, 33, 53], [])
   const categories = page?.data.display_categories
     .map(category => category.display_category_id)
     .map(Number)

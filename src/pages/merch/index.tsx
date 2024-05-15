@@ -100,6 +100,8 @@ import { DEFAULT_LIMIT, DEFAULT_PAGE, DEFAULT_SORT, Sort } from '@/components/pr
 // type PageProps = InferGetStaticPropsType<typeof getStaticProps>
 
 const CategoryPage: NextPage<PageProps> = () => {
+  const notCategories = useMemo(() => [53], [])
+
   const router = useRouter()
   const currentPage = router.query.page ? parseInt(router.query.page.toString()) : DEFAULT_PAGE
   const categories = useMemo(() => [9], [])
@@ -133,6 +135,7 @@ const CategoryPage: NextPage<PageProps> = () => {
         //   >[]
         // }
         limit={limit}
+        notCategories={notCategories}
         page={currentPage}
         // pageUrl={page?.url}
         sort={sort}

@@ -186,11 +186,10 @@ const handler = async (req: NextRequest) => {
               return array
             }, [])
             .filter(
-              product =>
-                !!product.displayCategories &&
-                !!product.sku &&
-                // product.quantityAvailable >= 20 &&
-                !product.displayCategories?.includes(53)
+              product => !!product.displayCategories && !!product.sku
+              // &&
+              //  product.quantityAvailable >= 20 &&
+              //  !product.displayCategories?.includes(53)
             )
             .sort((left, right) => {
               const leftCategoryId = left.displayCategoriesSortData?.[0]?.id || undefined

@@ -101,6 +101,8 @@ export const getServerSideProps: GetServerSideProps = async ({
 }
 
 const SearchPage = ({ page }: { page: Content.PlpDocument | null }) => {
+  const notCategories = useMemo(() => [53], [])
+
   const router = useRouter()
   const currentPage = router.query.page ? parseInt(router.query.page.toString()) : DEFAULT_PAGE
   const categories = page?.data.display_categories
@@ -134,6 +136,7 @@ const SearchPage = ({ page }: { page: Content.PlpDocument | null }) => {
           >[]
         }
         limit={limit}
+        notCategories={notCategories}
         page={currentPage}
         search={search}
         sort={sort}
