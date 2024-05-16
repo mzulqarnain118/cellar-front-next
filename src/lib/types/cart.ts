@@ -1,5 +1,7 @@
 import { ProductsSchema } from './schemas/product'
 
+import { Failure } from '.'
+
 export interface ProductVariation {
   name: string
   primary: boolean
@@ -109,3 +111,52 @@ export const DEFAULT_CART_STATE: Cart = {
     tax: 0,
   },
 }
+
+export interface ValidateCartOwnerSuccess {
+  Success: true
+}
+
+export type ValidateCartOwnerResponse = ValidateCartOwnerSuccess | Failure
+
+interface VIPCartSuccess {
+  Success: true
+  Data: {
+    CartID: string
+    cart_information: {
+      DiscountTotals: {
+        TotalAmount: number
+        TotalDescription: string
+      }[]
+      DisplayID: string
+      OrderLines: {
+        ProductSKU: string
+        Price: number
+        DisplayPrice: number
+        Quantity: number
+        ProductImage: string
+        ProductClassificationIDs: number[]
+        ProductDisplayName: string
+        OrderLineID: number
+        OrderID: number
+        CategoriesIDs: number[]
+        Variations: {
+          SKU: string
+          cartUrl: string
+          Primary: boolean
+          Active: boolean
+          ProductVariations: {
+            VariationTypeID: number
+            VariationTypeName: string
+            VariationTypeOptionID: number
+            VariationOptionName: string
+          }[]
+        }[]
+      }[]
+      Subtotal: number
+      SubtotalAfterSavings: number
+      TaxTotal: number
+    }
+  }
+}
+
+export type VIPCartResponse = VIPCartSuccess | Failure

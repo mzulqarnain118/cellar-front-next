@@ -1,6 +1,9 @@
-import { ReactNode } from 'react'
+import { ReactNode, useEffect } from 'react'
 
 import dynamic from 'next/dynamic'
+import { useRouter } from 'next/router'
+
+import { useSession } from 'next-auth/react'
 
 import { CompanyLogo } from '@/components/company-logo'
 import { Typography } from '@/core/components/typogrpahy'
@@ -16,6 +19,22 @@ interface CheckoutLayoutProps {
 
 export const CheckoutLayout = ({ children }: CheckoutLayoutProps) => {
   const isDesktop = useIsDesktop()
+  const { data: session } = useSession()
+  const router = useRouter()
+
+  // Load user consultant if consultant not defined for session
+  useEffect(() => {
+    const u = localStorage.getItem('u')
+    if (
+      session?.user?.userConsultantData?.url &&
+      session?.user.userConsultantData.displayId !== '1001' &&
+      (u === undefined || u === null || u === '')
+    ) {
+      router.replace({
+        query: { ...router.query, u: session?.user?.userConsultantData?.url },
+      })
+    }
+  }, [session?.user.userConsultantData, router?.pathname])
 
   return (
     <div className="relative h-full min-h-[100svh] bg-[#f7f3f4]">
