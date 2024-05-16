@@ -39,7 +39,7 @@ export const getVipCart: QueryFunction<VIPCart | null, (string | undefined)[]> =
       // toastSuccess({ message: 'VIP cart loaded successfully!' })
       return response.Data
     } else {
-      toastError({ message: response.Error.Message || "We couldn't load that VIP cart." })
+      toast('error', response.Error.Message || "We couldn't load that VIP cart.")
       return null
     }
   } catch {

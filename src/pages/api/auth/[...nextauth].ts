@@ -220,6 +220,12 @@ export const authOptions: NextAuthOptions = {
                 url: loginData.data.sponsor.Url,
               }
 
+              const userConsultantData = {
+                displayId: loginData.data.sponsor.DisplayID,
+                displayName: loginData.data.sponsor.DisplayName,
+                url: loginData.data.sponsor.Url,
+              }
+
               // Set user consultant if their sponsor is the corporate sponsor.
               const { consultant, setConsultant } = useConsultantStore.getState()
               if (
@@ -242,6 +248,7 @@ export const authOptions: NextAuthOptions = {
                     tokenDetails['.refresh_token_expires']
                   ).toDateString(),
                 },
+                userConsultantData,
               }
 
               // if (consultant.displayId === CORPORATE_CONSULTANT_ID) {

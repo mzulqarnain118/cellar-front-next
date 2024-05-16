@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -148,6 +148,20 @@ export const Header = () => {
       ),
     [cta?.data.button_text, isDesktop, isFetchingCTA, isLoadingCTA]
   )
+
+  // Load user consultant if consultant not defined for session
+  useEffect(() => {
+    const u = localStorage.getItem('u')
+    if (
+      session?.user?.userConsultantData?.url &&
+      session?.user.userConsultantData.displayId !== '1001' &&
+      (u === undefined || u === null || u === '')
+    ) {
+      router.replace({
+        query: { ...router.query, u: session?.user?.userConsultantData?.url },
+      })
+    }
+  }, [session?.user.userConsultantData, router?.pathname])
 
   const handleUserClick = useCallback(() => {
     if (session?.user !== undefined && session.user.isGuest) {
