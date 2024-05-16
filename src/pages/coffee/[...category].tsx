@@ -107,6 +107,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
 type PageProps = InferGetStaticPropsType<typeof getStaticProps>
 
 const CategoryPage: NextPage<PageProps> = ({ page }) => {
+  const notCategories = useMemo(() => [53], [])
+
   const router = useRouter()
   const currentPage = router.query.page ? parseInt(router.query.page.toString()) : DEFAULT_PAGE
   const categories = page?.data.display_categories
@@ -142,6 +144,7 @@ const CategoryPage: NextPage<PageProps> = ({ page }) => {
           >[]
         }
         limit={limit}
+        notCategories={notCategories}
         page={currentPage}
         sort={sort}
       />

@@ -4,6 +4,7 @@ import { useEventListener } from 'usehooks-ts'
 
 import { CORPORATE_CONSULTANT_ID } from '@/lib/constants'
 import { DISPLAY_CATEGORY } from '@/lib/constants/display-category'
+import { useAgeVerified } from '@/lib/hooks/use-age-verified'
 import { useWineQuiz } from '@/lib/hooks/use-wine-quiz'
 import { useAddToCartMutation } from '@/lib/mutations/cart/add-to-cart'
 import { useConsultantQuery } from '@/lib/queries/consultant'
@@ -61,6 +62,7 @@ export const WineQuiz = () => {
   )
   const { data: products, isLoading } = useProductsQuery()
   const productData = products?.find(product => product.sku === sku?.toLowerCase())
+  const { ageVerified, setAgeVerified } = useAgeVerified()
 
   const handleStorageChange = useCallback(async () => {
     const isClubOnly =
@@ -127,12 +129,7 @@ export const WineQuiz = () => {
     const tastryEvent = new Event('loadTastry')
     window.dispatchEvent(tastryEvent)
     setIsLoading(false)
-
-    return () => {
-      setSku(undefined)
-      sessionStorage.removeItem('tastry-sku')
-    }
-  }, [setSku, sku, products, productData])
+  }, [setSku, sku, products, productData, ageVerified])
 
   if (isLoading || isLoadingData) {
     return (

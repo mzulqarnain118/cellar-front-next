@@ -1,5 +1,10 @@
 import { State } from './state'
 
+interface UserConsultantData {
+  displayId: string
+  displayName: string
+  url: string
+}
 export interface User {
   displayId: string
   dateOfBirth?: Date
@@ -23,4 +28,5 @@ export interface User {
     refreshTokenExpires: string
   }
   username?: string
+  userConsultantData?: UserConsultantData
 }
