@@ -49,6 +49,7 @@ export const schema = z.object({
   onSalePrice: z.number().optional(),
   pictureUrl: z.string().optional(),
   price: z.number(),
+  productClassificationIDs: z.array(z.number()),
   quantityAvailable: z.number(),
   sku: z.string(),
   subscribable: z.boolean(),

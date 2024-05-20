@@ -78,8 +78,16 @@ export const CartDrawer = () => {
       return price * (item.quantity || 1) + total //item.onSalePrice || item.price
     }, 0) || 0
 
-  const percentage = Math.round((subtotal / 150) * 100)
-  const difference = 150 - subtotal
+  const freeShippingSubtotal =
+    cart?.items
+      .filter(product => !product?.productClassificationIDs?.includes(361))
+      .reduce((total, item) => {
+        const price = item?.onSalePrice
+        return price * (item.quantity || 1) + total //item.onSalePrice || item.price
+      }, 0) || 0
+
+  const percentage = Math.round((freeShippingSubtotal / 150) * 100)
+  const difference = 150 - freeShippingSubtotal
 
   const isCheckoutButtonDisabled = useMemo(
     () => cartItems === undefined || isMutatingCart || isSharingCart,
