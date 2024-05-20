@@ -62,8 +62,6 @@ export const WineQuiz = () => {
   )
   const { data: products, isLoading } = useProductsQuery()
 
-  console.log("🚀 ~ WineQuiz ~ products:", products)
-
   const productData = products?.find(product => product.sku === sku?.toLowerCase())
   const { ageVerified, setAgeVerified } = useAgeVerified()
 
@@ -78,7 +76,6 @@ export const WineQuiz = () => {
     const isAutoSip =
       productData?.displayCategories?.includes(DISPLAY_CATEGORY['Auto-Sip']) || false
     // const isMerch = productData?.catalogId === 9 // merch catalog id
-
 
     let tastrySku: string | undefined = sku
     if (tastrySku === undefined && typeof window !== 'undefined') {

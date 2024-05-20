@@ -49,6 +49,7 @@ const handler = async (req: NextRequest) => {
         displayName: string
         pictureUrl: string | null
         price: number
+        ProductClassificationIDs: number[]
         quantityAvailable: number
         sku: string
         subscribable: boolean
@@ -147,6 +148,7 @@ const handler = async (req: NextRequest) => {
             : undefined,
           pictureUrl: product.pictureUrl || undefined,
           price: product.price,
+          productClassificationIDs: product.ProductClassificationIDs,
           quantityAvailable: product.quantityAvailable || 0,
           sku: product.sku.toLowerCase(),
           subscribable: product.subscribable || false,
