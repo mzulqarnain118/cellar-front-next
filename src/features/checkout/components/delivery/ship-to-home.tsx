@@ -4,7 +4,7 @@ import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import dynamic from 'next/dynamic'
 
 import { PlusIcon } from '@heroicons/react/24/outline'
-import { Collapse, Select, SelectProps, Skeleton } from '@mantine/core'
+import { Collapse, Select, SelectProps } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { modals } from '@mantine/modals'
 import { notifications } from '@mantine/notifications'
@@ -46,7 +46,7 @@ interface ShipToHomeProps {
 export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
   const [removedProductsModalBtnDisabled, setRemovedProductsModalBtnDisabled] = useState(false)
   const queryClient = useQueryClient()
-  const { data } = useAddressesAndCreditCardsQuery()
+  const { data, isLoading: isLoadingAddressesAndCreditCards } = useAddressesAndCreditCardsQuery()
   const { data: cart } = useCartQuery()
   const { mutate: applyCheckoutSelections, isLoading: isApplyingSelections } =
     useApplyCheckoutSelectionsMutation()
@@ -109,6 +109,13 @@ export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
         : [],
     [data]
   )
+
+  useEffect(() => {
+    if (data?.addresses?.length === 0) {
+      toggleAddressForm()
+    }
+  }, [data])
+
   const shippingMethods = useMemo(
     () =>
       shippingMethodsData !== undefined
@@ -211,54 +218,38 @@ export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
 
   return (
     <div className="space-y-4">
-      <Collapse in={!addressFormOpen}>
-        {data === undefined ? (
-          <>
-            <Skeleton className="mb-1 h-6" width={120} />
-            <Skeleton className="h-10" />
-          </>
-        ) : (
-          <Select
-            classNames={dropdownClassNames}
-            data={shippingAddresses}
-            label="Shipping address"
-            value={activeShippingAddress?.AddressID?.toString()}
-            onChange={handleAddressChange}
-          />
-        )}
+      <Collapse in={!addressFormOpen && shippingAddresses.length !== 0}>
+        <Select
+          classNames={dropdownClassNames}
+          data={shippingAddresses}
+          label="Shipping address"
+          value={activeShippingAddress?.AddressID?.toString()}
+          onChange={handleAddressChange}
+        />
       </Collapse>
 
-      {activeShippingAddress ? (
-        addressFormOpen ? undefined : (
-          <Button color="ghost" size="sm" startIcon={plusIcon} onClick={toggleAddressForm}>
-            Add address
-          </Button>
-        )
-      ) : (
-        <Skeleton className="h-[111px] mt-1" width={56} />
-      )}
+      <Collapse in={!addressFormOpen && !isLoadingAddressesAndCreditCards}>
+        <Button color="ghost" size="sm" startIcon={plusIcon} onClick={toggleAddressForm}>
+          Add address
+        </Button>
+      </Collapse>
 
       <Collapse in={addressFormOpen}>
         <AddressForm ref={refs.shippingAddressRef} onCreateAddress={closeAddressForm} />
       </Collapse>
 
-      <Collapse in={!addressFormOpen}>
-        {shippingMethodsData === undefined || shippingMethodsData.length === 0 ? (
-          <>
-            <Skeleton className="mb-1 h-6" width={120} />
-            <Skeleton className="h-10" />
-          </>
-        ) : (
-          <Select
-            ref={refs.shippingMethodRef}
-            classNames={dropdownClassNames}
-            data={shippingMethods}
-            disabled={disabled}
-            label="Shipping method"
-            value={cartTotalData?.shipping.methodId.toString()}
-            onChange={handleShippingMethodChange}
-          />
-        )}
+      <Collapse
+        in={!addressFormOpen && !(shippingMethods === undefined || shippingMethods.length === 0)}
+      >
+        <Select
+          ref={refs.shippingMethodRef}
+          classNames={dropdownClassNames}
+          data={shippingMethods}
+          disabled={disabled}
+          label="Shipping method"
+          value={cartTotalData?.shipping.methodId.toString()}
+          onChange={handleShippingMethodChange}
+        />
       </Collapse>
     </div>
   )
