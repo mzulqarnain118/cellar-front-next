@@ -119,8 +119,8 @@ export const StatePicker = ({ popup = false }: StatePickerProps) => {
   if (isFetching || isLoading) {
     return (
       <div className="flex items-center lg:grid">
-        <Skeleton className="h-4 w-[3.625rem] lg:w-[10.3125rem]" />
-        <Skeleton className="h-[1.875rem] w-[10.3125rem]" />
+        <Skeleton className="h-[18.594px] w-[3.625rem] lg:w-[16.239rem]" />
+        <Skeleton className="h-[2.875rem] w-[25.5rem]" />
       </div>
     )
   }
