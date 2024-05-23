@@ -9,7 +9,6 @@ import { useSession } from 'next-auth/react'
 
 import { LincChat } from '@/components/linc-chat'
 import { Button } from '@/core/components/button'
-import { Typography } from '@/core/components/typogrpahy'
 import { useCuratedCartQuery } from '@/features/curated-cart/queries/curated-cart'
 import { useSharedCartQuery } from '@/features/shared-cart/queries/shared-cart'
 import { useVipCartQuery } from '@/features/vip-cart/queries/vip-cart'
@@ -125,10 +124,9 @@ export const RootLayout = ({ children }: RootLayoutProps) => {
         centered: true,
         children: (
           <div key="age-verified" className="space-y-2">
-            <Typography as="p">
-              We know it&apos;s rude to ask, but we&apos;re a licensed, bonded winery. You must be
-              over 21 years of age to enter.
-            </Typography>
+            {/* <Typography as="p" className="text-center mx-6 mb-4">
+              Before you enter, we need to make sure you&apos;re of legal drinking age.
+            </Typography> */}
             <StatePicker popup />
             <Button fullWidth disabled={isFetchingStates || isLoadingStates} onClick={handleClick}>
               Yes, I am 21 years of age or older
@@ -136,6 +134,7 @@ export const RootLayout = ({ children }: RootLayoutProps) => {
           </div>
         ),
         classNames: {
+          header: 'flex justify-center mb-2',
           title: '!h4',
         },
         closeOnClickOutside: false,
@@ -144,7 +143,7 @@ export const RootLayout = ({ children }: RootLayoutProps) => {
         withCloseButton: false,
       })
     }
-  }, [ageVerified, handleClick, isFetchingStates, isLoadingStates, setAgeVerified])  
+  }, [ageVerified, handleClick, isFetchingStates, isLoadingStates, setAgeVerified])
 
   useEffect(() => {
     const loginStatus = session
