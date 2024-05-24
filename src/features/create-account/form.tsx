@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
@@ -175,7 +175,7 @@ export const CreateAccountForm = () => {
     setError,
     setValue,
   } = methods
-  const { mutate: createAccount } = useCreateAccountMutation()
+  const { mutate: createAccount, isLoading: isCreatingAccount } = useCreateAccountMutation()
   const { mutate: validateEmail, isLoading: isValidatingEmail } = useValidateEmailMutation()
   const router = useRouter()
   const [isExistingCustomer, setIsExistingCustomer] = useState(false)
@@ -241,7 +241,7 @@ export const CreateAccountForm = () => {
 
   return (
     <>
-      <LoadingOverlay visible={isSubmitting} />
+      <LoadingOverlay visible={isSubmitting || isCreatingAccount} />
       <FormProvider {...methods}>
         <form
           className="flex flex-col md:grid md:auto-rows-auto md:grid-cols-2 md:gap-x-11 md:gap-y-4 items-start"
