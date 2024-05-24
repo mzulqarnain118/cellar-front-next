@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { Autocomplete, AutocompleteItem } from '@mantine/core'
 import { useQueryClient } from '@tanstack/react-query'
-import { UseControllerProps, useController } from 'react-hook-form'
+import { UseControllerProps } from 'react-hook-form'
 import { useHits, useSearchBox } from 'react-instantsearch-hooks-web'
 
 import { CORPORATE_CONSULTANT_ID } from '@/lib/constants'
@@ -30,17 +30,16 @@ export const ConsultantSearch = ({
   disabled = false,
   handleSelect,
   purl = '',
-  ...rest
+  register,
+  name,
+  errors,
 }: UseControllerProps & {
   purl?: string | string[]
   disabled?: boolean
   handleSelect: (consultant?: Consultant) => void
 }) => {
   const { refine } = useSearchBox()
-  const {
-    field,
-    formState: { errors },
-  } = useController(rest)
+
   const { hits } = useHits<ConsultantHit>()
   const [value, setValue] = useState('')
   const { consultant } = useConsultantStore()
@@ -92,7 +91,6 @@ export const ConsultantSearch = ({
 
   const handleConsultantSelect = useCallback(
     (info: AutocompleteItem) => {
-      setValue('')
       const selectedConsultant = hits.find(hit => hit.DisplayID === info.id)
 
       if (selectedConsultant !== undefined) {
@@ -140,14 +138,13 @@ export const ConsultantSearch = ({
     },
     [refine]
   )
-
   return (
     <Autocomplete
       className="mt-2"
       data={data}
       error={errors.consultant?.message?.toString()}
       onItemSubmit={handleConsultantSelect}
-      {...field}
+      {...register(name)}
       disabled={disabled}
       label="Your consultant"
       placeholder={placeholder}
