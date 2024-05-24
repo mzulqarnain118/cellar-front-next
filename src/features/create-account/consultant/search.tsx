@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { Autocomplete, AutocompleteItem } from '@mantine/core'
 import { useQueryClient } from '@tanstack/react-query'
@@ -29,8 +29,10 @@ interface ConsultantHit extends Record<string, string | object> {
 export const ConsultantSearch = ({
   disabled = false,
   handleSelect,
+  purl = '',
   ...rest
 }: UseControllerProps & {
+  purl?: string | string[]
   disabled?: boolean
   handleSelect: (consultant?: Consultant) => void
 }) => {
@@ -55,6 +57,38 @@ export const ConsultantSearch = ({
         })),
     [hits]
   )
+
+  useEffect(() => {
+    if (purl) {
+      const selectedConsultant = hits?.find(hit => hit.Url == purl)
+      if (selectedConsultant !== undefined) {
+        const newConsultant = {
+          address: {
+            city: selectedConsultant.Address?.City,
+            stateAbbreviation: selectedConsultant.Address?.ProvinceAbbreviation,
+            zipCode: selectedConsultant.Address?.PostalCode,
+          },
+          displayId: selectedConsultant.DisplayID,
+          displayName: selectedConsultant.DisplayName || '',
+          emailAddress: selectedConsultant.EmailAddress || undefined,
+          imageUrl: selectedConsultant.ImageURL || undefined,
+          phoneNumber: selectedConsultant.PhoneNumber || undefined,
+          profileWebsite: selectedConsultant.ProfileWebsite || undefined,
+          socialLinks: selectedConsultant.SocialLinks?.map(link => ({
+            baseUrl: link.LinkBaseURL,
+            name: link.LinkName,
+            url: link.URL,
+          })),
+          url: selectedConsultant.Url,
+        } satisfies Consultant
+        setConsultant(newConsultant)
+        queryClient.prefetchQuery([CONSULTANT_QUERY_KEY, selectedConsultant.Url], getConsultantData)
+        handleSelect(newConsultant)
+      }
+
+      handleSelect()
+    }
+  }, [purl])
 
   const handleConsultantSelect = useCallback(
     (info: AutocompleteItem) => {

@@ -1,6 +1,8 @@
 import { useCallback, useState } from 'react'
 
 // import algoliasearch from 'algoliasearch/lite'
+import { useRouter } from 'next/router'
+
 import { Collapse } from '@mantine/core'
 import algoliasearch from 'algoliasearch/lite'
 import { clsx } from 'clsx'
@@ -32,7 +34,11 @@ export const ConsultantCheckbox = ({ disabled = false, isChecked }: ConsultantCh
   const { resetConsultant } = useConsultantStore()
   const [checked, setChecked] = useState(isChecked !== undefined ? isChecked : disabled)
   const [updatedFromSearch, setUpdatedFromSearch] = useState(false)
+  const router = useRouter()
+  const { u } = router.query
   const isDisabled = disabled && !updatedFromSearch
+  const isCreateAccountConsultant =
+    typeof window !== 'undefined' && localStorage.getItem('createAccountConsultant') === 'true'
 
   const handleConsultantSelect = useCallback(() => setUpdatedFromSearch(true), [])
 
@@ -51,19 +57,21 @@ export const ConsultantCheckbox = ({ disabled = false, isChecked }: ConsultantCh
               return newValue
             })
 
-            if (!newValue) {
-              resetConsultant()
-            }
+            // if (!newValue) {
+            //   resetConsultant()
+            // }
           },
         })}
       />
       <Collapse in={checked}>
         <InstantSearch indexName={algoliaIndex} searchClient={searchClient}>
           <ConsultantSearch
+            checked={checked}
             control={control}
-            disabled={isDisabled}
+            disabled={isCreateAccountConsultant}
             handleSelect={handleConsultantSelect}
             name="consultant"
+            purl={u}
           />
         </InstantSearch>
       </Collapse>

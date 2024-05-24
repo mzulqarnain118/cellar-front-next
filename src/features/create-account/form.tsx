@@ -181,6 +181,7 @@ export const CreateAccountForm = () => {
   const [isExistingCustomer, setIsExistingCustomer] = useState(false)
   const [fullName, setFullName] = useState('')
   const [isGuest, setIsGuest] = useState(false)
+  const [showConsultantCheckbox, setShowConsultantCheckbox] = useState(false)
   const [passwordVisible, setPasswordVisible] = useInputState<boolean>(false)
 
   const onSubmit: SubmitHandler<CreateAccountSchema> = async ({
@@ -238,6 +239,12 @@ export const CreateAccountForm = () => {
     () => ({ pathname: SIGN_IN_PAGE_PATH, query: { email: getValues().email, fullName } }),
     [getValues, fullName]
   )
+
+  useEffect(() => {
+    setTimeout(() => {
+      setShowConsultantCheckbox(true)
+    }, 0)
+  }, [])
 
   return (
     <>
@@ -321,9 +328,11 @@ export const CreateAccountForm = () => {
                 onVisibilityChange={setPasswordVisible}
                 {...register('confirmPassword')}
               />
-              <div className="col-span-2 grid">
-                <ConsultantCheckbox isChecked={!!defaultValues.shoppingWithConsultant} />
-              </div>
+              {showConsultantCheckbox && (
+                <div className="col-span-2 grid">
+                  <ConsultantCheckbox isChecked={!!defaultValues.shoppingWithConsultant} />
+                </div>
+              )}
               <Button className="my-4" disabled={isValidatingEmail} type="submit">
                 Create my account
               </Button>
