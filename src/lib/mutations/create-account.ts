@@ -137,6 +137,8 @@ export const useCreateAccountMutation = () => {
 
         await signIn('sign-in', { callbackUrl: redirection, email, password, redirect: false })
 
+        localStorage.setItem('createAccountConsultant', 'false')
+
         if (callback !== undefined) {
           callback()
         }

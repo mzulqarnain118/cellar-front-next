@@ -85,7 +85,15 @@ const SignInPage: NextPage<PageProps> = () => {
   const [isLoading, setIsLoading] = useState(false)
   const { isLoading: isValidatingEmail, mutate: validateEmail } = useValidateEmailMutation()
 
-  const handleCreateAccount = useCallback(() => router.push(CREATE_ACCOUNT_PAGE_PATH), [router])
+  const handleCreateAccount = useCallback(() => {
+    if (router.query.u) {
+      localStorage.setItem('createAccountConsultant', 'true')
+    } else {
+      localStorage.setItem('createAccountConsultant', 'false')
+    }
+
+    router.push(CREATE_ACCOUNT_PAGE_PATH)
+  }, [router])
 
   const onSubmit: SubmitHandler<SignInSchema> = useCallback(
     async ({ email, password }) => {
