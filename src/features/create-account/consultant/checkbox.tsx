@@ -66,12 +66,12 @@ export const ConsultantCheckbox = ({ disabled = false, isChecked }: ConsultantCh
       <Collapse in={checked}>
         <InstantSearch indexName={algoliaIndex} searchClient={searchClient}>
           <ConsultantSearch
-            checked={checked}
-            control={control}
             disabled={isCreateAccountConsultant}
+            errors={errors}
             handleSelect={handleConsultantSelect}
             name="consultant"
             purl={u}
+            register={register}
           />
         </InstantSearch>
       </Collapse>

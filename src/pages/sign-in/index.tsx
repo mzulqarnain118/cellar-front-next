@@ -86,7 +86,7 @@ const SignInPage: NextPage<PageProps> = () => {
   const { isLoading: isValidatingEmail, mutate: validateEmail } = useValidateEmailMutation()
 
   const handleCreateAccount = useCallback(() => {
-    if (router.query.u) {
+    if (!!router.query.u) {
       localStorage.setItem('createAccountConsultant', 'true')
     } else {
       localStorage.setItem('createAccountConsultant', 'false')
