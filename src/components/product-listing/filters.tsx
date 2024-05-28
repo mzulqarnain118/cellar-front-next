@@ -30,7 +30,7 @@ export const Filters = ({ enabledFilters, onClose, show, products }: FiltersProp
 
   const enabledFiltersElements = useMemo(
     () =>
-      enabledFilters !== undefined && enabledFilters.length > 0
+      enabledFilters !== undefined && enabledFilters?.length > 0
         ? enabledFilters.map(filter => <Filter key={filter.id} data={filter} products={products} />)
         : undefined,
     [enabledFilters, products]
@@ -58,7 +58,7 @@ export const Filters = ({ enabledFilters, onClose, show, products }: FiltersProp
           )}
         >
           <Transition
-            mounted={show && enabledFilters !== undefined && enabledFilters.length > 0}
+            mounted={show && enabledFilters !== undefined && enabledFilters?.length > 0}
             transition="slide-right"
           >
             {styles => (

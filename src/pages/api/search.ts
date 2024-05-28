@@ -65,13 +65,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             prod?.sku?.toLowerCase()?.includes(q?.toLowerCase())
         )
 
+        // let filteredProducts =
+        // displayCategoryIds.length > 0 ?
+        //   searchResults.filter(product =>
+        //       displayCategoryIds.every(category => product.displayCategories.includes(category))
+        //     )
+        //   :
+
         let filteredProducts =
-          // displayCategoryIds.length > 0 ?
-          //   searchResults.filter(product =>
-          //       displayCategoryIds.every(category => product.displayCategories.includes(category))
-          //     )
-          //   :
-          result
+          result.filter(product => !product.displayCategories.includes(53)) || result
 
         filteredProducts = filteredProducts.filter(product =>
           product.availability?.some(state => state.enabled && state.provinceId === provinceId)
