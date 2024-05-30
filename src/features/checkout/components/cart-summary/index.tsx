@@ -3,7 +3,6 @@ import { useMemo } from 'react'
 import { Typography } from '@/core/components/typogrpahy'
 import { formatCurrency } from '@/core/utils'
 import { useCartStorage } from '@/lib/hooks/use-cart-storage'
-import { useCartQuery } from '@/lib/queries/cart'
 import { useCheckoutAppliedSkyWallet } from '@/lib/stores/checkout'
 
 import { CartProduct } from './cart-product'
@@ -11,7 +10,6 @@ interface CartSummaryProps {
   cartTotalData: any
 }
 export const CartSummary = ({ cartTotalData }: CartSummaryProps) => {
-  const { data: cart } = useCartQuery()
   const [cartStorage, setCartStorage] = useCartStorage()
   const appliedSkyWallet = useCheckoutAppliedSkyWallet()
 
@@ -137,13 +135,11 @@ export const CartSummary = ({ cartTotalData }: CartSummaryProps) => {
             {cartTotalData !== undefined || orderTotal ? formatCurrency(orderTotal) : '$--.--'}
           </Typography>
         </div>
-        {/* {shippingMethodId !== undefined &&
-          (SUMMER_PACKAGING.includes(shippingMethodId) || shippingMethodId > 39) ? (
+        {!!process.env.NEXT_PUBLIC_SAFESHIPTEXT && (
           <Typography as="em" className="block py-1 text-sm">
-            * Orders with wine include a $5 shipping surcharge for EcoCoolPaks to protect your wine
-            from summer heat.
+            {process.env.NEXT_PUBLIC_SAFESHIPTEXT}
           </Typography>
-        ) : undefined} */}
+        )}
       </div>
     ),
     [
