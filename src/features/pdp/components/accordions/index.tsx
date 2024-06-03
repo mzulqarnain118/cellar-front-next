@@ -162,7 +162,16 @@ export const Accordions = ({ attributes, data }: AccordionsProps) => {
   )
 
   return (
-    <Accordion multiple defaultValue={titles} styles={styles} variant="separated">
+    <Accordion
+      multiple
+      classNames={{
+        content: '[&>p]:mb-4',
+      }}
+      defaultValue={titles}
+      styles={styles}
+      variant="separated"
+    >
+      123
       {accordions}
     </Accordion>
   )
