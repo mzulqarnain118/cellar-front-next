@@ -161,7 +161,7 @@ export const Header = () => {
         query: { ...router.query, u: session?.user?.userConsultantData?.url },
       })
     }
-  }, [session?.user.userConsultantData, router?.pathname])
+  }, [session?.user?.userConsultantData, router?.pathname])
 
   const handleUserClick = useCallback(() => {
     if (session?.user !== undefined && session.user.isGuest) {
@@ -170,7 +170,11 @@ export const Header = () => {
     }
 
     if (session?.user === undefined) {
-      localStorage.setItem('beforeSignInPath', router.pathname)
+      const beforeSignInPath = router?.asPath?.includes('?')
+        ? router?.asPath?.split('?')[0]
+        : router?.asPath
+
+      localStorage.setItem('beforeSignInPath', beforeSignInPath)
       router.push(SIGN_IN_PAGE_PATH)
     }
   }, [router, session?.user])
