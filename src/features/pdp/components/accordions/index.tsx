@@ -171,7 +171,6 @@ export const Accordions = ({ attributes, data }: AccordionsProps) => {
       styles={styles}
       variant="separated"
     >
-      123
       {accordions}
     </Accordion>
   )
