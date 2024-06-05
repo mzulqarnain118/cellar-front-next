@@ -14,6 +14,7 @@ import {
 } from '@/lib/stores/checkout'
 import { Failure } from '@/lib/types'
 import { Address } from '@/lib/types/address'
+import { toastError } from '@/lib/utils/notifications'
 
 interface CreatePaymentMethodSuccess {
   Success: true
@@ -109,6 +110,7 @@ export const createCreditCard = async ({
     if (response.Success) {
       return response.Data
     } else {
+      toastError({ message: response.Error.Message })
       throw new Error(response.Error.Message)
     }
   } catch {
