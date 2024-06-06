@@ -87,7 +87,6 @@ const handler = async (req: NextRequest) => {
                         note => note.name.toLowerCase() === filter.name.toLowerCase()
                       )
                     )
-                  // ! TODO Price
                   case 'price':
                     if (filter.value !== undefined) {
                       if (filter.value[0] === 0 && filter.value[1] === 20) {
@@ -107,7 +106,7 @@ const handler = async (req: NextRequest) => {
                       } else if (filter.value[0] === 20 && filter.value[1] === 80) {
                         return product.price >= 25 && product.price <= 100
                       } else if (filter.value[0] === 20 && filter.value[1] === 100) {
-                        return product.price >= 0
+                        return product.price >= 25
                       } else if (filter.value[0] === 40 && filter.value[1] === 60) {
                         return product.price >= 50 && product.price <= 75
                       } else if (filter.value[0] === 40 && filter.value[1] === 80) {
