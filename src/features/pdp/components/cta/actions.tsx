@@ -17,6 +17,7 @@ import { CartItem, SubscriptionProduct } from '@/lib/types'
 import { trackEvent } from '@/lib/utils/gtm-service'
 import { trackProductAddToCart } from '@/lib/utils/gtm-util'
 
+import { useSession } from 'next-auth/react'
 import { usePdpSelectedOption, usePdpSelectedProduct } from '../../store'
 
 const isCartProduct = (product: SubscriptionProduct | CartItem): product is CartItem =>
@@ -34,6 +35,7 @@ export const CtaActions = ({ className }: CtaActionsProps) => {
   const { cartUrl } = router.query
   const { data: product } = useProductQuery(cartUrl?.toString() || '')
   const [quantity, setQuantity] = useState(1)
+  const { data: session } = useSession()
 
   const selectedProduct = usePdpSelectedProduct()
   const selectedOption = usePdpSelectedOption()
@@ -49,7 +51,9 @@ export const CtaActions = ({ className }: CtaActionsProps) => {
   const handleQuantityChange = useCallback(
     (item: CartItem, newQuantity?: number) => {
       const quantityToSend = newQuantity || quantity
-      const product = cart?.items.find(product => product.sku === item.sku)
+      const product = cart?.items.find(product => {
+        return product.sku === item.sku
+      })
       if (selectedProduct !== undefined && product !== undefined && quantityToSend >= 1) {
         updateQuantity({
           item,
@@ -142,7 +146,9 @@ export const CtaActions = ({ className }: CtaActionsProps) => {
           </Button>
         ) : (
           <Button dark className="text-lg" onClick={handleAddToCartClick}>
-            Add to cart
+            {!product?.isClubOnly || session?.user?.isClubMember
+              ? 'Add to cart'
+              : 'Join the Circle'}
           </Button>
         )}
       </div>
