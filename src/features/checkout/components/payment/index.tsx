@@ -359,7 +359,7 @@ export const Payment = memo(({ opened, refs, toggle, cartTotalData }: PaymentPro
                 ref={refs.promoCodeRef}
                 noSpacing
                 error={errors?.payment?.promoCode}
-                label="Promo code"
+                label="Promo code (limit one)"
                 left={tagIcon}
                 name="promoCode"
                 right={promoCodeSubmit}
@@ -376,10 +376,10 @@ export const Payment = memo(({ opened, refs, toggle, cartTotalData }: PaymentPro
                 size="sm"
               />
               <SkyWallet
+                cartTotalData={cartTotalData}
                 skyWallet={skyWallet}
                 skyWalletFetching={skyWalletFetching}
                 skyWalletLoading={skyWalletLoading}
-                cartTotalData={cartTotalData}
               />
             </div>
           </>
