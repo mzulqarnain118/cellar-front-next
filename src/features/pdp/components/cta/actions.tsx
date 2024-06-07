@@ -1,4 +1,4 @@
-import { ChangeEventHandler, useCallback, useState } from 'react'
+import { ChangeEventHandler, useCallback, useMemo, useState } from 'react'
 
 import { useRouter } from 'next/router'
 
@@ -17,6 +17,7 @@ import { CartItem, SubscriptionProduct } from '@/lib/types'
 import { trackEvent } from '@/lib/utils/gtm-service'
 import { trackProductAddToCart } from '@/lib/utils/gtm-util'
 
+import { SCOUT_CIRCLE_PAGE_PATH } from '@/lib/paths'
 import { useSession } from 'next-auth/react'
 import { usePdpSelectedOption, usePdpSelectedProduct } from '../../store'
 
@@ -96,8 +97,15 @@ export const CtaActions = ({ className }: CtaActionsProps) => {
   const handleRemove = useCallback(() => {
     setQuantity(prev => (prev === 1 ? 1 : prev - 1))
   }, [])
-
+  const buttonText = useMemo(
+    () => (!product?.isClubOnly || session?.user?.isClubMember ? 'Add to cart' : 'Join the Circle'),
+    [product, session?.user?.isClubMember]
+  )
   const handleAddToCartClick = useCallback(() => {
+    if (buttonText === 'Join the Circle') {
+      router.push(SCOUT_CIRCLE_PAGE_PATH)
+      return
+    }
     if (selectedProduct !== undefined && isCartProduct(selectedProduct)) {
       handleQuantityChange(selectedProduct, quantity)
     } else {
