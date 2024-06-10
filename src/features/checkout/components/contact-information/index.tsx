@@ -36,6 +36,9 @@ export const ContactInformation = ({ opened, refs, toggle }: ContactInformationP
   const { data: session } = useSession()
   const { data: consultant } = useConsultantQuery()
   const { data: cart } = useCartQuery()
+  const enableTasting = process.env.NEXT_PUBLIC_ENABLE_TASTING
+
+  console.log('🚀 ~ ContactInformation ~ enableTasting:', enableTasting)
 
   const { data: tastingsResponse } = useTastingsQuery({
     consultantDisplayId: consultant?.displayId,
@@ -78,7 +81,7 @@ export const ContactInformation = ({ opened, refs, toggle }: ContactInformationP
               </Typography>
             ) : undefined}
           </div>
-          {tastingsResponse && (
+          {enableTasting == 'true' && tastingsResponse && (
             <TastingSelect
               cartId={cart?.id}
               consultantDisplayId={consultant?.displayId}

@@ -1,8 +1,8 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { Autocomplete, AutocompleteItem } from '@mantine/core'
 import { useQueryClient } from '@tanstack/react-query'
-import { UseControllerProps, useController } from 'react-hook-form'
+import { UseControllerProps } from 'react-hook-form'
 import { useHits, useSearchBox } from 'react-instantsearch-hooks-web'
 
 import { CORPORATE_CONSULTANT_ID } from '@/lib/constants'
@@ -29,16 +29,17 @@ interface ConsultantHit extends Record<string, string | object> {
 export const ConsultantSearch = ({
   disabled = false,
   handleSelect,
-  ...rest
+  purl = '',
+  register,
+  name,
+  errors,
 }: UseControllerProps & {
+  purl?: string | string[]
   disabled?: boolean
   handleSelect: (consultant?: Consultant) => void
 }) => {
   const { refine } = useSearchBox()
-  const {
-    field,
-    formState: { errors },
-  } = useController(rest)
+
   const { hits } = useHits<ConsultantHit>()
   const [value, setValue] = useState('')
   const { consultant } = useConsultantStore()
@@ -56,9 +57,40 @@ export const ConsultantSearch = ({
     [hits]
   )
 
+  useEffect(() => {
+    if (purl) {
+      const selectedConsultant = hits?.find(hit => hit.Url == purl)
+      if (selectedConsultant !== undefined) {
+        const newConsultant = {
+          address: {
+            city: selectedConsultant.Address?.City,
+            stateAbbreviation: selectedConsultant.Address?.ProvinceAbbreviation,
+            zipCode: selectedConsultant.Address?.PostalCode,
+          },
+          displayId: selectedConsultant.DisplayID,
+          displayName: selectedConsultant.DisplayName || '',
+          emailAddress: selectedConsultant.EmailAddress || undefined,
+          imageUrl: selectedConsultant.ImageURL || undefined,
+          phoneNumber: selectedConsultant.PhoneNumber || undefined,
+          profileWebsite: selectedConsultant.ProfileWebsite || undefined,
+          socialLinks: selectedConsultant.SocialLinks?.map(link => ({
+            baseUrl: link.LinkBaseURL,
+            name: link.LinkName,
+            url: link.URL,
+          })),
+          url: selectedConsultant.Url,
+        } satisfies Consultant
+        setConsultant(newConsultant)
+        queryClient.prefetchQuery([CONSULTANT_QUERY_KEY, selectedConsultant.Url], getConsultantData)
+        handleSelect(newConsultant)
+      }
+
+      handleSelect()
+    }
+  }, [purl])
+
   const handleConsultantSelect = useCallback(
     (info: AutocompleteItem) => {
-      setValue('')
       const selectedConsultant = hits.find(hit => hit.DisplayID === info.id)
 
       if (selectedConsultant !== undefined) {
@@ -106,14 +138,13 @@ export const ConsultantSearch = ({
     },
     [refine]
   )
-
   return (
     <Autocomplete
       className="mt-2"
       data={data}
       error={errors.consultant?.message?.toString()}
       onItemSubmit={handleConsultantSelect}
-      {...field}
+      {...register(name)}
       disabled={disabled}
       label="Your consultant"
       placeholder={placeholder}

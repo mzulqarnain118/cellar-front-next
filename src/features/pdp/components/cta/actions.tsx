@@ -1,4 +1,4 @@
-import { ChangeEventHandler, useCallback, useState } from 'react'
+import { ChangeEventHandler, useCallback, useMemo, useState } from 'react'
 
 import { useRouter } from 'next/router'
 
@@ -17,6 +17,8 @@ import { CartItem, SubscriptionProduct } from '@/lib/types'
 import { trackEvent } from '@/lib/utils/gtm-service'
 import { trackProductAddToCart } from '@/lib/utils/gtm-util'
 
+import { SCOUT_CIRCLE_PAGE_PATH } from '@/lib/paths'
+import { useSession } from 'next-auth/react'
 import { usePdpSelectedOption, usePdpSelectedProduct } from '../../store'
 
 const isCartProduct = (product: SubscriptionProduct | CartItem): product is CartItem =>
@@ -34,6 +36,7 @@ export const CtaActions = ({ className }: CtaActionsProps) => {
   const { cartUrl } = router.query
   const { data: product } = useProductQuery(cartUrl?.toString() || '')
   const [quantity, setQuantity] = useState(1)
+  const { data: session } = useSession()
 
   const selectedProduct = usePdpSelectedProduct()
   const selectedOption = usePdpSelectedOption()
@@ -49,7 +52,9 @@ export const CtaActions = ({ className }: CtaActionsProps) => {
   const handleQuantityChange = useCallback(
     (item: CartItem, newQuantity?: number) => {
       const quantityToSend = newQuantity || quantity
-      const product = cart?.items.find(product => product.sku === item.sku)
+      const product = cart?.items.find(product => {
+        return product.sku === item.sku
+      })
       if (selectedProduct !== undefined && product !== undefined && quantityToSend >= 1) {
         updateQuantity({
           item,
@@ -92,8 +97,15 @@ export const CtaActions = ({ className }: CtaActionsProps) => {
   const handleRemove = useCallback(() => {
     setQuantity(prev => (prev === 1 ? 1 : prev - 1))
   }, [])
-
+  const buttonText = useMemo(
+    () => (!product?.isClubOnly || session?.user?.isClubMember ? 'Add to cart' : 'Join the Circle'),
+    [product, session?.user?.isClubMember]
+  )
   const handleAddToCartClick = useCallback(() => {
+    if (buttonText === 'Join the Circle') {
+      router.push(SCOUT_CIRCLE_PAGE_PATH)
+      return
+    }
     if (selectedProduct !== undefined && isCartProduct(selectedProduct)) {
       handleQuantityChange(selectedProduct, quantity)
     } else {
@@ -142,7 +154,9 @@ export const CtaActions = ({ className }: CtaActionsProps) => {
           </Button>
         ) : (
           <Button dark className="text-lg" onClick={handleAddToCartClick}>
-            Add to cart
+            {!product?.isClubOnly || session?.user?.isClubMember
+              ? 'Add to cart'
+              : 'Join the Circle'}
           </Button>
         )}
       </div>
