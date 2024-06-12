@@ -29,6 +29,7 @@ import {
   ADDRESS_CREDIT_CARDS_QUERY_KEY,
   ShippingAddressesAndCreditCards,
   getShippingAddressesAndCreditCards,
+  useAddressesAndCreditCardsQuery,
 } from '@/lib/queries/checkout/addreses-and-credit-cards'
 import {
   useCheckoutActions,
@@ -42,6 +43,7 @@ import { useAddGiftMessageMutation } from '../../mutations/add-gift-message'
 import { useCheckoutPayForOrderMutation } from '../../mutations/pay-for-order'
 import { PaymentRefs } from '../payment'
 
+import { useCheckoutStore } from '../../store'
 import TermsContent from './terms'
 import TermsModal from './termsModal'
 
@@ -82,6 +84,11 @@ export const PayForOrder = ({
   const { data: cart } = useCartQuery()
   const { data: session } = useSession()
   const errors = useCheckoutErrors()
+  const { isAddressFormOpened, isPaymentFormOpened } = useCheckoutStore()
+  const { data: shippingAddresses } = useAddressesAndCreditCardsQuery()
+
+  console.log('🚀 ~ shippingAddresses:', shippingAddresses)
+
   const { setErrors } = useCheckoutActions()
   const { mutate: payForOrder, isLoading: isCheckingOut } =
     useCheckoutPayForOrderMutation(cartTotalData)
@@ -280,9 +287,14 @@ export const PayForOrder = ({
           </div>
           <div className="ml-auto">
             <Button
-              disabled={(!refs?.termsRef?.current?.checked
-
-                || paymentRefs.cvvRef.current?.value.length <= 2)}
+              disabled={
+                !refs?.termsRef?.current?.checked ||
+                paymentRefs.cvvRef.current?.value.length <= 2 ||
+                isAddressFormOpened ||
+                isPaymentFormOpened ||
+                shippingAddresses?.addresses?.length === 0 ||
+                shippingAddresses?.creditCards?.length === 0
+              }
               size={isDesktop ? 'lg' : 'md'}
               onClick={handleSubmit}
             >

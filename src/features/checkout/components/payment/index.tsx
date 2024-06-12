@@ -36,6 +36,7 @@ import { useRedeemGiftCardCheckoutMutation } from '../../mutations/redeem-gift-c
 import { useRedeemOfferCheckoutMutation } from '../../mutations/redeem-offer-checkout'
 import { useSkyWalletQuery } from '../../queries/sky-wallet'
 
+import { useCheckoutStore } from '../../store'
 import { CreditCardForm } from './credit-card-form'
 import { formatCVC } from './utils'
 
@@ -70,11 +71,16 @@ export const Payment = memo(({ opened, refs, toggle, cartTotalData }: PaymentPro
   const { data: cart } = useCartQuery()
   const errors = useCheckoutErrors()
   const { data: addressesAndCreditCards } = useAddressesAndCreditCardsQuery()
+  const { setPaymentForm } = useCheckoutStore()
   const { mutate: applyCheckoutSelections } = useApplyCheckoutSelectionsMutation()
   const [
     creditCardFormOpen,
     { close: closeCreditCardForm, open: openCreditCardForm, toggle: toggleCreditCardForm },
   ] = useDisclosure(false)
+  useEffect(() => {
+    setPaymentForm(creditCardFormOpen)
+  }, [creditCardFormOpen])
+  console.log(creditCardFormOpen)
   const { setCvv, setErrors, setIsAddingCreditCard } = useCheckoutActions()
   const { data: session } = useSession()
   const [_, scrollTo] = useWindowScroll()
