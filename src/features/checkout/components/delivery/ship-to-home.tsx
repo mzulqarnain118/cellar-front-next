@@ -29,6 +29,7 @@ import { isPickUpShippingMethodId } from '@/lib/utils/checkout'
 import { toastLoading } from '@/lib/utils/notifications'
 
 import type { DeliveryRefs } from '.'
+import { useCheckoutStore } from '../../store'
 
 const AddressForm = dynamic(() => import('./address-form').then(({ AddressForm }) => AddressForm), {
   ssr: false,
@@ -58,10 +59,14 @@ export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
     useUpdateShippingMethodMutation()
   const [addressFormOpen, { close: closeAddressForm, toggle: toggleAddressForm }] =
     useDisclosure(false)
+  const { setAddressForm } = useCheckoutStore()
+
   const { setIsAddingAddress, setRemovedCartItems, setSelectedShippingAddress } =
     useCheckoutActions()
   const { mutate: removeFromCart } = useRemoveFromCartMutation()
-
+  useEffect(() => {
+    setAddressForm(addressFormOpen)
+  }, [addressFormOpen])
   const handleAddressChange: SelectProps['onChange'] = useCallback(
     (addressId: string | null) => {
       if (!!addressId && !!data && data.addresses.length > 0) {
