@@ -161,7 +161,12 @@ const PDP: NextPage<PageProps> = ({ page, pdpData }) => {
         <div className="container mx-auto py-10">
           <Breadcrumbs cartUrl={cartUrl} />
           <div className="grid gap-10 lg:grid-cols-2">
-            <MediaGallery className="self-start" images={images} videos={pdpData?.videos} />
+            <MediaGallery
+              badges={product?.badges?.slice(0, 3)}
+              className="self-start"
+              images={images}
+              videos={pdpData?.videos}
+            />
             <Description cartUrl={cartUrl} prismicData={pdpData} />
           </div>
           <Brand cartUrl={cartUrl} className="py-4" />

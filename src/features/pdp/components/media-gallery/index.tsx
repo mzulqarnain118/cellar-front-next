@@ -4,6 +4,8 @@
 
 import { Fragment, useCallback, useMemo, useRef, useState } from 'react'
 
+import Image from 'next/image'
+
 import ReactImageMagnify, { ImageProps, MagnifiedImageProps } from '@blacklab/react-image-magnify'
 import { PlayIcon } from '@heroicons/react/20/solid'
 import { Carousel } from '@mantine/carousel'
@@ -14,6 +16,7 @@ import { clsx } from 'clsx'
 import { useIsClient } from 'usehooks-ts'
 
 import { BlurImage } from '@/components/blur-image'
+import { Typography } from '@/core/components/typogrpahy'
 import { useIsDesktop } from '@/core/hooks/use-is-desktop'
 import { Simplify } from '@/lib/types/prismic'
 
@@ -30,7 +33,13 @@ interface ImageSchema {
   srcSet?: string
 }
 
+interface Badge {
+  imageUrl: string
+  name: string
+}
+
 interface MediaGalleryProps {
+  badges: Badge[] | undefined
   className?: string
   hasTastingVideo?: boolean
   images: ImageSchema[]
@@ -43,6 +52,7 @@ const isImage = (item: unknown): item is ImageSchema =>
   !!item && typeof item === 'object' && 'src' in item
 
 export const MediaGallery = ({
+  badges,
   className,
   hasTastingVideo = false,
   images,
@@ -298,8 +308,24 @@ export const MediaGallery = ({
   }
 
   return (
-    <div className={clsx('inline-flex flex-col items-center justify-center', className)}>
-      {children}
+    <div>
+      <div className="self-start flex gap-4 min-h-[33px] lg:ml-12 mt-3">
+        {badges !== undefined && (
+          <>
+            {badges?.map(item => (
+              <div key={item.imageUrl} className="flex items-center gap-2">
+                <Image alt={`${item.name} badge`} height={32} src={item.imageUrl} width={32} />
+                <Typography>{item.name}</Typography>
+              </div>
+            ))}
+          </>
+        )}
+      </div>
+      <div className="flex justify-center">
+        <div className={clsx('inline-flex flex-col items-center justify-center mt-4', className)}>
+          {children}
+        </div>
+      </div>
     </div>
   )
 }
