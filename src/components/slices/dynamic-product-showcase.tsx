@@ -25,11 +25,13 @@ export const DynamicProductShowcase = ({
 
   const products = useMemo(
     () =>
-      allProducts?.filter(product =>
-        brand
-          ? product.attributes?.Brand === brand
-          : productsSelectedInPrismic.includes(product.sku)
-      ),
+      allProducts
+        ?.filter(product =>
+          brand
+            ? product.attributes?.Brand === brand
+            : productsSelectedInPrismic.includes(product.sku)
+        )
+        ?.filter(product => product.sku != excludedSku),
     [allProducts, excludedSku, slice.primary.brand]
   )
 
