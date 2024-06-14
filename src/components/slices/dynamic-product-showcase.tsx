@@ -60,15 +60,17 @@ export const DynamicProductShowcase = ({
       </div>
       {/* <Carousel align="start" slideGap="lg" slideSize="25%"> */}
       <div className="flex flex-wrap gap-16 justify-center py-8">
-        {products?.map(product => (
-          <div key={product.sku}>
-            <ProductCard
-              className="h-[500px] !w-[350px] bg-white"
-              prismicColor={slice.primary.highlight_color}
-              product={product}
-            />
-          </div>
-        ))}
+        {products
+          ?.filter(item => !item?.displayCategories.includes(53))
+          ?.map(product => (
+            <div key={product.sku}>
+              <ProductCard
+                className="h-[500px] !w-[350px] bg-white"
+                prismicColor={slice.primary.highlight_color}
+                product={product}
+              />
+            </div>
+          ))}
       </div>
       {/* </Carousel> */}
     </div>
