@@ -95,14 +95,17 @@ export const CartDrawer = () => {
         <Typography as="h6" className="!font-semibold">
           $10 off shipping UNLOCKED!
         </Typography>
-        <Typography as="p" className="!mt-0">
+        <Typography as="p" className="!mt-0 pb-4">
           You are just {formatCurrency(difference)} away from FREE SHIPPING!
         </Typography>
       </>
     ) : freeShippingSubtotal >= 150 ? (
-      <Typography>
-        🎉 Cheers! You&apos;ve unlocked <Typography className="font-bold">FREE SHIPPING</Typography>
-      </Typography>
+      <div className="pb-4">
+        <Typography>
+          🎉 Cheers! You&apos;ve unlocked{' '}
+          <Typography className="font-bold">FREE SHIPPING</Typography>
+        </Typography>
+      </div>
     ) : (
       <>
         <Typography as="h6" className="!font-semibold">
@@ -111,7 +114,7 @@ export const CartDrawer = () => {
         <Typography as="p" className="!mt-0">
           {formatCurrency(100 - freeShippingSubtotal)} more for $10 off shipping!
         </Typography>
-        <Typography as="p" className="!mt-0">
+        <Typography as="p" className="!mt-0 pb-4">
           {formatCurrency(difference)} more for FREE SHIPPING!
         </Typography>
       </>
@@ -158,9 +161,9 @@ export const CartDrawer = () => {
             className={`
               grid w-full items-center`}
           >
-            <div className="w-full space-y-1 px-4 text-center">
+            <div className="w-full space-y-1 px-4 text-center pt-4">
               {cartHeaderTextTwo}
-              <div className="mb-4 h-5 w-full rounded-full bg-neutral">
+              <div className="mb-4 !mt-0 h-5 w-full rounded-full bg-neutral">
                 <div
                   className="h-5 rounded-full bg-primary transition-[width]"
                   style={{ maxWidth: '100%', width: `${percentage}%` }}
@@ -174,7 +177,7 @@ export const CartDrawer = () => {
         </div>
         <>
           {cartItems !== undefined ? (
-            <div className="h-[stretch] overflow-y-scroll pb-[9rem]">
+            <div className="h-[stretch] overflow-y-scroll pb-[11rem]">
               <div className="mb-[240px] divide-y divide-neutral-200 bg-neutral-50 pl-4">
                 {cartItems}
               </div>
