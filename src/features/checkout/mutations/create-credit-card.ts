@@ -144,9 +144,9 @@ export const useCreateCreditCardMutation = () => {
       // Show error.
     },
     onSuccess: response => {
-      if (!session?.user?.isGuest) {
-        queryClient.invalidateQueries([ADDRESS_CREDIT_CARDS_QUERY_KEY])
-      }
+      // if (!session?.user?.isGuest) {
+      queryClient.invalidateQueries([ADDRESS_CREDIT_CARDS_QUERY_KEY])
+      // }
 
       if (session?.user?.isGuest) {
         if (isPickUp) {
