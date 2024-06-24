@@ -57,7 +57,7 @@
 
   h4,
   .h4 {
-    @apply !text-[1.75em] lg:!text-3xl;
+    @apply !text-3xl lg:!text-4xl;
   }
 
   h5,
