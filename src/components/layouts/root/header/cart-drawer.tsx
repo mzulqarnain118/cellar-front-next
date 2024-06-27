@@ -10,12 +10,12 @@ import { useRouter } from 'next/router'
 import { Price } from '@/components/price'
 import { Button } from '@/core/components/button'
 import { Typography } from '@/core/components/typogrpahy'
-import { formatCurrency } from '@/core/utils'
 import { WINE_PAGE_PATH } from '@/lib/paths'
 import { useCartQuery } from '@/lib/queries/cart'
 import { useCartOpen, useProcessStore } from '@/lib/stores/process'
 
 import { Link } from '@/components/link'
+import { formatCurrency } from '@/core/utils'
 import { useValidateCartStockMutation } from '@/features/checkout/mutations/validate-cart-stock'
 import { useShareCartMutation } from '@/features/shared-cart/mutations/share-cart'
 import { CartItem } from './cart-item'
@@ -89,6 +89,37 @@ export const CartDrawer = () => {
   const percentage = Math.round((freeShippingSubtotal / 150) * 100)
   const difference = 150 - freeShippingSubtotal
 
+  const cartHeaderTextTwo =
+    freeShippingSubtotal >= 100 && freeShippingSubtotal < 150 ? (
+      <>
+        <Typography as="h6" className="!font-semibold">
+          $10 off shipping UNLOCKED!
+        </Typography>
+        <Typography as="p" className="!mt-0 pb-4">
+          You are just {formatCurrency(difference)} away from FREE SHIPPING!
+        </Typography>
+      </>
+    ) : freeShippingSubtotal >= 150 ? (
+      <div className="pb-4">
+        <Typography>
+          🎉 Cheers! You&apos;ve unlocked{' '}
+          <Typography className="font-bold">FREE SHIPPING</Typography>
+        </Typography>
+      </div>
+    ) : (
+      <>
+        <Typography as="h6" className="!font-semibold">
+          UNLOCK your shipping discounts!
+        </Typography>
+        <Typography as="p" className="!mt-0">
+          {formatCurrency(100 - freeShippingSubtotal)} more for $10 off shipping!
+        </Typography>
+        <Typography as="p" className="!mt-0 pb-4">
+          {formatCurrency(difference)} more for FREE SHIPPING!
+        </Typography>
+      </>
+    )
+
   const isCheckoutButtonDisabled = useMemo(
     () => cartItems === undefined || isMutatingCart || isSharingCart,
     [cartItems, isMutatingCart, isSharingCart]
@@ -130,20 +161,9 @@ export const CartDrawer = () => {
             className={`
               grid w-full items-center`}
           >
-            <div className="w-full space-y-1 px-4 text-center">
-              {difference > 0 ? (
-                <Typography>
-                  You are {formatCurrency(difference)} away from{' '}
-                  <Typography className="font-bold">FREE SHIPPING</Typography>
-                </Typography>
-              ) : (
-                <Typography>
-                  🎉 Cheers! You&apos;ve unlocked{' '}
-                  <Typography className="font-bold">FREE SHIPPING</Typography>
-                </Typography>
-              )}
-
-              <div className="mb-4 h-5 w-full rounded-full bg-neutral">
+            <div className="w-full space-y-1 px-4 text-center pt-4">
+              {cartHeaderTextTwo}
+              <div className="mb-4 !mt-0 h-5 w-full rounded-full bg-neutral">
                 <div
                   className="h-5 rounded-full bg-primary transition-[width]"
                   style={{ maxWidth: '100%', width: `${percentage}%` }}
@@ -157,7 +177,7 @@ export const CartDrawer = () => {
         </div>
         <>
           {cartItems !== undefined ? (
-            <div className="h-[stretch] overflow-y-scroll pb-[6.25rem]">
+            <div className="h-[stretch] overflow-y-scroll pb-[11rem]">
               <div className="mb-[240px] divide-y divide-neutral-200 bg-neutral-50 pl-4">
                 {cartItems}
               </div>
