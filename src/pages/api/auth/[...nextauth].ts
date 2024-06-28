@@ -105,22 +105,30 @@ const isUser = (
 
 export const authOptions: NextAuthOptions = {
   callbacks: {
-    jwt: async ({ token, user }) => {
+    jwt: async ({ token, user, session }) => {
       if (user) {
         token.user = user
       }
+
+      // Update token details if they exist in token object
+      if (token?.user?.user && session?.user?.tokenDetails.refreshToken) {
+        token.user.user.tokenDetails = session?.user?.tokenDetails
+      }
+
       return token
     },
-    session: async ({
-      session,
-      token: {
+    session: async ({ session, token }) => {
+      const {
         // @ts-ignore
-        user: { user },
-      },
-    }) => {
+        user: { user, tokenDetails },
+      } = token
       if (isUser(user)) {
         session.user = user
       }
+      if (tokenDetails) {
+        session.user.tokenDetails = tokenDetails
+      }
+
       return session
     },
   },
@@ -240,13 +248,11 @@ export const authOptions: NextAuthOptions = {
                 ...userStateData,
                 tokenDetails: {
                   accessToken: tokenDetails.access_token,
-                  expires: new Date(tokenDetails['.expires']).toDateString(),
+                  expires: new Date(tokenDetails['.expires']).toString(),
                   expiresIn: tokenDetails.expires_in,
-                  issued: new Date(tokenDetails['.issued']).toDateString(),
+                  issued: new Date(tokenDetails['.issued']).toString(),
                   refreshToken: tokenDetails.refresh_token,
-                  refreshTokenExpires: new Date(
-                    tokenDetails['.refresh_token_expires']
-                  ).toDateString(),
+                  refreshTokenExpires: new Date(tokenDetails['.refresh_token_expires']).toString(),
                 },
                 userConsultantData,
               }
