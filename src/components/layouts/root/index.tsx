@@ -73,7 +73,7 @@ export const RootLayout = ({ children }: RootLayoutProps) => {
 
   useEffect(() => {
     if (!url.searchParams.size && !!selectedConsultantUrl) {
-      router.push(`${router.asPath}/?u=${selectedConsultantUrl}`)
+      router.replace(`${router.asPath}/?u=${selectedConsultantUrl}`)
     } else if (!router.asPath.includes('u=')) {
       params.set('u', selectedConsultantUrl)
     }
