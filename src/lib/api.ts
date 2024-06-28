@@ -1,5 +1,5 @@
 import ky, { BeforeRequestHook } from 'ky'
-import { getSession, signOut } from 'next-auth/react'
+import { getCsrfToken, getSession, signOut } from 'next-auth/react'
 
 import { useCheckoutStore } from './stores/checkout'
 import { useGuestStore } from './stores/guest'
@@ -73,6 +73,12 @@ const updateTokenIfNecessary: BeforeRequestHook = async (request, _options) => {
     if (nowUTC > tokenExpirationDate.getTime()) {
       const refreshTokenExpiration = session?.user.tokenDetails?.refreshTokenExpires
       const refreshToken = session?.user.tokenDetails?.refreshToken
+
+      console.log(
+        '🚀 ~ constupdateTokenIfNecessary:BeforeRequestHook= ~ refreshToken:',
+        refreshToken
+      )
+
       const token = session?.user.tokenDetails?.accessToken
 
       if (refreshToken !== undefined && refreshTokenExpiration !== undefined) {
@@ -93,11 +99,36 @@ const updateTokenIfNecessary: BeforeRequestHook = async (request, _options) => {
             method: 'post',
             timeout: 45000,
           }).json<RefreshTokenResponse>()
+          if (session?.user?.tokenDetails?.refreshToken) {
+            session.user.tokenDetails.accessToken = response.access_token
+            session.user.tokenDetails.expires = response['.expires']
+            session.user.tokenDetails.expiresIn = response.expires_in
+            session.user.tokenDetails.refreshToken = response.refresh_token
+            session.user.tokenDetails.issued = response['.issued']
+
+            session.user.tokenDetails.refreshTokenExpires = response['.refresh_token_expires']
+
+            await fetch('/api/auth/session', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                csrfToken: await getCsrfToken(),
+                data: session,
+              }),
+            })
+          }
 
           if (!!response.access_token && !!response.refresh_token) {
             request.headers.set('Authorization', `Bearer ${response.access_token}`)
 
             // ! TODO: Update Next Auth session.
+          }
+          if (response.result == false) {
+            await signOut()
+            reset()
+            window.location.href = '/sign-in'
           }
         }
       } else {
