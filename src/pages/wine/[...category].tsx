@@ -16,55 +16,64 @@ import { PAGINATED_PRODUCTS_QUERY_KEY, getPaginatedProducts } from '@/lib/querie
 import { createClient, linkResolver } from '@/prismic-io'
 
 export const getStaticProps = async ({ params, previewData }: GetStaticPropsContext) => {
-  const client = createClient({ previewData })
-  let uid
-  if (params && params.category) {
-    uid = params.category.toString()
-  }
-
-  let page
-  if (uid !== undefined) {
-    page = await client.getByUID('category_page', uid)
-  }
-
-  if (page === undefined) {
-    return {
-      permanent: false,
-      redirect: WINE_PAGE_PATH,
+  try {
+    const client = createClient({ previewData })
+    let uid
+    if (params && params.category) {
+      uid = params.category.toString()
     }
-  }
 
-  const queryClient = await getStaticNavigation(client)
+    let page
+    if (uid !== undefined) {
+      page = await client.getByUID('category_page', uid)
+    }
 
-  const categories = page.data.display_categories
-    .map(category => category.display_category_id)
-    .map(Number)
+    if (page === undefined) {
+      return {
+        permanent: false,
+        redirect: WINE_PAGE_PATH,
+      }
+    }
 
-  let limit = DEFAULT_LIMIT
-  let pageNumber = DEFAULT_PAGE
-  let sort: Sort = DEFAULT_SORT
+    const queryClient = await getStaticNavigation(client)
 
-  if (params?.limit) {
-    limit = parseInt(params.limit.toString())
-  }
-  if (params?.page) {
-    pageNumber = parseInt(params.page.toString())
-  }
-  if (params?.sort) {
-    sort = params.sort.toString() as Sort
-  }
+    const categories = page.data.display_categories
+      .map(category => category.display_category_id)
+      .map(Number)
 
-  await queryClient.prefetchQuery(
-    [...PAGINATED_PRODUCTS_QUERY_KEY, { categories, limit, page: pageNumber, sort }],
-    getPaginatedProducts
-  )
+    let limit = DEFAULT_LIMIT
+    let pageNumber = DEFAULT_PAGE
+    let sort: Sort = DEFAULT_SORT
 
-  return {
-    props: {
-      dehydratedState: dehydrate(queryClient),
-      page: page || null,
-    },
-    revalidate: 120,
+    if (params?.limit) {
+      limit = parseInt(params.limit.toString())
+    }
+    if (params?.page) {
+      pageNumber = parseInt(params.page.toString())
+    }
+    if (params?.sort) {
+      sort = params.sort.toString() as Sort
+    }
+
+    await queryClient.prefetchQuery(
+      [...PAGINATED_PRODUCTS_QUERY_KEY, { categories, limit, page: pageNumber, sort }],
+      getPaginatedProducts
+    )
+
+    return {
+      props: {
+        dehydratedState: dehydrate(queryClient),
+        page: page || null,
+      },
+      revalidate: 120,
+    }
+  } catch (error) {
+    console.log('Error ======> ', error)
+    return {
+      redirect: {
+        notFound: true,
+      },
+    }
   }
 }
 

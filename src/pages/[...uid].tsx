@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+
 import Error from 'next/error'
 
 import { Content, asLink } from '@prismicio/client'
@@ -12,7 +14,6 @@ import { ContactForm } from '@/features/contact/components/form'
 import { HOME_PAGE_PATH } from '@/lib/paths'
 import { getStaticNavigation } from '@/lib/queries/header'
 import { createClient } from '@/prismic-io'
-import { useEffect } from 'react'
 
 export const getStaticProps = async ({
   params,
@@ -27,6 +28,14 @@ export const getStaticProps = async ({
       redirect: {
         destination: HOME_PAGE_PATH,
         permanent: false,
+      },
+    }
+  }
+
+  if (uid.includes('undefined')) {
+    return {
+      redirect: {
+        notFound: true,
       },
     }
   }
@@ -102,14 +111,12 @@ const RichContentPage = ({
   const client = createClient()
 
   useEffect(() => {
-
-    const pageFunc = async () => await Promise.all([
-      client.getAllByType('rich_content_page'),
-      client.getAllByType('content_page'),
-    ])
-
+    const pageFunc = async () =>
+      await Promise.all([
+        client.getAllByType('rich_content_page'),
+        client.getAllByType('content_page'),
+      ])
   }, [])
-
 
   if (page?.type === 'rich_content_page') {
     return (

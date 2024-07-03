@@ -150,7 +150,7 @@ const PDP: NextPage<PageProps> = ({ page, pdpData }) => {
     }
   }, [product, setSelectedProduct])
 
-  if (cartUrl === undefined || typeof cartUrl !== 'string') {
+  if (cartUrl === undefined || cartUrl === 'undefined' || typeof cartUrl !== 'string') {
     return <Error statusCode={404} />
   }
 
