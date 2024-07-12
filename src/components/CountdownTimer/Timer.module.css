@@ -1,0 +1,54 @@
+/* styles/Timer.module.css */
+.container {
+  text-align: center;
+  background-color: transparent;
+  padding: 20px;
+  font-family: 'proxima-nova';
+  font-weight: bold;
+}
+
+.timer {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  font-size: 40px;
+  margin-top: 16px;
+  @media (max-width: 768px) {
+    font-size: 25px;
+  }
+}
+
+.timeUnitContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.timeItem {
+  display: flex;
+}
+
+.timeUnit,
+.colon {
+  padding: 10px 25px;
+  margin: 0 5px;
+  @media (max-width: 768px) {
+    padding: 5px 12px;
+  }
+  @media (max-width: 450px) {
+    padding: 5px 8px;
+  }
+}
+.colon {
+  background-color: transparent;
+  padding: 0px;
+}
+
+.label {
+  font-size: 20px;
+  margin-top: 5px;
+
+  @media (max-width: 768px) {
+    font-size: 12px;
+  }
+}
