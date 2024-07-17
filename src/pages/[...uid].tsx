@@ -33,6 +33,7 @@ export const getStaticProps = async ({
 
   try {
     if (uid !== undefined) {
+      console.log('Work')
       page = await client.getByUID<Content.RichContentPageDocument>('rich_content_page', uid)
 
       if (!page) {
@@ -41,6 +42,7 @@ export const getStaticProps = async ({
     }
 
     if (!page) {
+      console.log('test1')
       return {
         notFound: true,
       }
@@ -50,6 +52,7 @@ export const getStaticProps = async ({
       page = await client.getByUID<Content.ContentPageDocument>('content_page', uid)
 
       if (!page) {
+        console.log('test2')
         return {
           notFound: true,
         }
@@ -61,6 +64,7 @@ export const getStaticProps = async ({
         },
       }
     } catch {
+      console.log('test3')
       return {
         notFound: true,
       }
@@ -89,7 +93,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const contentPagesPaths = contentPages.map(page => asLink(page) || undefined).filter(Boolean)
 
   return {
-    fallback: true,
+    fallback: 'blocking',
     paths: [...paths, ...contentPagesPaths],
   }
 }
@@ -99,6 +103,7 @@ const RichContentPage = ({
 }: {
   page?: Content.RichContentPageDocument | Content.ContentPageDocument | null
 }) => {
+  console.log(page, 'page')
   const client = createClient()
 
   useEffect(() => {
