@@ -106,3 +106,7 @@
   width: 25px;
   height: 25px;
 }
+.carousal-arrows .mantine-Carousel-controls {
+  left: -15%;
+  right: -9%;
+}
