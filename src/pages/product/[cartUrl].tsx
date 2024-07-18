@@ -66,7 +66,7 @@ export const getStaticProps = async ({ params, previewData }: GetStaticPropsCont
       graphQuery,
     })
     const pdpData = pdps[0].data
-    const page = pdps.find(pdp => asLink(pdp) === cartUrl) || null
+    const page = pdps.find(pdp => asLink(pdp) === cartUrl || pdp?.slugs?.[0] === cartUrl) || null
     return {
       props: {
         dehydratedState: dehydrate(queryClient),
@@ -160,7 +160,7 @@ const PDP: NextPage<PageProps> = ({ page, pdpData }) => {
       <main className="bg-[#f7f3f4]">
         <div className="container mx-auto py-10">
           <Breadcrumbs cartUrl={cartUrl} />
-          <div className="grid gap-10 lg:grid-cols-2">
+          <div className={`grid gap-10 lg:grid-cols-2 carousal-arrows`}>
             <MediaGallery
               badges={product?.badges?.slice(0, 3)}
               className="self-start"
