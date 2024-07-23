@@ -1,6 +1,7 @@
-import { api } from '@/lib/api'
 import { useMutation } from '@tanstack/react-query'
 
+import { api } from '@/lib/api'
+import toast from '@/lib/utils/notifications'
 
 interface Response {
   Error: { Message: string }
@@ -15,6 +16,7 @@ export const skipSubscription = async (subscriptionId: number, action: string) =
     }).json<Response>()
 
     if (!response.Success) {
+      toast('error', response?.Error?.Message)
       throw new Error(response.Error.Message)
     }
 
@@ -25,7 +27,7 @@ export const skipSubscription = async (subscriptionId: number, action: string) =
 }
 
 export const useSkipSubscriptionMutation = () =>
-  useMutation<Response, Error, { subscriptionId: number, action: string }>({
+  useMutation<Response, Error, { subscriptionId: number; action: string }>({
     mutationFn: ({ subscriptionId, action }) => skipSubscription(subscriptionId, action),
     mutationKey: ['skip-subscription'],
   })
