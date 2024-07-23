@@ -3,6 +3,7 @@ import { ChangeEventHandler, useCallback, useMemo, useState } from 'react'
 import { useRouter } from 'next/router'
 
 import { useWindowScroll } from '@mantine/hooks'
+import { useSession } from 'next-auth/react'
 
 import { Button } from '@/core/components/button'
 import { NumberPicker } from '@/core/components/number-picker'
@@ -10,6 +11,7 @@ import { Typography } from '@/core/components/typogrpahy'
 import { GtmCustomEvents } from '@/lib/constants/gtm-events'
 import { useAddToCartMutation } from '@/lib/mutations/cart/add-to-cart'
 import { useUpdateQuantityMutation } from '@/lib/mutations/cart/update-quantity'
+import { SCOUT_CIRCLE_PAGE_PATH } from '@/lib/paths'
 import { useCartQuery } from '@/lib/queries/cart'
 import { useProductQuery } from '@/lib/queries/products'
 import { useProcessStore } from '@/lib/stores/process'
@@ -17,8 +19,6 @@ import { CartItem, SubscriptionProduct } from '@/lib/types'
 import { trackEvent } from '@/lib/utils/gtm-service'
 import { trackProductAddToCart } from '@/lib/utils/gtm-util'
 
-import { SCOUT_CIRCLE_PAGE_PATH } from '@/lib/paths'
-import { useSession } from 'next-auth/react'
 import { usePdpSelectedOption, usePdpSelectedProduct } from '../../store'
 
 const isCartProduct = (product: SubscriptionProduct | CartItem): product is CartItem =>
@@ -52,9 +52,7 @@ export const CtaActions = ({ className }: CtaActionsProps) => {
   const handleQuantityChange = useCallback(
     (item: CartItem, newQuantity?: number) => {
       const quantityToSend = newQuantity || quantity
-      const product = cart?.items.find(product => {
-        return product.sku === item.sku
-      })
+      const product = cart?.items.find(product => product.sku === item.sku)
       if (selectedProduct !== undefined && product !== undefined && quantityToSend >= 1) {
         updateQuantity({
           item,
@@ -63,7 +61,7 @@ export const CtaActions = ({ className }: CtaActionsProps) => {
           quantity: quantityToSend,
         })
       } else {
-        addToCart({ item, quantity: quantityToSend })
+        cart?.id && addToCart({ item, quantity: quantityToSend })
       }
 
       toggleCartOpen()
@@ -78,7 +76,7 @@ export const CtaActions = ({ className }: CtaActionsProps) => {
       if (selectedOption === 'subscription' && selectedProduct.subscriptionProduct) {
         item = selectedProduct.subscriptionProduct
       }
-      addToCart({ item, quantity })
+      cart?.id && addToCart({ item, quantity })
       toggleCartOpen()
     }
   }, [addToCart, quantity, selectedOption, selectedProduct, toggleCartOpen])

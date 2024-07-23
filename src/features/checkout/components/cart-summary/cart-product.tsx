@@ -45,7 +45,7 @@ export const CartProduct = ({ data }: CartProductProps) => {
         quantity: data.quantity + 1,
       })
     } else {
-      addToCart({ fetchSubtotal: true, item: data, quantity: data.quantity + 1 })
+      cart?.id && addToCart({ fetchSubtotal: true, item: data, quantity: data.quantity + 1 })
     }
   }, [addToCart, cart?.items, data, updateQuantity])
 
@@ -62,7 +62,7 @@ export const CartProduct = ({ data }: CartProductProps) => {
       } else if (newQuantity === 0) {
         removeFromCart({ fetchSubtotal: true, item, sku: item.sku })
       } else {
-        addToCart({ fetchSubtotal: true, item, quantity: newQuantity })
+        cart?.id && addToCart({ fetchSubtotal: true, item, quantity: newQuantity })
       }
     },
     [addToCart, data, removeFromCart, updateQuantity]
@@ -114,7 +114,6 @@ export const CartProduct = ({ data }: CartProductProps) => {
       handleQuantityChange(data, quantity > MIN && quantity <= MAX ? quantity - 1 : quantity)
     }
   }, [handleQuantityChange, data, quantity, removeFromCart])
-
 
   return (
     <div className="grid grid-cols-[auto_1fr] px-2 py-4">

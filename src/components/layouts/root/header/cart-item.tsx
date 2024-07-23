@@ -54,7 +54,7 @@ export const CartItem = ({ product, disabled }: CartItemProps) => {
         quantity: product.quantity + 1,
       })
     } else {
-      addToCart({ item: product, quantity: product.quantity + 1 })
+      cart?.id && addToCart({ item: product, quantity: product.quantity + 1 })
     }
   }, [addToCart, cart?.items, product, updateQuantity])
 
@@ -70,7 +70,7 @@ export const CartItem = ({ product, disabled }: CartItemProps) => {
       } else if (newQuantity === 0) {
         removeFromCart({ item, sku: item.sku })
       } else {
-        addToCart({ item, quantity: newQuantity })
+        cart?.id && addToCart({ item, quantity: newQuantity })
       }
     },
     [addToCart, product, removeFromCart, updateQuantity]

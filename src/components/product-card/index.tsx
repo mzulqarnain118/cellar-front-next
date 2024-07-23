@@ -92,7 +92,7 @@ export const ProductCard = ({
           quantity: quantityToSend,
         })
       } else {
-        addToCart({ item, quantity: quantityToSend })
+        cart?.id && addToCart({ item, quantity: quantityToSend })
       }
 
       toggleCartOpen()
@@ -101,7 +101,7 @@ export const ProductCard = ({
   )
 
   const handleAddToCart = useCallback(() => {
-    addToCart({ item: product, quantity })
+    cart?.id && addToCart({ item: product, quantity })
     // Track Add to cart
     trackProductAddToCart(product, quantity)
     // Track that this Add to cart is coming from the product card

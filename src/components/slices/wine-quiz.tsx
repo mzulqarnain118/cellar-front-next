@@ -7,6 +7,7 @@ import { DISPLAY_CATEGORY } from '@/lib/constants/display-category'
 import { useAgeVerified } from '@/lib/hooks/use-age-verified'
 import { useWineQuiz } from '@/lib/hooks/use-wine-quiz'
 import { useAddToCartMutation } from '@/lib/mutations/cart/add-to-cart'
+import { useCartQuery } from '@/lib/queries/cart'
 import { useConsultantQuery } from '@/lib/queries/consultant'
 import { useProductsQuery } from '@/lib/queries/products'
 import { useProcessStore } from '@/lib/stores/process'
@@ -55,6 +56,7 @@ export const WineQuiz = () => {
   const [sku, setSku] = useWineQuiz()
   const { mutate: addToCart } = useAddToCartMutation()
   const { data: consultant } = useConsultantQuery()
+  const { data: cart } = useCartQuery()
   const { toggleCartOpen } = useProcessStore()
   const url = useMemo(
     () => (consultant?.displayId !== CORPORATE_CONSULTANT_ID ? consultant.url : undefined),
@@ -85,41 +87,42 @@ export const WineQuiz = () => {
 
     if (tastrySku !== undefined) {
       toggleCartOpen()
-      addToCart({
-        fetchSubtotal: false,
-        item: {
-          ...productData,
-          availability:
-            (productData?.availability !== undefined &&
-              productData.availability?.map(state => ({
-                abbreviation: state?.abbreviation || 'TX',
-                enabled: state?.enabled || false,
-                name: state?.name || 'Texas',
-                provinceId: state?.provinceId || 48,
-              }))) ||
-            [],
-          cartUrl: productData?.cartUrl || '',
-          catalogId: 0,
-          categoryName: productData?.displayCategories
-            ? getProductCategory(productData?.displayCategories as number[], isGift)
-            : undefined,
-          displayCategories: productData?.displayCategories || [],
-          displayName: productData?.displayName || '',
-          isAutoSip,
-          isClubOnly,
-          isGift,
-          isGiftCard,
-          // isMerch: false,
-          isScoutCircleClub,
-          isVip: false,
-          price: productData?.price || 0,
-          quantityAvailable: productData?.quantityAvailable || 0,
-          sku: tastrySku,
-          subscribable: productData?.subscribable || false,
-        },
-        quantity: 1,
-        wineQuiz: true,
-      })
+      cart?.id &&
+        addToCart({
+          fetchSubtotal: false,
+          item: {
+            ...productData,
+            availability:
+              (productData?.availability !== undefined &&
+                productData.availability?.map(state => ({
+                  abbreviation: state?.abbreviation || 'TX',
+                  enabled: state?.enabled || false,
+                  name: state?.name || 'Texas',
+                  provinceId: state?.provinceId || 48,
+                }))) ||
+              [],
+            cartUrl: productData?.cartUrl || '',
+            catalogId: 0,
+            categoryName: productData?.displayCategories
+              ? getProductCategory(productData?.displayCategories as number[], isGift)
+              : undefined,
+            displayCategories: productData?.displayCategories || [],
+            displayName: productData?.displayName || '',
+            isAutoSip,
+            isClubOnly,
+            isGift,
+            isGiftCard,
+            // isMerch: false,
+            isScoutCircleClub,
+            isVip: false,
+            price: productData?.price || 0,
+            quantityAvailable: productData?.quantityAvailable || 0,
+            sku: tastrySku,
+            subscribable: productData?.subscribable || false,
+          },
+          quantity: 1,
+          wineQuiz: true,
+        })
     }
   }, [addToCart, productData, sku, toggleCartOpen])
 
