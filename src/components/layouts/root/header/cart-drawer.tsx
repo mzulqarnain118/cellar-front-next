@@ -29,7 +29,8 @@ export const CartDrawer = () => {
   const { cartOpen, toggleCartOpen } = useCartOpen()
   const { data: cart } = useCartQuery()
   const { isMutatingCart } = useProcessStore()
-  const footerRef = useRef<HTMLDivElement | null>(null)
+  const footerRef = useRef({} as HTMLDivElement)
+  const drawerHeaderRef = useRef({} as HTMLDivElement)
   const { mutate: shareCart, isLoading: isSharingCart } = useShareCartMutation()
   const { mutate: vaildateCartStock } = useValidateCartStockMutation()
 
@@ -149,6 +150,7 @@ export const CartDrawer = () => {
           onClick={toggleCartOpen}
         />
         <div
+          ref={drawerHeaderRef}
           className={`
             sticky left-0 top-0 flex w-full flex-col border-b border-base-dark bg-base-light
             lg:grid lg:grid-rows-[auto_1fr_auto]
@@ -177,10 +179,16 @@ export const CartDrawer = () => {
         </div>
         <>
           {cartItems !== undefined ? (
-            <div className="h-[stretch] overflow-y-scroll pb-[11rem]">
-              <div className="mb-[240px] divide-y divide-neutral-200 bg-neutral-50 pl-4">
-                {cartItems}
-              </div>
+            <div
+              className="overflow-y-scroll"
+              style={{
+                maxHeight: `${
+                  window?.innerHeight -
+                  (footerRef?.current?.offsetHeight + drawerHeaderRef?.current?.offsetHeight)
+                }px`,
+              }}
+            >
+              <div className="divide-y divide-neutral-200 bg-neutral-50 pl-4">{cartItems}</div>
             </div>
           ) : (
             <div
