@@ -56,7 +56,7 @@ export const RadioOption = ({ cartUrl, option }: OptionProps) => {
           price: productDetails?.Price || selectedProduct?.price || 0,
           quantityAvailable:
             productDetails?.QuantityAvailable || selectedProduct?.quantityAvailable || 0,
-          sku: productDetails?.SKU.toLowerCase() || selectedProduct?.sku || '',
+          sku: option?.sku || '',
           subscribable: productDetails?.SubscriptionOnly || selectedProduct?.subscribable || false,
         })
       }

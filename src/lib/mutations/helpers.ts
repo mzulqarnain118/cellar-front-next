@@ -117,7 +117,7 @@ export const getNewCartItems = (
         }
         const item = {
           cartUrl: ProductCartUrl,
-          displayName: productSku === cartItem.sku ? cartItem.displayName : ProductDisplayName,
+          displayName: correspondingItem?.displayName || cartItem.displayName,
           onSalePrice: DisplayPrice || ComparePrice,
           orderId: OrderID,
           orderLineId: OrderLineID,
