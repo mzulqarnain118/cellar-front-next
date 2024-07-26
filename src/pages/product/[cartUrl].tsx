@@ -144,9 +144,19 @@ const PDP: NextPage<PageProps> = ({ page, pdpData }) => {
 
   useEffect(() => {
     if (product !== null && product !== undefined) {
+      const selectedVariant = product.variations?.find(variant => variant.primary)
+
       // Track Product view on Page Load
       trackProductView(product)
-      setSelectedProduct(product)
+
+      const displayName = selectedVariant?.variations?.length
+        ? `${product.displayName} (${selectedVariant.variations[0]?.option})`
+        : product.displayName
+
+      setSelectedProduct({
+        ...product,
+        displayName,
+      })
     }
   }, [product, setSelectedProduct])
 
