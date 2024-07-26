@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 
 import { Collapse, Radio, RadioProps } from '@mantine/core'
 import { clsx } from 'clsx'
@@ -92,6 +92,10 @@ export const Options = ({ cartUrl }: OptionsProps) => {
         : undefined,
     [cartUrl, variationMap]
   )
+
+  useEffect(() => {
+    setSelectedOption('one-time')
+  }, [])
 
   return (
     <>
