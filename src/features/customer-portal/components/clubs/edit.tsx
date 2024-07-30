@@ -74,12 +74,8 @@ export const ClubsEdit = ({
     isLoadingChargebee
 
   const [newQuantity, setNewQuantity] = useState(subscription?.Quantity || 1)
-  const [newFrequency, setNewFrequency] = useState<string | null>(
-    subscription?.Frequencies?.[0].Key.toString() || null
-  )
-  const [newShippingMethod, setNewShippingMethod] = useState<string | null>(
-    subscription?.ShippingMethods?.[0].Key.toString() || null
-  )
+  const [newFrequency, setNewFrequency] = useState<string | null>()
+  const [newShippingMethod, setNewShippingMethod] = useState<string | null>()
   const [newNextOrderDate, setNewNextOrderDate] = useState<Date | null>(
     new Date(subscription?.NextProcessingDate || '0') || null
   )
@@ -100,8 +96,14 @@ export const ClubsEdit = ({
   const { mutate: updateSubscription } = useUpdateSubscriptionMutation()
 
   useEffect(() => {
-    setNewFrequency(subscription?.Frequencies?.[0].Key.toString() || null)
-    setNewShippingMethod(subscription?.ShippingMethods?.[0].Key.toString() || null)
+    setNewFrequency(
+      frequencies?.find(frequency => frequency?.label === subscription?.Frequency)?.value || null
+    )
+    setNewShippingMethod(
+      shippingMethods?.find(
+        shippmentMethod => shippmentMethod?.label === subscription?.ShippingMethod
+      )?.value || null
+    )
     setNewNextOrderDate(new Date(subscription?.NextProcessingDate || '0') || null)
     setCreditCardUsedForMembership(subscription?.PaymentToken || undefined)
     setAddressUsedForMembership(subscription?.AddressID || undefined)
