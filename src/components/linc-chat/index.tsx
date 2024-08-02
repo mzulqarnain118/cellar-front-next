@@ -2,7 +2,6 @@ import { useEffect, useMemo } from 'react'
 
 import { useSession } from 'next-auth/react'
 
-import { useIsDesktop } from '@/core/hooks/use-is-desktop'
 import { useAgeVerified } from '@/lib/hooks/use-age-verified'
 import { useCartQuery } from '@/lib/queries/cart'
 import { useCartOpen } from '@/lib/stores/process'
@@ -12,22 +11,9 @@ export const LincChat = () => {
   const { data: cart } = useCartQuery()
   const { cartOpen: isCartOpened } = useCartOpen()
   const { ageVerified: isAgeVerified } = useAgeVerified()
-  const isDesktop = useIsDesktop()
   const pageCategory = 'PDP'
 
   const email = useMemo(() => session?.user?.email, [session?.user?.email])
-
-  useEffect(() => {
-    if (!isDesktop && pageCategory === 'PDP') {
-      const fiveNineChat = document.getElementsByClassName('five9-frame')?.[0]
-      fiveNineChat?.classList.remove('d-block')
-      fiveNineChat?.classList.add('d-none')
-    } else {
-      const fiveNineChat = document.getElementsByClassName('five9-frame')?.[0]
-      fiveNineChat?.classList.add('d-block')
-      fiveNineChat?.classList.remove('d-none')
-    }
-  }, [isDesktop, pageCategory])
 
   useEffect(() => {
     if (isCartOpened) {
@@ -42,7 +28,7 @@ export const LincChat = () => {
   }, [isCartOpened])
 
   useEffect(() => {
-    if (isAgeVerified && !(!isDesktop && pageCategory === 'PDP')) {
+    if (isAgeVerified && pageCategory === 'PDP') {
       // Function to load both scripts
       const loadScripts = () => {
         // Main script
@@ -103,45 +89,6 @@ export const LincChat = () => {
           Five9SocialWidget.addWidget(options);
         `
           document.body.appendChild(childScript)
-
-          const styles = document.createElement('style')
-          styles.innerHTML = `
-          .five9-frame {
-            right: 2rem !important;
-          }
-
-          .five9-frame-minimized {
-            margin-left: 280px !important;
-          }
-
-          .five9-chat-button {
-            top: 0px !important;
-            font-size: 24px !important;
-            background: black !important;
-            border-radius: 10px !important;
-           margin-bottom: 2rem !important;
-          }
-.five9-chat-button .five9-icon{
-  left:8px !important;
-  top: 1px !important;
-}
-          .five9-text {
-            display: none !important;
-          }
-
-          // .five9-chat-button:after {
-          //   content: "" !important;
-          // }
-
-          #five9-popout-button {
-            float: right;
-          }
-
-          #five9-popout-button {
-            display: none !important;
-          }
-        `
-          document.head.appendChild(styles)
         }
 
         mainScript.onload = loadChildScript
@@ -175,7 +122,7 @@ export const LincChat = () => {
         })
       }
     }
-  }, [isAgeVerified, isDesktop])
+  }, [isAgeVerified])
 
   return <></>
 }
