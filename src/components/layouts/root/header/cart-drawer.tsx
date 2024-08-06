@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import { MouseEventHandler, useCallback, useEffect, useMemo, useRef } from 'react'
+import { MouseEventHandler, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { ChevronRightIcon } from '@heroicons/react/24/outline'
 import { CloseButton, Drawer } from '@mantine/core'
@@ -24,6 +24,7 @@ import { Ticker } from './ticker'
 const drawerClassNames = { body: 'h-full p-0', content: 'overflow-y-hidden' }
 
 export const CartDrawer = () => {
+  const [scrollHeight, setScrollHeight] = useState(0)
   const { data: session } = useSession()
   const router = useRouter()
   const { cartOpen, toggleCartOpen } = useCartOpen()
@@ -44,6 +45,24 @@ export const CartDrawer = () => {
       lincChat.style.display = ''
     }
   })
+  useEffect(() => {
+    setScrollHeight(
+      window?.innerHeight -
+        (footerRef?.current?.offsetHeight + drawerHeaderRef?.current?.offsetHeight)
+    )
+  }, [footerRef.current, drawerHeaderRef.current])
+
+  useEffect(() => {
+    const handleResize = () => {
+      setScrollHeight(
+        window?.innerHeight -
+          (footerRef?.current?.offsetHeight + drawerHeaderRef?.current?.offsetHeight)
+      )
+    }
+
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   const handleShareCartClick = useCallback(() => {
     shareCart()
@@ -182,10 +201,7 @@ export const CartDrawer = () => {
             <div
               className="overflow-y-scroll"
               style={{
-                maxHeight: `${
-                  window?.innerHeight -
-                  (footerRef?.current?.offsetHeight + drawerHeaderRef?.current?.offsetHeight)
-                }px`,
+                maxHeight: `${scrollHeight}px`,
               }}
             >
               <div className="divide-y divide-neutral-200 bg-neutral-50 pl-4">{cartItems}</div>
