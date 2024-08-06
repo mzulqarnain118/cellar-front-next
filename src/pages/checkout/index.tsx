@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
@@ -81,6 +81,8 @@ type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>
 const scrollIntoViewSettings = { duration: 500, offset: 120 }
 
 const CheckoutPage: NextPage<PageProps> = () => {
+  const [isItemVisible, setIsItemVisible] = useState(false)
+  const [verticalScroll, setVerticalScroll] = useState(0)
   const { mutate: setCartOwner } = useSetCartOwnerMutation()
   const { data: cart } = useCartQuery()
   const router = useRouter()
@@ -486,14 +488,37 @@ const CheckoutPage: NextPage<PageProps> = () => {
     if (lincChat) {
       lincChat.style.display = 'none'
     }
-  }, [])
+
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            setIsItemVisible(true)
+          } else {
+            setIsItemVisible(false)
+            setVerticalScroll(0)
+          }
+        })
+      },
+      { threshold: 0.2 } // Adjust this threshold as needed
+    )
+
+    if (payForOrderRefs?.termsRef?.current) {
+      observer.observe(payForOrderRefs?.termsRef?.current)
+    }
+
+    return () => {
+      if (payForOrderRefs?.termsRef?.current) {
+        observer.unobserve(payForOrderRefs?.termsRef?.current)
+      }
+    }
+  }, [payForOrderRefs?.termsRef?.current])
 
   useEffect(() => {
     if (cart !== undefined) {
       setCartOwner()
     }
   }, [cart, setCartOwner])
-
   useEffect(() => {
     if (cartStorage?.items.length === 0) {
       notifications.clean()
@@ -504,6 +529,12 @@ const CheckoutPage: NextPage<PageProps> = () => {
       })
     }
   }, [cart?.items.length, queryClient, router, cartStorage])
+
+  useEffect(() => {
+    if (isItemVisible) {
+      setVerticalScroll(scroll.y)
+    }
+  }, [isItemVisible])
 
   return (
     <>
@@ -545,7 +576,7 @@ const CheckoutPage: NextPage<PageProps> = () => {
               m-auto max-w-[28.5rem] rounded border border-base-dark bg-neutral-50 p-4 lg:relative
               lg:shadow-xl lg:transition-[top] lg:duration-500
             `}
-              style={{ top: scroll.y }}
+              style={{ top: `${verticalScroll ? verticalScroll - 60 : scroll.y}px` }}
             >
               <div className="flex items-center justify-between">
                 <Typography
