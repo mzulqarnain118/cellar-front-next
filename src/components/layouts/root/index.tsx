@@ -243,16 +243,21 @@ export const RootLayout = ({ children }: RootLayoutProps) => {
     []
   )
 
-  return router.pathname === CHECKOUT_PAGE_PATH ? (
-    <CheckoutLayout>{children}</CheckoutLayout>
-  ) : (
-    <div className="min-h-[100svh] grid" id="root-element">
-      {/* ! TODO: Add skip link. */}
-      {/* <SkipLink /> */}
+  return (
+    <>
       <LincChat />
-      <Header />
-      {children}
-      <Footer />
-    </div>
+      {router.pathname === CHECKOUT_PAGE_PATH ? (
+        <CheckoutLayout>{children}</CheckoutLayout>
+      ) : (
+        <div className="min-h-[100svh] grid" id="root-element">
+          {/* ! TODO: Add skip link. */}
+          {/* <SkipLink /> */}
+
+          <Header />
+          {children}
+          <Footer />
+        </div>
+      )}
+    </>
   )
 }
