@@ -3,29 +3,13 @@ import { useEffect, useMemo } from 'react'
 import { useSession } from 'next-auth/react'
 
 import { useAgeVerified } from '@/lib/hooks/use-age-verified'
-import { useCartQuery } from '@/lib/queries/cart'
-import { useCartOpen } from '@/lib/stores/process'
 
 export const LincChat = () => {
   const { data: session } = useSession()
-  const { data: cart } = useCartQuery()
-  const { cartOpen: isCartOpened } = useCartOpen()
   const { ageVerified: isAgeVerified } = useAgeVerified()
   const pageCategory = 'PDP'
 
   const email = useMemo(() => session?.user?.email, [session?.user?.email])
-
-  useEffect(() => {
-    if (isCartOpened) {
-      const fiveNineChat = document.getElementsByClassName('five9-frame')?.[0]
-      fiveNineChat?.classList.remove('d-block')
-      fiveNineChat?.classList.add('d-none')
-    } else {
-      const fiveNineChat = document.getElementsByClassName('five9-frame')?.[0]
-      fiveNineChat?.classList.add('d-block')
-      fiveNineChat?.classList.remove('d-none')
-    }
-  }, [isCartOpened])
 
   useEffect(() => {
     if (isAgeVerified && pageCategory === 'PDP') {
