@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import dynamic from 'next/dynamic'
 import Error from 'next/error'
@@ -9,7 +9,6 @@ import { asImageWidthSrcSet } from '@prismicio/helpers'
 import { QueryClient, dehydrate } from '@tanstack/react-query'
 import { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType, NextPage } from 'next'
 import { NextSeo, NextSeoProps } from 'next-seo'
-import { useIsMounted } from 'usehooks-ts'
 
 import { useIsDesktop } from '@/core/hooks/use-is-desktop'
 import { Breadcrumbs } from '@/features/pdp/components/breadcrumbs'
@@ -101,11 +100,11 @@ type PageProps = InferGetStaticPropsType<typeof getStaticProps>
 
 const PDP: NextPage<PageProps> = ({ page, pdpData }) => {
   const router = useRouter()
-  const isMounted = useIsMounted()
   const { cartUrl } = router.query
   const { data: product } = useProductQuery(cartUrl?.toString() || '')
   const { setSelectedProduct } = usePdpActions()
   const isDesktop = useIsDesktop()
+  const [isMounted, setIsMounted] = useState(false)
 
   const images = useMemo(
     () => [
@@ -158,6 +157,7 @@ const PDP: NextPage<PageProps> = ({ page, pdpData }) => {
         displayName,
       })
     }
+    setIsMounted(true)
   }, [product, setSelectedProduct])
 
   if (cartUrl === undefined || cartUrl === 'undefined' || typeof cartUrl !== 'string') {
@@ -181,7 +181,7 @@ const PDP: NextPage<PageProps> = ({ page, pdpData }) => {
           </div>
           <Brand cartUrl={cartUrl} className="py-4" />
         </div>
-        {isDesktop ? undefined : isMounted() ? (
+        {isDesktop ? undefined : isMounted ? (
           <CtaActions
             className={`
               fixed z-10 bottom-0 left-0 w-full bg-neutral-50 p-4 border-t border-neutral-light
