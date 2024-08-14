@@ -1,18 +1,57 @@
 import { useEffect, useMemo } from 'react'
 
+import { usePathname } from 'next/navigation'
+
 import { useSession } from 'next-auth/react'
 
+import { useIsDesktop } from '@/core/hooks/use-is-desktop'
 import { useAgeVerified } from '@/lib/hooks/use-age-verified'
+import { useCartOpen } from '@/lib/stores/process'
 
 export const LincChat = () => {
   const { data: session } = useSession()
+  const isDesktop = useIsDesktop()
+  const { cartOpen: isCartOpened } = useCartOpen()
   const { ageVerified: isAgeVerified } = useAgeVerified()
-  const pageCategory = 'PDP'
+  const pathname = usePathname()
+  const productRegex = /\/product\/\w+/
 
   const email = useMemo(() => session?.user?.email, [session?.user?.email])
 
   useEffect(() => {
-    if (isAgeVerified && pageCategory === 'PDP') {
+    const handleChatVisibility = () => {
+      const fiveNineChat = document.querySelector('.five9-frame')
+      if (!fiveNineChat) return // Exit early if the element is not found
+
+      if (isCartOpened) {
+        fiveNineChat.style.display = 'none'
+        return
+      }
+
+      if (!isDesktop) {
+        fiveNineChat.style.display =
+          productRegex.test(pathname) || pathname.includes('/checkout') ? 'none' : 'block'
+        return
+      }
+
+      fiveNineChat.style.display = 'block'
+    }
+
+    // Create a mutation observer to monitor the DOM for changes
+    const observer = new MutationObserver(handleChatVisibility)
+
+    // Observe changes in the body element
+    observer.observe(document.body, { childList: true, subtree: true })
+
+    // Initial check
+    handleChatVisibility()
+
+    // Cleanup
+    return () => observer.disconnect()
+  }, [pathname, isDesktop, isCartOpened])
+
+  useEffect(() => {
+    if (isAgeVerified) {
       // Function to load both scripts
       const loadScripts = () => {
         // Main script
@@ -84,13 +123,6 @@ export const LincChat = () => {
 
       // Cleanup function
       return () => {
-        const scripts = document.querySelectorAll(
-          'script[src^="https://app.five9.com/consoles/SocialWidget/five9-social-widget.min.js"]'
-        )
-        scripts.forEach(script => {
-          script.remove()
-        })
-
         const styles = document.querySelectorAll('style')
         styles.forEach(style => {
           const innerHTML = style.innerHTML
