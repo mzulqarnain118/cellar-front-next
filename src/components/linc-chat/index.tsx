@@ -1,48 +1,60 @@
 import { useEffect, useMemo } from 'react'
 
+import { usePathname } from 'next/navigation'
+
 import { useSession } from 'next-auth/react'
 
 import { useIsDesktop } from '@/core/hooks/use-is-desktop'
 import { useAgeVerified } from '@/lib/hooks/use-age-verified'
-import { useCartQuery } from '@/lib/queries/cart'
 import { useCartOpen } from '@/lib/stores/process'
 
 export const LincChat = () => {
   const { data: session } = useSession()
-  const { data: cart } = useCartQuery()
+  const isDesktop = useIsDesktop()
   const { cartOpen: isCartOpened } = useCartOpen()
   const { ageVerified: isAgeVerified } = useAgeVerified()
-  const isDesktop = useIsDesktop()
-  const pageCategory = 'PDP'
+  const pathname = usePathname()
+  const productRegex = /\/product\/\w+/
 
   const email = useMemo(() => session?.user?.email, [session?.user?.email])
 
   useEffect(() => {
-    if (!isDesktop && pageCategory === 'PDP') {
-      const fiveNineChat = document.getElementsByClassName('five9-frame')?.[0]
-      fiveNineChat?.classList.remove('d-block')
-      fiveNineChat?.classList.add('d-none')
-    } else {
-      const fiveNineChat = document.getElementsByClassName('five9-frame')?.[0]
-      fiveNineChat?.classList.add('d-block')
-      fiveNineChat?.classList.remove('d-none')
+    const handleChatVisibility = () => {
+      const fiveNineChat = document.querySelector('.five9-frame')
+      if (!fiveNineChat) return // Exit early if the element is not found
+
+      if (isCartOpened) {
+        fiveNineChat.style.display = 'none'
+        return
+      }
+
+      if (!isDesktop) {
+        fiveNineChat.style.display =
+          productRegex.test(window?.location?.pathname) ||
+          window?.location?.pathname.includes('/checkout')
+            ? 'none'
+            : 'block'
+        return
+      }
+
+      fiveNineChat.style.display = 'block'
     }
-  }, [isDesktop, pageCategory])
+
+    // Create a mutation observer to monitor the DOM for changes
+    const observer = new MutationObserver(handleChatVisibility)
+
+    // Observe changes in the body element
+    observer.observe(document.body, { childList: true, subtree: true })
+
+    // Initial check
+    handleChatVisibility()
+
+    // Cleanup
+    return () => observer.disconnect()
+  }, [pathname, isDesktop, isCartOpened])
 
   useEffect(() => {
-    if (isCartOpened) {
-      const fiveNineChat = document.getElementsByClassName('five9-frame')?.[0]
-      fiveNineChat?.classList.remove('d-block')
-      fiveNineChat?.classList.add('d-none')
-    } else {
-      const fiveNineChat = document.getElementsByClassName('five9-frame')?.[0]
-      fiveNineChat?.classList.add('d-block')
-      fiveNineChat?.classList.remove('d-none')
-    }
-  }, [isCartOpened])
-
-  useEffect(() => {
-    if (isAgeVerified && !(!isDesktop && pageCategory === 'PDP')) {
+    if (isAgeVerified) {
       // Function to load both scripts
       const loadScripts = () => {
         // Main script
@@ -103,45 +115,6 @@ export const LincChat = () => {
           Five9SocialWidget.addWidget(options);
         `
           document.body.appendChild(childScript)
-
-          const styles = document.createElement('style')
-          styles.innerHTML = `
-          .five9-frame {
-            right: 2rem !important;
-          }
-
-          .five9-frame-minimized {
-            margin-left: 280px !important;
-          }
-
-          .five9-chat-button {
-            top: 0px !important;
-            font-size: 24px !important;
-            background: black !important;
-            border-radius: 10px !important;
-           margin-bottom: 2rem !important;
-          }
-.five9-chat-button .five9-icon{
-  left:8px !important;
-  top: 1px !important;
-}
-          .five9-text {
-            display: none !important;
-          }
-
-          // .five9-chat-button:after {
-          //   content: "" !important;
-          // }
-
-          #five9-popout-button {
-            float: right;
-          }
-
-          #five9-popout-button {
-            display: none !important;
-          }
-        `
-          document.head.appendChild(styles)
         }
 
         mainScript.onload = loadChildScript
@@ -153,13 +126,6 @@ export const LincChat = () => {
 
       // Cleanup function
       return () => {
-        const scripts = document.querySelectorAll(
-          'script[src^="https://app.five9.com/consoles/SocialWidget/five9-social-widget.min.js"]'
-        )
-        scripts.forEach(script => {
-          script.remove()
-        })
-
         const styles = document.querySelectorAll('style')
         styles.forEach(style => {
           const innerHTML = style.innerHTML
@@ -175,7 +141,7 @@ export const LincChat = () => {
         })
       }
     }
-  }, [isAgeVerified, isDesktop])
+  }, [isAgeVerified])
 
   return <></>
 }
