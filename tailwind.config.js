@@ -117,8 +117,9 @@ module.exports = {
         },
       },
       screens: {
-        '1/2xl':'1180px',
+        '1/2xl': '1180px',
         '1xl': '1460px',
+        'xs': '200px',
       },
       transitionDuration: {
         DEFAULT: '300ms',
