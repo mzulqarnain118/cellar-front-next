@@ -1,7 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { useEventListener } from 'usehooks-ts'
-
 import { CORPORATE_CONSULTANT_ID } from '@/lib/constants'
 import { DISPLAY_CATEGORY } from '@/lib/constants/display-category'
 import { useAgeVerified } from '@/lib/hooks/use-age-verified'
@@ -52,7 +50,7 @@ export const getProductCategory = (displayCategoriesIds: number[], isGift = fals
 
 export const WineQuiz = () => {
   const [isLoadingData, setIsLoading] = useState(true)
-  const [sku, setSku] = useWineQuiz()
+  const [sku] = useWineQuiz()
   const { mutate: addToCart } = useAddToCartMutation()
   const { data: consultant } = useConsultantQuery()
   const { toggleCartOpen } = useProcessStore()
@@ -63,7 +61,7 @@ export const WineQuiz = () => {
   const { data: products, isLoading } = useProductsQuery()
 
   const productData = products?.find(product => product.sku === sku?.toLowerCase())
-  const { ageVerified, setAgeVerified } = useAgeVerified()
+  const { ageVerified } = useAgeVerified()
 
   const handleStorageChange = useCallback(async () => {
     const isClubOnly =
@@ -123,16 +121,22 @@ export const WineQuiz = () => {
     }
   }, [addToCart, productData, sku, toggleCartOpen])
 
-  useEventListener('storage', handleStorageChange)
-
   useEffect(() => {
-    setTimeout(() => {
-      setSku(sku)
+    const timeoutId = setTimeout(() => {
       const tastryEvent = new Event('loadTastry')
       window.dispatchEvent(tastryEvent)
       setIsLoading(false)
     }, 1000)
-  }, [setSku, sku, products, productData, ageVerified])
+
+    // Cleanup function to clear the timeout
+    return () => {
+      clearTimeout(timeoutId)
+    }
+  }, [products, productData, ageVerified])
+
+  useEffect(() => {
+    if (sku) handleStorageChange()
+  }, [sku])
 
   if (isLoading || isLoadingData) {
     return (
