@@ -1,11 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { useEventListener } from 'usehooks-ts'
-
 import { CORPORATE_CONSULTANT_ID } from '@/lib/constants'
 import { DISPLAY_CATEGORY } from '@/lib/constants/display-category'
 import { useAgeVerified } from '@/lib/hooks/use-age-verified'
-import { useWineQuiz } from '@/lib/hooks/use-wine-quiz'
 import { useAddToCartMutation } from '@/lib/mutations/cart/add-to-cart'
 import { useCartQuery } from '@/lib/queries/cart'
 import { useConsultantQuery } from '@/lib/queries/consultant'
@@ -53,7 +50,6 @@ export const getProductCategory = (displayCategoriesIds: number[], isGift = fals
 
 export const WineQuiz = () => {
   const [isLoadingData, setIsLoading] = useState(true)
-  const [sku, setSku] = useWineQuiz()
   const { mutate: addToCart } = useAddToCartMutation()
   const { data: consultant } = useConsultantQuery()
   const { data: cart } = useCartQuery()
@@ -62,14 +58,16 @@ export const WineQuiz = () => {
     () => (consultant?.displayId !== CORPORATE_CONSULTANT_ID ? consultant.url : undefined),
     [consultant?.displayId, consultant.url]
   )
-  const { data: products, isLoading } = useProductsQuery()
+  const { data: products, isLoading, refetch } = useProductsQuery()
 
-  const productData = products?.find(product => product.sku === sku?.toLowerCase())
-  const { ageVerified, setAgeVerified } = useAgeVerified()
+  const { ageVerified } = useAgeVerified()
 
   const handleStorageChange = useCallback(async () => {
+    const tastrySku = JSON.parse(sessionStorage.getItem('tastry-sku') || '{}')
+    const productData = products?.find(product => product.sku === tastrySku)
     const isClubOnly =
       productData?.displayCategories?.includes(DISPLAY_CATEGORY['Circle Exclusives']) || false
+
     const isGift = productData?.displayCategories?.includes(DISPLAY_CATEGORY['Gift Sets']) || false
     const isGiftCard =
       productData?.displayCategories?.includes(DISPLAY_CATEGORY['Gift Cards']) || false
@@ -78,12 +76,6 @@ export const WineQuiz = () => {
     const isAutoSip =
       productData?.displayCategories?.includes(DISPLAY_CATEGORY['Auto-Sip']) || false
     // const isMerch = productData?.catalogId === 9 // merch catalog id
-
-    let tastrySku: string | undefined = sku
-    if (tastrySku === undefined && typeof window !== 'undefined') {
-      const storageSku = JSON.parse(sessionStorage.getItem('tastry-sku') || '{}')
-      tastrySku = storageSku !== undefined && typeof storageSku === 'string' ? storageSku : sku
-    }
 
     if (tastrySku !== undefined) {
       toggleCartOpen()
@@ -124,19 +116,28 @@ export const WineQuiz = () => {
           wineQuiz: true,
         })
     }
-  }, [addToCart, productData, sku, toggleCartOpen])
-
-  useEventListener('storage', handleStorageChange)
+  }, [products])
 
   useEffect(() => {
-    setTimeout(() => {
-      setSku(sku)
+    const timer = setTimeout(() => {
       const tastryEvent = new Event('loadTastry')
       window.dispatchEvent(tastryEvent)
       setIsLoading(false)
     }, 1000)
-  }, [setSku, sku, products, productData, ageVerified])
+    refetch()
+    return () => {
+      clearTimeout(timer)
+    }
+  }, [ageVerified])
 
+  useEffect(() => {
+    window.addEventListener('tastry-event', handleStorageChange)
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      window.removeEventListener('tastry-event', handleStorageChange)
+    }
+  }, [])
   if (isLoading || isLoadingData) {
     return (
       <div className="mx-auto flex h-[40rem] max-w-2xl flex-col items-center py-4 px-16 md:px-0">

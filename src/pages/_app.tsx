@@ -159,7 +159,7 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
                         window.handleTastryAddToCart = (sku) => {
                           if (typeof sku === 'string') {
                             window.sessionStorage.setItem('tastry-sku', JSON.stringify(sku.toLowerCase()));
-                            const event = new Event('storage', { detail: sku.toLowerCase() });
+                            const event = new Event('tastry-event', { detail: sku.toLowerCase() });
                             window.dispatchEvent(event);
                           }
                         };
