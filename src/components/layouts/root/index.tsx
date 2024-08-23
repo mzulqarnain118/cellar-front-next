@@ -72,16 +72,22 @@ export const RootLayout = ({ children }: RootLayoutProps) => {
   }, [cart?.id, consultant?.displayId, eventshare, u])
 
   useEffect(() => {
-    if (!url.searchParams.size && !!selectedConsultantUrl) {
-      router.replace(`${router.asPath}/?u=${selectedConsultantUrl}`)
-    } else if (!router.asPath.includes('u=')) {
-      params.set('u', selectedConsultantUrl)
+    const params = router?.asPath?.split('/?')
+    if (params?.length > 1) {
+      const path = router?.pathname === '/' ? `${router.pathname}/?${params?.[1]}` : params?.[0]
+      router.replace(path)
     }
+    if (router.isReady) {
+      if (!router.query.u && !!selectedConsultantUrl) {
+        router.query.u = selectedConsultantUrl
+        router.replace(router)
+      }
 
-    if (searchParams.get('u') && searchParams.get('u') != selectedConsultantUrl) {
-      localStorage.setItem('u', searchParams.get('u'))
+      if (searchParams.get('u') && searchParams.get('u') != selectedConsultantUrl) {
+        localStorage.setItem('u', searchParams.get('u'))
+      }
     }
-  }, [searchParams.get('u')])
+  }, [searchParams.get('u'), router.isReady])
 
   const handleClick = useCallback(() => {
     setAgeVerified('true')
@@ -94,19 +100,15 @@ export const RootLayout = ({ children }: RootLayoutProps) => {
   useEffect(() => {
     const fetchConsultant = async () => {
       const baseApiUrl = process.env.NEXT_PUBLIC_TOWER_API_URL
-      const pathname = router.asPath
-      const rootPath = pathname.split('/')[1]
-
-      if (!POSSIBLE_PAGES.includes(rootPath.split('?')[0])) {
+      if (!POSSIBLE_PAGES.includes(rootPath.split('?')[0]) && router.isReady) {
         try {
           const consultantResponse = await fetch(`${baseApiUrl}/api/info/rep/${rootPath}`)
 
           if (consultantResponse.ok) {
             const consultant = await consultantResponse.json()
-            if (consultant.DisplayID) {
-              const url = new URL(process.env.NEXT_PUBLIC_APP_URL)
-              url.searchParams.set('u', consultant.Url)
-              router.replace(url.toString()) // Redirect to consultant URL
+            if (consultant?.Url) {
+              router.query.u = consultant.Url
+              router.replace(router)
             }
           }
         } catch (error) {
@@ -116,7 +118,7 @@ export const RootLayout = ({ children }: RootLayoutProps) => {
     }
 
     fetchConsultant()
-  }, [])
+  }, [router.isReady])
 
   useEffect(() => {
     if (ageVerified === undefined || ageVerified === 'false') {
@@ -216,9 +218,11 @@ export const RootLayout = ({ children }: RootLayoutProps) => {
   }, [router.query.u, router.query.eventshare, cart?.id, consultant?.displayId, tastingStorage])
 
   useEffect(() => {
-    if (!router.query.u && consultant?.displayId !== CORPORATE_CONSULTANT_ID) {
-      router.query.u = consultant?.url
-      router.push(router)
+    if (router.isReady) {
+      if (!router.query.u && consultant?.displayId !== CORPORATE_CONSULTANT_ID) {
+        router.query.u = consultant?.url
+        router.replace(router)
+      }
     }
   }, [consultant?.displayId, consultant?.url, router, router.isReady])
 

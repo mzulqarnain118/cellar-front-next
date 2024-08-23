@@ -28,13 +28,13 @@ export const CheckoutLayout = ({ children }: CheckoutLayoutProps) => {
     if (
       session?.user?.userConsultantData?.url &&
       session?.user.userConsultantData.displayId !== '1001' &&
-      (u === undefined || u === null || u === '')
+      (u === undefined || u === null || u === '') &&
+      router.isReady
     ) {
-      router.replace({
-        query: { ...router.query, u: session?.user?.userConsultantData?.url },
-      })
+      router.query.u = session?.user?.userConsultantData?.url
+      router.replace(router)
     }
-  }, [session?.user.userConsultantData, router?.pathname])
+  }, [session?.user.userConsultantData, router?.isReady])
 
   return (
     <div className="relative h-full min-h-[100svh] bg-[#f7f3f4]">
