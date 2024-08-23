@@ -25,7 +25,8 @@ const Hit = ({ hit: consultant, setConsultantInputValue }: HitProps) => {
   const handleSelect = useCallback(
     (consultant?: Consultant) => {
       if (consultant?.displayId !== CORPORATE_CONSULTANT_ID) {
-        router.push(`/?u=${consultant?.url}`)
+        router.query.u = consultant?.url
+        router.push(router)
       }
     },
     [router]
@@ -61,8 +62,7 @@ const Hit = ({ hit: consultant, setConsultantInputValue }: HitProps) => {
       setConsultant(newConsultant)
       queryClient.prefetchQuery([CONSULTANT_QUERY_KEY, selectedConsultant?.Url], getConsultantData)
       handleSelect(newConsultant)
-    }
-    else {
+    } else {
       handleSelect()
     }
   }
