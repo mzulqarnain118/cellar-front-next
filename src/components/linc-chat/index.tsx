@@ -120,23 +120,6 @@ export const LincChat = () => {
       }
 
       loadScripts() // Call the function to load both scripts
-
-      // Cleanup function
-      return () => {
-        const styles = document.querySelectorAll('style')
-        styles.forEach(style => {
-          const innerHTML = style.innerHTML
-          if (
-            innerHTML.includes('.five9-frame') ||
-            innerHTML.includes('.five9-frame-minimized') ||
-            innerHTML.includes('.five9-chat-button') ||
-            innerHTML.includes('.five9-text') ||
-            innerHTML.includes('#five9-popout-button')
-          ) {
-            style.remove()
-          }
-        })
-      }
     }
   }, [isAgeVerified])
 
