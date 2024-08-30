@@ -116,7 +116,7 @@ export const CartProduct = ({ data }: CartProductProps) => {
   }, [handleQuantityChange, data, quantity, removeFromCart])
 
   return (
-    <div className="grid grid-cols-[auto_1fr] px-2 py-4">
+    <div className="grid grid-cols-[auto_1fr] py-4">
       {data.pictureUrl ? (
         <div className="relative h-16 w-20">
           <BlurImage
@@ -138,7 +138,7 @@ export const CartProduct = ({ data }: CartProductProps) => {
             onClick={handleRemove}
           />
         </div>
-        <div className="flex items-center justify-between">
+        <div className="flex  gap-1 items-center justify-between">
           <div className="flex items-center gap-2">
             <Typography>QTY</Typography>
             <NumberPicker

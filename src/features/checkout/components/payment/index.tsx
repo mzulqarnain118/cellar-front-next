@@ -35,8 +35,8 @@ import {
 import { useRedeemGiftCardCheckoutMutation } from '../../mutations/redeem-gift-card-checkout'
 import { useRedeemOfferCheckoutMutation } from '../../mutations/redeem-offer-checkout'
 import { useSkyWalletQuery } from '../../queries/sky-wallet'
-
 import { useCheckoutStore } from '../../store'
+
 import { CreditCardForm } from './credit-card-form'
 import { formatCVC } from './utils'
 
@@ -304,7 +304,7 @@ export const Payment = memo(({ opened, refs, toggle, cartTotalData }: PaymentPro
 
       <div className="space-y-4 px-4">
         <Collapse className="!m-0" in={opened && !creditCardFormOpen} transitionDuration={300}>
-          <div className="grid grid-cols-[1fr_auto] items-start gap-4">
+          <div className="grid grid-cols-6 items-start gap-4">
             {session?.user?.isGuest ? (
               <div className="grid self-center">
                 <Typography className="font-bold">
@@ -314,6 +314,7 @@ export const Payment = memo(({ opened, refs, toggle, cartTotalData }: PaymentPro
               </div>
             ) : (
               <Select
+                className="col-span-4"
                 classNames={dropdownClassNames}
                 data={creditCardsData}
                 label="Credit card"
@@ -324,7 +325,7 @@ export const Payment = memo(({ opened, refs, toggle, cartTotalData }: PaymentPro
             <Input
               ref={cvvRef}
               noSpacing
-              className="mt-0.5"
+              className="mt-0.5 col-span-2"
               data-testid="cvv"
               error={errors?.payment?.cvv}
               inputClassName={clsx(errors?.payment?.cvv && '!border-error focus:!border-error')}
