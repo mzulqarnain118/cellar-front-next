@@ -258,16 +258,28 @@ export const ContactForm = () => {
         Contact us
       </Typography>
       <form
-        className="grid lg:grid-cols-2 lg:gap-x-10 items-start"
+        className="grid md:grid-cols-2 md:gap-x-10 gap-x-6 items-start "
         onSubmit={handleSubmit(onSubmit)}
       >
-        <Input error={errors.fullName?.message} label="Full name" {...register('fullName')} />
-        <Input error={errors.email?.message} label="Email" type="email" {...register('email')} />
+        <Input
+          error={errors.fullName?.message}
+          label="Full name"
+          {...register('fullName')}
+          className="md:col-span-1 col-span-2"
+        />
+        <Input
+          error={errors.email?.message}
+          label="Email"
+          type="email"
+          {...register('email')}
+          className="md:col-span-1 col-span-2"
+        />
         <Input
           error={errors.phoneNumber?.message}
           label="Phone number"
           type="tel"
           {...register('phoneNumber')}
+          className="md:col-span-1 col-span-2"
         />
         <Input
           error={errors.orderNumber?.message}
@@ -275,15 +287,17 @@ export const ContactForm = () => {
           label="Order number"
           type="tel"
           {...register('orderNumber')}
+          className="md:col-span-1 col-span-2"
         />
         <Input
-          className="lg:col-span-2"
+          className="w-[100%] md:col-span-1 col-span-2"
           error={errors.consultantName?.message}
           instructionLabel="optional"
           label="Consultant name"
           {...register('consultantName')}
         />
         <Select
+          className="md:mt-[1rem]"
           data={[
             { value: 'Account Inquiry', label: 'Account Inquiry' },
             { value: 'General Inquiry', label: 'General Inquiry' },
@@ -313,10 +327,11 @@ export const ContactForm = () => {
           }}
         /> */}
         <Textarea
-          className="lg:col-span-2"
+          className="md:col-span-1 col-span-2"
           error={errors.body?.message}
           label="How can we help you?"
           {...register('body')}
+          noSpacing
         />
         {/* <FileInput
           clearable
