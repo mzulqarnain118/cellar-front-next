@@ -146,6 +146,7 @@ const RichContentPage = ({
           className="flex justify-center items-center text-neutral-50 h-96 w-full"
           style={{
             background: `linear-gradient( rgba(0, 0, 0, .5), rgba(0, 0, 0, .5) ), url(${page?.data.header_img.url}) no-repeat`,
+            backgroundPosition: 'center',
             backgroundSize: 'cover',
           }}
         >
