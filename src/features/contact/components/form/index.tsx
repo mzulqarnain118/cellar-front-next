@@ -237,6 +237,7 @@ export const ContactForm = () => {
   const reasonSelect = useMemo(
     () => (
       <Select
+        className="mt-[1rem] md:col-span-1 col-span-2"
         data={reasonOptions}
         error={errors.reason?.message}
         label="Reason"
@@ -298,7 +299,7 @@ export const ContactForm = () => {
           {...register('consultantName')}
         />
         <Select
-          className="md:mt-[1rem]"
+          className="mt-[1rem] md:col-span-1 col-span-2"
           data={[
             { value: 'Account Inquiry', label: 'Account Inquiry' },
             { value: 'General Inquiry', label: 'General Inquiry' },
@@ -328,7 +329,7 @@ export const ContactForm = () => {
           }}
         /> */}
         <Textarea
-          className="md:col-span-1 col-span-2"
+          className="md:col-span-1 col-span-2 mt-[1rem]"
           error={errors.body?.message}
           label="How can we help you?"
           {...register('body')}
@@ -347,8 +348,7 @@ export const ContactForm = () => {
           size="md"
           onChange={handleAttachmentChange}
         /> */}
-        <div className="col-span-1" />
-        <Button dark className="col-span-2 lg:col-span-1 mt-4" type="submit">
+        <Button dark className="col-span-2 m-auto mt-4" type="submit">
           Send message
         </Button>
       </form>
