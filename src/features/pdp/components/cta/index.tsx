@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 
 import dynamic from 'next/dynamic'
 
+import { useIsDesktop } from '@/core/hooks/use-is-desktop'
 import { useProductQuery } from '@/lib/queries/products'
 
 import { usePdpActions, usePdpSelectedProduct } from '../../store'
@@ -19,6 +20,7 @@ export const CTA = ({ cartUrl }: CTAProps) => {
   const { data: flightData } = useProductQuery(cartUrl)
   const selectedProduct = usePdpSelectedProduct()
   const { setSelectedProduct } = usePdpActions()
+  const isDesktop = useIsDesktop()
 
   useEffect(() => {
     if (selectedProduct === undefined) {
@@ -34,7 +36,7 @@ export const CTA = ({ cartUrl }: CTAProps) => {
       flightData?.variations.length > 0 ? (
         <Variations cartUrl={cartUrl} />
       ) : undefined}
-      <CtaActions />
+      {isDesktop && <CtaActions />}
     </div>
   )
 }

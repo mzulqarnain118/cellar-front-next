@@ -10,7 +10,6 @@ import { PrismicRichText } from '@prismicio/react'
 import { useProductQuery } from '@/lib/queries/products'
 import { Simplify } from '@/lib/types/prismic'
 
-import { useIsDesktop } from '@/core/hooks/use-is-desktop'
 import { BrandOrigin } from '../brand-origin'
 import { CTA } from '../cta'
 import { Heading } from '../heading'
@@ -26,7 +25,6 @@ interface DescriptionProps {
 
 export const Description = memo(({ cartUrl, prismicData }: DescriptionProps) => {
   const { data: flightData, isError } = useProductQuery(cartUrl)
-  const isDesktop = useIsDesktop()
 
   if (isError) {
     return <>Error</>
@@ -35,7 +33,7 @@ export const Description = memo(({ cartUrl, prismicData }: DescriptionProps) => 
   return (
     <div>
       <Heading />
-      {isDesktop && <CTA cartUrl={cartUrl} />}
+      <CTA cartUrl={cartUrl} />
       <BrandOrigin cartUrl={cartUrl} />
       <div className="py-4 [&>p]:my-4">
         <PrismicRichText field={prismicData?.summary} />
