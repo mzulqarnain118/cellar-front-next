@@ -11,7 +11,7 @@ const addTowerKeyAndAuthHeaders: BeforeRequestHook = async (request, _options) =
   const session = await getSession()
   const { token: guestToken, setToken: setGuestToken } = useGuestStore.getState()
   const accessToken = session?.user.tokenDetails?.accessToken || guestToken
-
+  //reverted changes
   if (towerApiKey !== undefined) {
     request.headers.set('SCAuth', towerApiKey)
   }
