@@ -295,9 +295,7 @@ export const PayForOrder = ({
                 isAddressFormOpened ||
                 isPaymentFormOpened ||
                 shippingAddresses?.creditCards?.length === 0 ||
-                isPickUp
-                  ? !selectedPickUpAddress
-                  : shippingAddresses?.addresses?.length === 0
+                (isPickUp ? !selectedPickUpAddress : shippingAddresses?.addresses?.length === 0)
               }
               size={isDesktop ? 'lg' : 'md'}
               onClick={handleSubmit}
