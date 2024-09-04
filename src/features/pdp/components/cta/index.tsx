@@ -29,7 +29,16 @@ export const CTA = ({ cartUrl }: CTAProps) => {
   }, [flightData, selectedProduct, setSelectedProduct])
 
   return (
-    <div className="my-4 space-y-4 border-y border-neutral-light py-6" id="add-to-cart-section">
+    <div
+      className={`${
+        flightData?.subscriptionProduct ||
+        isDesktop ||
+        (flightData?.variations && flightData?.variations.length > 0)
+          ? 'my-4 space-y-4 border-y border-neutral-light py-6'
+          : ''
+      }`}
+      id="add-to-cart-section"
+    >
       {flightData?.subscriptionProduct !== undefined ? <Options cartUrl={cartUrl} /> : undefined}
       {flightData?.subscriptionProduct === undefined &&
       flightData?.variations !== undefined &&

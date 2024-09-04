@@ -125,16 +125,20 @@ export const CtaActions = ({ className }: CtaActionsProps) => {
   return (
     <div className={className}>
       {className !== undefined ? (
-        <div className="flex items-center gap-1">
-          <Typography className="text-14">
-            {selectedOption === 'subscription'
-              ? 'This purchase is a subscription. '
-              : 'This purchase is one-time only '}
-          </Typography>
-          <Button link onClick={handleOptionChange}>
-            tap here to change
-          </Button>
-        </div>
+        product?.subscriptionProduct || product?.isScoutCircleClub ? (
+          <div className="flex items-center gap-1">
+            {!product?.isScoutCircleClub && (
+              <Typography className="text-14">
+                {selectedOption === 'subscription'
+                  ? 'This purchase is a subscription. '
+                  : 'This purchase is one-time only. '}
+              </Typography>
+            )}
+            <Button link onClick={handleOptionChange}>
+              Tap here to change
+            </Button>
+          </div>
+        ) : undefined
       ) : undefined}
       <div className="grid auto-rows-auto grid-cols-[auto_1fr] gap-4">
         <NumberPicker
