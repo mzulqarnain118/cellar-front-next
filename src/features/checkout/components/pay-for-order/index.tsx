@@ -35,15 +35,16 @@ import {
   useCheckoutActions,
   useCheckoutActiveCreditCard,
   useCheckoutErrors,
+  useCheckoutIsPickUp,
   useCheckoutSelectedPickUpAddress,
   useCheckoutSelectedPickUpOption,
 } from '@/lib/stores/checkout'
 
 import { useAddGiftMessageMutation } from '../../mutations/add-gift-message'
 import { useCheckoutPayForOrderMutation } from '../../mutations/pay-for-order'
+import { useCheckoutStore } from '../../store'
 import { PaymentRefs } from '../payment'
 
-import { useCheckoutStore } from '../../store'
 import TermsContent from './terms'
 import TermsModal from './termsModal'
 
@@ -81,6 +82,7 @@ export const PayForOrder = ({
   validateCartStockResp,
 }: PayForOrderProps) => {
   const queryClient = useQueryClient()
+  const isPickUp = useCheckoutIsPickUp()
   const { data: cart } = useCartQuery()
   const { data: session } = useSession()
   const errors = useCheckoutErrors()
@@ -292,8 +294,10 @@ export const PayForOrder = ({
                 paymentRefs.cvvRef.current?.value.length <= 2 ||
                 isAddressFormOpened ||
                 isPaymentFormOpened ||
-                shippingAddresses?.addresses?.length === 0 ||
-                shippingAddresses?.creditCards?.length === 0
+                shippingAddresses?.creditCards?.length === 0 ||
+                isPickUp
+                  ? !selectedPickUpAddress
+                  : shippingAddresses?.addresses?.length === 0
               }
               size={isDesktop ? 'lg' : 'md'}
               onClick={handleSubmit}
