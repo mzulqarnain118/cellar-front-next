@@ -16,6 +16,7 @@ import { useCartQuery } from '@/lib/queries/cart'
 import { useCartOpen, useProcessStore } from '@/lib/stores/process'
 
 import { Link } from '@/components/link'
+import { useIsDesktop } from '@/core/hooks/use-is-desktop'
 import { useValidateCartStockMutation } from '@/features/checkout/mutations/validate-cart-stock'
 import { useShareCartMutation } from '@/features/shared-cart/mutations/share-cart'
 import { CartItem } from './cart-item'
@@ -24,6 +25,7 @@ import { Ticker } from './ticker'
 const drawerClassNames = { body: 'h-full p-0', content: 'overflow-y-hidden' }
 
 export const CartDrawer = () => {
+  const isDekstop = useIsDesktop()
   const [scrollHeight, setScrollHeight] = useState(0)
   const { data: session } = useSession()
   const router = useRouter()
@@ -62,7 +64,7 @@ export const CartDrawer = () => {
 
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
-  }, [])
+  }, [isDekstop])
 
   const handleShareCartClick = useCallback(() => {
     shareCart()
@@ -204,7 +206,7 @@ export const CartDrawer = () => {
                 maxHeight: `${scrollHeight}px`,
               }}
             >
-              <div className="divide-y divide-neutral-200 bg-neutral-50 pl-4">{cartItems}</div>
+              <div className="divide-y divide-neutral-200 bg-neutral-50">{cartItems}</div>
             </div>
           ) : (
             <div
