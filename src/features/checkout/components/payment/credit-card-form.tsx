@@ -279,7 +279,7 @@ export const CreditCardForm = ({ onCancel, onCreate, cartTotalData }: CreditCard
       ) : undefined}
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="grid items-start lg:grid-cols-2 lg:gap-4">
+          <div className="grid items-start grid-cols-1 sm:grid-cols-2 md:grid-cols-2 1/2xl:grid-cols-2 1xl:grid-cols-2 lg:gap-4">
             <Input
               error={errors.name?.message}
               label="Name"
