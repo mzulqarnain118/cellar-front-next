@@ -43,9 +43,9 @@ export const BillingAddress = ({ noCheckbox = false }: BillingAddressProps) => {
       )}
 
       <Collapse in={!sameAsShipping}>
-        <div className="auto-grid-rows grid grid-cols-12 items-start gap-x-8">
+        <div className="auto-grid-rows grid grid-cols-2 items-start gap-x-8">
           <Input
-            className="col-span-12 [&>div:first-child]:!pt-1"
+            className="col-span-2 sm:col-span-1 [&>div:first-child]:!pt-1"
             error={errors.company?.message}
             id="company"
             instructionLabel="optional"
@@ -54,7 +54,7 @@ export const BillingAddress = ({ noCheckbox = false }: BillingAddressProps) => {
             {...register('company')}
           />
           <Input
-            className="col-span-6 [&>div:first-child]:!pt-1"
+            className="col-span-2 sm:col-span-1 [&>div:first-child]:!pt-1"
             error={errors.firstName?.message}
             id="firstName"
             label="First name"
@@ -62,7 +62,7 @@ export const BillingAddress = ({ noCheckbox = false }: BillingAddressProps) => {
             {...register('firstName', { deps: ['sameAsShipping'], required: !sameAsShipping })}
           />
           <Input
-            className="col-span-6 [&>div:first-child]:!pt-1"
+            className="col-span-2 sm:col-span-1 [&>div:first-child]:!pt-1"
             error={errors.lastName?.message}
             id="lastName"
             label="Last name"
@@ -70,7 +70,7 @@ export const BillingAddress = ({ noCheckbox = false }: BillingAddressProps) => {
             {...register('lastName', { deps: ['sameAsShipping'], required: !sameAsShipping })}
           />
           <Input
-            className="col-span-6 [&>div:first-child]:!pt-1"
+            className="col-span-2 sm:col-span-1 [&>div:first-child]:!pt-1"
             error={errors.addressOne?.message}
             id="addressOne"
             label="Address 1"
@@ -78,7 +78,7 @@ export const BillingAddress = ({ noCheckbox = false }: BillingAddressProps) => {
             {...register('addressOne', { deps: ['sameAsShipping'], required: !sameAsShipping })}
           />
           <Input
-            className="col-span-6 [&>div:first-child]:!pt-1"
+            className="col-span-2 sm:col-span-1 [&>div:first-child]:!pt-1"
             error={errors.addressTwo?.message}
             id="addressTwo"
             instructionLabel="optional"
@@ -87,16 +87,21 @@ export const BillingAddress = ({ noCheckbox = false }: BillingAddressProps) => {
             {...register('addressTwo')}
           />
           <Input
-            className="col-span-4 [&>div:first-child]:!pt-1"
+            className="col-span-2 sm:col-span-1 [&>div:first-child]:!pt-1"
             error={errors.city?.message}
             id="city"
             label="City"
             size="sm"
             {...register('city', { deps: ['sameAsShipping'], required: !sameAsShipping })}
           />
-          <StateDropdown className="col-span-4" control={control} name="state" size="sm" />
+          <StateDropdown
+            className="col-span-2 sm:col-span-1"
+            control={control}
+            name="state"
+            size="sm"
+          />
           <Input
-            className="col-span-4 [&>div:first-child]:!pt-1"
+            className="col-span-2 sm:col-span-1 [&>div:first-child]:!pt-1"
             error={errors.zipCode?.message}
             id="zipCode"
             label="Zip code"

@@ -171,14 +171,14 @@ export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
       <div className="space-y-4">
         <LoadingOverlay visible={isCreatingAddress || isValidatingAddress} />
         <Form
-          className="auto-grid-rows grid grid-cols-12 items-start gap-x-8"
+          className="auto-grid-rows grid grid-cols-2 items-start gap-x-8"
           defaultValues={defaultValues}
           id="address-form"
           schema={newAddressFormSchema}
           onSubmit={onSubmit}
         >
           <Input
-            className="col-span-12 [&>div:first-child]:!pt-1"
+            className="col-span-2 sm:col-span-1 [&>div:first-child]:!pt-1"
             instructionLabel="optional"
             label="Company"
             name="company"
@@ -186,39 +186,39 @@ export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
           />
           <Input
             ref={ref}
-            className="col-span-6 [&>div:first-child]:!pt-1"
+            className="col-span-2 sm:col-span-1 [&>div:first-child]:!pt-1"
             label="First name"
             name="firstName"
             size={size}
           />
           <Input
-            className="col-span-6 [&>div:first-child]:!pt-1"
+            className="col-span-2 sm:col-span-1 [&>div:first-child]:!pt-1"
             label="Last name"
             name="lastName"
             size={size}
           />
           <Input
-            className="col-span-6 [&>div:first-child]:!pt-1"
+            className="col-span-2 sm:col-span-1 [&>div:first-child]:!pt-1"
             label="Address 1"
             name="addressOne"
             size={size}
           />
           <Input
-            className="col-span-6 [&>div:first-child]:!pt-1"
+            className="col-span-2 sm:col-span-1 [&>div:first-child]:!pt-1"
             instructionLabel="optional"
             label="Address 2"
             name="addressTwo"
             size={size}
           />
           <Input
-            className="col-span-4 [&>div:first-child]:!pt-1"
+            className="col-span-2 sm:col-span-1 [&>div:first-child]:!pt-1"
             label="City"
             name="city"
             size={size}
           />
-          <StateDropdown className="col-span-4 pt-1" name="state" size={size} />
+          <StateDropdown className="col-span-2 sm:col-span-1 pt-1" name="state" size={size} />
           <Input
-            className="col-span-4 [&>div:first-child]:!pt-1"
+            className="col-span-2 sm:col-span-1 [&>div:first-child]:!pt-1"
             label="Zip code"
             name="zipCode"
             size={size}

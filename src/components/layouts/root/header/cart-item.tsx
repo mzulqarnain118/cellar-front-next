@@ -131,8 +131,8 @@ export const CartItem = ({ product, disabled }: CartItemProps) => {
   }, [product.quantity])
 
   return (
-    <div className="border-0 border-b border-solid border-neutral-300 pb-4">
-      <div className="grid grid-cols-[auto_1fr] gap-3 pt-3">
+    <div className="border-0 border-b border-solid border-neutral-300 p-4">
+      <div className="grid grid-cols-[auto_1fr] gap-3">
         {!!product.pictureUrl && (
           <Link className="relative w-24 h-24" href={`/product/${product.cartUrl || ''}`}>
             <BlurImage

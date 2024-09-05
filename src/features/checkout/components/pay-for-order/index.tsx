@@ -280,7 +280,7 @@ export const PayForOrder = ({
             />
           ) : undefined}
         </div>
-        <div className="fixed bottom-0 flex w-[stretch] items-center border-t border-t-neutral bg-[#f7f3f4] py-4 pr-4 lg:w-[50svw]">
+        <div className="fixed bottom-0 flex w-[stretch] items-center border-t border-t-neutral bg-[#f7f3f4] py-4 pr-4 lg:w-[50svw] z-[999]">
           <div className="grid">
             <Typography className="text-neutral-600">TOTAL</Typography>
             <Typography className="text-2xl font-bold">

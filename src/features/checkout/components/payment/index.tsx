@@ -304,9 +304,9 @@ export const Payment = memo(({ opened, refs, toggle, cartTotalData }: PaymentPro
 
       <div className="space-y-4 px-4">
         <Collapse className="!m-0" in={opened && !creditCardFormOpen} transitionDuration={300}>
-          <div className="grid grid-cols-6 items-start gap-4">
+          <div className="grid grid-cols-3 1/2xl:grid-cols-4 items-center gap-4">
             {session?.user?.isGuest ? (
-              <div className="grid self-center">
+              <div className="col-span-2 1/2xl:col-span-2 1xl:col-span-1">
                 <Typography className="font-bold">
                   {creditCard?.NameOnCard} - {creditCard?.CreditCardTypeName} ending in{' '}
                   {creditCard?.DisplayNumber}
@@ -314,7 +314,7 @@ export const Payment = memo(({ opened, refs, toggle, cartTotalData }: PaymentPro
               </div>
             ) : (
               <Select
-                className="col-span-4"
+                className="col-span-2 1/2xl:col-span-2 1xl:col-span-1"
                 classNames={dropdownClassNames}
                 data={creditCardsData}
                 label="Credit card"
@@ -325,7 +325,7 @@ export const Payment = memo(({ opened, refs, toggle, cartTotalData }: PaymentPro
             <Input
               ref={cvvRef}
               noSpacing
-              className="mt-0.5 col-span-2"
+              className="col-span-1 1/2xl:col-span-2 1xl:col-span-1"
               data-testid="cvv"
               error={errors?.payment?.cvv}
               inputClassName={clsx(errors?.payment?.cvv && '!border-error focus:!border-error')}
