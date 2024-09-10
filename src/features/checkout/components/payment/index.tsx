@@ -35,8 +35,8 @@ import {
 import { useRedeemGiftCardCheckoutMutation } from '../../mutations/redeem-gift-card-checkout'
 import { useRedeemOfferCheckoutMutation } from '../../mutations/redeem-offer-checkout'
 import { useSkyWalletQuery } from '../../queries/sky-wallet'
-
 import { useCheckoutStore } from '../../store'
+
 import { CreditCardForm } from './credit-card-form'
 import { formatCVC } from './utils'
 
@@ -44,6 +44,7 @@ const SkyWallet = dynamic(() => import('./sky-wallet').then(({ SkyWallet }) => S
   ssr: false,
 })
 
+// logs
 const dropdownClassNames = { input: 'h-10', item: 'text-14', label: 'text-14' }
 const tagIcon = <TagIcon className="mx-3 h-4 w-4" />
 const giftIcon = <GiftIcon className="mx-3 h-4 w-4" />
