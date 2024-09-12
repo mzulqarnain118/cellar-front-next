@@ -182,8 +182,7 @@ export const PickUp = ({ refs, cartTotalData }: PickUpProps) => {
         <div className="ml-9 space-y-4">
           <p className="text-14">
             <Typography as="strong">
-              HEADS UP! Orders will be ready for pick-up in 2 business days if placed before 11 AM
-              CST today, and in 3 business days if placed after 11 AM CST today.
+              HEADS UP! We’re upgrading our Local Pickup service to give you a more seamless experience. During this transition, orders will be ready for pickup within 5-7 business days. Feel free to give us a call at 972-457-1667 to confirm your order or check on inventory.
             </Typography>
           </p>
           <div className="rounded border border-base-dark bg-[#fafafa] p-5">
