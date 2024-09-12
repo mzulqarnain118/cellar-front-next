@@ -1,6 +1,4 @@
-import { NextResponse, type NextRequest } from 'next/server'
-
-import { ConsultantResponse } from './lib/queries/consultant'
+import { type NextRequest } from 'next/server'
 
 // ! TODO: This solution is not scalable.
 export const POSSIBLE_PAGES = [
@@ -36,24 +34,19 @@ const baseApiUrl = process.env.NEXT_PUBLIC_TOWER_API_URL
 const appUrl = process.env.NEXT_PUBLIC_APP_URL
 
 export const middleware = async (request: NextRequest) => {
-  const { pathname, searchParams } = request.nextUrl
-
-  // Check if the URL matches the pattern /eventshare/:dynamicValue
-  const match = pathname.match(/^\/eventshare\/([^/]+)/)
-  const rootPath = pathname.split('/')[1]
-
-  if (!POSSIBLE_PAGES.includes(rootPath)) {
-    const consultantResponse = await fetch(`${baseApiUrl}/api/info/rep/${rootPath}`)
-
-    if (consultantResponse?.ok) {
-      const consultant = (await consultantResponse.json()) as ConsultantResponse
-
-      if (consultant.DisplayID) {
-        const url = new URL('/', request.url)
-        url.searchParams.set('u', consultant.Url)
-
-        return NextResponse.redirect(url)
-      }
-    }
-  }
+  // const { pathname, searchParams } = request.nextUrl
+  // // Check if the URL matches the pattern /eventshare/:dynamicValue
+  // const match = pathname.match(/^\/eventshare\/([^/]+)/)
+  // const rootPath = pathname.split('/')[1]
+  // if (!POSSIBLE_PAGES.includes(rootPath)) {
+  //   const consultantResponse = await fetch(`${baseApiUrl}/api/info/rep/${rootPath}`)
+  //   if (consultantResponse?.ok) {
+  //     const consultant = (await consultantResponse.json()) as ConsultantResponse
+  //     if (consultant.DisplayID) {
+  //       const url = new URL('/', request.url)
+  //       url.searchParams.set('u', consultant.Url)
+  //       return NextResponse.redirect(url)
+  //     }
+  //   }
+  // }
 }

@@ -13,9 +13,12 @@ const NotFoundPage = () => {
   const [show404, setShow404] = useState(false)
   const eventShare = pathname.split('/')
   const u = router.asPath?.split('?u=')
+  const consultantPathRegex = /^\/consultants\/.*$/
   const isEeventShare = eventShare?.[1] === 'eventshare'
   useLayoutEffect(() => {
     if (['/my-account/profile', '/my-account/orders'].includes(pathname)) {
+      router.push(router.asPath)
+    } else if (consultantPathRegex.test(router.asPath)) {
       router.push(router.asPath)
     } else if (isEeventShare) {
       router.push(`/?u=${u[1]}&eventshare=${eventShare?.[2]}`)

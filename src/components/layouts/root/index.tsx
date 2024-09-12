@@ -6,7 +6,6 @@ import { useRouter } from 'next/router'
 import { identify, isInitialized } from '@fullstory/browser'
 import { closeAllModals, modals } from '@mantine/modals'
 import { useSession } from 'next-auth/react'
-import POSSIBLE_PAGES from './main/possible-pages'
 
 import { LincChat } from '@/components/linc-chat'
 import { Button } from '@/core/components/button'
@@ -65,32 +64,6 @@ export const RootLayout = ({ children }: RootLayoutProps) => {
     })
     setTastingStorage(tastingResponse)
   }
-
-  useEffect(() => {
-    const pathname = router.asPath
-    const rootPath = pathname.split('/')[1]
-    const fetchConsultant = async () => {
-      const baseApiUrl = process.env.NEXT_PUBLIC_TOWER_API_URL
-      if (!POSSIBLE_PAGES.includes(rootPath.split('?')[0])) {
-        try {
-          const consultantResponse = await fetch(`${baseApiUrl}/api/info/rep/${rootPath}`)
-
-          if (consultantResponse.ok) {
-            const consultant = await consultantResponse.json()
-            if (consultant?.DisplayID) {
-              const url = new URL(process.env.NEXT_PUBLIC_APP_URL)
-              url.searchParams.set('u', consultant.Url)
-              router.replace(url.toString()) // Redirect to consultant URL
-            }
-          }
-        } catch (error) {
-          console.error('Error fetching consultant:', error)
-        }
-      }
-    }
-
-    fetchConsultant()
-  }, [])
 
   useEffect(() => {
     if (cart?.id && consultant?.displayId && eventshare && u) {
