@@ -316,7 +316,10 @@ export const Payment = memo(({ opened, refs, toggle, cartTotalData }: PaymentPro
             ) : (
               <Select
                 className="col-span-2 1/2xl:col-span-2 1xl:col-span-1"
+                classNames={dropdownClassNames}
+                data={creditCardsData}
                 label="Credit card"
+                value={creditCard?.PaymentToken}
                 onChange={handleCreditCardChange}
               />
             )}
