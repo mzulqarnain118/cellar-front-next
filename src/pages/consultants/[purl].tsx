@@ -1,5 +1,6 @@
 import Error from 'next/error'
 
+import { Loader } from '@mantine/core'
 import { QueryClient, dehydrate } from '@tanstack/react-query'
 import { GetServerSideProps } from 'next'
 import { NextSeo } from 'next-seo'
@@ -23,9 +24,19 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
 }
 
 const ConsultantPage = () => {
-  const { data: consultant } = useConsultantQuery()
+  const {
+    data: consultant,
+    isFetching,
+    isFetched,
+    isFetchedAfterMount,
+    ...other
+  } = useConsultantQuery()
 
-  if (!consultant?.displayName.length) {
+  if (isFetching && !isFetchedAfterMount) {
+    return <Loader className="m-auto" size="lg" />
+  }
+
+  if (!consultant?.displayName.length && isFetched) {
     return <Error statusCode={404} />
   }
 
