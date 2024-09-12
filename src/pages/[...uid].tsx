@@ -33,7 +33,6 @@ export const getStaticProps = async ({
 
   try {
     if (uid !== undefined) {
-      console.log('Work')
       page = await client.getByUID<Content.RichContentPageDocument>('rich_content_page', uid)
 
       if (!page) {
@@ -42,7 +41,6 @@ export const getStaticProps = async ({
     }
 
     if (!page) {
-      console.log('test1')
       return {
         notFound: true,
       }
@@ -52,7 +50,6 @@ export const getStaticProps = async ({
       page = await client.getByUID<Content.ContentPageDocument>('content_page', uid)
 
       if (!page) {
-        console.log('test2')
         return {
           notFound: true,
         }
@@ -64,7 +61,22 @@ export const getStaticProps = async ({
         },
       }
     } catch {
-      console.log('test3')
+      const consultantResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_TOWER_API_URL}/api/info/rep/${uid}`
+      )
+
+      if (consultantResponse.ok) {
+        const consultant = await consultantResponse.json()
+
+        if (consultant?.DisplayID && consultant?.Url) {
+          return {
+            redirect: {
+              destination: `${HOME_PAGE_PATH}?u=${consultant.Url}`,
+              permanent: false,
+            },
+          }
+        }
+      }
       return {
         notFound: true,
       }
@@ -103,7 +115,6 @@ const RichContentPage = ({
 }: {
   page?: Content.RichContentPageDocument | Content.ContentPageDocument | null
 }) => {
-  console.log(page, 'page')
   const client = createClient()
 
   useEffect(() => {
