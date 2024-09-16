@@ -35,8 +35,8 @@ import {
 import { useRedeemGiftCardCheckoutMutation } from '../../mutations/redeem-gift-card-checkout'
 import { useRedeemOfferCheckoutMutation } from '../../mutations/redeem-offer-checkout'
 import { useSkyWalletQuery } from '../../queries/sky-wallet'
-
 import { useCheckoutStore } from '../../store'
+
 import { CreditCardForm } from './credit-card-form'
 import { formatCVC } from './utils'
 
@@ -315,14 +315,17 @@ export const Payment = memo(({ opened, refs, toggle, cartTotalData }: PaymentPro
             ) : (
               <Select
                 className="col-span-2 1/2xl:col-span-2 1xl:col-span-1"
+                classNames={dropdownClassNames}
+                data={creditCardsData}
                 label="Credit card"
+                value={creditCard?.PaymentToken}
                 onChange={handleCreditCardChange}
               />
             )}
             <Input
               ref={cvvRef}
               noSpacing
-              className="col-span-1 1/2xl:col-span-2 1xl:col-span-1"
+              className="col-span-1 1/2xl:col-span-2 1xl:col-span-1 mt-[7px]"
               data-testid="cvv"
               error={errors?.payment?.cvv}
               inputClassName={clsx(errors?.payment?.cvv && '!border-error focus:!border-error')}
