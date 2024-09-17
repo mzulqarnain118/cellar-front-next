@@ -14,7 +14,7 @@ interface Props<TFieldValues extends FieldValues = FieldValues> extends InputPro
   error?: string | boolean
   id?: string
   inputClassName?: string
-  instructionLabel?: string
+  instructionLabel?: string | JSX.Element
   label?: string
   left?: ReactNode
   loading?: boolean
