@@ -2,6 +2,7 @@ import { forwardRef, useCallback, useMemo } from 'react'
 
 import { LoadingOverlay } from '@mantine/core'
 import { modals } from '@mantine/modals'
+import { useSession } from 'next-auth/react'
 import { SubmitHandler } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -42,6 +43,7 @@ export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
     const { mutate: validateAddress, isLoading: isValidatingAddress } = useValidateAddressMutation()
     const { mutate: createAddress, isLoading: isCreatingAddress } = useCreateAddressMutation()
     const guestAddress = useCheckoutGuestAddress()
+    const { data: session } = useSession()
 
     const handleAddressChange = useCallback(() => {
       if (onCreateAddress !== undefined) {
@@ -226,11 +228,13 @@ export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
         </Form>
         <div className="flex justify-end lg:justify-start gap-2">
           <Button dark form="address-form" type="submit">
-            Save address
+            Continue to payment
           </Button>
-          <Button color="ghost" type="button" onClick={handleAddressChange}>
-            Cancel
-          </Button>
+          {!session?.user?.isGuest && (
+            <Button color="ghost" type="button" onClick={handleAddressChange}>
+              Cancel
+            </Button>
+          )}
         </div>
         {errors?.delivery ? (
           <Typography className="mt-4 block text-error">{errors.delivery}</Typography>
