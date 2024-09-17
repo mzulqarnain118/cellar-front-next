@@ -173,6 +173,7 @@ export const useApplyCheckoutSelectionsMutation = () => {
           }
         }
 
+        console.log(correspondingAddress, 'correspondingAddress')
         setActiveShippingAddress(correspondingAddress)
         setActiveCreditCard(correspondingCreditCard)
 

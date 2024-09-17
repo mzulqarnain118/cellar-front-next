@@ -258,7 +258,14 @@ export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
       </Collapse>
 
       <Collapse in={!addressFormOpen && !isLoadingAddressesAndCreditCards}>
-        <Button color="ghost" size="sm" startIcon={plusIcon} onClick={toggleAddressForm}>
+        <Button
+          dark
+          className="h-[40px]"
+          color="ghost"
+          size="sm"
+          startIcon={plusIcon}
+          onClick={toggleAddressForm}
+        >
           Add address
         </Button>
       </Collapse>
