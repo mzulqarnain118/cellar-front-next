@@ -80,7 +80,6 @@ export const Payment = memo(({ opened, refs, toggle, cartTotalData }: PaymentPro
   useEffect(() => {
     setPaymentForm(creditCardFormOpen)
   }, [creditCardFormOpen])
-  console.log(creditCardFormOpen)
   const { setCvv, setErrors, setIsAddingCreditCard } = useCheckoutActions()
   const { data: session } = useSession()
   const [_, scrollTo] = useWindowScroll()
@@ -303,62 +302,6 @@ export const Payment = memo(({ opened, refs, toggle, cartTotalData }: PaymentPro
       </div>
 
       <div className="space-y-4 px-4">
-        <Collapse className="!m-0" in={opened && !creditCardFormOpen} transitionDuration={300}>
-          <div className="grid grid-cols-3 1/2xl:grid-cols-4 items-center gap-4">
-            {session?.user?.isGuest ? (
-              <div className="col-span-2 1/2xl:col-span-2 1xl:col-span-1">
-                <Typography className="font-bold">
-                  {creditCard?.NameOnCard} - {creditCard?.CreditCardTypeName} ending in{' '}
-                  {creditCard?.DisplayNumber}
-                </Typography>
-              </div>
-            ) : (
-              <Select
-                className="col-span-2 1/2xl:col-span-2 1xl:col-span-1"
-                classNames={dropdownClassNames}
-                data={creditCardsData}
-                label="Credit card"
-                value={creditCard?.PaymentToken}
-                onChange={handleCreditCardChange}
-              />
-            )}
-            <Input
-              ref={cvvRef}
-              noSpacing
-              className="col-span-1 1/2xl:col-span-2 1xl:col-span-1 mt-[7px]"
-              data-testid="cvv"
-              error={errors?.payment?.cvv}
-              inputClassName={clsx(errors?.payment?.cvv && '!border-error focus:!border-error')}
-              label="CVV"
-              name="cvv"
-              pattern="^\d{3,4}$"
-              size="sm"
-              type="tel"
-              value={cvv}
-              onChange={handleInputChange}
-            />
-          </div>
-        </Collapse>
-
-        {opened && !session?.user?.isGuest && !creditCardFormOpen ? (
-          <Button color="ghost" size="sm" startIcon={plusIcon} onClick={toggleCreditCardForm}>
-            Add credit card
-          </Button>
-        ) : undefined}
-
-        <Collapse in={creditCardFormOpen}>
-          <CreditCardForm
-            cartTotalData={cartTotalData}
-            onCancel={handleCancelCreate}
-            onCreate={handleCreateCreditCard}
-          />
-        </Collapse>
-
-        {session?.user?.isGuest && !creditCardFormOpen ? (
-          <Button link className="!m-0" onClick={handleChangeCreditCard}>
-            Change credit card
-          </Button>
-        ) : undefined}
         <Collapse in={showCreditCard}>
           <>
             <div className="grid items-center justify-center lg:grid-cols-2 lg:gap-4">
@@ -391,6 +334,72 @@ export const Payment = memo(({ opened, refs, toggle, cartTotalData }: PaymentPro
             </div>
           </>
         </Collapse>
+        <Collapse className="!m-0" in={opened && !creditCardFormOpen} transitionDuration={300}>
+          <div className="grid grid-cols-3 1/2xl:grid-cols-4 items-center gap-4">
+            {session?.user?.isGuest ? (
+              <div className="col-span-2 1/2xl:col-span-2 1xl:col-span-1">
+                <Typography className="font-bold">
+                  {creditCard?.NameOnCard} - {creditCard?.CreditCardTypeName} ending in{' '}
+                  {creditCard?.DisplayNumber}
+                </Typography>
+              </div>
+            ) : (
+              <Select
+                className="col-span-2 1/2xl:col-span-2 1xl:col-span-1"
+                classNames={dropdownClassNames}
+                data={creditCardsData}
+                defaultValue={
+                  creditCardsData?.find(creditCard => creditCard.data.DefaultPaymentMethod)?.value
+                }
+                label="Credit card"
+                value={creditCard?.PaymentToken}
+                onChange={handleCreditCardChange}
+              />
+            )}
+            <Input
+              ref={cvvRef}
+              noSpacing
+              className="col-span-1 1/2xl:col-span-2 1xl:col-span-1 mt-[7px]"
+              data-testid="cvv"
+              error={errors?.payment?.cvv}
+              inputClassName={clsx(cvv?.length < 3 && '!border-error focus:!border-error')}
+              label="CVV"
+              name="cvv"
+              pattern="^\d{3,4}$"
+              size="sm"
+              type="tel"
+              value={cvv}
+              onChange={handleInputChange}
+            />
+          </div>
+        </Collapse>
+
+        {opened && !session?.user?.isGuest && !creditCardFormOpen ? (
+          <Button
+            dark
+            className="h-[40px]"
+            color="ghost"
+            size="sm"
+            startIcon={plusIcon}
+            onClick={toggleCreditCardForm}
+          >
+            Add credit card
+          </Button>
+        ) : undefined}
+
+        <Collapse in={creditCardFormOpen}>
+          <CreditCardForm
+            cartTotalData={cartTotalData}
+            onCancel={handleCancelCreate}
+            onCreate={handleCreateCreditCard}
+          />
+        </Collapse>
+
+        {session?.user?.isGuest && !creditCardFormOpen ? (
+          <Button link className="!m-0" onClick={handleChangeCreditCard}>
+            Change credit card
+          </Button>
+        ) : undefined}
       </div>
     </div>
   )
