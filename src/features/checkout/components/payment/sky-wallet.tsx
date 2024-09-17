@@ -121,34 +121,10 @@ export const SkyWallet = ({ skyWallet, skyWalletFetching, skyWalletLoading, cart
     )
   }
 
-  if (skyWallet !== undefined && !eligibleBalance && appliedSkyWallet === 0) {
-    return <></>
-  }
-
-  return (
-    <div className="flex items-start">
-      <div className="grid">
-        <Input
-          noSpacing
-          error={error}
-          inputMode="decimal"
-          instructionLabel={`Eligible balance: ${formatCurrency(eligibleBalance)}`}
-          label="Account credit"
-          left={accountCreditIcon}
-          name="accountCredit"
-          pattern="[0-9]+"
-          right={accountCreditSubmit}
-          size="sm"
-          value={value}
-          onChange={handleChange}
-          onFocus={handleFocus}
-        />
-        {appliedSkyWallet ? (
-          <Typography className="text-success">
-            {formatCurrency(appliedSkyWallet)} Sky Wallet applied.
-          </Typography>
-        ) : undefined}
-      </div>
+  const getEligibleText = () => (
+    <div>
+      {' '}
+      <span className="align-bottom"> Eligible balance: ${formatCurrency(eligibleBalance)} </span>
       <Popover
         withArrow
         withinPortal
@@ -159,7 +135,7 @@ export const SkyWallet = ({ skyWallet, skyWalletFetching, skyWalletLoading, cart
         width={200}
       >
         <Popover.Target>
-          <button onMouseEnter={openTooltip} onMouseLeave={closeTooltip}>
+          <button className="align-bottom" onMouseEnter={openTooltip} onMouseLeave={closeTooltip}>
             <InformationCircleIcon className="w-5 h-5 text-info" />
           </button>
         </Popover.Target>
@@ -170,6 +146,34 @@ export const SkyWallet = ({ skyWallet, skyWalletFetching, skyWalletLoading, cart
           </Typography>
         </Popover.Dropdown>
       </Popover>
+    </div>
+  )
+  if (skyWallet !== undefined && !eligibleBalance && appliedSkyWallet === 0) {
+    return <></>
+  }
+
+  return (
+    <div className="grid">
+      <Input
+        noSpacing
+        error={error}
+        inputMode="decimal"
+        instructionLabel={getEligibleText()}
+        label="Account credit"
+        left={accountCreditIcon}
+        name="accountCredit"
+        pattern="[0-9]+"
+        right={accountCreditSubmit}
+        size="sm"
+        value={value}
+        onChange={handleChange}
+        onFocus={handleFocus}
+      />
+      {appliedSkyWallet ? (
+        <Typography className="text-success">
+          {formatCurrency(appliedSkyWallet)} Sky Wallet applied.
+        </Typography>
+      ) : undefined}
     </div>
   )
 }
