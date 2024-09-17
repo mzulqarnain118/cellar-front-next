@@ -83,16 +83,13 @@ export const GuestAddress = ({ shippingAddressRef, cartTotalData }: GuestAddress
       </Collapse>
 
       <Collapse in={!addressFormOpen && guestAddress !== undefined}>
-        <div className="mt-2 mb-4 border border-neutral-light p-4 w-max rounded bg-[#fafafa]">
+        <div className="mt-2  border border-neutral-light p-4 w-max rounded bg-[#fafafa] pb-0">
           <div>
             <Typography className="block mb-3 text-18 font-bold">Your delivery address:</Typography>
             <Typography className="block">
-              {guestAddress?.FirstName} {guestAddress?.LastName}
-            </Typography>
-            <Typography className="block">{guestAddress?.Street1}</Typography>
-            <Typography className="block">{guestAddress?.Street2}</Typography>
-            <Typography className="block">
-              {guestAddress?.City}, {guestAddress?.ProvinceAbbreviation} {guestAddress?.PostalCode}
+              {guestAddress?.FirstName} {guestAddress?.LastName} {guestAddress?.Street1}{' '}
+              {guestAddress?.Street2} {guestAddress?.City}, {guestAddress?.ProvinceAbbreviation}{' '}
+              {guestAddress?.PostalCode}
             </Typography>
           </div>
           <Button link onClick={toggleAddressForm}>

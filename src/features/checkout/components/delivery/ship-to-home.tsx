@@ -28,8 +28,9 @@ import {
 import { isPickUpShippingMethodId } from '@/lib/utils/checkout'
 import { toastLoading } from '@/lib/utils/notifications'
 
-import type { DeliveryRefs } from '.'
 import { useCheckoutStore } from '../../store'
+
+import type { DeliveryRefs } from '.'
 
 const AddressForm = dynamic(() => import('./address-form').then(({ AddressForm }) => AddressForm), {
   ssr: false,
@@ -234,7 +235,14 @@ export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
       </Collapse>
 
       <Collapse in={!addressFormOpen && !isLoadingAddressesAndCreditCards}>
-        <Button color="ghost" size="sm" startIcon={plusIcon} onClick={toggleAddressForm}>
+        <Button
+          dark
+          className="h-[40px]"
+          color="ghost"
+          size="sm"
+          startIcon={plusIcon}
+          onClick={toggleAddressForm}
+        >
           Add address
         </Button>
       </Collapse>
