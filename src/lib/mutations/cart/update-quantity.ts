@@ -15,7 +15,7 @@ import { useCheckoutActions, useCheckoutAppliedSkyWallet } from '@/lib/stores/ch
 import { useProcessStore } from '@/lib/stores/process'
 import { useShippingStateStore } from '@/lib/stores/shipping-state'
 import { Cart, CartItem, DEFAULT_CART_STATE } from '@/lib/types'
-import { toastInfo } from '@/lib/utils/notifications'
+import toast, { toastInfo } from '@/lib/utils/notifications'
 
 import { getNewCartItems } from '../helpers'
 import { CartModificationResponse } from '../types'
@@ -50,8 +50,9 @@ export const updateQuantity = async ({
     if (response.Success) {
       return response
     } else {
-      throw new Error(response.Error.Message)
-    }
+        toast('error', response?.Error?.Message)
+        return null
+   }
   } catch {
     throw new Error(
       'There was an issue updating the quantity of the product. Please try again later.'
