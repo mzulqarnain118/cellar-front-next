@@ -330,7 +330,7 @@ export const ClubsEdit = ({
     () =>
       modals.open({
         centered: true,
-        children: <AddCreditCardForm handleClose={modals.closeAll} />,
+        children: <AddCreditCardForm handleClose={modals.closeAll} shippingMethods={shippingMethods?.length} />,
         classNames: {
           title: '!text-18',
         },
