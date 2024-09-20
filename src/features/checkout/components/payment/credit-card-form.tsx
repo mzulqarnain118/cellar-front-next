@@ -2,9 +2,8 @@ import {
   ChangeEventHandler,
   FocusEventHandler,
   useCallback,
-  useEffect,
   useMemo,
-  useState,
+  useState
 } from 'react'
 
 import { ChevronLeftIcon } from '@heroicons/react/24/outline'
@@ -97,7 +96,7 @@ export const CreditCardForm = ({ onCancel, onCreate, cartTotalData }: CreditCard
         sameAsShipping: cartTotalData?.shipping.methodId
           ? PICK_UP_SHIPPING_METHOD_IDS.includes(cartTotalData.shipping.methodId) ||
             !addressesAndCreditCards?.addresses.length
-          : true,
+          : false,
       },
       mode: 'onBlur',
       reValidateMode: 'onChange',
@@ -279,9 +278,7 @@ export const CreditCardForm = ({ onCancel, onCreate, cartTotalData }: CreditCard
     ]
   )
 
-  useEffect(() => {
-    session?.user?.isGuest && setValue('sameAsShipping', false)
-  }, [session?.user?.isGuest])
+
 
   return (
     <div className="lg:space-y-4">
@@ -332,7 +329,9 @@ export const CreditCardForm = ({ onCancel, onCreate, cartTotalData }: CreditCard
                 onChange: handleInputChange,
               })}
               inputClassName={clsx(state?.cvc?.length < 3 && '!border-error focus:!border-error')}
-              pattern="^\d{3,4}$"
+pattern="^\d{3,4}$"
+
+              style={state?.cvc?.length < 3 ? { borderWidth: '3px' } : {}}
               type="tel"
               value={state?.cvc}
               onFocus={handleInputFocus}
@@ -356,7 +355,7 @@ export const CreditCardForm = ({ onCancel, onCreate, cartTotalData }: CreditCard
           </div>
           <div className="mt-4 flex justify-end lg:justify-start gap-2">
             <Button dark type="submit">
-              {session?.user?.isGuest ? 'Proceed' : 'Save credit card'}
+              {session?.user?.isGuest ? 'Add credit card' : 'Save credit card'}
             </Button>
             <Button color="ghost" type="button" onClick={onCancel}>
               Cancel

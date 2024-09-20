@@ -48,10 +48,12 @@ const creditCardFormSchema = z
 type CreditCardFormSchema = z.infer<typeof creditCardFormSchema>
 
 interface AddCreditCardFormProps {
-  handleClose: () => void
+  handleClose: () => void,
+  shippingMethods ? : number
+
 }
 
-export const AddCreditCardForm = ({ handleClose }: AddCreditCardFormProps) => {
+export const AddCreditCardForm = ({ handleClose ,shippingMethods }: AddCreditCardFormProps) => {
   const { mutate: createCreditCard } = useCreateCreditCardMutation()
   const { mutate: validateAddress, isLoading: isValidatingAddress } = useValidateAddressMutation()
   const [_, scrollTo] = useWindowScroll()
@@ -265,11 +267,11 @@ export const AddCreditCardForm = ({ handleClose }: AddCreditCardFormProps) => {
               onFocus={handleInputFocus}
             />
             <Input
-              error={errors.cvc?.message}
               dirty={dirtyFields.cvc}
-              touched={touchedFields.cvc}
+              error={errors.cvc?.message}
               label="CVV"
               size="sm"
+              touched={touchedFields.cvc}
               {...register('cvc', {
                 maxLength: 4,
                 minLength: 3,
@@ -291,7 +293,7 @@ export const AddCreditCardForm = ({ handleClose }: AddCreditCardFormProps) => {
           </div>
           <input name="issuer" type="hidden" value={state.issuer} />
           <div className="mt-4 space-y-4">
-            <BillingAddress noCheckbox />
+            <BillingAddress noCheckbox  shippingMethods={shippingMethods}/>
             <Checkbox color="dark" label="Set as default" {...register('default')} />
           </div>
           <div className="mt-4 flex justify-end lg:justify-start">
