@@ -9,6 +9,7 @@ import { z } from 'zod'
 import { Form } from '@/components/form'
 import { StateDropdown } from '@/components/state-dropdown'
 import { Button } from '@/core/components/button'
+import { Checkbox } from '@/core/components/checkbox'
 import { Input } from '@/core/components/input'
 import { Typography } from '@/core/components/typogrpahy'
 import { useCreateAddressMutation } from '@/lib/mutations/address/create'
@@ -23,6 +24,7 @@ export const newAddressFormSchema = z.object({
   company: z.string().optional(),
   firstName: z.string().min(1, { message: 'Please enter the first name.' }),
   lastName: z.string().min(1, { message: 'Please enter the last name.' }),
+  setAsdefault: z.boolean().optional(),
   state: z.string().min(1, { message: 'Please select the state.' }),
   zipCode: z
     .string()
@@ -59,6 +61,7 @@ export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
         company: guestAddress?.Company || '',
         firstName: guestAddress?.FirstName || '',
         lastName: guestAddress?.LastName || '',
+        setAsdefault: guestAddress?.Primary || false,
         state: guestAddress?.ProvinceID.toString() || '',
         zipCode: guestAddress?.PostalCode.substring(0, 5) || '',
       }),
@@ -71,12 +74,14 @@ export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
         guestAddress?.ProvinceID,
         guestAddress?.Street1,
         guestAddress?.Street2,
+        guestAddress?.Primary
       ]
     )
 
     const onSubmit: SubmitHandler<NewAddressFormSchema> = useCallback(
       ({
         addressOne: addressLineOne,
+        setAsdefault,
         addressTwo: addressLineTwo = '',
         city,
         company = '',
@@ -84,7 +89,7 @@ export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
         lastName,
         state: provinceId,
         zipCode,
-      }) => {
+      },reset) => {
         validateAddress({
           addressLineOne,
           addressLineTwo,
@@ -128,10 +133,11 @@ export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
                         ...entered,
                         FirstName: firstName,
                         LastName: lastName,
-                        Primary: true,
+                        Primary: setAsdefault,
                       },
                       callback: response => {
                         if (response.Success && onCreateAddress !== undefined) {
+                          reset()
                           onCreateAddress(response.Data.Value)
                         }
                       },
@@ -143,10 +149,11 @@ export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
                         ...suggested,
                         FirstName: firstName,
                         LastName: lastName,
-                        Primary: true,
+                        Primary: setAsdefault,
                       },
                       callback: response => {
                         if (response.Success && onCreateAddress !== undefined) {
+                          reset()
                           onCreateAddress(response.Data.Value)
                         }
                       },
@@ -164,6 +171,7 @@ export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
           lastName,
           provinceId: parseInt(provinceId),
           zipCode,
+          setAsdefault
         })
       },
       [createAddress, onCreateAddress, validateAddress]
@@ -180,7 +188,7 @@ export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
           onSubmit={onSubmit}
         >
           <Input
-            className="col-span-2 sm:col-span-1 [&>div:first-child]:!pt-1"
+            className="col-span-2 [&>div:first-child]:!pt-1"
             instructionLabel="optional"
             label="Company"
             name="company"
@@ -225,6 +233,13 @@ export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
             name="zipCode"
             size={size}
           />
+           {!session?.user?.isGuest && <Checkbox
+            className="col-span-2 my-4"
+            color="dark"
+            label="Set as default"
+            name="setAsdefault"
+          />
+          }
         </Form>
         <div className="flex justify-end lg:justify-start gap-2">
           <Button dark form="address-form" type="submit">

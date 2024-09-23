@@ -234,6 +234,26 @@ export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
         />
       </Collapse>
 
+
+
+      <Collapse in={addressFormOpen}>
+        <AddressForm ref={refs.shippingAddressRef} onCreateAddress={closeAddressForm} />
+      </Collapse>
+
+      <Collapse
+        in={!addressFormOpen}
+      >
+        <Select
+          ref={refs.shippingMethodRef}
+          classNames={dropdownClassNames}
+          data={shippingMethods}
+          disabled={disabled}
+          label="Shipping method"
+          value={cartTotalData?.shipping.methodId.toString()}
+          onChange={handleShippingMethodChange}
+        />
+      </Collapse>
+
       <Collapse in={!addressFormOpen && !isLoadingAddressesAndCreditCards}>
         <Button
           dark
@@ -245,24 +265,6 @@ export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
         >
           Add address
         </Button>
-      </Collapse>
-
-      <Collapse in={addressFormOpen}>
-        <AddressForm ref={refs.shippingAddressRef} onCreateAddress={closeAddressForm} />
-      </Collapse>
-
-      <Collapse
-        in={!addressFormOpen && !(shippingMethods === undefined || shippingMethods.length === 0)}
-      >
-        <Select
-          ref={refs.shippingMethodRef}
-          classNames={dropdownClassNames}
-          data={shippingMethods}
-          disabled={disabled}
-          label="Shipping method"
-          value={cartTotalData?.shipping.methodId.toString()}
-          onChange={handleShippingMethodChange}
-        />
       </Collapse>
     </div>
   )
