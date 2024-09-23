@@ -22,6 +22,7 @@ export interface ValidateAddressOptions {
   provinceId: number
   residential: boolean
   zipCode: string
+  setAsdefault?: boolean
 }
 
 interface ValidateAddressSuccess {
