@@ -194,7 +194,7 @@ export const PickUp = ({ refs, cartTotalData }: PickUpProps) => {
             </Typography>
             <p className="text-14">{localPickupData?.Address1 ?? ''}</p>
             <p className="text-14">{localPickupData?.Address2 ?? ''}</p>
-            <p className="text-14">{`${localPickupData?.City ?? ''}, ${
+            <p className="text-14">{`${localPickupData?.City?.length ? localPickupData?.City+',' : ''} ${
               localPickupData?.Province ?? ''
             }  ${localPickupData?.PostalCode ?? ''}`}</p>
           </div>

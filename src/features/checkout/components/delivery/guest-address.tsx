@@ -85,7 +85,7 @@ export const GuestAddress = ({ shippingAddressRef, cartTotalData }: GuestAddress
   return (
     <>
       <Collapse in={addressFormOpen}>
-        <AddressForm ref={shippingAddressRef} onCreateAddress={handleCreateAddress} />
+        <AddressForm ref={shippingAddressRef} cartTotalData={cartTotalData} onCreateAddress={handleCreateAddress} />
       </Collapse>
 
       <Collapse in={!addressFormOpen && guestAddress !== undefined}>

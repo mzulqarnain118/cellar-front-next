@@ -1,6 +1,6 @@
 import { forwardRef, useCallback, useMemo } from 'react'
 
-import { LoadingOverlay } from '@mantine/core'
+import { LoadingOverlay, Select, SelectProps } from '@mantine/core'
 import { modals } from '@mantine/modals'
 import { useSession } from 'next-auth/react'
 import { SubmitHandler } from 'react-hook-form'
@@ -12,10 +12,18 @@ import { Button } from '@/core/components/button'
 import { Checkbox } from '@/core/components/checkbox'
 import { Input } from '@/core/components/input'
 import { Typography } from '@/core/components/typogrpahy'
+import { formatCurrency } from '@/core/utils'
 import { useCreateAddressMutation } from '@/lib/mutations/address/create'
 import { useValidateAddressMutation } from '@/lib/mutations/address/validate'
+import { useApplyCheckoutSelectionsMutation } from '@/lib/mutations/checkout/apply-selections'
+import { useUpdateShippingMethodMutation } from '@/lib/mutations/checkout/update-shipping-method'
+import { useShippingMethodsQuery } from '@/lib/queries/checkout/shipping-methods'
 import { useCheckoutErrors, useCheckoutGuestAddress } from '@/lib/stores/checkout'
 import { Address } from '@/lib/types/address'
+import { isPickUpShippingMethodId } from '@/lib/utils/checkout'
+
+import { dropdownClassNames } from './ship-to-home'
+
 export const newAddressFormSchema = z.object({
   addressOne: z.string().min(1, { message: 'Please enter the address.' }),
   addressTwo: z.string().optional(),
@@ -36,11 +44,17 @@ export type NewAddressFormSchema = z.infer<typeof newAddressFormSchema>
 interface AddressFormProps {
   onCreateAddress?: (address?: Address) => void
   size?: 'sm' | 'md'
+  cartTotalData: any
 }
 
 export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
-  ({ onCreateAddress, size = 'sm' }, ref) => {
+  ({ onCreateAddress, size = 'sm', cartTotalData }, ref) => {
     const errors = useCheckoutErrors()
+    const { isLoading: isApplyingSelections } = useApplyCheckoutSelectionsMutation()
+    const { data: shippingMethodsData } = useShippingMethodsQuery()
+    const { mutate: updateShippingMethod, isLoading: isUpdatingShippingMethod } =
+      useUpdateShippingMethodMutation()
+
     const { mutate: validateAddress, isLoading: isValidatingAddress } = useValidateAddressMutation()
     const { mutate: createAddress, isLoading: isCreatingAddress } = useCreateAddressMutation()
     const guestAddress = useCheckoutGuestAddress()
@@ -51,6 +65,22 @@ export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
         onCreateAddress(undefined)
       }
     }, [onCreateAddress])
+
+    const shippingMethods = useMemo(
+      () =>
+        shippingMethodsData !== undefined
+          ? shippingMethodsData
+              .map(method => ({
+                data: method,
+                label: `${method.displayName} (${formatCurrency(method.shippingPrice)})`,
+                value: method.shippingMethodId.toString(),
+              }))
+              .filter(method => !isPickUpShippingMethodId(method.data.shippingMethodId))
+          : [],
+      [shippingMethodsData]
+    )
+
+    const disabled = isUpdatingShippingMethod || isApplyingSelections
 
     const defaultValues: NewAddressFormSchema = useMemo(
       () => ({
@@ -73,22 +103,25 @@ export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
         guestAddress?.ProvinceID,
         guestAddress?.Street1,
         guestAddress?.Street2,
-        guestAddress?.Primary
+        guestAddress?.Primary,
       ]
     )
 
     const onSubmit: SubmitHandler<NewAddressFormSchema> = useCallback(
-      ({
-        addressOne: addressLineOne,
-        setAsdefault,
-        addressTwo: addressLineTwo = '',
-        city,
-        company = '',
-        firstName,
-        lastName,
-        state: provinceId,
-        zipCode,
-      },reset) => {
+      (
+        {
+          addressOne: addressLineOne,
+          setAsdefault,
+          addressTwo: addressLineTwo = '',
+          city,
+          company = '',
+          firstName,
+          lastName,
+          state: provinceId,
+          zipCode,
+        },
+        reset
+      ) => {
         validateAddress({
           addressLineOne,
           addressLineTwo,
@@ -170,12 +203,24 @@ export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
           lastName,
           provinceId: parseInt(provinceId),
           zipCode,
-          setAsdefault
+          setAsdefault,
         })
       },
       [createAddress, onCreateAddress, validateAddress]
     )
 
+    const handleShippingMethodChange: SelectProps['onChange'] = useCallback(
+      (shippingMethodId: string | null) => {
+        if (
+          !!shippingMethodId &&
+          shippingMethodsData !== undefined &&
+          shippingMethodsData.length > 0
+        ) {
+          updateShippingMethod({ shippingMethodId: parseInt(shippingMethodId) })
+        }
+      },
+      [shippingMethodsData, updateShippingMethod]
+    )
     return (
       <div className="space-y-4">
         <LoadingOverlay visible={isCreatingAddress || isValidatingAddress} />
@@ -232,14 +277,24 @@ export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
             name="zipCode"
             size={size}
           />
-           {!session?.user?.isGuest && <Checkbox
-            className="col-span-2 my-4"
-            color="dark"
-            label="Set as default"
-            name="setAsdefault"
-          />
-          }
+          {!session?.user?.isGuest && (
+            <Checkbox
+              className="col-span-2 my-4"
+              color="dark"
+              label="Set as default"
+              name="setAsdefault"
+            />
+          )}
         </Form>
+        <Select
+          ref={ref?.shippingMethodRef}
+          classNames={dropdownClassNames}
+          data={shippingMethods}
+          disabled={disabled}
+          label="Shipping method"
+          value={cartTotalData?.shipping.methodId.toString()}
+          onChange={handleShippingMethodChange}
+        />
         <div className="flex justify-end lg:justify-start gap-2">
           <Button dark form="address-form" type="submit">
             Continue to payment

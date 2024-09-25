@@ -37,7 +37,7 @@ const AddressForm = dynamic(() => import('./address-form').then(({ AddressForm }
   ssr: false,
 })
 
-const dropdownClassNames = { input: 'h-10', item: 'text-14', label: 'text-14' }
+export const dropdownClassNames = { input: 'h-10', item: 'text-14', label: 'text-14' }
 
 const plusIcon = <PlusIcon className="h-4 w-4" />
 
@@ -260,11 +260,11 @@ export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
 
 
       <Collapse in={addressFormOpen}>
-        <AddressForm ref={refs.shippingAddressRef} onCreateAddress={closeAddressForm} />
+        <AddressForm ref={refs.shippingAddressRef} cartTotalData={cartTotalData} onCreateAddress={closeAddressForm} />
       </Collapse>
 
       <Collapse
-        in={!addressFormOpen}
+      in={!addressFormOpen && !(shippingMethods === undefined || shippingMethods.length === 0)}
       >
         <Select
           ref={refs.shippingMethodRef}
@@ -292,3 +292,4 @@ export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
     </div>
   )
 })
+
