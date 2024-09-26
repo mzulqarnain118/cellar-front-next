@@ -74,7 +74,7 @@ export const Subscription = ({ autoSip = false, data }: SubscriptionProps) => {
         </div>
         <div className="grid">
           <Typography className="font-bold">Subscription type</Typography>
-          <Typography>{autoSip ? 'Auto-Sip™' : 'Scout Circle Club'}</Typography>
+          <Typography>{autoSip ? 'Circle Choice' : 'Scout Circle Club'}</Typography>
         </div>
         <div className="grid">
           <Typography className="font-bold">Shipping method</Typography>

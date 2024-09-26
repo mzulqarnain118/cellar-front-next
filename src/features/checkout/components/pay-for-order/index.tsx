@@ -112,7 +112,7 @@ export const PayForOrder = ({
   }
 
   const isAutoSipCart = useMemo(
-    () => cart?.items.some(item => item.isAutoSip && item.displayName.includes('Auto-Sip™')),
+    () => cart?.items.some(item => item.isAutoSip  && (item.displayName.includes('Circle Choice') || item.displayName.includes('Auto-Sip™'))),
     [cart?.items]
   )
   const isScoutCircleCart = useMemo(
@@ -237,11 +237,11 @@ export const PayForOrder = ({
               label={
                 <>
                   By clicking "Place my order" in checkout, I understand that I am enrolling in the
-                  Auto-Sip™ program and agree to the{' '}
+                  Circle Choice program and agree to the{' '}
                   <span
                     className="text-[#b7715b] hover:underline"
                     style={{ cursor: 'pointer' }}
-                    onClick={() => openModal('Auto-Sip™ Terms', <TermsContent type="autoSip" />)}
+                    onClick={() => openModal('Circle Choice Terms', <TermsContent type="autoSip" />)}
                   >
                     Terms & Conditions
                   </span>
