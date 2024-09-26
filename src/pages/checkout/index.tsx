@@ -374,13 +374,13 @@ const CheckoutPage: NextPage<PageProps> = () => {
     }
 
     if (
-      cart?.items.some(item => item.isAutoSip && item.displayName.includes('Auto-Sip™')) &&
+      cart?.items.some(item => item.isAutoSip && item.displayName.includes('Circle Choice')) &&
       !autoSipRef.current?.checked
     ) {
       if (!prefersReducedMotion) {
         scrollAutoSipIntoView()
       }
-      setErrors({ autoSipTerms: 'You must accept the Auto-Sip™ Terms & Conditions.' })
+      setErrors({ autoSipTerms: 'You must accept the Circle Choice Terms & Conditions.' })
       autoSipRef.current?.focus()
       return false
     }

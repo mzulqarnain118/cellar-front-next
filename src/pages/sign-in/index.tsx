@@ -59,7 +59,7 @@ const SignInPage: NextPage<PageProps> = () => {
   const hasSubscriptionInCart = useMemo(
     () =>
       cart?.items.some(
-        item => item.isScoutCircleClub || (item.isAutoSip && item.displayName.includes('Auto-Sip™'))
+        item => item.isScoutCircleClub || (item.isAutoSip && item.displayName.includes('Circle Choice'))
       ),
     [cart?.items]
   )
@@ -86,7 +86,7 @@ const SignInPage: NextPage<PageProps> = () => {
   const { isLoading: isValidatingEmail, mutate: validateEmail } = useValidateEmailMutation()
 
   const handleCreateAccount = useCallback(() => {
-    if (!!router.query.u) {
+    if (router.query.u) {
       localStorage.setItem('createAccountConsultant', 'true')
     } else {
       localStorage.setItem('createAccountConsultant', 'false')

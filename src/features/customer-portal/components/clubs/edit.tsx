@@ -602,7 +602,7 @@ export const ClubsEdit = ({
                       autoSip
                         ? `
                         By clicking on "Save Membership", you understand and agree that you are
-                        enrolled in the Auto-Sip™ program, which will automatically initiate and
+                        enrolled in the Circle Choice program, which will automatically initiate and
                         ship orders to you, and that you will be billed immediately and every
                         subsequent month, every other month, or every quarter
                         (“Delivery Frequency”), depending on the frequency of the delivery you
@@ -624,7 +624,7 @@ export const ClubsEdit = ({
                         an updated card account number and/or expiration date for your card on file.
                         Unless you opt out of the program with your card issuer, we will update our
                         files and use the new information for any automatic payment option in which
-                        you have enrolled, including Scout Circle and Auto-Sip™ as applicable. We
+                        you have enrolled, including Scout Circle and Circle Choice as applicable. We
                         will not receive updated information if your account has been closed.`
                         : `
                         If I join the Club, I agree to buy wine today and then upon future

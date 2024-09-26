@@ -7,7 +7,7 @@ const TermsContent = ({ type }: TermsContent) => {
     return (
       <p>
         By clicking “Place Your Order” in checkout, you understand and agree that you are enrolling
-        in the Auto-Sip™ program, which will automatically initiate and ship orders to you, and that
+        in the Circle Choice program, which will automatically initiate and ship orders to you, and that
         you will be billed immediately and every subsequent month, every other month, or every
         quarter (“Delivery Frequency”), depending on the frequency of the delivery you select, until
         you cancel your enrollment. The exact amount of the charges will depend upon the Delivery
@@ -24,11 +24,11 @@ const TermsContent = ({ type }: TermsContent) => {
         . Your subscription will begin immediately, and you will be notified with an order
         confirmation email after purchase. All charges will be identified as Scout & Cellar or Wine
         Retriever LLC on your credit card statement. Scout Rewards credits may not be applied to
-        Auto-Sip™ orders at checkout. If your card issuing financial institution participates in the
+        Circle Choice orders at checkout. If your card issuing financial institution participates in the
         Card Account Updater program, we may receive an updated card account number and/or
         expiration date for your card on file. Unless you opt out of the program with your card
         issuer, we will update our files and use the new information for any automatic payment
-        option in which you have enrolled, including Scout Circle and Auto-Sip™ as applicable. We
+        option in which you have enrolled, including Scout Circle and Circle Choice as applicable. We
         will not receive updated information if your account has been closed.
       </p>
     )
@@ -53,7 +53,7 @@ const TermsContent = ({ type }: TermsContent) => {
         in the Card Account Updater program, we may receive an updated card account number and/or
         expiration date for your card on file. Unless you opt out of the program with your card
         issuer, we will update our files and use the new information for any automatic payment
-        option in which you have enrolled, including Scout Circle and Auto-Sip™ as applicable. We
+        option in which you have enrolled, including Scout Circle and Circle Choice as applicable. We
         will not receive updated information if your account has been closed.
       </p>
     )
