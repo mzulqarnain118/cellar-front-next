@@ -67,7 +67,7 @@ interface Slug {
 
 const slugMap: Record<string, Slug> = {
   'auto-sips': {
-    friendlyName: 'Auto-Sips',
+    friendlyName: 'Circle Choice',
     icon: TruckIcon,
     panel: Clubs,
   },

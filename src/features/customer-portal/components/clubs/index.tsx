@@ -19,9 +19,9 @@ export const Clubs = ({ autoSip = false, ...props }: TabsPanelProps & { autoSip?
     } else if (filteredSubscriptions?.length === 0 && autoSip) {
       return (
         <div className="mt-[100px] text-center">
-          <h5>No active Auto-Sips.</h5>
+          <h5>No active Circle Choice subscriptions.</h5>
           <p>
-            To sign up for an Auto-Sips, <Link href="/wine/auto-sip">click here</Link>.
+            To sign up for a Circle Choice subscription, <Link href="/wine/auto-sip">click here</Link>.
           </p>
         </div>
       )

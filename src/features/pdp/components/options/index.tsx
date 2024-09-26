@@ -120,7 +120,7 @@ export const Options = ({ cartUrl }: OptionsProps) => {
           )}
           classNames={radioClassNames}
           color="dark"
-          label="Auto-Sip™"
+          label="Circle Choice"
           size="lg"
           onChange={handleSubscriptionChange}
         />
