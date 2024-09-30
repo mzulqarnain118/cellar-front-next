@@ -140,3 +140,10 @@
 #five9-popout-button {
   display: none !important;
 }
+.custom-drawer .mantine-Drawer-inner {
+  z-index: 99999;
+}
+/* increase mantine notification z index */
+.mantine-86bg6z {
+  z-index: 100000;
+}
