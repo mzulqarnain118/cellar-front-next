@@ -163,6 +163,7 @@ export const CartDrawer = () => {
       position="right"
       withCloseButton={false}
       onClose={toggleCartOpen}
+      className='custom-drawer'
     >
       <div className="h-[inherit] overflow-y-hidden">
         <CloseButton
