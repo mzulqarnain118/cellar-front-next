@@ -21,7 +21,7 @@ export const Clubs = ({ autoSip = false, ...props }: TabsPanelProps & { autoSip?
         <div className="mt-[100px] text-center">
           <h5>No active Circle Choice subscriptions.</h5>
           <p>
-            To sign up for a Circle Choice subscription, <Link href="/circle-choice-test-1">click here</Link>.
+            To sign up for a Circle Choice subscription, <Link href="/wine/circle-choice">click here</Link>.
           </p>
         </div>
       )
