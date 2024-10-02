@@ -19,7 +19,7 @@ export const Receipt = () => {
     () => discounts.reduce((prev, current) => prev + current.amount, 0),
     [discounts]
   )
-  const discount = discounts?.[0]?.amount ?? 0
+  const discount = useMemo(() => data?.discounts?.reduce((acc, discount) => acc + discount?.amount, 0), [data.discounts])
 
   const total = subtotal + shipping + retailDeliveryFee + salesTax - discount
 
