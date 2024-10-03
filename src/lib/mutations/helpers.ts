@@ -116,8 +116,12 @@ export const getNewCartItems = (
           subscribable: false,
         }
         const item = {
+          availability: cartItem?.availability || [],
           cartUrl: ProductCartUrl,
-          displayName: correspondingItem?.displayName==ProductDisplayName?correspondingItem?.displayName:ProductDisplayName || cartItem.displayName,
+          displayName:
+            correspondingItem?.displayName == ProductDisplayName
+              ? correspondingItem?.displayName
+              : ProductDisplayName || cartItem.displayName,
           onSalePrice: DisplayPrice || ComparePrice,
           orderId: OrderID,
           orderLineId: OrderLineID,
