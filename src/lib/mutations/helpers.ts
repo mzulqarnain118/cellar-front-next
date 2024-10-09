@@ -103,6 +103,7 @@ export const getNewCartItems = (
       }) => {
         const productSku = ProductSKU.toLowerCase()
         const correspondingItem = originalCartItems.find(item => item.sku === productSku)
+
         const fallbackValues = {
           catalogId: 0,
           displayCategories: [],
@@ -115,13 +116,13 @@ export const getNewCartItems = (
           quantityAvailable: 0,
           subscribable: false,
         }
+
         const item = {
           availability: cartItem?.availability || [],
           cartUrl: ProductCartUrl,
           displayName:
-            correspondingItem?.displayName == ProductDisplayName
-              ? correspondingItem?.displayName
-              : ProductDisplayName || cartItem.displayName,
+            originalCartItems.find(item => item.sku === productSku)?.displayName ||
+            ProductDisplayName,
           onSalePrice: DisplayPrice || ComparePrice,
           orderId: OrderID,
           orderLineId: OrderLineID,
