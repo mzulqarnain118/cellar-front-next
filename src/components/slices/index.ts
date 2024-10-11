@@ -1,4 +1,5 @@
 import { BrandProfile } from './brand-profile'
+import { CodeSnippet } from './code-snippet'
 import { ColumnedContent } from './columned-content'
 import { DynamicProductShowcase } from './dynamic-product-showcase'
 import { HeroBanner } from './hero-banner'
@@ -9,6 +10,7 @@ import { VideoShowcase } from './video-showcase'
 import { WineQuiz } from './wine-quiz'
 
 export const components = {
+  agreement: CodeSnippet,
   brand_profile: BrandProfile,
   columned_content: ColumnedContent,
   dynamic_product_showcase: DynamicProductShowcase,
