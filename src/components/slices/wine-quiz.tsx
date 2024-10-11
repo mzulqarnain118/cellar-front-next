@@ -73,7 +73,7 @@ export const WineQuiz = () => {
       productData?.displayCategories?.includes(DISPLAY_CATEGORY['Scout Circle']) || false
     const isAutoSip =
       productData?.displayCategories?.includes(DISPLAY_CATEGORY['Auto-Sip']) || false
-    // const isMerch = productData?.catalogId === 9 // merch catalog id
+    // const isMerch = productData?.catalogId === 9
 
     if (tastrySku !== undefined) {
       toggleCartOpen()
