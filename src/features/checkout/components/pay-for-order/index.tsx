@@ -295,7 +295,7 @@ export const PayForOrder = ({
                 isAddressFormOpened ||
                 isPaymentFormOpened ||
                 shippingAddresses?.creditCards?.length === 0 ||
-                (isPickUp ? !selectedPickUpAddress : shippingAddresses?.addresses?.length === 0) || isAutoSipCart ? !refs?.autoSipRef?.current?.checked : false || isScoutCircleCart ? !refs?.wineClubRef?.current?.checked : false
+                (isPickUp ? !selectedPickUpAddress : shippingAddresses?.addresses?.length === 0) || (isAutoSipCart ? !refs?.autoSipRef?.current?.checked : false) || (isScoutCircleCart ? !refs?.wineClubRef?.current?.checked : false)
               }
               size={isDesktop ? 'lg' : 'md'}
               onClick={handleSubmit}
