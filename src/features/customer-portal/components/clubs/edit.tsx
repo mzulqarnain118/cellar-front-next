@@ -311,7 +311,7 @@ export const ClubsEdit = ({
   )
 
   const handleCancelClick = useCallback(
-    () =>
+    (redirectUrl?: string) =>
       modals.open({
         centered: true,
         children: (
@@ -320,6 +320,7 @@ export const ClubsEdit = ({
             handleHide={modals.closeAll}
             refetch={refetchSubscription}
             subscriptionId={subscriptionId}
+            redirectUrl={redirectUrl}
           />
         ),
       }),
@@ -330,7 +331,12 @@ export const ClubsEdit = ({
     () =>
       modals.open({
         centered: true,
-        children: <AddCreditCardForm handleClose={modals.closeAll} shippingMethods={shippingMethods?.length} />,
+        children: (
+          <AddCreditCardForm
+            handleClose={modals.closeAll}
+            shippingMethods={shippingMethods?.length}
+          />
+        ),
         classNames: {
           title: '!text-18',
         },
@@ -384,6 +390,17 @@ export const ClubsEdit = ({
                 <Typography as="h6" className="mb-0">
                   Manage Membership
                 </Typography>
+                {autoSip && (
+                  <Button
+                    className="gap-1 border-neutral-50 text-neutral-50"
+                    color="ghost"
+                    variant="outline"
+                    onClick={() => handleCancelClick('/my-account/auto-sips')}
+                  >
+                    <XCircleIcon className="h-4 w-4" />
+                    <Typography className="group-hover:underline">Cancel Subscription</Typography>
+                  </Button>
+                )}
                 {!autoSip && (
                   <div className="space-x-4">
                     {!subscription?.SKU?.toLowerCase().startsWith('promo') && (
@@ -403,7 +420,7 @@ export const ClubsEdit = ({
                       className="gap-1 border-neutral-50 text-neutral-50"
                       color="ghost"
                       variant="outline"
-                      onClick={handleCancelClick}
+                      onClick={() => handleCancelClick()}
                     >
                       <XCircleIcon className="h-4 w-4" />
                       <Typography className="group-hover:underline">Cancel Club</Typography>
