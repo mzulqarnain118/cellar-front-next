@@ -20,6 +20,7 @@ interface CancelProps {
   refetch: () => void
   skipNext?: boolean
   subscriptionId: number
+  redirectUrl?: string
 }
 
 export const Cancel = ({
@@ -28,6 +29,7 @@ export const Cancel = ({
   refetch,
   skipNext = false,
   subscriptionId,
+  redirectUrl,
 }: CancelProps) => {
   const router = useRouter()
   const {
@@ -42,37 +44,37 @@ export const Cancel = ({
       !customChargebeeData
         ? undefined
         : {
-          account: {
-            internal_id: customChargebeeData.CustomerDisplayId,
+            account: {
+              internal_id: customChargebeeData.CustomerDisplayId,
+            },
+            app_id: process.env.NEXT_PUBLIC_CHARGEBEE_APP_ID,
+            cancel_confirmation_url: typeof window !== undefined ? window.location.href : '',
+            custom: {
+              a_la_carte_orders: customChargebeeData.AlaCarteOrders365,
+              action_type: 'cancel',
+              bottle_count: customChargebeeData.BottleCount,
+              consultant_display_id: customChargebeeData.SponsorDisplayId,
+              consultant_first_name: customChargebeeData.SponsorFirstName,
+              consultant_full_name: `${customChargebeeData.SponsorFirstName} ${customChargebeeData.SponsorLastName}`,
+              consultant_last_name: customChargebeeData.SponsorLastName,
+              frequency: customChargebeeData.Frequency,
+              last_shipped_date: customChargebeeData.LastShippedDate,
+              number_of_active_subscriptions: customChargebeeData.NumActiveSubscriptions,
+              number_of_paused_subscriptions: customChargebeeData.NumPausedSubscriptions,
+              product_description: customChargebeeData.ProductDescription,
+              scout_rewards: customChargebeeData.ScoutRewards,
+              ship_to_state: customChargebeeData.ShipToState,
+              sku: customChargebeeData.SKU,
+              subscription_create_date: customChargebeeData.SubscriptionCreateDate,
+              varietal_type: customChargebeeData.VarietalType,
+            },
+            email: session?.user?.email || '',
+            first_name: customChargebeeData.CustomerFirstName,
+            full_name: `${customChargebeeData.CustomerFirstName} ${customChargebeeData.CustomerLastName}`,
+            last_name: session?.user?.name.last || '',
+            save_return_url: typeof window !== undefined ? window.location.href : '',
+            subscription_id: subscriptionId,
           },
-          app_id: process.env.NEXT_PUBLIC_CHARGEBEE_APP_ID,
-          cancel_confirmation_url: typeof window !== undefined ? window.location.href : '',
-          custom: {
-            a_la_carte_orders: customChargebeeData.AlaCarteOrders365,
-            action_type: 'cancel',
-            bottle_count: customChargebeeData.BottleCount,
-            consultant_display_id: customChargebeeData.SponsorDisplayId,
-            consultant_first_name: customChargebeeData.SponsorFirstName,
-            consultant_full_name: `${customChargebeeData.SponsorFirstName} ${customChargebeeData.SponsorLastName}`,
-            consultant_last_name: customChargebeeData.SponsorLastName,
-            frequency: customChargebeeData.Frequency,
-            last_shipped_date: customChargebeeData.LastShippedDate,
-            number_of_active_subscriptions: customChargebeeData.NumActiveSubscriptions,
-            number_of_paused_subscriptions: customChargebeeData.NumPausedSubscriptions,
-            product_description: customChargebeeData.ProductDescription,
-            scout_rewards: customChargebeeData.ScoutRewards,
-            ship_to_state: customChargebeeData.ShipToState,
-            sku: customChargebeeData.SKU,
-            subscription_create_date: customChargebeeData.SubscriptionCreateDate,
-            varietal_type: customChargebeeData.VarietalType,
-          },
-          email: session?.user?.email || '',
-          first_name: customChargebeeData.CustomerFirstName,
-          full_name: `${customChargebeeData.CustomerFirstName} ${customChargebeeData.CustomerLastName}`,
-          last_name: session?.user?.name.last || '',
-          save_return_url: typeof window !== undefined ? window.location.href : '',
-          subscription_id: subscriptionId,
-        },
     [customChargebeeData, session?.user?.email, session?.user?.name.last, subscriptionId]
   )
 
@@ -99,8 +101,12 @@ export const Cancel = ({
 
   useEffect(() => {
     if (skipped && !skipping) {
-      toastInfo({ message: 'Thank you! Your next subscription shipment will be skipped.' })
-      router.push(`${MY_ACCOUNT_PAGE_PATH}/clubs/${subscriptionId}`)
+      toastInfo({
+        message: skipNext
+          ? 'Thank you! Your next subscription shipment will be skipped.'
+          : 'Thank you! Your subscription has been cancel.',
+      })
+      router.push(redirectUrl ? redirectUrl : `${MY_ACCOUNT_PAGE_PATH}/clubs/${subscriptionId}`)
     }
   }, [handleHide, refetch, skipped, skipping, subscriptionId])
 
@@ -110,7 +116,8 @@ export const Cancel = ({
       {!skipped ? (
         <Typography as="h1" displayAs="h4">
           Are you sure you want to{' '}
-          {skipNext ? 'skip your next shipment' : 'cancel your subscription'}?        </Typography>
+          {skipNext ? 'skip your next shipment' : 'cancel your subscription'}?{' '}
+        </Typography>
       ) : undefined}
       {skipped ? undefined : (
         <Link
@@ -128,9 +135,11 @@ export const Cancel = ({
         skipped ? (
           <div className="grid pb-10 pt-0 text-center">
             <Typography className="text-2xl font-bold text-[#854f50]">Thank you!</Typography>
-            <Typography>{skipNext
-              ? 'Your next subscription shipment will be skipped.'
-              : 'Your subscription has been canceled'}</Typography>
+            <Typography>
+              {skipNext
+                ? 'Your next subscription shipment will be skipped.'
+                : 'Your subscription has been canceled'}
+            </Typography>
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2">
@@ -141,7 +150,8 @@ export const Cancel = ({
               {skipNext ? 'Skip my next shipment' : 'Cancel my subscription'}
             </Button>
           </div>
-        )}
+        )
+      }
     </>
   )
 }
