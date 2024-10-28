@@ -279,6 +279,7 @@ export const ContactForm = () => {
           error={errors.phoneNumber?.message}
           label="Phone number"
           type="tel"
+          maxLength={10}
           {...register('phoneNumber')}
           className="md:col-span-1 col-span-2"
         />
