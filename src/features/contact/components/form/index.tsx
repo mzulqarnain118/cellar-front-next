@@ -267,6 +267,7 @@ export const ContactForm = () => {
           error={errors.phoneNumber?.message}
           label="Phone number"
           type="tel"
+          maxLength={10}
           {...register('phoneNumber')}
         />
         <Input

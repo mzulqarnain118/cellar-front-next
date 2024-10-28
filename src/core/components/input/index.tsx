@@ -25,6 +25,7 @@ interface Props<TFieldValues extends FieldValues = FieldValues> extends InputPro
   size?: 'sm' | 'md'
   touched?: boolean
   values?: any
+  maxLength?: number
 }
 
 export const Input = forwardRef<HTMLInputElement, Props>(

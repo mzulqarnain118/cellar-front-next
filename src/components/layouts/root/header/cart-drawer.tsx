@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import { MouseEventHandler, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { MouseEventHandler, useCallback, useEffect, useMemo, useRef } from 'react'
 
 import { ChevronRightIcon } from '@heroicons/react/24/outline'
 import { CloseButton, Drawer } from '@mantine/core'
@@ -16,7 +16,6 @@ import { useCartQuery } from '@/lib/queries/cart'
 import { useCartOpen, useProcessStore } from '@/lib/stores/process'
 
 import { Link } from '@/components/link'
-import { useIsDesktop } from '@/core/hooks/use-is-desktop'
 import { useValidateCartStockMutation } from '@/features/checkout/mutations/validate-cart-stock'
 import { useShareCartMutation } from '@/features/shared-cart/mutations/share-cart'
 import { CartItem } from './cart-item'
@@ -25,8 +24,7 @@ import { Ticker } from './ticker'
 const drawerClassNames = { body: 'h-full p-0', content: 'overflow-y-hidden' }
 
 export const CartDrawer = () => {
-  const isDekstop = useIsDesktop()
-  const [scrollHeight, setScrollHeight] = useState(0)
+  const cartContainerRef = useRef<HTMLDivElement>(null)
   const { data: session } = useSession()
   const router = useRouter()
   const { cartOpen, toggleCartOpen } = useCartOpen()
@@ -47,25 +45,23 @@ export const CartDrawer = () => {
       lincChat.style.display = ''
     }
   })
-  useEffect(() => {
-    setScrollHeight(
-      window?.innerHeight -
-        (footerRef?.current?.offsetHeight + drawerHeaderRef?.current?.offsetHeight)
-    )
-  }, [footerRef.current, drawerHeaderRef.current])
 
   useEffect(() => {
-    const handleResize = () => {
-      setScrollHeight(
+    const timer = setTimeout(() => {
+      setScrollHeight()
+    }, 0)
+    return () => clearTimeout(timer)
+  }, [footerRef.current, drawerHeaderRef.current, cartOpen])
+
+  const setScrollHeight = useCallback(() => {
+    if (cartContainerRef?.current) {
+      const scrollHeight =
         window?.innerHeight -
-          (footerRef?.current?.offsetHeight + drawerHeaderRef?.current?.offsetHeight)
-      )
+        (footerRef?.current?.offsetHeight + drawerHeaderRef?.current?.offsetHeight)
+      cartContainerRef.current.style.maxHeight = `${scrollHeight}px`
+      cartContainerRef.current.style.overflowY = `scroll`
     }
-
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [isDekstop])
-
+  }, [cartContainerRef])
   const handleShareCartClick = useCallback(() => {
     shareCart()
   }, [shareCart])
@@ -163,7 +159,7 @@ export const CartDrawer = () => {
       position="right"
       withCloseButton={false}
       onClose={toggleCartOpen}
-      className='custom-drawer'
+      className="custom-drawer"
     >
       <div className="h-[inherit] overflow-y-hidden">
         <CloseButton
@@ -201,13 +197,8 @@ export const CartDrawer = () => {
         </div>
         <>
           {cartItems !== undefined ? (
-            <div
-              className="overflow-y-scroll"
-              style={{
-                maxHeight: `${scrollHeight}px`,
-              }}
-            >
-              <div className="divide-y divide-neutral-200 bg-neutral-50">{cartItems}</div>
+            <div className="divide-y divide-neutral-200 bg-neutral-50" ref={cartContainerRef}>
+              {cartItems}
             </div>
           ) : (
             <div
