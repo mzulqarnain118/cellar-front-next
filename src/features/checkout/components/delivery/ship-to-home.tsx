@@ -130,7 +130,11 @@ export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
               label: `${method.displayName} (${formatCurrency(method.shippingPrice)})`,
               value: method.shippingMethodId.toString(),
             }))
-            .filter(method => !isPickUpShippingMethodId(method.data.shippingMethodId))
+            .filter(method =>
+              method?.data?.shippingMethodId === 1
+                ? false
+                : !isPickUpShippingMethodId(method.data.shippingMethodId)
+            )
         : [],
     [shippingMethodsData]
   )
@@ -228,7 +232,9 @@ export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
           classNames={dropdownClassNames}
           data={shippingAddresses}
           label="Shipping address"
-          value={activeShippingAddress?.AddressID?.toString()}
+          value={shippingAddresses
+            ?.find(address => address?.data?.Primary)
+            ?.data?.AddressID?.toString()}
           onChange={handleAddressChange}
         />
       </Collapse>

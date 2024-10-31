@@ -187,9 +187,9 @@ export const HoldAtLocationLocator = forwardRef<HTMLInputElement>((_props, ref) 
         Street3: addressData.id.startsWith('U') ? JSON.stringify(street3).substring(0, 50) : '',
       }
 
+      // primaryShippingMethod?.shippingMethodId
       updateShippingMethod({
-        shippingMethodId:
-          primaryShippingMethod?.shippingMethodId || GROUND_SHIPPING_SHIPPING_METHOD_ID,
+        shippingMethodId: GROUND_SHIPPING_SHIPPING_METHOD_ID,
       })
       applyCheckoutSelections({
         address: address,
