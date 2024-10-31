@@ -365,7 +365,7 @@ export const Payment = memo(({ opened, refs, toggle, cartTotalData }: PaymentPro
               error={errors?.payment?.cvv}
               inputClassName={clsx(cvv?.length < 3 && '!border-error focus:!border-error')}
               label="CVV"
-                            name="cvv"
+              name="cvv"
               pattern="^\d{3,4}$"
               size="sm"
               style={cvv?.length < 3 ? { borderWidth: '3px' } : {}}
@@ -389,7 +389,10 @@ export const Payment = memo(({ opened, refs, toggle, cartTotalData }: PaymentPro
           </Button>
         ) : undefined}
 
-        <Collapse in={creditCardFormOpen}>
+        <Collapse
+          in={creditCardFormOpen}
+          className={creditCardFormOpen ? '!h-auto !overflow-auto' : ''}
+        >
           <CreditCardForm
             cartTotalData={cartTotalData}
             onCancel={handleCancelCreate}

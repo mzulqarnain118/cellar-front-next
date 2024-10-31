@@ -1,11 +1,5 @@
 import { forwardRef, useCallback, useMemo } from 'react'
 
-import { LoadingOverlay, Select, SelectProps } from '@mantine/core'
-import { modals } from '@mantine/modals'
-import { useSession } from 'next-auth/react'
-import { SubmitHandler } from 'react-hook-form'
-import { z } from 'zod'
-
 import { Form } from '@/components/form'
 import { StateDropdown } from '@/components/state-dropdown'
 import { Button } from '@/core/components/button'
@@ -18,9 +12,18 @@ import { useValidateAddressMutation } from '@/lib/mutations/address/validate'
 import { useApplyCheckoutSelectionsMutation } from '@/lib/mutations/checkout/apply-selections'
 import { useUpdateShippingMethodMutation } from '@/lib/mutations/checkout/update-shipping-method'
 import { useShippingMethodsQuery } from '@/lib/queries/checkout/shipping-methods'
-import { useCheckoutErrors, useCheckoutGuestAddress } from '@/lib/stores/checkout'
+import {
+  useCheckoutActions,
+  useCheckoutErrors,
+  useCheckoutGuestAddress,
+} from '@/lib/stores/checkout'
 import { Address } from '@/lib/types/address'
 import { isPickUpShippingMethodId } from '@/lib/utils/checkout'
+import { LoadingOverlay, Select, SelectProps } from '@mantine/core'
+import { modals } from '@mantine/modals'
+import { useSession } from 'next-auth/react'
+import { SubmitHandler } from 'react-hook-form'
+import { z } from 'zod'
 
 import { useShippingStateStore } from '@/lib/stores/shipping-state'
 import { dropdownClassNames } from './ship-to-home'
@@ -39,17 +42,17 @@ export const newAddressFormSchema = z.object({
     .min(1, { message: 'Please enter the zip code.' })
     .max(5, { message: 'The zip code must be 5 numbers.' }),
 })
-
 export type NewAddressFormSchema = z.infer<typeof newAddressFormSchema>
 
 interface AddressFormProps {
   onCreateAddress?: (address?: Address) => void
+  toggleAddressForm: () => void
   size?: 'sm' | 'md'
   cartTotalData: any
 }
 
 export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
-  ({ onCreateAddress, size = 'sm',cartTotalData }, ref) => {
+  ({ onCreateAddress, size = 'sm', cartTotalData, toggleAddressForm }, ref) => {
     const errors = useCheckoutErrors()
     const { isLoading: isApplyingSelections } = useApplyCheckoutSelectionsMutation()
     const { data: shippingMethodsData } = useShippingMethodsQuery()
@@ -60,6 +63,7 @@ export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
     const { mutate: validateAddress, isLoading: isValidatingAddress } = useValidateAddressMutation()
     const { mutate: createAddress, isLoading: isCreatingAddress } = useCreateAddressMutation()
     const guestAddress = useCheckoutGuestAddress()
+    const { setOnContinuePayment } = useCheckoutActions()
     const { data: session } = useSession()
 
     const handleAddressChange = useCallback(() => {
@@ -87,7 +91,6 @@ export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
     )
 
     const disabled = isUpdatingShippingMethod || isApplyingSelections
-
     const defaultValues: NewAddressFormSchema = useMemo(
       () => ({
         addressOne: guestAddress?.Street1 || '',
@@ -109,22 +112,25 @@ export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
         guestAddress?.ProvinceID,
         guestAddress?.Street1,
         guestAddress?.Street2,
-        guestAddress?.Primary
+        guestAddress?.Primary,
       ]
     )
 
     const onSubmit: SubmitHandler<NewAddressFormSchema> = useCallback(
-      ({
-        addressOne: addressLineOne,
-        setAsdefault,
-        addressTwo: addressLineTwo = '',
-        city,
-        company = '',
-        firstName,
-        lastName,
-        state: provinceId,
-        zipCode,
-      },reset) => {
+      (
+        {
+          addressOne: addressLineOne,
+          setAsdefault,
+          addressTwo: addressLineTwo = '',
+          city,
+          company = '',
+          firstName,
+          lastName,
+          state: provinceId,
+          zipCode,
+        },
+        reset
+      ) => {
         validateAddress({
           addressLineOne,
           addressLineTwo,
@@ -206,25 +212,24 @@ export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
           lastName,
           provinceId: parseInt(provinceId),
           zipCode,
-          setAsdefault
+          setAsdefault,
         })
       },
       [createAddress, onCreateAddress, validateAddress]
     )
 
-
-  const handleShippingMethodChange: SelectProps['onChange'] = useCallback(
-    (shippingMethodId: string | null) => {
-      if (
-        !!shippingMethodId &&
-        shippingMethodsData !== undefined &&
-        shippingMethodsData.length > 0
-      ) {
-        updateShippingMethod({ shippingMethodId: parseInt(shippingMethodId) })
-      }
-    },
-    [shippingMethodsData, updateShippingMethod]
-  )
+    const handleShippingMethodChange: SelectProps['onChange'] = useCallback(
+      (shippingMethodId: string | null) => {
+        if (
+          !!shippingMethodId &&
+          shippingMethodsData !== undefined &&
+          shippingMethodsData.length > 0
+        ) {
+          updateShippingMethod({ shippingMethodId: parseInt(shippingMethodId) })
+        }
+      },
+      [shippingMethodsData, updateShippingMethod]
+    )
     return (
       <div className="space-y-4">
         <LoadingOverlay visible={isCreatingAddress || isValidatingAddress} />
@@ -281,14 +286,22 @@ export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
             name="zipCode"
             size={size}
           />
-           {!session?.user?.isGuest && <Checkbox
-            className="col-span-2 my-4"
-            color="dark"
-            label="Set as default"
-            name="setAsdefault"
-          />
-          }
+          {!session?.user?.isGuest && (
+            <Checkbox
+              className="col-span-2 my-4"
+              color="dark"
+              label="Set as default"
+              name="setAsdefault"
+            />
+          )}
         </Form>
+        <div className="flex justify-end lg:justify-start">
+          {session?.user?.isGuest && (
+            <Button dark form="address-form" type="submit">
+              Save and continue to Shipping Method
+            </Button>
+          )}
+        </div>
         <Select
           ref={ref?.shippingMethodRef}
           classNames={dropdownClassNames}
@@ -299,9 +312,22 @@ export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
           onChange={handleShippingMethodChange}
         />
         <div className="flex justify-end lg:justify-start gap-2">
-          <Button dark form="address-form" type="submit">
+          <Button
+            dark
+            form={session?.user?.isGuest ? '' : 'address-form'}
+            {...(session?.user?.isGuest
+              ? {
+                  onClick: () => {
+                    toggleAddressForm()
+                    setOnContinuePayment(true)
+                  },
+                }
+              : { type: 'submit' })}
+            disabled={session?.user?.isGuest ? shippingMethods?.length === 0 : false}
+          >
             Continue to payment
           </Button>
+
           {!session?.user?.isGuest && (
             <Button color="ghost" type="button" onClick={handleAddressChange}>
               Cancel
