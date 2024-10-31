@@ -1,10 +1,4 @@
-import {
-  ChangeEventHandler,
-  FocusEventHandler,
-  useCallback,
-  useMemo,
-  useState
-} from 'react'
+import { ChangeEventHandler, FocusEventHandler, useCallback, useMemo, useState } from 'react'
 
 import { ChevronLeftIcon } from '@heroicons/react/24/outline'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -277,9 +271,6 @@ export const CreditCardForm = ({ onCancel, onCreate, cartTotalData }: CreditCard
       validateAddress,
     ]
   )
-
-
-
   return (
     <div className="lg:space-y-4">
       {session?.user?.isGuest && activeCreditCard !== undefined ? (
@@ -329,8 +320,7 @@ export const CreditCardForm = ({ onCancel, onCreate, cartTotalData }: CreditCard
                 onChange: handleInputChange,
               })}
               inputClassName={clsx(state?.cvc?.length < 3 && '!border-error focus:!border-error')}
-pattern="^\d{3,4}$"
-
+              pattern="^\d{3,4}$"
               style={state?.cvc?.length < 3 ? { borderWidth: '3px' } : {}}
               type="tel"
               value={state?.cvc}
