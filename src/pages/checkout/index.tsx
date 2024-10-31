@@ -31,19 +31,23 @@ import {
   useCheckoutActiveCreditCard,
   useCheckoutGiftCardCode,
   useCheckoutGiftMessage,
+  useCheckoutGuestAddress,
   useCheckoutGuestCreditCard,
   useCheckoutIsAddingAddress,
   useCheckoutIsAddingCreditCard,
   useCheckoutIsAddingGiftMessage,
   useCheckoutIsPickUp,
+  useCheckoutOnContinuePayment,
   useCheckoutPromoCode,
   useCheckoutSelectedPickUpAddress,
   useCheckoutSelectedPickUpOption,
 } from '@/lib/stores/checkout'
 import { toastInfo } from '@/lib/utils/notifications'
 
+import { Collapse } from '@mantine/core'
+import { useSession } from 'next-auth/react'
+import { useIsFirstRender } from 'usehooks-ts'
 import { authOptions } from '../api/auth/[...nextauth]'
-
 import modalStyles from './modalStyles.module.css'
 
 const CartSummary = dynamic(
@@ -56,7 +60,6 @@ const PayForOrder = dynamic(
     import('@/features/checkout/components/pay-for-order').then(({ PayForOrder }) => PayForOrder),
   { ssr: false }
 )
-
 export const getServerSideProps: GetServerSideProps = async context => {
   const session = await getServerSession(context.req, context.res, authOptions)
 
@@ -80,7 +83,8 @@ type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
 const scrollIntoViewSettings = { duration: 500, offset: 120 }
 
-const CheckoutPage: NextPage<PageProps> = () => {
+const CheckoutPage: NextPage = () => {
+  const { data: session } = useSession()
   const [isItemVisible, setIsItemVisible] = useState(false)
   const [verticalScroll, setVerticalScroll] = useState(0)
   const { mutate: setCartOwner } = useSetCartOwnerMutation()
@@ -94,9 +98,11 @@ const CheckoutPage: NextPage<PageProps> = () => {
     isRefetching: isRefetchingSubTotal,
     refetch: refetchCartTotalData,
   } = useGetSubtotalQuery()
-
+  const isFirstRender = useIsFirstRender()
+  const guestAddress = useCheckoutGuestAddress()
   const activeCreditCard = useCheckoutActiveCreditCard()
   const isAddingAddress = useCheckoutIsAddingAddress()
+  const onContinuePayment = useCheckoutOnContinuePayment()
   const isAddingCreditCard = useCheckoutIsAddingCreditCard()
   const isAddingGiftMessage = useCheckoutIsAddingGiftMessage()
   const isPickUp = useCheckoutIsPickUp()
@@ -105,7 +111,7 @@ const CheckoutPage: NextPage<PageProps> = () => {
   const promoCodes = useCheckoutPromoCode()
   const selectedPickUpAddress = useCheckoutSelectedPickUpAddress()
   const selectedPickUpOption = useCheckoutSelectedPickUpOption()
-  const { setErrors } = useCheckoutActions()
+  const { setErrors, setOnContinuePayment } = useCheckoutActions()
   const guestCreditCard = useCheckoutGuestCreditCard()
   const creditCard = useMemo(
     () => guestCreditCard || activeCreditCard,
@@ -117,6 +123,7 @@ const CheckoutPage: NextPage<PageProps> = () => {
     { open: openContactInformation, toggle: toggleContactInformation },
   ] = useDisclosure(true)
   const isGiftRef = useRef<HTMLInputElement | null>(null)
+
   const { targetRef: giftMessageRef, scrollIntoView: scrollGiftMessageIntoView } =
     useScrollIntoView<HTMLTextAreaElement>(scrollIntoViewSettings)
   const { targetRef: recipientEmailRef, scrollIntoView: scrollRecipientEmailIntoView } =
@@ -152,6 +159,11 @@ const CheckoutPage: NextPage<PageProps> = () => {
     // Optionally, you can prefetch the query here
     queryClient.prefetchQuery([GET_SUBTOTAL_QUERY, cart?.id])
   }, [queryClient])
+  useEffect(() => {
+    if (session?.user?.isGuest) {
+      setOnContinuePayment(false)
+    }
+  }, [session?.user?.isGuest])
 
   const {
     mutate: vaildateCartStock,
@@ -480,7 +492,6 @@ const CheckoutPage: NextPage<PageProps> = () => {
     validateCartStockSuccess,
     wineClubRef,
   ])
-
   /* Hide chat icon on checkout page */
   useEffect(() => {
     const lincChat = document.getElementsByClassName('linc-web-chat')?.[0] as HTMLElement
@@ -535,7 +546,13 @@ const CheckoutPage: NextPage<PageProps> = () => {
       setVerticalScroll(scroll.y)
     }
   }, [isItemVisible])
-
+  useEffect(() => {
+    if (guestAddress && isFirstRender) {
+      setTimeout(() => {
+        setOnContinuePayment(true)
+      }, 1500)
+    }
+  }, [guestAddress, isFirstRender])
   return (
     <>
       <LoadingOverlay visible={isRefetchingSubTotal} />
@@ -555,12 +572,16 @@ const CheckoutPage: NextPage<PageProps> = () => {
               refs={deliveryRefs}
               toggle={toggleDelivery}
             />
-            <Payment
-              cartTotalData={cartTotalData}
-              opened={paymentOpened}
-              refs={paymentRefs}
-              toggle={togglePayment}
-            />
+
+            <Collapse in={onContinuePayment}>
+              <Payment
+                cartTotalData={cartTotalData}
+                opened={paymentOpened}
+                refs={paymentRefs}
+                toggle={togglePayment}
+              />
+            </Collapse>
+
             <PayForOrder
               cartTotalData={cartTotalData}
               handleValidateCart={handleValidateCart}

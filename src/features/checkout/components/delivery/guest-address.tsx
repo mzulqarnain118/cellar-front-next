@@ -16,6 +16,7 @@ import { useCheckoutActions, useCheckoutGuestAddress } from '@/lib/stores/checko
 import { Address } from '@/lib/types/address'
 import { isPickUpShippingMethodId } from '@/lib/utils/checkout'
 
+import { useSession } from 'next-auth/react'
 import type { DeliveryRefs } from '.'
 
 const AddressForm = dynamic(() => import('./address-form').then(({ AddressForm }) => AddressForm), {
@@ -30,12 +31,13 @@ interface GuestAddressProps {
 }
 
 export const GuestAddress = ({ shippingAddressRef, cartTotalData }: GuestAddressProps) => {
+  const { data: session } = useSession()
   const guestAddress = useCheckoutGuestAddress()
   const { isLoading: isApplyingSelections } = useApplyCheckoutSelectionsMutation()
   const { data: shippingMethodsData } = useShippingMethodsQuery()
   const { mutate: updateShippingMethod, isLoading: isUpdatingShippingMethod } =
     useUpdateShippingMethodMutation()
-  const { setGuestAddress } = useCheckoutActions()
+  const { setGuestAddress, setOnContinuePayment } = useCheckoutActions()
   const [addressFormOpen, { close: closeAddressForm, toggle: toggleAddressForm }] = useDisclosure(
     guestAddress === undefined
   )
@@ -69,7 +71,7 @@ export const GuestAddress = ({ shippingAddressRef, cartTotalData }: GuestAddress
   const handleCreateAddress = useCallback(
     (address?: Address) => {
       setGuestAddress(address || guestAddress)
-      closeAddressForm()
+      !session?.user?.isGuest && closeAddressForm()
     },
     [closeAddressForm, guestAddress, setGuestAddress]
   )
@@ -79,7 +81,12 @@ export const GuestAddress = ({ shippingAddressRef, cartTotalData }: GuestAddress
   return (
     <>
       <Collapse in={addressFormOpen}>
-        <AddressForm ref={shippingAddressRef} cartTotalData={cartTotalData} onCreateAddress={handleCreateAddress} />
+        <AddressForm
+          ref={shippingAddressRef}
+          toggleAddressForm={toggleAddressForm}
+          cartTotalData={cartTotalData}
+          onCreateAddress={handleCreateAddress}
+        />
       </Collapse>
 
       <Collapse in={!addressFormOpen && guestAddress !== undefined}>
@@ -92,7 +99,13 @@ export const GuestAddress = ({ shippingAddressRef, cartTotalData }: GuestAddress
               {guestAddress?.PostalCode}
             </Typography>
           </div>
-          <Button link onClick={toggleAddressForm}>
+          <Button
+            link
+            onClick={() => {
+              toggleAddressForm()
+              session?.user?.isGuest && setOnContinuePayment(false)
+            }}
+          >
             Edit Address
           </Button>
         </div>
