@@ -120,9 +120,9 @@ export const PickUp = ({ refs, cartTotalData }: PickUpProps) => {
     toggleHalOpened()
     setSelectedPickUpOption('hal')
     setErrors(prev => ({ ...prev, delivery: '' }))
+    //  shippingMethods?.[0]?.shippingMethodId
     updateShippingMethod({
-      shippingMethodId:
-        shippingMethods?.[0]?.shippingMethodId || GROUND_SHIPPING_SHIPPING_METHOD_ID,
+      shippingMethodId: GROUND_SHIPPING_SHIPPING_METHOD_ID,
     })
   }, [
     closeAbc,
@@ -182,7 +182,10 @@ export const PickUp = ({ refs, cartTotalData }: PickUpProps) => {
         <div className="ml-9 space-y-4">
           <p className="text-14">
             <Typography as="strong">
-              HEADS UP! We’re upgrading our Local Pickup service to give you a more seamless experience. During this transition, orders will be ready for pickup within 5-7 business days. Feel free to give us a call at 972-457-1667 to confirm your order or check on inventory.
+              HEADS UP! We’re upgrading our Local Pickup service to give you a more seamless
+              experience. During this transition, orders will be ready for pickup within 5-7
+              business days. Feel free to give us a call at 972-457-1667 to confirm your order or
+              check on inventory.
             </Typography>
           </p>
           <div className="rounded border border-base-dark bg-[#fafafa] p-5">
@@ -191,20 +194,22 @@ export const PickUp = ({ refs, cartTotalData }: PickUpProps) => {
             </Typography>
             <p className="text-14">{localPickupData?.Address1 ?? ''}</p>
             <p className="text-14">{localPickupData?.Address2 ?? ''}</p>
-            <p className="text-14">{`${localPickupData?.City?.length ? localPickupData?.City+',' : ''} ${
-              localPickupData?.Province ?? ''
-            }  ${localPickupData?.PostalCode ?? ''}`}</p>
+            <p className="text-14">{`${
+              localPickupData?.City?.length ? localPickupData?.City + ',' : ''
+            } ${localPickupData?.Province ?? ''}  ${localPickupData?.PostalCode ?? ''}`}</p>
           </div>
         </div>
       </Collapse>
       <Radio
         ref={refs.halRef}
         checked={halOpened}
-        className={process.env.NEXT_PUBLIC_HUBBOX_OPTION === 'disabled' ? 'hidden' : 'block'}
+        // className={process.env.NEXT_PUBLIC_HUBBOX_OPTION === 'disabled' ? 'hidden' : 'block'}
         classNames={radioClassNames}
         color="brand"
         disabled={isUpdatingShippingMethod}
-        label="Pick up at a hold-at-location"
+        label=<p>
+          Pick up at a <b>UPS</b> hold-at-location <b>(Ships via UPS)</b>
+        </p>
         size="sm"
         onChange={handleHalOpen}
       />

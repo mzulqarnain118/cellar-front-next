@@ -131,7 +131,11 @@ export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
               label: `${method.displayName} (${formatCurrency(method.shippingPrice)})`,
               value: method.shippingMethodId.toString(),
             }))
-            .filter(method => !isPickUpShippingMethodId(method.data.shippingMethodId))
+            .filter(method =>
+              method?.data?.shippingMethodId === 1
+                ? false
+                : !isPickUpShippingMethodId(method.data.shippingMethodId)
+            )
         : [],
     [shippingMethodsData]
   )
@@ -229,19 +233,23 @@ export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
           classNames={dropdownClassNames}
           data={shippingAddresses}
           label="Shipping address"
-          value={activeShippingAddress?.AddressID?.toString()}
+          value={shippingAddresses
+            ?.find(address => address?.data?.Primary)
+            ?.data?.AddressID?.toString()}
           onChange={handleAddressChange}
         />
       </Collapse>
 
-
-
       <Collapse in={addressFormOpen}>
-        <AddressForm ref={refs.shippingAddressRef} cartTotalData={cartTotalData} onCreateAddress={closeAddressForm} />
+        <AddressForm
+          ref={refs.shippingAddressRef}
+          cartTotalData={cartTotalData}
+          onCreateAddress={closeAddressForm}
+        />
       </Collapse>
 
       <Collapse
-      in={!addressFormOpen && !(shippingMethods === undefined || shippingMethods.length === 0)}
+        in={!addressFormOpen && !(shippingMethods === undefined || shippingMethods.length === 0)}
       >
         <Select
           ref={refs.shippingMethodRef}
@@ -269,4 +277,3 @@ export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
     </div>
   )
 })
-
