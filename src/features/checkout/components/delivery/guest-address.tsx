@@ -64,7 +64,11 @@ export const GuestAddress = ({ shippingAddressRef, cartTotalData }: GuestAddress
               label: `${method.displayName} (${formatCurrency(method.shippingPrice)})`,
               value: method.shippingMethodId.toString(),
             }))
-            .filter(method => !isPickUpShippingMethodId(method.data.shippingMethodId))
+            .filter(method =>
+              method?.data?.shippingMethodId === 1
+                ? false
+                : !isPickUpShippingMethodId(method.data.shippingMethodId)
+            )
         : [],
     [shippingMethodsData]
   )
