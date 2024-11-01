@@ -165,9 +165,7 @@ export const Footer = () => {
           <Typography className="text-sm">
             © {new Date().getFullYear()} Scout & Cellar | Wine | Coffee | Cooking Products®
           </Typography>
-          <address className="text-sm not-italic">
-            4531 Simonton Road Farmers Branch, TX 75244
-          </address>
+          <address className="text-sm not-italic">2261 Morgan Pkwy, #180, Dallas, TX 75234</address>
         </div>
       </div>
     </footer>
