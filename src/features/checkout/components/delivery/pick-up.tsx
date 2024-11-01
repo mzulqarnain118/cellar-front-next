@@ -203,7 +203,7 @@ export const PickUp = ({ refs, cartTotalData }: PickUpProps) => {
       <Radio
         ref={refs.halRef}
         checked={halOpened}
-        // className={process.env.NEXT_PUBLIC_HUBBOX_OPTION === 'disabled' ? 'hidden' : 'block'}
+        className={process.env.NEXT_PUBLIC_HUBBOX_OPTION === 'disabled' ? 'hidden' : 'block'}
         classNames={radioClassNames}
         color="brand"
         disabled={isUpdatingShippingMethod}

@@ -25,6 +25,7 @@ import { useSession } from 'next-auth/react'
 import { SubmitHandler } from 'react-hook-form'
 import { z } from 'zod'
 
+import { useShippingStateStore } from '@/lib/stores/shipping-state'
 import { dropdownClassNames } from './ship-to-home'
 
 export const newAddressFormSchema = z.object({
@@ -55,6 +56,7 @@ export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
     const errors = useCheckoutErrors()
     const { isLoading: isApplyingSelections } = useApplyCheckoutSelectionsMutation()
     const { data: shippingMethodsData } = useShippingMethodsQuery()
+    const { shippingState } = useShippingStateStore()
     const { mutate: updateShippingMethod, isLoading: isUpdatingShippingMethod } =
       useUpdateShippingMethodMutation()
 
@@ -80,7 +82,7 @@ export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
                 value: method.shippingMethodId.toString(),
               }))
               .filter(method =>
-                method?.data?.shippingMethodId === 1
+                method?.data?.shippingMethodId === 1 && shippingState.name !== 'Oklahoma'
                   ? false
                   : !isPickUpShippingMethodId(method.data.shippingMethodId)
               )

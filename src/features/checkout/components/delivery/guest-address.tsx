@@ -16,6 +16,7 @@ import { useCheckoutActions, useCheckoutGuestAddress } from '@/lib/stores/checko
 import { Address } from '@/lib/types/address'
 import { isPickUpShippingMethodId } from '@/lib/utils/checkout'
 
+import { useShippingStateStore } from '@/lib/stores/shipping-state'
 import { useSession } from 'next-auth/react'
 import type { DeliveryRefs } from '.'
 
@@ -33,6 +34,7 @@ interface GuestAddressProps {
 export const GuestAddress = ({ shippingAddressRef, cartTotalData }: GuestAddressProps) => {
   const { data: session } = useSession()
   const guestAddress = useCheckoutGuestAddress()
+  const { shippingState } = useShippingStateStore()
   const { isLoading: isApplyingSelections } = useApplyCheckoutSelectionsMutation()
   const { data: shippingMethodsData } = useShippingMethodsQuery()
   const { mutate: updateShippingMethod, isLoading: isUpdatingShippingMethod } =
@@ -65,7 +67,7 @@ export const GuestAddress = ({ shippingAddressRef, cartTotalData }: GuestAddress
               value: method.shippingMethodId.toString(),
             }))
             .filter(method =>
-              method?.data?.shippingMethodId === 1
+              method?.data?.shippingMethodId === 1 && shippingState.name !== 'Oklahoma'
                 ? false
                 : !isPickUpShippingMethodId(method.data.shippingMethodId)
             )

@@ -30,6 +30,7 @@ import { toastLoading } from '@/lib/utils/notifications'
 
 import { useCheckoutStore } from '../../store'
 
+import { useShippingStateStore } from '@/lib/stores/shipping-state'
 import type { DeliveryRefs } from '.'
 
 const AddressForm = dynamic(() => import('./address-form').then(({ AddressForm }) => AddressForm), {
@@ -50,6 +51,7 @@ export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
   const queryClient = useQueryClient()
   const { data, isLoading: isLoadingAddressesAndCreditCards } = useAddressesAndCreditCardsQuery()
   const { data: cart } = useCartQuery()
+  const { shippingState } = useShippingStateStore()
   const { mutate: applyCheckoutSelections, isLoading: isApplyingSelections } =
     useApplyCheckoutSelectionsMutation()
   const activeCreditCard = useCheckoutActiveCreditCard()
@@ -132,7 +134,7 @@ export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
               value: method.shippingMethodId.toString(),
             }))
             .filter(method =>
-              method?.data?.shippingMethodId === 1
+              method?.data?.shippingMethodId === 1 && shippingState.name !== 'Oklahoma'
                 ? false
                 : !isPickUpShippingMethodId(method.data.shippingMethodId)
             )
