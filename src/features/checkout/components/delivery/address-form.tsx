@@ -14,7 +14,6 @@ import { useCreateAddressMutation } from '@/lib/mutations/address/create'
 import { useValidateAddressMutation } from '@/lib/mutations/address/validate'
 import { useCheckoutErrors, useCheckoutGuestAddress } from '@/lib/stores/checkout'
 import { Address } from '@/lib/types/address'
-
 export const newAddressFormSchema = z.object({
   addressOne: z.string().min(1, { message: 'Please enter the address.' }),
   addressTwo: z.string().optional(),
