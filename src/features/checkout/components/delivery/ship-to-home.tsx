@@ -117,7 +117,6 @@ export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
         : [],
     [data]
   )
-
   useEffect(() => {
     if (data?.addresses?.length === 0) {
       toggleAddressForm()
@@ -228,6 +227,21 @@ export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
     setRemovedCartItems,
   ])
 
+  useEffect(() => {
+    if (
+      shippingMethods?.length &&
+      cartTotalData?.shipping.methodId &&
+      !shippingMethods
+        ?.find(
+          method =>
+            method?.data?.shippingMethodId?.toString() ===
+            cartTotalData?.shipping.methodId.toString()
+        )
+        ?.data?.shippingMethodId?.toString()
+    ) {
+      updateShippingMethod({ shippingMethodId: shippingMethods?.[0]?.data?.shippingMethodId })
+    }
+  }, [cartTotalData])
   return (
     <div className="space-y-4">
       <Collapse in={!addressFormOpen && shippingAddresses.length !== 0}>
@@ -235,9 +249,10 @@ export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
           classNames={dropdownClassNames}
           data={shippingAddresses}
           label="Shipping address"
-          value={shippingAddresses
-            ?.find(address => address?.data?.Primary)
-            ?.data?.AddressID?.toString()}
+          value={
+            activeShippingAddress?.AddressID?.toString() ||
+            shippingAddresses?.find(address => address?.data?.Primary)?.data?.AddressID?.toString()
+          }
           onChange={handleAddressChange}
         />
       </Collapse>

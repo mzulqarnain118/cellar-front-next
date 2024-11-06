@@ -49,7 +49,6 @@ export const Delivery = memo(({ opened, refs, cartTotalData, toggle }: DeliveryP
   const [value, setValue] = useState<string | null>(isPickUp ? 'pickUp' : 'shipToHome')
   const { data: session } = useSession()
   const isGuest = session?.user?.isGuest
-  console.log(isGuest, 'isGuest')
   const { mutate: applyCheckoutSelections, isLoading: isApplyingSelections } =
     useApplyCheckoutSelectionsMutation()
   const activeCreditCard = useCheckoutActiveCreditCard()
