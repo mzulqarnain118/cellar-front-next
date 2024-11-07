@@ -49,7 +49,10 @@ const profileSchema = z
       .string()
       .min(1, { message: 'Please enter the month.' })
       .length(2, 'Please enter the month.')
-      .trim(),
+      .trim()
+      .refine(value => parseInt(value) <= 12, {
+        message: 'The month cannot be greater than 12.',
+      }),
     phoneNumber: z.string().min(1, { message: 'Please enter your phone number.' }),
     year: z
       .string()
@@ -145,8 +148,9 @@ export const Profile = (props: TabsPanelProps) => {
     const month = getMonth(birthday)
 
     return {
-      day: getDate(birthday).toString(),
-      month: `${month < 10 ? `0${month + 1}` : month + 1}`,
+      day:
+        getDate(birthday) > 10 ? getDate(birthday).toString() : `0${getDate(birthday).toString()}`,
+      month: `${month < 9 ? `0${month + 1}` : month + 1}`,
       year: getYear(birthday).toString(),
     }
   }, [customer?.Person_OtherInformation.DateOfBirth, session?.user?.dateOfBirth])
@@ -248,7 +252,7 @@ export const Profile = (props: TabsPanelProps) => {
       phoneNumber,
       year,
     }) => {
-      const dateOfBirth = new Date(parseInt(year), parseInt(month), parseInt(day)).toISOString()
+      const dateOfBirth = new Date(parseInt(year), parseInt(month) - 1, parseInt(day)).toISOString()
 
       updateCustomer({
         companyName: company,
