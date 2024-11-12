@@ -36,6 +36,7 @@ export const updateCustomer = async ({
   optOutCompanyEmail,
   optOutConsultantEmail,
   displayId,
+  mobile,
   personId,
 }: CustomerData) => {
   try {
@@ -47,7 +48,7 @@ export const updateCustomer = async ({
         FirstName: firstName,
         LanguageName: 'English',
         LastName: lastName,
-        Mobile: phoneNumber,
+        Mobile: mobile,
         OptOutCompanyEmail: optOutCompanyEmail || false,
         OptOutConsultantEmail: optOutConsultantEmail || false,
         PersonDisplayID: displayId,
