@@ -19,12 +19,13 @@ import {
 } from '@/lib/stores/checkout'
 import { Address } from '@/lib/types/address'
 import { isPickUpShippingMethodId } from '@/lib/utils/checkout'
-import { LoadingOverlay, Select, SelectProps } from '@mantine/core'
+import { Collapse, LoadingOverlay, Select, SelectProps } from '@mantine/core'
 import { modals } from '@mantine/modals'
 import { useSession } from 'next-auth/react'
 import { SubmitHandler } from 'react-hook-form'
 import { z } from 'zod'
 
+import { useDisclosure } from '@mantine/hooks'
 import { dropdownClassNames } from './ship-to-home'
 
 export const newAddressFormSchema = z.object({
@@ -45,22 +46,24 @@ export type NewAddressFormSchema = z.infer<typeof newAddressFormSchema>
 
 interface AddressFormProps {
   onCreateAddress?: (address?: Address) => void
-  toggleAddressForm: () => void
   size?: 'sm' | 'md'
   cartTotalData: any
 }
 
 export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
-  ({ onCreateAddress, size = 'sm', cartTotalData, toggleAddressForm }, ref) => {
+  ({ onCreateAddress, size = 'sm', cartTotalData }, ref) => {
     const errors = useCheckoutErrors()
+    const guestAddress = useCheckoutGuestAddress()
     const { isLoading: isApplyingSelections } = useApplyCheckoutSelectionsMutation()
     const { data: shippingMethodsData } = useShippingMethodsQuery()
     const { mutate: updateShippingMethod, isLoading: isUpdatingShippingMethod } =
       useUpdateShippingMethodMutation()
+    const [addressFormOpen, { toggle: toggleAddressForm }] = useDisclosure(
+      guestAddress === undefined
+    )
 
     const { mutate: validateAddress, isLoading: isValidatingAddress } = useValidateAddressMutation()
     const { mutate: createAddress, isLoading: isCreatingAddress } = useCreateAddressMutation()
-    const guestAddress = useCheckoutGuestAddress()
     const { setOnContinuePayment } = useCheckoutActions()
     const { data: session } = useSession()
 
@@ -174,6 +177,7 @@ export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
                         if (response.Success && onCreateAddress !== undefined) {
                           reset()
                           onCreateAddress(response.Data.Value)
+                          session?.user?.isGuest && toggleAddressForm()
                         }
                       },
                     })
@@ -190,6 +194,7 @@ export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
                         if (response.Success && onCreateAddress !== undefined) {
                           reset()
                           onCreateAddress(response.Data.Value)
+                          session?.user?.isGuest && toggleAddressForm()
                         }
                       },
                     })
@@ -227,75 +232,100 @@ export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
     return (
       <div className="space-y-4">
         <LoadingOverlay visible={isCreatingAddress || isValidatingAddress} />
-        <Form
-          className="auto-grid-rows grid grid-cols-2 items-start gap-x-8"
-          defaultValues={defaultValues}
-          id="address-form"
-          schema={newAddressFormSchema}
-          onSubmit={onSubmit}
-        >
-          <Input
-            className="col-span-2 [&>div:first-child]:!pt-1"
-            instructionLabel="optional"
-            label="Company"
-            name="company"
-            size={size}
-          />
-          <Input
-            ref={ref}
-            className="col-span-2 sm:col-span-1 [&>div:first-child]:!pt-1"
-            label="First name"
-            name="firstName"
-            size={size}
-          />
-          <Input
-            className="col-span-2 sm:col-span-1 [&>div:first-child]:!pt-1"
-            label="Last name"
-            name="lastName"
-            size={size}
-          />
-          <Input
-            className="col-span-2 sm:col-span-1 [&>div:first-child]:!pt-1"
-            label="Address 1"
-            name="addressOne"
-            size={size}
-          />
-          <Input
-            className="col-span-2 sm:col-span-1 [&>div:first-child]:!pt-1"
-            instructionLabel="optional"
-            label="Address 2"
-            name="addressTwo"
-            size={size}
-          />
-          <Input
-            className="col-span-2 sm:col-span-1 [&>div:first-child]:!pt-1"
-            label="City"
-            name="city"
-            size={size}
-          />
-          <StateDropdown className="col-span-2 sm:col-span-1 pt-1" name="state" size={size} />
-          <Input
-            className="col-span-2 sm:col-span-1 [&>div:first-child]:!pt-1"
-            label="Zip code"
-            name="zipCode"
-            size={size}
-          />
-          {!session?.user?.isGuest && (
-            <Checkbox
-              className="col-span-2 my-4"
-              color="dark"
-              label="Set as default"
-              name="setAsdefault"
+        <Collapse in={session?.user?.isGuest ? addressFormOpen : true}>
+          <Form
+            className="auto-grid-rows grid grid-cols-2 items-start gap-x-8"
+            defaultValues={defaultValues}
+            id="address-form"
+            schema={newAddressFormSchema}
+            onSubmit={onSubmit}
+          >
+            <Input
+              className="col-span-2 [&>div:first-child]:!pt-1"
+              instructionLabel="optional"
+              label="Company"
+              name="company"
+              size={size}
             />
-          )}
-        </Form>
+            <Input
+              ref={ref}
+              className="col-span-2 sm:col-span-1 [&>div:first-child]:!pt-1"
+              label="First name"
+              name="firstName"
+              size={size}
+            />
+            <Input
+              className="col-span-2 sm:col-span-1 [&>div:first-child]:!pt-1"
+              label="Last name"
+              name="lastName"
+              size={size}
+            />
+            <Input
+              className="col-span-2 sm:col-span-1 [&>div:first-child]:!pt-1"
+              label="Address 1"
+              name="addressOne"
+              size={size}
+            />
+            <Input
+              className="col-span-2 sm:col-span-1 [&>div:first-child]:!pt-1"
+              instructionLabel="optional"
+              label="Address 2"
+              name="addressTwo"
+              size={size}
+            />
+            <Input
+              className="col-span-2 sm:col-span-1 [&>div:first-child]:!pt-1"
+              label="City"
+              name="city"
+              size={size}
+            />
+            <StateDropdown className="col-span-2 sm:col-span-1 pt-1" name="state" size={size} />
+            <Input
+              className="col-span-2 sm:col-span-1 [&>div:first-child]:!pt-1"
+              label="Zip code"
+              name="zipCode"
+              size={size}
+            />
+            {!session?.user?.isGuest && (
+              <Checkbox
+                className="col-span-2 my-4"
+                color="dark"
+                label="Set as default"
+                name="setAsdefault"
+              />
+            )}
+          </Form>
+        </Collapse>
         <div className="flex justify-end lg:justify-start">
-          {session?.user?.isGuest && (
+          {session?.user?.isGuest && addressFormOpen && (
             <Button dark form="address-form" type="submit">
               Save and continue to Shipping Method
             </Button>
           )}
         </div>
+        <Collapse in={!addressFormOpen && guestAddress !== undefined}>
+          <div className="mt-2  border border-neutral-light p-4 w-max rounded bg-[#fafafa] pb-0">
+            <div>
+              <Typography className="block mb-3 text-18 font-bold">
+                Your delivery address:
+              </Typography>
+              <Typography className="block">
+                {guestAddress?.FirstName} {guestAddress?.LastName} {guestAddress?.Street1}{' '}
+                {guestAddress?.Street2} {guestAddress?.City}, {guestAddress?.ProvinceAbbreviation}{' '}
+                {guestAddress?.PostalCode}
+              </Typography>
+            </div>
+            <Button
+              link
+              onClick={() => {
+                toggleAddressForm && toggleAddressForm()
+                session?.user?.isGuest && setOnContinuePayment(false)
+              }}
+            >
+              Edit Address
+            </Button>
+          </div>
+        </Collapse>
         <Select
           ref={ref?.shippingMethodRef}
           classNames={dropdownClassNames}
@@ -312,7 +342,6 @@ export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
             {...(session?.user?.isGuest
               ? {
                   onClick: () => {
-                    toggleAddressForm()
                     setOnContinuePayment(true)
                   },
                 }
