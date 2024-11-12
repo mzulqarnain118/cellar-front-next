@@ -44,7 +44,15 @@ const profileSchema = z
       .min(1, { message: 'Please enter your email.' }),
     firstName: z.string().min(1, { message: 'Please enter your first name.' }),
     lastName: z.string().min(1, { message: 'Please enter your last name.' }),
-    mobileNumber: z.string().min(1, { message: 'Please enter your mobile number.' }),
+    mobileNumber: z
+      .string()
+      .min(10, { message: 'Enter a valid mobile number.' })
+      .regex(/^[0-9]+$/, { message: 'Mobile number must contain only numbers.' }),
+
+    phoneNumber: z
+      .string()
+      .min(10, { message: 'Enter a valid phone number.' })
+      .regex(/^[0-9]+$/, { message: 'Phone number must contain only numbers.' }),
     month: z
       .string()
       .min(1, { message: 'Please enter the month.' })
@@ -53,7 +61,7 @@ const profileSchema = z
       .refine(value => parseInt(value) <= 12, {
         message: 'The month cannot be greater than 12.',
       }),
-    phoneNumber: z.string().min(1, { message: 'Please enter your phone number.' }),
+
     year: z
       .string()
       .min(1, { message: 'Please enter the year.' })
@@ -252,6 +260,8 @@ export const Profile = (props: TabsPanelProps) => {
       phoneNumber,
       year,
     }) => {
+      console.log(mobile)
+      console.log(phoneNumber, 'number')
       const dateOfBirth = new Date(parseInt(year), parseInt(month) - 1, parseInt(day)).toISOString()
 
       updateCustomer({
@@ -291,13 +301,15 @@ export const Profile = (props: TabsPanelProps) => {
           />
           <Input
             error={errors?.phoneNumber?.message}
-            inputMode="numeric"
+            type="tel"
+            maxLength={10}
             label="Phone number"
             {...register('phoneNumber')}
           />
           <Input
             error={errors?.mobileNumber?.message}
-            inputMode="numeric"
+            type="tel"
+            maxLength={10}
             label="Mobile number"
             {...register('mobileNumber')}
           />

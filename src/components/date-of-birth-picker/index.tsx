@@ -25,7 +25,7 @@ export const DateOfBirthPicker = ({ defaultValue, noSpacing = false }: DateOfBir
     register,
     setFocus,
   } = useFormContext({
-    defaultValues: defaultValue
+    defaultValues: defaultValue,
   })
   const hasError = !!(errors.month?.message || errors.day?.message || errors.year?.message)
   const error = errors.month?.message || errors.day?.message || errors.year?.message
@@ -73,7 +73,7 @@ export const DateOfBirthPicker = ({ defaultValue, noSpacing = false }: DateOfBir
           error={hasError}
           placeholder="mm"
           style={monthStyles}
-          type="tel"
+          type="number"
           {...register('month', {
             onBlur: () => setFocused(false),
             onChange: event => {
@@ -116,7 +116,7 @@ export const DateOfBirthPicker = ({ defaultValue, noSpacing = false }: DateOfBir
           error={hasError}
           placeholder="dd"
           style={dayStyles}
-          type="tel"
+          type="number"
           {...register('day', {
             onBlur: () => setFocused(false),
             onChange: event => {
@@ -161,7 +161,7 @@ export const DateOfBirthPicker = ({ defaultValue, noSpacing = false }: DateOfBir
           error={hasError}
           placeholder="yyyy"
           style={yearStyles}
-          type="tel"
+          type="number"
           {...register('year', {
             onBlur: () => setFocused(false),
             onChange: event => {
