@@ -43,6 +43,7 @@ interface DeliveryProps {
 export const Delivery = memo(({ opened, refs, cartTotalData, toggle }: DeliveryProps) => {
   const isPickUp = useCheckoutIsPickUp()
   const { data: shippingMethods } = useShippingMethodsQuery()
+  const { setOnContinuePayment } = useCheckoutActions()
   const { setIsPickUp, setSelectedPickUpOption, setSelectedPickUpAddress, setAppliedSkyWallet } =
     useCheckoutActions()
   const { mutate: updateShippingMethod } = useUpdateShippingMethodMutation()
@@ -66,6 +67,11 @@ export const Delivery = memo(({ opened, refs, cartTotalData, toggle }: DeliveryP
           shippingMethodId:
             shippingMethods?.[0]?.shippingMethodId || GROUND_SHIPPING_SHIPPING_METHOD_ID,
         })
+      }
+      if (isGuest && tab === 'pickUp') {
+        setOnContinuePayment(true)
+      } else if (isGuest) {
+        setOnContinuePayment(false)
       }
       applyCheckoutSelections({
         addressId: selectedShippingAddress?.AddressID,
