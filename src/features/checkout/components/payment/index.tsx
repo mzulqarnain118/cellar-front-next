@@ -304,7 +304,7 @@ export const Payment = memo(({ opened, refs, toggle, cartTotalData }: PaymentPro
       <div className="space-y-4 px-4">
         <Collapse in={showCreditCard}>
           <>
-            <div className="grid items-center justify-center lg:grid-cols-2 lg:gap-4">
+            <div className="grid items-center lg:grid-cols-2 lg:gap-4">
               <Input
                 ref={refs.promoCodeRef}
                 noSpacing
@@ -337,15 +337,19 @@ export const Payment = memo(({ opened, refs, toggle, cartTotalData }: PaymentPro
         <Collapse className="!m-0" in={opened && !creditCardFormOpen} transitionDuration={300}>
           <div className="grid grid-cols-3 1/2xl:grid-cols-4 items-center gap-4">
             {session?.user?.isGuest ? (
-              <div className="col-span-2 1/2xl:col-span-2 1xl:col-span-1">
-                <Typography className="font-bold">
-                  {creditCard?.NameOnCard} - {creditCard?.CreditCardTypeName} ending in{' '}
-                  {creditCard?.DisplayNumber}
-                </Typography>
+              <div className="col-span-4 lg:col-span-2 ">
+                <Input
+                  noSpacing
+                  label="Credit Card"
+                  name="cardDetail"
+                  value={`${creditCard?.NameOnCard} - ${creditCard?.CreditCardTypeName} ending in  ${creditCard?.DisplayNumber}`}
+                  size="sm"
+                  readOnly={true}
+                />
               </div>
             ) : (
               <Select
-                className="col-span-2 1/2xl:col-span-2 1xl:col-span-1"
+                className="col-span-4 lg:col-span-2"
                 classNames={dropdownClassNames}
                 data={creditCardsData}
                 defaultValue={
@@ -359,7 +363,7 @@ export const Payment = memo(({ opened, refs, toggle, cartTotalData }: PaymentPro
             <Input
               ref={cvvRef}
               noSpacing
-              className="col-span-1 1/2xl:col-span-2 1xl:col-span-1 mt-[7px]"
+              className="col-span-4 lg:col-span-2"
               data-testid="cvv"
               error={errors?.payment?.cvv}
               inputClassName={clsx(cvv?.length < 3 && '!border-error focus:!border-error')}
