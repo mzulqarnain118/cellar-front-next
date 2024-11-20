@@ -47,6 +47,7 @@ interface ShipToHomeProps {
 }
 
 export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
+  const [newlySavedAddressId, setNewlySavedAddressId] = useState('')
   const [removedProductsModalBtnDisabled, setRemovedProductsModalBtnDisabled] = useState(false)
   const queryClient = useQueryClient()
   const { data, isLoading: isLoadingAddressesAndCreditCards } = useAddressesAndCreditCardsQuery()
@@ -60,8 +61,9 @@ export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
   const { data: shippingMethodsData } = useShippingMethodsQuery()
   const { mutate: updateShippingMethod, isLoading: isUpdatingShippingMethod } =
     useUpdateShippingMethodMutation()
-  const [addressFormOpen, { close: closeAddressForm, toggle: toggleAddressForm }] =
+  const [addressFormOpen, { close: closeAddressForm, toggle: toggleAddressForm, open }] =
     useDisclosure(false)
+  const [actionBtns, { toggle: toggleActionBtns, close: closeActionBtns }] = useDisclosure(false)
   const { setAddressForm } = useCheckoutStore()
 
   const { setIsAddingAddress, setRemovedCartItems, setSelectedShippingAddress } =
@@ -82,10 +84,11 @@ export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
             paymentToken: activeCreditCard?.PaymentToken,
           })
           setSelectedShippingAddress(correspondingAddress)
+          setNewlySavedAddressId('')
         }
       }
     },
-    [activeCreditCard?.PaymentToken, applyCheckoutSelections, data]
+    [activeCreditCard?.PaymentToken, applyCheckoutSelections, data?.addresses, newlySavedAddressId]
   )
 
   const handleShippingMethodChange: SelectProps['onChange'] = useCallback(
@@ -119,7 +122,9 @@ export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
   )
   useEffect(() => {
     if (data?.addresses?.length === 0) {
-      toggleAddressForm()
+      open()
+    } else {
+      closeAddressForm()
     }
   }, [data])
 
@@ -242,6 +247,13 @@ export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
       updateShippingMethod({ shippingMethodId: shippingMethods?.[0]?.data?.shippingMethodId })
     }
   }, [cartTotalData])
+
+  useEffect(() => {
+    if (newlySavedAddressId) {
+      handleAddressChange(newlySavedAddressId)
+    }
+  }, [data?.addresses])
+
   return (
     <div className="space-y-4">
       <Collapse in={!addressFormOpen && shippingAddresses.length !== 0}>
@@ -249,22 +261,28 @@ export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
           classNames={dropdownClassNames}
           data={shippingAddresses}
           label="Shipping address"
-          value={
-            activeShippingAddress?.AddressID?.toString() ||
-            shippingAddresses?.find(address => address?.data?.Primary)?.data?.AddressID?.toString()
-          }
+          value={activeShippingAddress?.AddressID?.toString()}
           onChange={handleAddressChange}
         />
       </Collapse>
 
-
-
-      <Collapse in={addressFormOpen}>
-        <AddressForm ref={refs.shippingAddressRef} cartTotalData={cartTotalData} onCreateAddress={closeAddressForm} />
-      </Collapse>
+      <AddressForm
+        ref={refs.shippingAddressRef}
+        paymentRef={refs.promoCodeRef}
+        cartTotalData={cartTotalData}
+        addressFormOpen={addressFormOpen}
+        onCreateAddress={value => {
+          setNewlySavedAddressId(value?.AddressID?.toString() || '')
+          closeAddressForm()
+        }}
+        actionBtns={actionBtns}
+        toggleActionBtns={toggleActionBtns}
+        closeActionBtns={closeActionBtns}
+      />
 
       <Collapse
-      in={!addressFormOpen && !(shippingMethods === undefined || shippingMethods.length === 0)}
+        in={!actionBtns && !(shippingMethods === undefined || shippingMethods.length === 0)}
+        className="!mt-1"
       >
         <Select
           ref={refs.shippingMethodRef}
@@ -277,7 +295,7 @@ export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
         />
       </Collapse>
 
-      <Collapse in={!addressFormOpen && !isLoadingAddressesAndCreditCards}>
+      <Collapse in={!actionBtns && !isLoadingAddressesAndCreditCards}>
         <Button
           dark
           className="h-[40px]"
@@ -292,4 +310,3 @@ export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
     </div>
   )
 })
-
