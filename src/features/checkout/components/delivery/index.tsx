@@ -31,6 +31,7 @@ export interface DeliveryRefs {
   halRef: MutableRefObject<HTMLInputElement | null>
   shippingAddressRef: MutableRefObject<HTMLInputElement | null>
   shippingMethodRef: MutableRefObject<HTMLInputElement | null>
+  promoCodeRef: MutableRefObject<HTMLInputElement | null>
 }
 
 interface DeliveryProps {

@@ -1,4 +1,4 @@
-import { forwardRef, useCallback, useMemo } from 'react'
+import { forwardRef, MutableRefObject, useCallback, useEffect, useMemo } from 'react'
 
 import { Form } from '@/components/form'
 import { StateDropdown } from '@/components/state-dropdown'
@@ -49,10 +49,27 @@ interface AddressFormProps {
   onCreateAddress?: (address?: Address) => void
   size?: 'sm' | 'md'
   cartTotalData: any
+  addressFormOpen?: boolean
+  actionBtns?: boolean
+  toggleActionBtns?: () => void
+  closeActionBtns?: () => void
+  paymentRef?: MutableRefObject<HTMLInputElement | null>
 }
 
 export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
-  ({ onCreateAddress, size = 'sm', cartTotalData }, ref) => {
+  (
+    {
+      onCreateAddress,
+      size = 'sm',
+      cartTotalData,
+      addressFormOpen = false,
+      closeActionBtns,
+      toggleActionBtns,
+      actionBtns,
+      paymentRef,
+    },
+    ref
+  ) => {
     const errors = useCheckoutErrors()
     const guestAddress = useCheckoutGuestAddress()
     const { isLoading: isApplyingSelections } = useApplyCheckoutSelectionsMutation()
@@ -60,7 +77,7 @@ export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
     const { shippingState } = useShippingStateStore()
     const { mutate: updateShippingMethod, isLoading: isUpdatingShippingMethod } =
       useUpdateShippingMethodMutation()
-    const [addressFormOpen, { toggle: toggleAddressForm }] = useDisclosure(
+    const [guestAddressForm, { toggle: toggleGuestAddressForm }] = useDisclosure(
       guestAddress === undefined
     )
 
@@ -73,6 +90,7 @@ export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
       if (onCreateAddress !== undefined) {
         onCreateAddress(undefined)
       }
+      closeActionBtns && closeActionBtns()
     }, [onCreateAddress])
 
     const shippingMethods = useMemo(
@@ -183,7 +201,7 @@ export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
                         if (response.Success && onCreateAddress !== undefined) {
                           reset()
                           onCreateAddress(response.Data.Value)
-                          session?.user?.isGuest && toggleAddressForm()
+                          session?.user?.isGuest && toggleGuestAddressForm()
                         }
                       },
                     })
@@ -200,7 +218,7 @@ export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
                         if (response.Success && onCreateAddress !== undefined) {
                           reset()
                           onCreateAddress(response.Data.Value)
-                          session?.user?.isGuest && toggleAddressForm()
+                          session?.user?.isGuest && toggleGuestAddressForm()
                         }
                       },
                     })
@@ -235,10 +253,15 @@ export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
       },
       [shippingMethodsData, updateShippingMethod]
     )
+    useEffect(() => {
+      if (addressFormOpen) {
+        toggleActionBtns && toggleActionBtns()
+      }
+    }, [addressFormOpen])
     return (
       <div className="space-y-4">
         <LoadingOverlay visible={isCreatingAddress || isValidatingAddress} />
-        <Collapse in={session?.user?.isGuest ? addressFormOpen : true}>
+        <Collapse in={session?.user?.isGuest ? guestAddressForm : addressFormOpen}>
           <Form
             className="auto-grid-rows grid grid-cols-2 items-start gap-x-8"
             defaultValues={defaultValues}
@@ -302,14 +325,14 @@ export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
             )}
           </Form>
         </Collapse>
-        <div className="flex justify-end lg:justify-start">
-          {session?.user?.isGuest && addressFormOpen && (
+        <div className="flex justify-end lg:justify-start !mb-2">
+          {(session?.user?.isGuest ? guestAddressForm : addressFormOpen) && (
             <Button dark form="address-form" type="submit">
               Save and continue to Shipping Method
             </Button>
           )}
         </div>
-        <Collapse in={!addressFormOpen && guestAddress !== undefined}>
+        <Collapse in={!guestAddressForm && guestAddress !== undefined}>
           <div className="mt-2  border border-neutral-light p-4 w-max rounded bg-[#fafafa] pb-0">
             <div>
               <Typography className="block mb-3 text-18 font-bold">
@@ -324,7 +347,7 @@ export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
             <Button
               link
               onClick={() => {
-                toggleAddressForm && toggleAddressForm()
+                toggleGuestAddressForm && toggleGuestAddressForm()
                 session?.user?.isGuest && setOnContinuePayment(false)
               }}
             >
@@ -332,40 +355,42 @@ export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
             </Button>
           </div>
         </Collapse>
-        <Select
-          ref={ref?.shippingMethodRef}
-          classNames={dropdownClassNames}
-          data={shippingMethods}
-          disabled={disabled}
-          label="Shipping method"
-          value={cartTotalData?.shipping.methodId.toString()}
-          onChange={handleShippingMethodChange}
-        />
-        <div className="flex justify-end lg:justify-start gap-2">
-          <Button
-            dark
-            form={session?.user?.isGuest ? '' : 'address-form'}
-            {...(session?.user?.isGuest
-              ? {
-                  onClick: () => {
-                    setOnContinuePayment(true)
-                  },
-                }
-              : { type: 'submit' })}
-            disabled={session?.user?.isGuest ? shippingMethods?.length === 0 : false}
-          >
-            Continue to payment
-          </Button>
 
-          {!session?.user?.isGuest && (
-            <Button color="ghost" type="button" onClick={handleAddressChange}>
-              Cancel
+        <Collapse in={session?.user?.isGuest ? true : (actionBtns as boolean)} className="!mt-0">
+          <Select
+            ref={ref?.shippingMethodRef}
+            classNames={dropdownClassNames}
+            data={shippingMethods}
+            disabled={disabled}
+            label="Shipping method"
+            value={cartTotalData?.shipping.methodId.toString()}
+            onChange={handleShippingMethodChange}
+          />
+        </Collapse>
+        <Collapse in={session?.user?.isGuest ? true : (actionBtns as boolean)}>
+          <div className="flex justify-end lg:justify-start gap-2 mt-4">
+            <Button
+              dark
+              onClick={() => {
+                session?.user?.isGuest ? setOnContinuePayment(true) : toggleActionBtns?.()
+                paymentRef?.current?.scrollIntoView()
+                paymentRef?.current?.focus()
+              }}
+              disabled={session?.user?.isGuest ? shippingMethods?.length === 0 : false}
+            >
+              Continue to payment
             </Button>
-          )}
-        </div>
-        {errors?.delivery ? (
-          <Typography className="mt-4 block text-error">{errors.delivery}</Typography>
-        ) : undefined}
+
+            {!session?.user?.isGuest && (
+              <Button color="ghost" type="button" onClick={handleAddressChange}>
+                Cancel
+              </Button>
+            )}
+          </div>
+          {errors?.delivery ? (
+            <Typography className="mt-4 block text-error">{errors.delivery}</Typography>
+          ) : undefined}
+        </Collapse>
       </div>
     )
   }
