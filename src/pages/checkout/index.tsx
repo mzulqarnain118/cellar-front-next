@@ -232,8 +232,8 @@ const CheckoutPage: NextPage = () => {
   )
 
   const deliveryRefs = useMemo(
-    () => ({ abcRef, halRef, shippingAddressRef, shippingMethodRef }),
-    [abcRef, halRef, shippingAddressRef]
+    () => ({ abcRef, halRef, shippingAddressRef, shippingMethodRef, promoCodeRef }),
+    [abcRef, halRef, shippingAddressRef, promoCodeRef]
   )
 
   const paymentRefs = useMemo(
