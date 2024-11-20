@@ -78,6 +78,9 @@ export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
         const correspondingAddress = data.addresses.find(
           address => address.AddressID.toString() === addressId.toLowerCase()
         )
+
+        console.log('🚀 ~ correspondingAddress:', correspondingAddress)
+
         if (correspondingAddress !== undefined) {
           applyCheckoutSelections({
             addressId: correspondingAddress?.AddressID,
@@ -249,10 +252,13 @@ export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
   }, [cartTotalData])
 
   useEffect(() => {
-    if (newlySavedAddressId) {
+    if (
+      newlySavedAddressId &&
+      newlySavedAddressId !== activeShippingAddress?.AddressID?.toString()
+    ) {
       handleAddressChange(newlySavedAddressId)
     }
-  }, [data?.addresses])
+  }, [activeShippingAddress, newlySavedAddressId])
 
   return (
     <div className="space-y-4">
