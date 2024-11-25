@@ -97,7 +97,12 @@ export const useApplyCheckoutSelectionsMutation = () => {
         const addressesAndCreditCards =
           await queryClient.ensureQueryData<ShippingAddressesAndCreditCards | null>({
             queryFn: getShippingAddressesAndCreditCards,
-            queryKey: [ADDRESS_CREDIT_CARDS_QUERY_KEY, cart?.id, session?.user?.isGuest],
+            queryKey: [
+              ADDRESS_CREDIT_CARDS_QUERY_KEY,
+              cart?.id,
+              session?.user?.isGuest,
+              Date.now(),
+            ],
           })
 
         let correspondingAddress
