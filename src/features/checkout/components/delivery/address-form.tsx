@@ -367,7 +367,9 @@ export const AddressForm = forwardRef<HTMLInputElement, AddressFormProps>(
               dark
               onClick={() => {
                 session?.user?.isGuest ? setOnContinuePayment(true) : toggleActionBtns?.()
-                paymentRef?.current?.scrollIntoView()
+                paymentRef?.current?.scrollIntoView({
+                  behavior: 'smooth',
+                })
                 paymentRef?.current?.focus()
               }}
               disabled={session?.user?.isGuest ? shippingMethods?.length === 0 : false}
