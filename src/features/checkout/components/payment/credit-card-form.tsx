@@ -105,6 +105,7 @@ export const CreditCardForm = ({ onCancel, onCreate, cartTotalData }: CreditCard
     register,
     setError,
     setValue,
+    reset,
   } = methods
   const [state, setState] = useState<CreditCardFormState>({
     cvc: '',
@@ -138,6 +139,17 @@ export const CreditCardForm = ({ onCancel, onCreate, cartTotalData }: CreditCard
     }
   }, [onCreate])
 
+  const clearValues = () => {
+    reset()
+    setState({
+      cvc: '',
+      expiry: '',
+      focus: '',
+      issuer: '',
+      name: '',
+      number: '',
+    })
+  }
   const onSubmit: SubmitHandler<CreditCardFormSchema> = useCallback(
     async data => {
       try {
@@ -226,6 +238,7 @@ export const CreditCardForm = ({ onCancel, onCreate, cartTotalData }: CreditCard
                   })
                   if (onCreate !== undefined) {
                     onCreate()
+                    clearValues()
                   }
                 },
                 onConfirm: () => {
@@ -246,6 +259,7 @@ export const CreditCardForm = ({ onCancel, onCreate, cartTotalData }: CreditCard
                   })
                   if (onCreate !== undefined) {
                     onCreate()
+                    clearValues()
                   }
                 },
               },
@@ -347,7 +361,14 @@ export const CreditCardForm = ({ onCancel, onCreate, cartTotalData }: CreditCard
             <Button dark type="submit">
               {session?.user?.isGuest ? 'Add credit card' : 'Save credit card'}
             </Button>
-            <Button color="ghost" type="button" onClick={onCancel}>
+            <Button
+              color="ghost"
+              type="button"
+              onClick={() => {
+                onCancel?.()
+                clearValues()
+              }}
+            >
               Cancel
             </Button>
           </div>

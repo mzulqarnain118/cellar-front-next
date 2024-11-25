@@ -47,7 +47,6 @@ interface ShipToHomeProps {
 }
 
 export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
-  const [newlySavedAddressId, setNewlySavedAddressId] = useState('')
   const [removedProductsModalBtnDisabled, setRemovedProductsModalBtnDisabled] = useState(false)
   const queryClient = useQueryClient()
   const { data, isLoading: isLoadingAddressesAndCreditCards } = useAddressesAndCreditCardsQuery()
@@ -79,19 +78,16 @@ export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
           address => address.AddressID.toString() === addressId.toLowerCase()
         )
 
-        console.log('🚀 ~ correspondingAddress:', correspondingAddress)
-
         if (correspondingAddress !== undefined) {
           applyCheckoutSelections({
             addressId: correspondingAddress?.AddressID,
             paymentToken: activeCreditCard?.PaymentToken,
           })
           setSelectedShippingAddress(correspondingAddress)
-          setNewlySavedAddressId('')
         }
       }
     },
-    [activeCreditCard?.PaymentToken, applyCheckoutSelections, data?.addresses, newlySavedAddressId]
+    [activeCreditCard?.PaymentToken, applyCheckoutSelections, data?.addresses]
   )
 
   const handleShippingMethodChange: SelectProps['onChange'] = useCallback(
@@ -251,15 +247,6 @@ export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
     }
   }, [cartTotalData])
 
-  useEffect(() => {
-    if (
-      newlySavedAddressId &&
-      newlySavedAddressId !== activeShippingAddress?.AddressID?.toString()
-    ) {
-      handleAddressChange(newlySavedAddressId)
-    }
-  }, [activeShippingAddress, newlySavedAddressId])
-
   return (
     <div className="space-y-4">
       <Collapse in={!addressFormOpen && shippingAddresses.length !== 0}>
@@ -278,7 +265,6 @@ export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
         cartTotalData={cartTotalData}
         addressFormOpen={addressFormOpen}
         onCreateAddress={value => {
-          setNewlySavedAddressId(value?.AddressID?.toString() || '')
           closeAddressForm()
         }}
         actionBtns={actionBtns}
