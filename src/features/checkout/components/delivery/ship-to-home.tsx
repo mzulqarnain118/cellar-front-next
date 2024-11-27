@@ -205,9 +205,9 @@ export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
           },
           onConfirm: () => {
             setRemovedProductsModalBtnDisabled(true)
-            handleAddressChange(
-              (data?.primaryAddress?.AddressID || data?.addresses[0].AddressID || 0).toString()
-            )
+            // handleAddressChange(
+            //   (data?.primaryAddress?.AddressID || data?.addresses[0].AddressID || 0).toString()
+            // )
             setRemovedCartItems([])
             modals.closeAll()
             setRemovedProductsModalBtnDisabled(false)

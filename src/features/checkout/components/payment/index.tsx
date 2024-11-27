@@ -392,10 +392,7 @@ export const Payment = memo(({ opened, refs, toggle, cartTotalData }: PaymentPro
           </Button>
         ) : undefined}
 
-        <Collapse
-          in={creditCardFormOpen}
-          className={creditCardFormOpen ? '!h-auto !overflow-auto' : ''}
-        >
+        <Collapse in={creditCardFormOpen}>
           <CreditCardForm
             cartTotalData={cartTotalData}
             onCancel={handleCancelCreate}
