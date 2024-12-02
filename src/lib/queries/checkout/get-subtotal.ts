@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 
 import { QueryFunction, useQuery } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
@@ -132,7 +132,7 @@ export const getSubtotal: QueryFunction<OrderPrice> = async ({ queryKey }) => {
 
 export const GET_SUBTOTAL_QUERY = 'get-subtotal'
 
-export const useGetSubtotalQuery = (cartId?: string) => {
+export const useGetSubtotalQuery = () => {
   // Log file name
   // console.log(new Error().stack?.split("\n")[2].trim());
   const { data: cart } = useCartQuery()
@@ -145,31 +145,31 @@ export const useGetSubtotalQuery = (cartId?: string) => {
     [activeShippingAddress, guestAddress, session?.user?.isGuest]
   )
   const { mutate: applyCheckoutSelections } = useApplyCheckoutSelectionsMutation()
-  const applySelectionsAndRefetch = async () => {
-    await applyCheckoutSelections({
-      addressId: address?.AddressID,
-      cartId: cartId || cart?.id,
-      paymentToken: activeCreditCard?.PaymentToken,
-    })
-  }
+  // const applySelectionsAndRefetch = () => {
+  //   applyCheckoutSelections({
+  //     addressId: address?.AddressID,
+  //     cartId: cart?.id,
+  //     paymentToken: activeCreditCard?.PaymentToken,
+  //   })
+  // }
 
-  useEffect(() => {
-    if (!cartId && cart?.id) {
-      applySelectionsAndRefetch()
-    }
-  }, [cartId, cart?.id])
+  // useEffect(() => {
+  //   if (cart?.id) {
+  //     applySelectionsAndRefetch()
+  //   }
+  // }, [])
 
   return useQuery({
     onSuccess: data => {
       if (data.orderTotal === 0 && !data.default) {
         applyCheckoutSelections({
           addressId: address?.AddressID,
-          cartId: cartId || cart?.id,
+          cartId: cart?.id,
           paymentToken: activeCreditCard?.PaymentToken,
         })
       }
     },
     queryFn: getSubtotal,
-    queryKey: [GET_SUBTOTAL_QUERY, cartId || cart?.id],
+    queryKey: [GET_SUBTOTAL_QUERY, cart?.id],
   })
 }

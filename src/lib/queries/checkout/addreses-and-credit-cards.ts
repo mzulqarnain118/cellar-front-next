@@ -117,14 +117,13 @@ export const useAddressesAndCreditCardsQuery = () => {
   const { mutate: applyCheckoutSelections } = useApplyCheckoutSelectionsMutation()
 
   return useQuery({
-    // enabled: !session?.user?.isGuest,
+    enabled: !!cart?.id,
     onSuccess: data => {
       if (activeShippingAddress === undefined || activeCreditCard === undefined) {
         const address: Address | undefined =
           activeShippingAddress || data?.primaryAddress || data?.addresses[0]
         const creditCard: CreditCard | undefined =
           activeCreditCard || data?.primaryCreditCard || data?.creditCards[0]
-
         if (address !== undefined) {
           // if (session?.user?.isGuest) {
           //   applyCheckoutSelections({
