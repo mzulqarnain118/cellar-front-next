@@ -163,62 +163,65 @@ export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
   // }, [shippingMethods?.[0]?.data?.shippingMethodId]);
 
   useEffect(() => {
-    if (removedCartItems.length > 0) {
-      modals.openContextModal({
-        centered: true,
-        classNames: {
-          title: '!text-lg',
-        },
-        id: 'removed-items',
-        innerProps: {
-          body: (
-            <div className="grid gap-2">
-              <Typography as="p">
-                The following products will be removed from your cart because they are not available
-                in the state you are shipping to:
-              </Typography>
-              <ul className="flex flex-col gap-4">
-                {removedCartItems.map(product => (
-                  <li key={product.sku}>
-                    <strong>{product.displayName}</strong>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ),
-          cancelProps: { disabled: removedProductsModalBtnDisabled },
-          cancelText: 'Continue',
-          confirmProps: { disabled: removedProductsModalBtnDisabled },
-          confirmText: 'Select a different address',
-          onCancel: async () => {
-            setRemovedProductsModalBtnDisabled(true)
-            toastLoading({ message: 'Removing unavailable products from your cart...' })
-
-            removedCartItems.forEach(item => {
-              removeFromCart({ fetchSubtotal: false, item, sku: item.sku })
-            })
-
-            setRemovedCartItems([])
-            notifications.clean()
-            modals.closeAll()
-            setRemovedProductsModalBtnDisabled(false)
+    const timer = setTimeout(() => {
+      if (removedCartItems.length > 0) {
+        modals.openContextModal({
+          centered: true,
+          classNames: {
+            title: '!text-lg',
           },
-          onConfirm: () => {
-            setRemovedProductsModalBtnDisabled(true)
-            // handleAddressChange(
-            //   (data?.primaryAddress?.AddressID || data?.addresses[0].AddressID || 0).toString()
-            // )
-            setRemovedCartItems([])
-            modals.closeAll()
-            setRemovedProductsModalBtnDisabled(false)
+          id: 'removed-items',
+          innerProps: {
+            body: (
+              <div className="grid gap-2">
+                <Typography as="p">
+                  The following products will be removed from your cart because they are not
+                  available in the state you are shipping to:
+                </Typography>
+                <ul className="flex flex-col gap-4">
+                  {removedCartItems.map(product => (
+                    <li key={product.sku}>
+                      <strong>{product.displayName}</strong>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ),
+            cancelProps: { disabled: removedProductsModalBtnDisabled },
+            cancelText: 'Continue',
+            confirmProps: { disabled: removedProductsModalBtnDisabled },
+            confirmText: 'Select a different address',
+            onCancel: async () => {
+              setRemovedProductsModalBtnDisabled(true)
+              toastLoading({ message: 'Removing unavailable products from your cart...' })
+
+              removedCartItems.forEach(item => {
+                removeFromCart({ fetchSubtotal: false, item, sku: item.sku })
+              })
+              setRemovedCartItems([])
+              notifications.clean()
+              modals.closeAll()
+
+              setRemovedProductsModalBtnDisabled(false)
+            },
+            onConfirm: () => {
+              setRemovedProductsModalBtnDisabled(true)
+              // handleAddressChange(
+              //   (data?.primaryAddress?.AddressID || data?.addresses[0].AddressID || 0).toString()
+              // )
+              setRemovedCartItems([])
+              modals.closeAll()
+              setRemovedProductsModalBtnDisabled(false)
+            },
           },
-        },
-        modal: 'confirmation',
-        title: 'Heads up!',
-      })
-    } else {
-      modals.close('removed-items')
-    }
+          modal: 'confirmation',
+          title: 'Heads up!',
+        })
+      } else {
+        modals.close('removed-items')
+      }
+    }, 1500)
+    return () => clearTimeout(timer)
   }, [
     cart?.id,
     data?.addresses,

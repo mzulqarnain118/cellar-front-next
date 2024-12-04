@@ -83,26 +83,14 @@ export const useApplyCheckoutSelectionsMutation = () => {
   const { data: states } = useStatesQuery()
 
   return useMutation<Response, Error, Partial<ApplyCheckoutSelectionsOptions>>({
-    mutationFn: data => {
-      const addressId = data.addressId || address?.AddressID || 0
-      const paymentToken = data.paymentToken || activeCreditCard?.PaymentToken
-
-      // Ensure both addressId and paymentToken are available
-      if (!addressId || !paymentToken) {
-        // Optionally log or throw an error to indicate missing fields
-        console.warn('Missing addressId or paymentToken. Mutation aborted.')
-        return Promise.reject(new Error('Missing required fields: addressId or paymentToken.'))
-      }
-
-      // Proceed with the mutation if valid
-      return applyCheckoutSelections({
+    mutationFn: data =>
+      applyCheckoutSelections({
         ...data,
-        addressId,
+        addressId: data.addressId || address?.AddressID || 0,
         cartId: data.cartId || cart?.id,
-        paymentToken,
+        paymentToken: data.paymentToken || activeCreditCard?.PaymentToken,
         userDisplayId: data.userDisplayId || session?.user?.displayId,
-      })
-    },
+      }),
     mutationKey: [...APPLY_CHECKOUT_SELECTIONS_MUTATION_KEY],
     onSuccess: async (response, data) => {
       if (response.Success) {
