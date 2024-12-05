@@ -105,7 +105,12 @@ export const setTasting = async (data: SetTastingOptions): Promise<Tasting | nul
 export const createCart = async (options?: CreateCartOptions): Promise<Cart> => {
   const newCartItems =
     options?.cartItems?.map(({ sku, quantity }) => ({ Quantity: quantity, SKU: sku })) || []
-
+  if (
+    typeof window !== 'undefined' &&
+    (JSON.parse(localStorage.getItem('cart') || '{}') as Cart)?.id
+  ) {
+    return JSON.parse(localStorage.getItem('cart') || '{}') as Cart
+  }
   const response = await api('shop/CreateCart', {
     json: { LineItems: newCartItems || [] },
     method: 'post',
@@ -152,8 +157,6 @@ export const useCartQuery = (provinceId?: number) => {
     },
     queryFn: () => createCart({ provinceId: cartProvinceId }),
     queryKey: [...CART_QUERY_KEY, cartProvinceId],
-    refetchOnWindowFocus: false,
-    staleTime: Infinity,
   })
 }
 
