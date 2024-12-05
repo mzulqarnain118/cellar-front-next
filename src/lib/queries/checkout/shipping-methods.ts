@@ -68,7 +68,7 @@ export const useShippingMethodsQuery = () => {
   )
 
   return useQuery({
-    enabled: !!address,
+    enabled: !!address && !!cart?.orderDisplayId,
     queryFn: getShippingMethods,
     queryKey: [SHIPPING_METHODS_QUERY_KEY, cart?.orderDisplayId, address?.AddressID],
   })
