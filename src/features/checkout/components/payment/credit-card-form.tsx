@@ -150,6 +150,12 @@ export const CreditCardForm = ({ onCancel, onCreate, cartTotalData }: CreditCard
       number: '',
     })
   }
+  const displayCancelBtn = () => {
+    if (isGuest && !activeCreditCard) {
+      return false
+    }
+    return true
+  }
   const onSubmit: SubmitHandler<CreditCardFormSchema> = useCallback(
     async data => {
       try {
@@ -361,16 +367,18 @@ export const CreditCardForm = ({ onCancel, onCreate, cartTotalData }: CreditCard
             <Button dark type="submit">
               {session?.user?.isGuest ? 'Add credit card' : 'Save credit card'}
             </Button>
-            <Button
-              color="ghost"
-              type="button"
-              onClick={() => {
-                onCancel?.()
-                clearValues()
-              }}
-            >
-              Cancel
-            </Button>
+            {displayCancelBtn() && (
+              <Button
+                color="ghost"
+                type="button"
+                onClick={() => {
+                  onCancel?.()
+                  clearValues()
+                }}
+              >
+                Cancel
+              </Button>
+            )}
           </div>
           {checkoutErrors?.payment?.form ? (
             <Typography className="mt-4 block text-error">

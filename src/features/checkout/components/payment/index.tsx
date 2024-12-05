@@ -303,7 +303,7 @@ export const Payment = memo(({ opened, refs, toggle, cartTotalData }: PaymentPro
       </div>
 
       <div className="space-y-4 px-4">
-        <Collapse in={showCreditCard}>
+        <Collapse in={session?.user?.isGuest ? true : showCreditCard}>
           <>
             <div className="grid items-center lg:grid-cols-2 lg:gap-4">
               <Input
