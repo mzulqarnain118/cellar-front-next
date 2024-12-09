@@ -164,6 +164,7 @@ export const CartItem = ({ product, disabled }: CartItemProps) => {
               onSalePrice={
                 product.onSalePrice === product.price ? undefined : product.onSalePrice || 0
               }
+              product={product}
             />
           </div>
           <div className="self-start">

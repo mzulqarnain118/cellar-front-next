@@ -36,6 +36,7 @@ export const Heading = () => {
           selectedOption={selectedOption}
           price={selectedProduct.price}
           onSalePrice={selectedProduct.onSalePrice}
+          product={selectedProduct}
         />
       ) : undefined}
     </div>
