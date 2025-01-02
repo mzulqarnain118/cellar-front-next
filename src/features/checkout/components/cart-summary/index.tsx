@@ -43,7 +43,7 @@ export const CartSummary = ({ cartTotalData }: CartSummaryProps) => {
   const cartItems = useMemo(
     () => (
       <div className="my-4 divide-y divide-neutral-light border-y border-y-neutral-light !max-h-[345px] overflow-y-auto">
-        {cartStorage?.items.map(product => (
+        {cartStorage?.items?.map(product => (
           <CartProduct key={product.sku} data={product} />
         ))}
       </div>

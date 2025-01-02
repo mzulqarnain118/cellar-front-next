@@ -85,10 +85,10 @@ export const useCreateAddressMutation = () => {
     onError: error => {
       toastError({ message: error.message })
     },
-    onSuccess: (response, data) => {
+    onSuccess: async (response, data) => {
       if (response.Success) {
         // if (!session?.user?.isGuest) {
-        queryClient.invalidateQueries([
+        await queryClient.invalidateQueries([
           ADDRESS_CREDIT_CARDS_QUERY_KEY,
           cart?.id,
           session?.user?.isGuest,
