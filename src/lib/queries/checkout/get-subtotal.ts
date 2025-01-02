@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 
 import { QueryFunction, useQuery } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
@@ -145,19 +145,19 @@ export const useGetSubtotalQuery = (cartId?: string) => {
     [activeShippingAddress, guestAddress, session?.user?.isGuest]
   )
   const { mutate: applyCheckoutSelections } = useApplyCheckoutSelectionsMutation()
-  const applySelectionsAndRefetch = async () => {
-    await applyCheckoutSelections({
-      addressId: address?.AddressID,
-      cartId: cartId || cart?.id,
-      paymentToken: activeCreditCard?.PaymentToken,
-    })
-  }
+  // const applySelectionsAndRefetch = () => {
+  //   applyCheckoutSelections({
+  //     addressId: address?.AddressID,
+  //     cartId: cart?.id,
+  //     paymentToken: activeCreditCard?.PaymentToken,
+  //   })
+  // }
 
-  useEffect(() => {
-    if (!cartId && cart?.id) {
-      applySelectionsAndRefetch()
-    }
-  }, [cartId, cart?.id])
+  // useEffect(() => {
+  //   if (cart?.id) {
+  //     applySelectionsAndRefetch()
+  //   }
+  // }, [])
 
   return useQuery({
     onSuccess: data => {

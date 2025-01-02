@@ -98,8 +98,8 @@ export const CartDrawer = () => {
 
   const freeShippingSubtotal =
     cart?.items
-      .filter(product => !product?.productClassificationIDs?.includes(361))
-      .reduce((total, item) => {
+      ?.filter(product => !product?.productClassificationIDs?.includes(361))
+      ?.reduce((total, item) => {
         const price = item?.onSalePrice
         return price * (item.quantity || 1) + total //item.onSalePrice || item.price
       }, 0) || 0

@@ -143,9 +143,9 @@ export const useCreateCreditCardMutation = () => {
     onError: _error => {
       // Show error.
     },
-    onSuccess: response => {
+    onSuccess: async response => {
       // if (!session?.user?.isGuest) {
-      queryClient.invalidateQueries([ADDRESS_CREDIT_CARDS_QUERY_KEY])
+      await queryClient.invalidateQueries([ADDRESS_CREDIT_CARDS_QUERY_KEY, cart?.id])
       // }
 
       if (session?.user?.isGuest) {
