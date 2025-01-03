@@ -97,7 +97,6 @@ const CheckoutPage: NextPage = () => {
     data: cartTotalData,
     isRefetching: isRefetchingSubTotal,
     refetch: refetchCartTotalData,
-    isFetching,
   } = useGetSubtotalQuery()
   const isFirstRender = useIsFirstRender()
   const guestAddress = useCheckoutGuestAddress()
@@ -165,12 +164,6 @@ const CheckoutPage: NextPage = () => {
       setOnContinuePayment(false)
     }
   }, [session?.user?.isGuest])
-
-  useEffect(() => {
-    if (!isFetching && !cartTotalData?.subtotal) {
-      refetchCartTotalData()
-    }
-  }, [cartTotalData, isFetching])
 
   const {
     mutate: vaildateCartStock,

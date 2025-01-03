@@ -1,4 +1,4 @@
-import { MutableRefObject, memo, useCallback, useEffect, useState } from 'react'
+import { memo, MutableRefObject, useCallback, useEffect, useState } from 'react'
 
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline'
 import { Collapse, Skeleton, Tabs } from '@mantine/core'
@@ -13,13 +13,19 @@ import { useShippingMethodsQuery } from '@/lib/queries/checkout/shipping-methods
 import {
   useCheckoutActions,
   useCheckoutActiveCreditCard,
-  useCheckoutActiveShippingAddress,
   useCheckoutAppliedSkyWallet,
   useCheckoutIsPickUp,
   useCheckoutSelectedPickUpOption,
   useCheckoutSelectedShippingAddress,
 } from '@/lib/stores/checkout'
 
+import { useCartQuery } from '@/lib/queries/cart'
+import {
+  ADDRESS_CREDIT_CARDS_QUERY_KEY,
+  getShippingAddressesAndCreditCards,
+  ShippingAddressesAndCreditCards,
+} from '@/lib/queries/checkout/addreses-and-credit-cards'
+import { useQueryClient } from '@tanstack/react-query'
 import { GuestAddress } from './guest-address'
 import { PickUp } from './pick-up'
 import { ShipToHome } from './ship-to-home'
@@ -43,6 +49,8 @@ interface DeliveryProps {
 
 export const Delivery = memo(({ opened, refs, cartTotalData, toggle }: DeliveryProps) => {
   const isPickUp = useCheckoutIsPickUp()
+  const queryClient = useQueryClient()
+  const { data: cart } = useCartQuery()
   const { data: shippingMethods } = useShippingMethodsQuery()
   const { setOnContinuePayment } = useCheckoutActions()
   const { setIsPickUp, setSelectedPickUpOption, setSelectedPickUpAddress, setAppliedSkyWallet } =
@@ -55,12 +63,11 @@ export const Delivery = memo(({ opened, refs, cartTotalData, toggle }: DeliveryP
     useApplyCheckoutSelectionsMutation()
   const activeCreditCard = useCheckoutActiveCreditCard()
   const selectedShippingAddress = useCheckoutSelectedShippingAddress()
-  const activeShippingAddress = useCheckoutActiveShippingAddress()
   const selectedPickUpOption = useCheckoutSelectedPickUpOption()
   const appliedSkyWallet = useCheckoutAppliedSkyWallet()
 
   const handleTabChange = useCallback(
-    (tab: string) => {
+    async (tab: string) => {
       setValue(tab)
       if (tab === 'shipToHome' && value !== 'shipToHome') {
         updateShippingMethod({
@@ -73,8 +80,19 @@ export const Delivery = memo(({ opened, refs, cartTotalData, toggle }: DeliveryP
       } else if (isGuest) {
         setOnContinuePayment(false)
       }
+      let addressId = selectedShippingAddress?.AddressID
+      if (tab === 'shipToHome') {
+        const altAddressesAndCreditCards =
+          await queryClient.ensureQueryData<ShippingAddressesAndCreditCards | null>({
+            queryFn: getShippingAddressesAndCreditCards,
+            queryKey: [ADDRESS_CREDIT_CARDS_QUERY_KEY, cart?.id, session?.user?.isGuest],
+          })
+        addressId =
+          altAddressesAndCreditCards?.addresses?.find(address => address?.Primary)?.AddressID ||
+          altAddressesAndCreditCards?.addresses?.[0]?.AddressID
+      }
       applyCheckoutSelections({
-        addressId: selectedShippingAddress?.AddressID,
+        addressId,
         paymentToken: activeCreditCard?.PaymentToken,
       })
     },
@@ -102,6 +120,19 @@ export const Delivery = memo(({ opened, refs, cartTotalData, toggle }: DeliveryP
       setAppliedSkyWallet(0)
     }
   }, [isPickUp, selectedPickUpOption, cartTotalData?.orderTotal])
+
+  useEffect(() => {
+    if (
+      shippingMethods?.length !== undefined &&
+      value === 'shipToHome' &&
+      cartTotalData &&
+      cartTotalData?.shipping?.methodId !== shippingMethods?.[0]?.shippingMethodId
+    ) {
+      updateShippingMethod({
+        shippingMethodId: shippingMethods?.[0]?.shippingMethodId,
+      })
+    }
+  }, [shippingMethods?.length, cartTotalData])
 
   return (
     <>

@@ -285,7 +285,7 @@ export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
           data={shippingMethods}
           disabled={disabled}
           label="Shipping method"
-          value={cartTotalData?.shipping.methodId.toString()}
+          value={cartTotalData?.shipping?.methodId?.toString()}
           onChange={handleShippingMethodChange}
         />
       </Collapse>
