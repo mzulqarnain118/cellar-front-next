@@ -119,24 +119,21 @@ export const useAddressesAndCreditCardsQuery = () => {
   return useQuery({
     // enabled: !session?.user?.isGuest,
     onSuccess: data => {
-      if (activeShippingAddress === undefined || activeCreditCard === undefined) {
-        const address: Address | undefined =
-          activeShippingAddress || data?.primaryAddress || data?.addresses[0]
-        const creditCard: CreditCard | undefined =
-          activeCreditCard || data?.primaryCreditCard || data?.creditCards[0]
-
-        if (address !== undefined) {
-          // if (session?.user?.isGuest) {
-          //   applyCheckoutSelections({
-          //     addressId: address.AddressID,
-          //   })
-          // } else {
-          applyCheckoutSelections({
-            addressId: address.AddressID,
-            paymentToken: creditCard?.PaymentToken,
-          })
-          // }
-        }
+      const address: Address | undefined =
+        activeShippingAddress || data?.primaryAddress || data?.addresses[0]
+      const creditCard: CreditCard | undefined =
+        activeCreditCard || data?.primaryCreditCard || data?.creditCards[0]
+      if (address !== undefined) {
+        // if (session?.user?.isGuest) {
+        //   applyCheckoutSelections({
+        //     addressId: address.AddressID,
+        //   })
+        // } else {
+        applyCheckoutSelections({
+          addressId: address.AddressID,
+          paymentToken: creditCard?.PaymentToken,
+        })
+        // }
       }
     },
     queryFn: getShippingAddressesAndCreditCards,
