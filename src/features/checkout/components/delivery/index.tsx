@@ -1,7 +1,8 @@
-import { MutableRefObject, memo, useCallback, useEffect, useState } from 'react'
+import { memo, MutableRefObject, useCallback, useEffect, useState } from 'react'
 
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline'
 import { Collapse, Skeleton, Tabs } from '@mantine/core'
+import { useQueryClient } from '@tanstack/react-query'
 import { clsx } from 'clsx'
 import { useSession } from 'next-auth/react'
 
@@ -9,16 +10,22 @@ import { Typography } from '@/core/components/typogrpahy'
 import { GROUND_SHIPPING_SHIPPING_METHOD_ID } from '@/lib/constants/shipping-method'
 import { useApplyCheckoutSelectionsMutation } from '@/lib/mutations/checkout/apply-selections'
 import { useUpdateShippingMethodMutation } from '@/lib/mutations/checkout/update-shipping-method'
+import { useCartQuery } from '@/lib/queries/cart'
+import {
+  ADDRESS_CREDIT_CARDS_QUERY_KEY,
+  getShippingAddressesAndCreditCards,
+  ShippingAddressesAndCreditCards,
+} from '@/lib/queries/checkout/addreses-and-credit-cards'
 import { useShippingMethodsQuery } from '@/lib/queries/checkout/shipping-methods'
 import {
   useCheckoutActions,
   useCheckoutActiveCreditCard,
-  useCheckoutActiveShippingAddress,
   useCheckoutAppliedSkyWallet,
   useCheckoutIsPickUp,
   useCheckoutSelectedPickUpOption,
   useCheckoutSelectedShippingAddress,
 } from '@/lib/stores/checkout'
+
 
 import { GuestAddress } from './guest-address'
 import { PickUp } from './pick-up'
@@ -43,24 +50,25 @@ interface DeliveryProps {
 
 export const Delivery = memo(({ opened, refs, cartTotalData, toggle }: DeliveryProps) => {
   const isPickUp = useCheckoutIsPickUp()
+  const queryClient = useQueryClient()
+  const { data: cart } = useCartQuery()
   const { data: shippingMethods } = useShippingMethodsQuery()
   const { setOnContinuePayment } = useCheckoutActions()
   const { setIsPickUp, setSelectedPickUpOption, setSelectedPickUpAddress, setAppliedSkyWallet } =
     useCheckoutActions()
-  const { mutate: updateShippingMethod } = useUpdateShippingMethodMutation()
+  const { mutate: updateShippingMethod,isLoading} = useUpdateShippingMethodMutation()
   const [value, setValue] = useState<string | null>(isPickUp ? 'pickUp' : 'shipToHome')
   const { data: session } = useSession()
   const isGuest = session?.user?.isGuest
-  const { mutate: applyCheckoutSelections, isLoading: isApplyingSelections } =
+  const { mutate: applyCheckoutSelections } =
     useApplyCheckoutSelectionsMutation()
   const activeCreditCard = useCheckoutActiveCreditCard()
   const selectedShippingAddress = useCheckoutSelectedShippingAddress()
-  const activeShippingAddress = useCheckoutActiveShippingAddress()
   const selectedPickUpOption = useCheckoutSelectedPickUpOption()
   const appliedSkyWallet = useCheckoutAppliedSkyWallet()
 
   const handleTabChange = useCallback(
-    (tab: string) => {
+    async (tab: string) => {
       setValue(tab)
       if (tab === 'shipToHome' && value !== 'shipToHome') {
         updateShippingMethod({
@@ -73,8 +81,19 @@ export const Delivery = memo(({ opened, refs, cartTotalData, toggle }: DeliveryP
       } else if (isGuest) {
         setOnContinuePayment(false)
       }
+      let addressId = selectedShippingAddress?.AddressID
+      if (tab === 'shipToHome') {
+        const altAddressesAndCreditCards =
+          await queryClient.ensureQueryData<ShippingAddressesAndCreditCards | null>({
+            queryFn: getShippingAddressesAndCreditCards,
+            queryKey: [ADDRESS_CREDIT_CARDS_QUERY_KEY, cart?.id, session?.user?.isGuest],
+          })
+        addressId =
+          altAddressesAndCreditCards?.addresses?.find(address => address?.Primary)?.AddressID ||
+          altAddressesAndCreditCards?.addresses?.[0]?.AddressID
+      }
       applyCheckoutSelections({
-        addressId: selectedShippingAddress?.AddressID,
+        addressId,
         paymentToken: activeCreditCard?.PaymentToken,
       })
     },
@@ -102,6 +121,19 @@ export const Delivery = memo(({ opened, refs, cartTotalData, toggle }: DeliveryP
       setAppliedSkyWallet(0)
     }
   }, [isPickUp, selectedPickUpOption, cartTotalData?.orderTotal])
+
+  useEffect(() => {
+    if (
+      shippingMethods?.length !== undefined &&
+      value === 'shipToHome' &&
+      cartTotalData &&
+      cartTotalData?.shipping?.methodId !== shippingMethods?.[0]?.shippingMethodId && !isLoading
+    ) {
+      updateShippingMethod({
+        shippingMethodId: shippingMethods?.[0]?.shippingMethodId,
+      })
+    }
+  }, [shippingMethods?.length, cartTotalData , isLoading])
 
   return (
     <>
