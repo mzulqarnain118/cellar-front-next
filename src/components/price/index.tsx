@@ -25,7 +25,7 @@ const findPrices = (num1: number, num2: number) => {
   return result
 }
 
-export const Price = ({ className, onSalePrice, price, subtext = true }: PriceProps) => {
+export const Price = ({ className, onSalePrice, price, subtext = true, product }: PriceProps) => {
   let prices
 
   if (onSalePrice) {
@@ -33,6 +33,7 @@ export const Price = ({ className, onSalePrice, price, subtext = true }: PricePr
   }
 
   const onSale = !!onSalePrice
+  const isGiftCard = product?.isGiftCard
 
   return (
     <div className="flex items-center gap-1">
@@ -41,8 +42,8 @@ export const Price = ({ className, onSalePrice, price, subtext = true }: PricePr
         {new Intl.NumberFormat('en-US', {
           maximumFractionDigits: 2,
           minimumFractionDigits: 2,
-        }).format(onSale ? prices?.onSalePrice : price)}
-        {onSale && onSalePrice !== price ? (
+        }).format(onSale ? (isGiftCard ? price : prices?.onSalePrice) : price)}
+        {onSale && onSalePrice !== price && !isGiftCard ? (
           <sup className="ml-1 font-medium text-neutral-500">
             <del>
               $
