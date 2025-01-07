@@ -55,7 +55,7 @@ export const Delivery = memo(({ opened, refs, cartTotalData, toggle }: DeliveryP
   const { setOnContinuePayment } = useCheckoutActions()
   const { setIsPickUp, setSelectedPickUpOption, setSelectedPickUpAddress, setAppliedSkyWallet } =
     useCheckoutActions()
-  const { mutate: updateShippingMethod, isLoading } = useUpdateShippingMethodMutation()
+  const { mutate: updateShippingMethod } = useUpdateShippingMethodMutation()
   const [value, setValue] = useState<string | null>(isPickUp ? 'pickUp' : 'shipToHome')
   const { data: session } = useSession()
   const isGuest = session?.user?.isGuest
@@ -125,14 +125,13 @@ export const Delivery = memo(({ opened, refs, cartTotalData, toggle }: DeliveryP
       shippingMethods?.length !== undefined &&
       value === 'shipToHome' &&
       cartTotalData &&
-      cartTotalData?.shipping?.methodId !== shippingMethods?.[0]?.shippingMethodId &&
-      !isLoading
+      cartTotalData?.shipping?.methodId !== shippingMethods?.[0]?.shippingMethodId
     ) {
       updateShippingMethod({
         shippingMethodId: shippingMethods?.[0]?.shippingMethodId,
       })
     }
-  }, [shippingMethods?.length, cartTotalData, isLoading])
+  }, [shippingMethods?.length, cartTotalData])
 
   return (
     <>
