@@ -47,7 +47,7 @@ export const applyCheckoutSelections = async ({
 }: ApplyCheckoutSelectionsOptions) => {
   try {
     localStorage.setItem('loading', 'true')
-    const response = await api('v2/checkout/ApplyCheckoutSelections', {
+    const response = await api('v2/checkout/ApplyCheckoutSelectionsWeb', {
       json: {
         addressId,
         billingOption: '2',
