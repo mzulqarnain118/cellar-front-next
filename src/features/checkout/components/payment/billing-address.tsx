@@ -1,16 +1,24 @@
+import { useEffect, useState } from 'react'
+
 import { Checkbox, Collapse } from '@mantine/core'
 import { useFormContext } from 'react-hook-form'
 
 import { StateDropdown } from '@/components/state-dropdown'
 import { Input } from '@/core/components/input'
+import { useShippingMethodsQuery } from '@/lib/queries/checkout/shipping-methods'
+import { useCheckoutIsPickUp } from '@/lib/stores/checkout'
 
 import { CreditCardFormSchema } from './credit-card-form'
 
 interface BillingAddressProps {
   noCheckbox?: boolean
+  shippingMethods?: number
 }
 
-export const BillingAddress = ({ noCheckbox = false }: BillingAddressProps) => {
+export const BillingAddress = ({ noCheckbox = false, shippingMethods }: BillingAddressProps) => {
+  const [sameAsShipping, setSameAsShipping] = useState(true)
+  const isPickUp = useCheckoutIsPickUp()
+  const { data: shippingMethodsData } = useShippingMethodsQuery()
   const {
     control,
     formState: { errors },
@@ -18,13 +26,20 @@ export const BillingAddress = ({ noCheckbox = false }: BillingAddressProps) => {
     resetField,
     watch,
   } = useFormContext<CreditCardFormSchema>()
-  const sameAsShipping = watch('sameAsShipping')
 
+  useEffect(() => {
+    setSameAsShipping(!watch('sameAsShipping'))
+  }, [watch('sameAsShipping')])
   return (
     <>
       {noCheckbox ? undefined : (
         <Checkbox
           color="dark"
+          disabled={
+            shippingMethods
+              ? !shippingMethods
+              : shippingMethodsData === undefined || shippingMethodsData?.length === 0
+          }
           error={errors.sameAsShipping?.message}
           label="Billing address same as shipping address"
           {...register('sameAsShipping', {
@@ -42,10 +57,10 @@ export const BillingAddress = ({ noCheckbox = false }: BillingAddressProps) => {
         />
       )}
 
-      <Collapse in={!sameAsShipping}>
+      <Collapse in={isPickUp ? true : sameAsShipping}>
         <div className="auto-grid-rows grid grid-cols-2 items-start gap-x-8">
           <Input
-            className="col-span-2 sm:col-span-1 [&>div:first-child]:!pt-1"
+            className="col-span-2 [&>div:first-child]:!pt-1"
             error={errors.company?.message}
             id="company"
             instructionLabel="optional"

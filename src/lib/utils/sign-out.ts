@@ -25,7 +25,7 @@ export const signOut = async (queryClient?: QueryClient, router: NextRouter, red
   resetCuratedCart()
 
   if (queryClient !== undefined) {
-    await queryClient.invalidateQueries(CART_QUERY_KEY)
     localStorage.removeItem('cart')
+    await queryClient.invalidateQueries(CART_QUERY_KEY)
   }
 }

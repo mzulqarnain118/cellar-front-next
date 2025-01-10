@@ -108,7 +108,6 @@ export const useRemoveFromCartMutation = () => {
     },
     onSuccess: async (response, data) => {
       if (response.Success) {
-        console.log('cart')
         const newItems = getNewCartItems(
           response.data?.cart.OrderLines || response.Data.Cart.Data.OrderLines,
           cart?.items || [],

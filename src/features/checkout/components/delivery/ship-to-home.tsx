@@ -37,7 +37,7 @@ const AddressForm = dynamic(() => import('./address-form').then(({ AddressForm }
   ssr: false,
 })
 
-const dropdownClassNames = { input: 'h-10', item: 'text-14', label: 'text-14' }
+export const dropdownClassNames = { input: 'h-10', item: 'text-14', label: 'text-14' }
 
 const plusIcon = <PlusIcon className="h-4 w-4" />
 
@@ -60,8 +60,9 @@ export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
   const { data: shippingMethodsData } = useShippingMethodsQuery()
   const { mutate: updateShippingMethod, isLoading: isUpdatingShippingMethod } =
     useUpdateShippingMethodMutation()
-  const [addressFormOpen, { close: closeAddressForm, toggle: toggleAddressForm }] =
+  const [addressFormOpen, { close: closeAddressForm, toggle: toggleAddressForm, open }] =
     useDisclosure(false)
+  const [actionBtns, { toggle: toggleActionBtns, close: closeActionBtns }] = useDisclosure(false)
   const { setAddressForm } = useCheckoutStore()
 
   const { setIsAddingAddress, setRemovedCartItems, setSelectedShippingAddress } =
@@ -76,6 +77,7 @@ export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
         const correspondingAddress = data.addresses.find(
           address => address.AddressID.toString() === addressId.toLowerCase()
         )
+
         if (correspondingAddress !== undefined) {
           applyCheckoutSelections({
             addressId: correspondingAddress?.AddressID,
@@ -85,7 +87,7 @@ export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
         }
       }
     },
-    [activeCreditCard?.PaymentToken, applyCheckoutSelections, data]
+    [activeCreditCard?.PaymentToken, applyCheckoutSelections, data?.addresses]
   )
 
   const handleShippingMethodChange: SelectProps['onChange'] = useCallback(
@@ -119,7 +121,9 @@ export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
   )
   useEffect(() => {
     if (data?.addresses?.length === 0) {
-      toggleAddressForm()
+      open()
+    } else {
+      closeAddressForm()
     }
   }, [data])
 
@@ -201,9 +205,9 @@ export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
           },
           onConfirm: () => {
             setRemovedProductsModalBtnDisabled(true)
-            handleAddressChange(
-              (data?.primaryAddress?.AddressID || data?.addresses[0].AddressID || 0).toString()
-            )
+            // handleAddressChange(
+            //   (data?.primaryAddress?.AddressID || data?.addresses[0].AddressID || 0).toString()
+            // )
             setRemovedCartItems([])
             modals.closeAll()
             setRemovedProductsModalBtnDisabled(false)
@@ -242,6 +246,7 @@ export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
       updateShippingMethod({ shippingMethodId: shippingMethods?.[0]?.data?.shippingMethodId })
     }
   }, [cartTotalData])
+
   return (
     <div className="space-y-4">
       <Collapse in={!addressFormOpen && shippingAddresses.length !== 0}>
@@ -249,26 +254,27 @@ export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
           classNames={dropdownClassNames}
           data={shippingAddresses}
           label="Shipping address"
-          value={
-            activeShippingAddress?.AddressID?.toString() ||
-            shippingAddresses?.find(address => address?.data?.Primary)?.data?.AddressID?.toString()
-          }
+          value={activeShippingAddress?.AddressID?.toString()}
           onChange={handleAddressChange}
         />
       </Collapse>
 
-      <Collapse in={!addressFormOpen && !isLoadingAddressesAndCreditCards}>
-        <Button color="ghost" size="sm" startIcon={plusIcon} onClick={toggleAddressForm}>
-          Add address
-        </Button>
-      </Collapse>
-
-      <Collapse in={addressFormOpen}>
-        <AddressForm ref={refs.shippingAddressRef} onCreateAddress={closeAddressForm} />
-      </Collapse>
+      <AddressForm
+        ref={refs.shippingAddressRef}
+        paymentRef={refs.promoCodeRef}
+        cartTotalData={cartTotalData}
+        addressFormOpen={addressFormOpen}
+        onCreateAddress={value => {
+          closeAddressForm()
+        }}
+        actionBtns={actionBtns}
+        toggleActionBtns={toggleActionBtns}
+        closeActionBtns={closeActionBtns}
+      />
 
       <Collapse
-        in={!addressFormOpen && !(shippingMethods === undefined || shippingMethods.length === 0)}
+        in={!actionBtns && !(shippingMethods === undefined || shippingMethods.length === 0)}
+        className="!mt-1"
       >
         <Select
           ref={refs.shippingMethodRef}
@@ -276,9 +282,22 @@ export const ShipToHome = memo(({ refs, cartTotalData }: ShipToHomeProps) => {
           data={shippingMethods}
           disabled={disabled}
           label="Shipping method"
-          value={cartTotalData?.shipping.methodId.toString()}
+          value={cartTotalData?.shipping?.methodId?.toString()}
           onChange={handleShippingMethodChange}
         />
+      </Collapse>
+
+      <Collapse in={!actionBtns && !isLoadingAddressesAndCreditCards}>
+        <Button
+          dark
+          className="h-[40px]"
+          color="ghost"
+          size="sm"
+          startIcon={plusIcon}
+          onClick={toggleAddressForm}
+        >
+          Add address
+        </Button>
       </Collapse>
     </div>
   )

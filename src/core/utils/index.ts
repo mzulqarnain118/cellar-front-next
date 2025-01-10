@@ -63,7 +63,7 @@ export const camelizePascalKeys = <T>(
 }
 
 export const formatCurrency = (amount?: number) =>
-  `$${new Intl.NumberFormat('en-US', { maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(
+  `${new Intl.NumberFormat('en-US', { maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(
     amount || 0
   )}`
 

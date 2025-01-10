@@ -1,4 +1,4 @@
-import { Children, ReactNode, createElement, useMemo } from 'react'
+import { Children, ReactNode, createElement, useEffect, useMemo } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { DeepPartial, FieldValues, UseFormProps, useForm } from 'react-hook-form'
@@ -9,7 +9,7 @@ interface FormProps<TFieldValues extends FieldValues = FieldValues> {
   className?: string
   defaultValues: DeepPartial<TFieldValues>
   id?: string
-  onSubmit: (data: TFieldValues) => void
+  onSubmit: (data: TFieldValues, reset?: () => void) => void
   schema: ZodType<TFieldValues>
 }
 
@@ -31,10 +31,18 @@ export const Form = <TFieldValues extends FieldValues = FieldValues>({
     [defaultValues, schema]
   )
   const methods = useForm<TFieldValues>(props)
-  const { handleSubmit } = methods
+  const { handleSubmit, reset, setValue } = methods
 
+  const handleFormSubmit = (data: TFieldValues) => {
+    onSubmit(data, reset) // Pass reset function to onSubmit
+  }
+  useEffect(() => {
+    Object.keys(defaultValues).forEach(key => {
+      setValue(key as keyof TFieldValues, defaultValues[key])
+    })
+  }, [defaultValues])
   return (
-    <form className={className} id={id} onSubmit={handleSubmit(onSubmit)}>
+    <form className={className} id={id} onSubmit={handleSubmit(handleFormSubmit)}>
       {Children.map(children, child =>
         !!child &&
         typeof child !== 'string' &&

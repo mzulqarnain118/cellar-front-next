@@ -17,4 +17,5 @@ export interface Address {
   Street1: string
   Street2: string
   Street3?: string
+  setAsdefault?: boolean
 }

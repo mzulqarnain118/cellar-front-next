@@ -1,10 +1,11 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 
 import { api } from '@/lib/api'
-import { useCartQuery } from '@/lib/queries/cart'
+import { HOME_PAGE_PATH } from '@/lib/paths'
+import { CART_QUERY_KEY, useCartQuery } from '@/lib/queries/cart'
 import {
   ADDRESS_CREDIT_CARDS_QUERY_KEY,
   ShippingAddressesAndCreditCards,
@@ -22,6 +23,8 @@ import {
 import { useShippingStateStore } from '@/lib/stores/shipping-state'
 import { Cart, Failure } from '@/lib/types'
 import { Address } from '@/lib/types/address'
+import { toastInfo } from '@/lib/utils/notifications'
+import { useRouter } from 'next/router'
 
 export const APPLY_CHECKOUT_SELECTIONS_MUTATION_KEY = ['apply-checkout-selections']
 
@@ -31,6 +34,7 @@ export interface ApplyCheckoutSelectionsOptions {
   cartId?: string
   paymentToken?: string
   userDisplayId?: string
+  setError?: (error: string) => void
 }
 
 type Response = { Success: true } | Failure
@@ -39,9 +43,11 @@ export const applyCheckoutSelections = async ({
   cartId,
   paymentToken,
   userDisplayId,
+  setError,
 }: ApplyCheckoutSelectionsOptions) => {
   try {
-    const response = await api('v2/checkout/ApplyCheckoutSelections', {
+    localStorage.setItem('loading', 'true')
+    const response = await api('v2/checkout/ApplyCheckoutSelectionsWeb', {
       json: {
         addressId,
         billingOption: '2',
@@ -56,16 +62,18 @@ export const applyCheckoutSelections = async ({
     }).json<Response>()
 
     if (!response.Success) {
-      throw new Error(response.Error.Message)
+      setError?.(response.Error.Message)
     }
-
+    localStorage.removeItem('loading')
     return response
   } catch {
+    localStorage.removeItem('loading')
     throw new Error('There was an error applying the checkout selections.')
   }
 }
 
 export const useApplyCheckoutSelectionsMutation = () => {
+  const [error, setError] = useState('')
   const queryClient = useQueryClient()
   const { data: cart } = useCartQuery()
   const { data: session } = useSession()
@@ -75,25 +83,43 @@ export const useApplyCheckoutSelectionsMutation = () => {
   const guestAddress = useCheckoutGuestAddress()
   const { setRemovedCartItems } = useCheckoutActions()
   const { setActiveCreditCard, setActiveShippingAddress } = useCheckoutActions()
-
+  const router = useRouter()
   const address = useMemo(
     () => (session?.user?.isGuest ? guestAddress : activeShippingAddress),
     [activeShippingAddress, guestAddress, session?.user?.isGuest]
   )
   const { data: states } = useStatesQuery()
+  const cartProvinceId = useMemo(() => shippingState?.provinceID, [shippingState?.provinceID])
 
+  useEffect(() => {
+    if (error) {
+      localStorage.removeItem('cart')
+      queryClient.invalidateQueries([...CART_QUERY_KEY, cartProvinceId])
+      toastInfo({
+        message: error,
+      })
+      router.push(HOME_PAGE_PATH)
+    }
+  }, [error])
+
+  console.log()
   return useMutation<Response, Error, Partial<ApplyCheckoutSelectionsOptions>>({
-    mutationFn: data =>
-      applyCheckoutSelections({
+    mutationFn: async data => {
+      if (localStorage.getItem('loading')) {
+        return Promise.reject(new Error('Request aborted because query is already running'))
+      }
+      return applyCheckoutSelections({
         ...data,
         addressId: data.addressId || address?.AddressID || 0,
         cartId: data.cartId || cart?.id,
         paymentToken: data.paymentToken || activeCreditCard?.PaymentToken,
         userDisplayId: data.userDisplayId || session?.user?.displayId,
-      }),
+        setError,
+      })
+    },
     mutationKey: [...APPLY_CHECKOUT_SELECTIONS_MUTATION_KEY],
     onSuccess: async (response, data) => {
-      if (response.Success) {
+      if (response?.Success) {
         const addressesAndCreditCards =
           await queryClient.ensureQueryData<ShippingAddressesAndCreditCards | null>({
             queryFn: getShippingAddressesAndCreditCards,
@@ -195,6 +221,7 @@ export const useApplyCheckoutSelectionsMutation = () => {
         }
       }
 
+      console.log('InvalidateQueries GET_SUBTOTAL_QUERY query')
       await queryClient.invalidateQueries([GET_SUBTOTAL_QUERY, cart?.id])
       await queryClient.invalidateQueries({
         queryKey: [SHIPPING_METHODS_QUERY_KEY],

@@ -61,6 +61,7 @@ interface CheckoutStoreState {
   isEditingGiftMessage: boolean
   isGift: boolean
   isPickUp: boolean
+  onContinuePayment: boolean
   promoCode: Code
   removedCartItems: Cart['items']
   removedCartItemsCheckout: Cart['items']
@@ -91,6 +92,7 @@ interface CheckoutStoreActions {
   setIsEditingGiftMessage: Setter<boolean>
   setIsGift: Setter<boolean>
   setIsPickUp: Setter<boolean>
+  setOnContinuePayment: Setter<boolean>
   setPromoCode: Setter<Code>
   setRemovedCartItems: Setter<Cart['items'] | undefined>
   setRemovedCartItemsCheckout: Setter<Cart['items'] | undefined>
@@ -130,6 +132,7 @@ const initialValues: CheckoutStoreState = {
   isEditingGiftMessage: false,
   isGift: false,
   isPickUp: false,
+  onContinuePayment: true,
   promoCode: {
     codes: [],
     isAdded: false,
@@ -226,6 +229,10 @@ export const useCheckoutStore = create<CheckoutStore>()(
           typeof update === 'function'
             ? set(({ isGift }) => ({ isGift: update(isGift) }))
             : set(() => ({ isGift: update })),
+        setOnContinuePayment: update =>
+          typeof update === 'function'
+            ? set(({ onContinuePayment }) => ({ onContinuePayment: update(onContinuePayment) }))
+            : set(() => ({ onContinuePayment: update })),
         setIsPickUp: update =>
           typeof update === 'function'
             ? set(({ isPickUp }) => ({ isPickUp: update(isPickUp) }))
@@ -433,6 +440,10 @@ export const useCheckoutIsPickUp = () => {
   return useCheckoutStore(selector)
 }
 
+export const useCheckoutOnContinuePayment = () => {
+  const selector = useCallback(({ onContinuePayment }: CheckoutStore) => onContinuePayment, [])
+  return useCheckoutStore(selector)
+}
 export const useCheckoutPromoCode = () => {
   const selector = useCallback(({ promoCode }: CheckoutStore) => promoCode, [])
   return useCheckoutStore(selector)

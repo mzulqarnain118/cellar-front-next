@@ -4,6 +4,7 @@ import { ChevronLeftIcon } from '@heroicons/react/24/outline'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Checkbox } from '@mantine/core'
 import { modals } from '@mantine/modals'
+import { clsx } from 'clsx'
 import { useSession } from 'next-auth/react'
 import { Focused } from 'react-credit-cards-2'
 import { FormProvider, SubmitHandler, UseFormProps, useForm } from 'react-hook-form'
@@ -103,6 +104,8 @@ export const CreditCardForm = ({ onCancel, onCreate, cartTotalData }: CreditCard
     handleSubmit,
     register,
     setError,
+    setValue,
+    reset,
   } = methods
   const [state, setState] = useState<CreditCardFormState>({
     cvc: '',
@@ -136,6 +139,23 @@ export const CreditCardForm = ({ onCancel, onCreate, cartTotalData }: CreditCard
     }
   }, [onCreate])
 
+  const clearValues = () => {
+    reset()
+    setState({
+      cvc: '',
+      expiry: '',
+      focus: '',
+      issuer: '',
+      name: '',
+      number: '',
+    })
+  }
+  const displayCancelBtn = () => {
+    if (isGuest && !activeCreditCard) {
+      return false
+    }
+    return true
+  }
   const onSubmit: SubmitHandler<CreditCardFormSchema> = useCallback(
     async data => {
       try {
@@ -224,6 +244,7 @@ export const CreditCardForm = ({ onCancel, onCreate, cartTotalData }: CreditCard
                   })
                   if (onCreate !== undefined) {
                     onCreate()
+                    clearValues()
                   }
                 },
                 onConfirm: () => {
@@ -244,6 +265,7 @@ export const CreditCardForm = ({ onCancel, onCreate, cartTotalData }: CreditCard
                   })
                   if (onCreate !== undefined) {
                     onCreate()
+                    clearValues()
                   }
                 },
               },
@@ -269,7 +291,6 @@ export const CreditCardForm = ({ onCancel, onCreate, cartTotalData }: CreditCard
       validateAddress,
     ]
   )
-
   return (
     <div className="lg:space-y-4">
       {session?.user?.isGuest && activeCreditCard !== undefined ? (
@@ -318,8 +339,11 @@ export const CreditCardForm = ({ onCancel, onCreate, cartTotalData }: CreditCard
                 minLength: 3,
                 onChange: handleInputChange,
               })}
+              inputClassName={clsx(state?.cvc?.length < 3 && '!border-error focus:!border-error')}
               pattern="^\d{3,4}$"
+              style={state?.cvc?.length < 3 ? { borderWidth: '3px' } : {}}
               type="tel"
+              value={state?.cvc}
               onFocus={handleInputFocus}
             />
             {/* <Input
@@ -334,18 +358,27 @@ export const CreditCardForm = ({ onCancel, onCreate, cartTotalData }: CreditCard
           </div>
           <input name="issuer" type="hidden" value={state.issuer} />
           <div className="mt-4 space-y-4">
-            <BillingAddress noCheckbox={isGuest || isPickUp} />
+            <BillingAddress noCheckbox={isPickUp} />
             {session?.user?.isGuest ? undefined : (
               <Checkbox color="dark" label="Set as default" {...register('default')} />
             )}
           </div>
           <div className="mt-4 flex justify-end lg:justify-start gap-2">
             <Button dark type="submit">
-              Save credit card
+              {session?.user?.isGuest ? 'Add credit card' : 'Save credit card'}
             </Button>
-            <Button color="ghost" type="button" onClick={onCancel}>
-              Cancel
-            </Button>
+            {displayCancelBtn() && (
+              <Button
+                color="ghost"
+                type="button"
+                onClick={() => {
+                  onCancel?.()
+                  clearValues()
+                }}
+              >
+                Cancel
+              </Button>
+            )}
           </div>
           {checkoutErrors?.payment?.form ? (
             <Typography className="mt-4 block text-error">
