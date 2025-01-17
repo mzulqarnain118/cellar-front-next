@@ -292,7 +292,7 @@ export const PayForOrder = ({
               disabled={
                 !refs?.termsRef?.current?.checked ||
                 paymentRefs.cvvRef.current?.value.length <= 2 ||
-                isAddressFormOpened ||
+                (isPickUp ? false : isAddressFormOpened) ||
                 isPaymentFormOpened ||
                 shippingAddresses?.creditCards?.length === 0 ||
                 (isPickUp ? !selectedPickUpAddress : shippingAddresses?.addresses?.length === 0)
