@@ -35,7 +35,14 @@ const getAllProducts = async () => {
 
 const generateSitemap = async () => {
   // Static pages for your website
-  const staticPages = ['/order-faqs', '/contact', '/returns-and-refunds', '/blog']
+  const staticPages = [
+    '/order-faqs',
+    '/contact',
+    '/returns-and-refunds',
+    '/scoutcircle',
+    '/circle-choice',
+    '/circle-exclusives',
+  ]
 
   // Fetch dynamic product URLs
   const dynamicProductUrls = await getAllProducts()

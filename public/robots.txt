@@ -1,4 +1,4 @@
 User-agent: *
-Allow: /$
-Disallow: /
+Disallow: /blog
+Disallow: /promotions-
 Sitemap: https://scoutandcellar.com/sitemap.xml
