@@ -132,44 +132,44 @@ export const getSubtotal: QueryFunction<OrderPrice> = async ({ queryKey }) => {
 
 export const GET_SUBTOTAL_QUERY = 'get-subtotal'
 
-export const useGetSubtotalQuery = (cartId?: string) => {
-  // Log file name
-  // console.log(new Error().stack?.split("\n")[2].trim());
-  const { data: cart } = useCartQuery()
-  const { data: session } = useSession()
-  const activeShippingAddress = useCheckoutActiveShippingAddress()
-  const guestAddress = useCheckoutGuestAddress()
-  const activeCreditCard = useCheckoutActiveCreditCard()
-  const address = useMemo(
-    () => (session?.user?.isGuest ? guestAddress : activeShippingAddress),
-    [activeShippingAddress, guestAddress, session?.user?.isGuest]
-  )
-  const { mutate: applyCheckoutSelections } = useApplyCheckoutSelectionsMutation()
-  // const applySelectionsAndRefetch = () => {
-  //   applyCheckoutSelections({
-  //     addressId: address?.AddressID,
-  //     cartId: cart?.id,
-  //     paymentToken: activeCreditCard?.PaymentToken,
-  //   })
-  // }
-
-  // useEffect(() => {
-  //   if (cart?.id) {
-  //     applySelectionsAndRefetch()
-  //   }
-  // }, [])
-
-  return useQuery({
-    onSuccess: data => {
-      if (data.orderTotal === 0 && !data.default) {
-        applyCheckoutSelections({
-          addressId: address?.AddressID,
-          cartId: cartId || cart?.id,
-          paymentToken: activeCreditCard?.PaymentToken,
-        })
-      }
-    },
-    queryFn: getSubtotal,
-    queryKey: [GET_SUBTOTAL_QUERY, cartId || cart?.id],
-  })
-}
+export const useGetSubtotalQuery = () => {
+    // Log file name
+    // console.log(new Error().stack?.split("\n")[2].trim());
+    const { data: cart } = useCartQuery()
+    const { data: session } = useSession()
+    const activeShippingAddress = useCheckoutActiveShippingAddress()
+    const guestAddress = useCheckoutGuestAddress()
+    const activeCreditCard = useCheckoutActiveCreditCard()
+    const address = useMemo(
+      () => (session?.user?.isGuest ? guestAddress : activeShippingAddress),
+      [activeShippingAddress, guestAddress, session?.user?.isGuest]
+    )
+    const { mutate: applyCheckoutSelections } = useApplyCheckoutSelectionsMutation()
+    // const applySelectionsAndRefetch = () => {
+    //   applyCheckoutSelections({
+    //     addressId: address?.AddressID,
+    //     cartId: cart?.id,
+    //     paymentToken: activeCreditCard?.PaymentToken,
+    //   })
+    // }
+  
+    // useEffect(() => {
+    //   if (cart?.id) {
+    //     applySelectionsAndRefetch()
+    //   }
+    // }, [])
+  
+    return useQuery({
+      onSuccess: data => {
+        if (data.orderTotal === 0 && !data.default) {
+          applyCheckoutSelections({
+            addressId: address?.AddressID,
+            cartId: cart?.id,
+            paymentToken: activeCreditCard?.PaymentToken,
+          })
+        }
+      },
+      queryFn: getSubtotal,
+      queryKey: [GET_SUBTOTAL_QUERY, cart?.id],
+    })
+  }

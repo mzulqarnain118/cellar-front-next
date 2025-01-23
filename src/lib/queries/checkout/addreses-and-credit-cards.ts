@@ -117,7 +117,7 @@ export const useAddressesAndCreditCardsQuery = () => {
   const { mutate: applyCheckoutSelections } = useApplyCheckoutSelectionsMutation()
 
   return useQuery({
-    // enabled: !session?.user?.isGuest,
+    enabled: !!cart?.id,
     onSuccess: data => {
       const address: Address | undefined =
         activeShippingAddress || data?.primaryAddress || data?.addresses[0]
