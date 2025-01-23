@@ -285,7 +285,7 @@ const CheckoutPage: NextPage = () => {
       return false
     }
 
-    if (isAddingAddress) {
+    if (!isPickUp && isAddingAddress) {
       openDelivery()
       await wait(300)
 
