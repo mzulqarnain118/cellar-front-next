@@ -186,7 +186,9 @@ export const useApplyCheckoutSelectionsMutation = () => {
             const availability = product.availability?.filter(
               state =>
                 state.provinceId ===
-                  (correspondingAddress?.ProvinceID || shippingState.provinceID) && state.enabled
+                  (correspondingAddress?.ProvinceID
+                    ? parseInt(correspondingAddress?.ProvinceID)
+                    : shippingState.provinceID) && state.enabled
             )
             if (availability === undefined || availability.length === 0) {
               removedCartItems.push(product)
