@@ -20,7 +20,6 @@ import { Input } from '@/core/components/input'
 import { Typography } from '@/core/components/typogrpahy'
 import { GROUND_SHIPPING_SHIPPING_METHOD_ID } from '@/lib/constants/shipping-method'
 import { useCreateAddressMutation } from '@/lib/mutations/address/create'
-import { useApplyCheckoutSelectionsMutation } from '@/lib/mutations/checkout/apply-selections'
 import { useUpdateShippingMethodMutation } from '@/lib/mutations/checkout/update-shipping-method'
 import { useAddressesAndCreditCardsQuery } from '@/lib/queries/checkout/addreses-and-credit-cards'
 import { useShippingMethodsQuery } from '@/lib/queries/checkout/shipping-methods'
@@ -79,7 +78,6 @@ export const HoldAtLocationLocator = forwardRef<HTMLInputElement>((_props, ref) 
   const { data: addressesAndCreditCards } = useAddressesAndCreditCardsQuery()
   const { mutate: createAddress } = useCreateAddressMutation()
   const { mutate: updateShippingMethod } = useUpdateShippingMethodMutation()
-  const { mutate: applyCheckoutSelections } = useApplyCheckoutSelectionsMutation()
   const { data: states } = useStatesQuery()
   const { data: shippingMethods } = useShippingMethodsQuery()
   const { data: session } = useSession()
@@ -187,15 +185,17 @@ export const HoldAtLocationLocator = forwardRef<HTMLInputElement>((_props, ref) 
         Street3: addressData.id.startsWith('U') ? JSON.stringify(street3).substring(0, 50) : '',
       }
 
-      // primaryShippingMethod?.shippingMethodId
-      updateShippingMethod({
-        shippingMethodId: GROUND_SHIPPING_SHIPPING_METHOD_ID,
-      })
-      applyCheckoutSelections({
-        address: address,
-        addressId: address.AddressID,
-        paymentToken: activeCreditCard?.PaymentToken,
-      })
+ 
+      createAddress({
+        address, callback: response => {
+            if (response.Success) {
+                // primaryShippingMethod?.shippingMethodId
+                updateShippingMethod({
+                    shippingMethodId: GROUND_SHIPPING_SHIPPING_METHOD_ID,
+                })
+            }
+        },
+    })
 
       // if (!addressesAndCreditCards?.addresses.length) {
       //   console.log('hal createAddress', addressesAndCreditCards)
@@ -214,7 +214,6 @@ export const HoldAtLocationLocator = forwardRef<HTMLInputElement>((_props, ref) 
     [
       activeCreditCard?.PaymentToken,
       addressesAndCreditCards?.addresses.length,
-      applyCheckoutSelections,
       createAddress,
       dialogOpen,
       primaryShippingMethod?.shippingMethodId,
