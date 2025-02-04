@@ -4,6 +4,7 @@ import { api } from '@/lib/api'
 import { useCartQuery } from '@/lib/queries/cart'
 import { GET_SUBTOTAL_QUERY } from '@/lib/queries/checkout/get-subtotal'
 import { Failure } from '@/lib/types'
+import { SKY_WALLET_QUERY_KEY } from '@/features/checkout/queries/sky-wallet'
 
 interface Cart {
   OrderID: number
@@ -101,12 +102,12 @@ export const useUpdateShippingMethodMutation = () => {
   const queryClient = useQueryClient()
   const { data: cart } = useCartQuery()
 
-
   return useMutation<UpdateShippingMethodResponse, Error, UpdateShippingMethodOptions>({
     mutationFn: data => updateShippingMethod({ ...data, cartId: cart?.id }),
     mutationKey: ['update-shipping-method'],
     onSettled: () => {
       queryClient.invalidateQueries([GET_SUBTOTAL_QUERY, cart?.id])
+      queryClient.invalidateQueries([SKY_WALLET_QUERY_KEY, cart?.id || ''])
     },
   })
 }
