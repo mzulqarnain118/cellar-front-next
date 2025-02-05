@@ -1,12 +1,12 @@
 import {
-  ChangeEvent,
-  forwardRef,
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
+    ChangeEvent,
+    forwardRef,
+    useCallback,
+    useEffect,
+    useLayoutEffect,
+    useMemo,
+    useRef,
+    useState,
 } from 'react'
 
 import SingleWidgetManager from '@hubbox/single-widget-manager'
@@ -25,10 +25,10 @@ import { useAddressesAndCreditCardsQuery } from '@/lib/queries/checkout/addreses
 import { useShippingMethodsQuery } from '@/lib/queries/checkout/shipping-methods'
 import { useStatesQuery } from '@/lib/queries/state'
 import {
-  useCheckoutActions,
-  useCheckoutActiveCreditCard,
-  useCheckoutSelectedPickUpAddress,
-  useCheckoutSelectedPickUpOption,
+    useCheckoutActions,
+    useCheckoutActiveCreditCard,
+    useCheckoutSelectedPickUpAddress,
+    useCheckoutSelectedPickUpOption,
 } from '@/lib/stores/checkout'
 import { Address } from '@/lib/types/address'
 
@@ -86,6 +86,7 @@ export const HoldAtLocationLocator = forwardRef<HTMLInputElement>((_props, ref) 
   const { setSelectedPickUpAddress, setActiveShippingAddress } = useCheckoutActions()
   const selectedPickUpOption = useCheckoutSelectedPickUpOption()
   const widgetContainer = useRef<HTMLDivElement>(null)
+  //config hubbox
   const singleWidgetManager = new SingleWidgetManager({
     deferRender: true,
     iframeUrl:
