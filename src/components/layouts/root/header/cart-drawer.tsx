@@ -107,7 +107,7 @@ export const CartDrawer = () => {
   const percentage = Math.round((freeShippingSubtotal / 150) * 100)
   const difference = 150 - freeShippingSubtotal
 
-  const cartHeaderTextTwo =
+  const cartHeaderTextTwo = process.env.NEXT_PUBLIC_HIDE_DRAWER_CALC === 'true' ? null :
     freeShippingSubtotal >= 100 && freeShippingSubtotal < 150 ? (
       <>
         <Typography as="h6" className="!font-semibold">
@@ -124,8 +124,7 @@ export const CartDrawer = () => {
           <Typography className="font-bold">FREE SHIPPING</Typography>
         </Typography>
       </div>
-    ) : (
-      <>
+    ) : <>
         <Typography as="h6" className="!font-semibold">
           UNLOCK your shipping discounts!
         </Typography>
@@ -136,7 +135,6 @@ export const CartDrawer = () => {
           {formatCurrency(difference)} more for FREE SHIPPING!
         </Typography>
       </>
-    )
 
   const isCheckoutButtonDisabled = useMemo(
     () => cartItems === undefined || isMutatingCart || isSharingCart,
@@ -183,7 +181,7 @@ export const CartDrawer = () => {
           >
             <div className="w-full space-y-1 px-4 text-center pt-4">
               {cartHeaderTextTwo}
-              <div className="mb-4 !mt-0 h-5 w-full rounded-full bg-neutral">
+              <div className={`mb-4 !mt-0 h-5 w-full rounded-full bg-neutral ${process.env.NEXT_PUBLIC_HIDE_DRAWER_CALC === 'true' ? 'hidden' : 'block'}`}>
                 <div
                   className="h-5 rounded-full bg-primary transition-[width]"
                   style={{ maxWidth: '100%', width: `${percentage}%` }}
