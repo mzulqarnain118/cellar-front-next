@@ -148,3 +148,18 @@
 .mantine-86bg6z {
   z-index: 100000;
 }
+.slider {
+    margin: 0 20px;
+    overflow: "hidden";
+    padding: 2rem 0;
+}
+
+.slider img {
+    width: 300px;
+    border-radius: 10px;
+}
+
+.react-multi-carousel-list {
+    padding: 0rem 0 2rem 0;
+    justify-content: center;
+}
