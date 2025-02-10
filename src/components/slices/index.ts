@@ -1,3 +1,4 @@
+import { BrandGallery } from './brand-gallery'
 import { BrandProfile } from './brand-profile'
 import { CodeSnippet } from './code-snippet'
 import { ColumnedContent } from './columned-content'
@@ -12,6 +13,7 @@ import { WineQuiz } from './wine-quiz'
 export const components = {
   agreement: CodeSnippet,
   brand_profile: BrandProfile,
+  brand_gallery: BrandGallery,
   columned_content: ColumnedContent,
   dynamic_product_showcase: DynamicProductShowcase,
   hero_banner: HeroBanner,
