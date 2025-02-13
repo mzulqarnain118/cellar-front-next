@@ -2,7 +2,6 @@ import { useMemo } from 'react'
 
 import { useRouter } from 'next/router'
 
-import { notifications } from '@mantine/notifications'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 
@@ -20,6 +19,7 @@ import { useProcessStore } from '../../stores/process'
 import { Cart, CartItem, DEFAULT_CART_STATE } from '../../types'
 import { getNewCartItems } from '../helpers'
 import { CartModificationResponse } from '../types'
+import { notifications } from '@mantine/notifications'
 
 export interface AddToCartOptions {
   cartId?: string
@@ -62,13 +62,14 @@ export const useAddToCartMutation = () => {
   const { shippingState } = useShippingStateStore()
   const { setIsMutatingCart } = useProcessStore()
   const { data: session } = useSession()
+  const cartProvinceId = useMemo(() => shippingState?.provinceID, [shippingState?.provinceID])
   const queryKey = useMemo(
     () => [...CART_QUERY_KEY, shippingState.provinceID || session?.user?.shippingState.provinceID],
     [session?.user?.shippingState.provinceID, shippingState]
   )
   const router = useRouter()
 
-  return useMutation<
+  const mutation = useMutation<
     CartModificationResponse,
     Error,
     Pick<AddToCartOptions, 'fetchSubtotal' | 'item' | 'quantity' | 'wineQuiz'>,
@@ -85,22 +86,28 @@ export const useAddToCartMutation = () => {
         wineQuiz: options.wineQuiz || false,
       }),
     mutationKey: ['addToCart'],
-    onError: (error, _product, context) => {
+    onError: async (error, product, context) => {
       queryClient.setQueryData(queryKey, context?.previousCart)
       setCartStorage(context?.previousCart)
-      toast('error', error.message)
+      if (error.message === 'Your shopping cart cannot be found.') {
+        localStorage.removeItem('cart')
+        await queryClient.invalidateQueries([...CART_QUERY_KEY, cartProvinceId])
+        setTimeout(() => {
+          // **Retry adding the product again after cart reset**
+          mutation.mutate(product)
+        }, 2000)
+      } else {
+        toast('error', error.message)
+      }
     },
     onMutate: async product => {
       setIsMutatingCart(true)
-
       // Cancel any outgoing fetches.
       await queryClient.cancelQueries({
         queryKey,
       })
-
       // Snapshot the previous value.
       const previousCart = queryClient.getQueryData<Cart | undefined>(queryKey)
-
       // Optimistically update to the new value.
       queryClient.setQueryData(queryKey, () => {
         const existingItem = previousCart?.items.find(item => item.sku === product.item.sku)
@@ -134,6 +141,7 @@ export const useAddToCartMutation = () => {
         )
         const itemAdded = newItems.find(item => item.sku === data.item.sku)
         let modifiedItems: CartItem[] = newItems
+
         if (itemAdded) {
           modifiedItems = replaceItemByUniqueId<CartItem>(
             newItems,
@@ -144,6 +152,7 @@ export const useAddToCartMutation = () => {
             }
           )
         }
+
         let newCartData: Cart = {
           discounts: [],
           id: cart?.id || '',
@@ -166,6 +175,7 @@ export const useAddToCartMutation = () => {
             ...prices,
           }
         }
+
         queryClient.setQueryData(queryKey, newCartData)
         setCartStorage(newCartData)
 
@@ -179,4 +189,6 @@ export const useAddToCartMutation = () => {
       }
     },
   })
+
+  return mutation
 }
