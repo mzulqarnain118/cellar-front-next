@@ -1,34 +1,51 @@
 // components/NotFoundPage.js
 
-import { useLayoutEffect, useState } from 'react'
 import { Content } from '@prismicio/client'
-import { PrismicRichText, SliceZone } from '@prismicio/react'
-import { GetStaticProps } from 'next'
+import { SliceZone } from '@prismicio/react'
+import { useLayoutEffect } from 'react'
 
 import { components } from '@/components/slices'
 import { createClient } from '@/prismic-io'
-import { Link } from 'react-daisyui'
 import { usePathname } from 'next/navigation'
 import { useRouter } from 'next/router'
 
+import { HOME_PAGE_PATH } from '@/lib/paths'
 import { LoadingOverlay } from '@mantine/core'
+import { asText } from '@prismicio/client'
+import { GetStaticPropsContext } from 'next'
+import { NextSeo } from 'next-seo'
 
-export const getStaticProps: GetStaticProps = async ({ previewData }) => {
-    const client = createClient({ previewData })
-    const data = await client.getSingle<Content.NotFoundMessageDocument>(
-        'not_found_message'
+export const getStaticProps = async ({ previewData }: GetStaticPropsContext) => {
+  const client = createClient({ previewData })
+  let page
+  try {
+    page = await client.getByUID<Content.RichContentPageDocument>(
+      'rich_content_page',
+      'page-not-found'
     )
-
+  } catch (error) {
     return {
-        props: {
-            data,
-        },
+      redirect: {
+        destination: `${HOME_PAGE_PATH}`,
+        permanent: false,
+      },
     }
+  }
+  return {
+    props: {
+      page: page || null,
+    },
+  }
 }
-const NotFoundPage = ({ data: { data } }: { data: Content.NotFoundMessageDocument }) => {
+
+const NotFoundPage = ({
+  page,
+}: {
+  page?: Content.RichContentPageDocument | Content.ContentPageDocument | null
+}) => {
   const router = useRouter()
   const pathname = usePathname()
-  const [show404, setShow404] = useState(false)
+  // const [show404, setShow404] = useState(false)
   const eventShare = pathname.split('/')
   const u = router.asPath?.split('?u=')
   const consultantPathRegex = /^\/consultants\/.*$/
@@ -42,34 +59,26 @@ const NotFoundPage = ({ data: { data } }: { data: Content.NotFoundMessageDocumen
       router.push(`/?u=${u[1]}&eventshare=${eventShare?.[2]}`)
     }
 
-    setTimeout(() => {
-      setShow404(true)
-    }, 7500)
+    // setTimeout(() => {
+    //   setShow404(true)
+    // }, 7500)
   }, [])
 
   // Check if the route is '/restricted-route' to show a specific message
   if (!(['/my-account/profile', '/my-account/orders', 'u='].includes(pathname) || isEeventShare)) {
     return (
       <div className="container mx-auto">
-        {show404 ? <main>
-                <div className="container mx-auto mb-10">
-                    <div className="w-50 mx-auto pt-5 text-center">
-                        <PrismicRichText fallback={<></>} field={data?.subtitle} />
-                    </div>
-                    <SliceZone components={components} slices={data?.body} />
-                    {/* <h1>{data?.footer_text?.[0]}</h1> */}
-                    <div className="pb-5 text-center">
-                        <PrismicRichText fallback={<></>} field={data?.footer_text} />
-                        <Link
-                            className="mt-6 text-base font-semibold leading-normal !text-neutral-900 justify-center underline"
-                            href={data?.button_link?.[0]?.text || ''}
-                        >
-                            {data?.button_text?.[0]?.text}
-                        </Link>
-
-                    </div>
-                </div>
-            </main > : <LoadingOverlay visible={true} />}
+        {page?.type === 'rich_content_page' && (
+          <>
+            <NextSeo
+              description={asText(page?.data.meta_description) || undefined}
+              title={asText(page?.data.meta_title) || undefined}
+            />
+            <main>
+              <SliceZone components={components} slices={page?.data.body} />
+            </main>
+          </>
+        )}
       </div>
     )
   }
