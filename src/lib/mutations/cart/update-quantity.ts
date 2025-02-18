@@ -17,11 +17,13 @@ import { useShippingStateStore } from '@/lib/stores/shipping-state'
 import { Cart, CartItem, DEFAULT_CART_STATE } from '@/lib/types'
 import toast, { toastInfo } from '@/lib/utils/notifications'
 
+import { notifications } from '@mantine/notifications'
 import { getNewCartItems } from '../helpers'
 import { CartModificationResponse } from '../types'
+import { useAddToCartMutation } from './add-to-cart'
 
 export interface UpdateQuantityOptions {
-  cartId: string
+  cartId?: string
   fetchSubtotal?: boolean
   item: Omit<CartItem, 'orderLineId' | 'orderId' | 'quantity'>
   orderId: number
@@ -36,26 +38,21 @@ export const updateQuantity = async ({
   orderLineId,
   quantity,
 }: UpdateQuantityOptions) => {
-  try {
-    const response = await api('v2/checkout/UpdateOrderLineQuantity', {
-      json: {
-        CartID: cartId,
-        OrderID: orderId,
-        OrderLineID: orderLineId,
-        Quantity: quantity,
-      },
-      method: 'put',
-    }).json<CartModificationResponse>()
-
-    if (response.Success) {
-      return response
-    } else {
-        toast('error', response?.Error?.Message)
-        return null
-   }
-  } catch {
+  const response = await api('v2/checkout/UpdateOrderLineQuantity', {
+    json: {
+      CartID: cartId,
+      OrderID: orderId,
+      OrderLineID: orderLineId,
+      Quantity: quantity,
+    },
+    method: 'put',
+  }).json<CartModificationResponse>()
+  if (response.Success) {
+    return response
+  } else {
+    notifications.clean()
     throw new Error(
-      'There was an issue updating the quantity of the product. Please try again later.'
+      response?.Error?.Traceback?.Notifications?.[0]?.Message ?? response?.Error?.Message
     )
   }
 }
@@ -68,30 +65,50 @@ export const useUpdateQuantityMutation = () => {
   const queryClient = useQueryClient()
   const { setIsMutatingCart } = useProcessStore()
   const { data: session } = useSession()
+  const { mutate: addToCart } = useAddToCartMutation()
   const { shippingState } = useShippingStateStore()
+  const cartProvinceId = useMemo(() => shippingState?.provinceID, [shippingState?.provinceID])
   const queryKey = useMemo(
     () => [...CART_QUERY_KEY, shippingState.provinceID || session?.user?.shippingState.provinceID],
     [session?.user?.shippingState.provinceID, shippingState]
   )
   const router = useRouter()
 
-  return useMutation<
+  const mutation = useMutation<
     CartModificationResponse,
     Error,
-    Omit<UpdateQuantityOptions, 'cartId' | 'originalCartItems'>,
+    Omit<UpdateQuantityOptions, 'originalCartItems'>,
     { previousCart?: Cart }
   >({
     mutationFn: options =>
       updateQuantity({
-        ...options,
-        cartId: cart?.id || '',
+          ...options,
+        cartId: options?.cartId || cart?.id || '',
         fetchSubtotal: options.fetchSubtotal || false,
         originalCartItems: cart?.items || [],
       }),
     mutationKey: ['updateQuantity'],
-    onError: (_err, _product, context) => {
+    onError: async (_err, _product, context) => {
       queryClient.setQueryData(queryKey, context?.previousCart)
       setCartStorage(context?.previousCart)
+
+      if (_err.message === 'Your shopping cart cannot be found.') {
+        localStorage.removeItem('cart')
+        await queryClient.invalidateQueries([...CART_QUERY_KEY, cartProvinceId])
+        cart?.items?.forEach(async item => {
+          addToCart({
+            quantity: item.quantity,
+            item: { sku: item.sku } as Omit<CartItem, 'orderLineId' | 'orderId' | 'quantity'>,
+            cartId: queryClient.getQueryData<Cart | undefined>(queryKey)?.id,
+          })
+        })
+        mutation.mutate({
+          ..._product,
+          cartId: queryClient.getQueryData<Cart | undefined>(queryKey)?.id,
+        })
+      } else {
+        toast('error', _err.message)
+      }
     },
     onMutate: async product => {
       setIsMutatingCart(true)
@@ -168,4 +185,5 @@ export const useUpdateQuantityMutation = () => {
       }
     },
   })
+  return mutation
 }
