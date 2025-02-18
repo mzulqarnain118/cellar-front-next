@@ -14,12 +14,12 @@ import { useCheckoutActions, useCheckoutAppliedSkyWallet } from '@/lib/stores/ch
 import { useShippingStateStore } from '@/lib/stores/shipping-state'
 import toast, { clearAllToasts, toastInfo } from '@/lib/utils/notifications'
 
+import { notifications } from '@mantine/notifications'
 import { api } from '../../api'
 import { useProcessStore } from '../../stores/process'
 import { Cart, CartItem, DEFAULT_CART_STATE } from '../../types'
 import { getNewCartItems } from '../helpers'
 import { CartModificationResponse } from '../types'
-import { notifications } from '@mantine/notifications'
 
 export interface AddToCartOptions {
   cartId?: string
@@ -72,13 +72,13 @@ export const useAddToCartMutation = () => {
   const mutation = useMutation<
     CartModificationResponse,
     Error,
-    Pick<AddToCartOptions, 'fetchSubtotal' | 'item' | 'quantity' | 'wineQuiz'>,
+    Pick<AddToCartOptions, 'fetchSubtotal' | 'item' | 'quantity' | 'wineQuiz' | 'cartId'>,
     { previousCart?: Cart }
   >({
     mutationFn: options =>
       addToCart({
         ...options,
-        cartId: cart?.id,
+        cartId: options?.cartId || cart?.id,
         fetchSubtotal: options.fetchSubtotal || false,
         item: options.item,
         originalCartItems: cart?.items || [],
@@ -90,12 +90,22 @@ export const useAddToCartMutation = () => {
       queryClient.setQueryData(queryKey, context?.previousCart)
       setCartStorage(context?.previousCart)
       if (error.message === 'Your shopping cart cannot be found.') {
+        const existingCartitem = cart?.items
         localStorage.removeItem('cart')
         await queryClient.invalidateQueries([...CART_QUERY_KEY, cartProvinceId])
-        setTimeout(() => {
-          // **Retry adding the product again after cart reset**
-          mutation.mutate(product)
-        }, 2000)
+        existingCartitem?.forEach(async item => {
+          mutation.mutate({
+            quantity: item?.quantity,
+            item: {
+              sku: item?.sku,
+            } as Omit<CartItem, 'orderLineId' | 'orderId' | 'quantity'>,
+            cartId: queryClient.getQueryData<Cart | undefined>(queryKey)?.id,
+          })
+        })
+        mutation.mutate({
+          ...product,
+          cartId: queryClient.getQueryData<Cart | undefined>(queryKey)?.id,
+        })
       } else {
         toast('error', error.message)
       }
