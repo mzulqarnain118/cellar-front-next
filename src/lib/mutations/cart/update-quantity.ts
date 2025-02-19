@@ -82,16 +82,13 @@ export const useUpdateQuantityMutation = () => {
   >({
     mutationFn: options =>
       updateQuantity({
-          ...options,
+        ...options,
         cartId: options?.cartId || cart?.id || '',
         fetchSubtotal: options.fetchSubtotal || false,
         originalCartItems: cart?.items || [],
       }),
     mutationKey: ['updateQuantity'],
     onError: async (_err, _product, context) => {
-      queryClient.setQueryData(queryKey, context?.previousCart)
-      setCartStorage(context?.previousCart)
-
       if (_err.message === 'Your shopping cart cannot be found.') {
         localStorage.removeItem('cart')
         await queryClient.invalidateQueries([...CART_QUERY_KEY, cartProvinceId])
@@ -107,6 +104,8 @@ export const useUpdateQuantityMutation = () => {
           cartId: queryClient.getQueryData<Cart | undefined>(queryKey)?.id,
         })
       } else {
+        queryClient.setQueryData(queryKey, context?.previousCart)
+        setCartStorage(context?.previousCart)
         toast('error', _err.message)
       }
     },
@@ -145,14 +144,15 @@ export const useUpdateQuantityMutation = () => {
     },
     onSuccess: async (response, data) => {
       if (response.Success) {
+        const cartId = queryClient.getQueryData<Cart | undefined>(queryKey)?.id
         const newItems = getNewCartItems(
           response.data?.cart.OrderLines || response.Data.Cart.Data.OrderLines,
-          cart?.items || [],
+          queryClient.getQueryData<Cart | undefined>(queryKey)?.items || [],
           data.item
         )
         let newCartData: Cart = {
           discounts: [],
-          id: cart?.id || '',
+          id: cartId || '',
           items: newItems,
           orderDisplayId: response.Data?.Cart.Data.DisplayID,
           prices: {
@@ -166,7 +166,7 @@ export const useUpdateQuantityMutation = () => {
         }
 
         if (data.fetchSubtotal) {
-          const prices = await queryClient.fetchQuery<OrderPrice>([GET_SUBTOTAL_QUERY, cart?.id])
+          const prices = await queryClient.fetchQuery<OrderPrice>([GET_SUBTOTAL_QUERY, cartId])
           newCartData = {
             ...newCartData,
             ...prices,
