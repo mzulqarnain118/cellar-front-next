@@ -1,15 +1,19 @@
 import { useRouter } from 'next/router'
 
 import { notifications } from '@mantine/notifications'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 
 import { api } from '@/lib/api'
+import { useAddToCartMutation } from '@/lib/mutations/cart/add-to-cart'
 import { CHECKOUT_PAGE_PATH, SIGN_IN_PAGE_PATH } from '@/lib/paths'
-import { useCartQuery } from '@/lib/queries/cart'
+import { CART_QUERY_KEY, useCartQuery } from '@/lib/queries/cart'
 import { useCartOpen } from '@/lib/stores/process'
+import { useShippingStateStore } from '@/lib/stores/shipping-state'
+import { Cart, CartItem } from '@/lib/types'
 import { trackCheckoutBegin } from '@/lib/utils/gtm-util'
 import toast from '@/lib/utils/notifications'
+import { useMemo } from 'react'
 
 interface ValidateCartStockSuccess {
   Success: true
@@ -18,11 +22,7 @@ interface ValidateCartStockSuccess {
 interface Failure {
   Success: false
   Response: any
-  Error: {
-    Code: string
-    Message: string
-    Traceback?: Record<string, unknown>
-  }
+  Error: string
 }
 
 type ValidateCartStockResponse = ValidateCartStockSuccess | Failure
@@ -54,7 +54,14 @@ export const useValidateCartStockMutation = (
   returnData = false
 ): ValidateCartStockMutationOptions => {
   const { data: session } = useSession()
-  const { cartOpen, toggleCartOpen } = useCartOpen()
+  const { mutateAsync } = useAddToCartMutation()
+  const { toggleCartOpen } = useCartOpen()
+  const { shippingState } = useShippingStateStore()
+  const queryKey = useMemo(
+    () => [...CART_QUERY_KEY, shippingState.provinceID || session?.user?.shippingState.provinceID],
+    [session?.user?.shippingState.provinceID, shippingState]
+  )
+  const queryClient = useQueryClient()
   const router = useRouter()
   const { data: cart } = useCartQuery()
   const subtotal =
@@ -65,13 +72,13 @@ export const useValidateCartStockMutation = (
   const { data, error, mutate, isLoading, isSuccess } = useMutation({
     mutationFn: () =>
       validateCartStock({
-        CartId: cart?.id || '',
+        CartId: queryClient.getQueryData<Cart | undefined>(queryKey)?.id || '',
       }),
     mutationKey: 'validateCartStock',
     onMutate: () => {
       toast('loading', 'Validating your cart...')
     },
-    onSuccess: data => {
+    onSuccess: async data => {
       notifications.clean()
       if (data?.Success) {
         toast('success', 'Validated cart successfully!')
@@ -99,6 +106,26 @@ export const useValidateCartStockMutation = (
 
         toast('error', message, `\n<ul>${unAvailableProducts}</ul>`)
       } else {
+        if (data?.Error === 'Order is not found or does not exist, please try again') {
+          const existingCartitem = cart?.items
+          localStorage.removeItem('cart')
+          await queryClient.invalidateQueries(queryKey)
+          if (existingCartitem?.length) {
+            await Promise.all(
+              existingCartitem.map(async item =>
+                mutateAsync({
+                  quantity: item?.quantity,
+                  item: {
+                    sku: item?.sku,
+                  } as Omit<CartItem, 'orderLineId' | 'orderId' | 'quantity'>,
+                  cartId: queryClient.getQueryData<Cart | undefined>(queryKey)?.id,
+                })
+              )
+            )
+          }
+
+          return mutate()
+        }
         toast('error', data?.Response?.[0]?.Error?.Message || fallbackErrorMessage)
       }
     },
