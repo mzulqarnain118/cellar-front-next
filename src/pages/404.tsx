@@ -68,6 +68,7 @@ const NotFoundPage = ({
   if (!(['/my-account/profile', '/my-account/orders', 'u='].includes(pathname) || isEeventShare)) {
     return (
       <div className="container mx-auto">
+        {/* show prismic 404 page */}
         {page?.type === 'rich_content_page' && (
           <>
             <NextSeo
