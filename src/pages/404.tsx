@@ -16,75 +16,75 @@ import { GetStaticPropsContext } from 'next'
 import { NextSeo } from 'next-seo'
 
 export const getStaticProps = async ({ previewData }: GetStaticPropsContext) => {
-  const client = createClient({ previewData })
-  let page
-  try {
-    page = await client.getByUID<Content.RichContentPageDocument>(
-      'rich_content_page',
-      'page-not-found'
-    )
-  } catch (error) {
-    return {
-      redirect: {
-        destination: `${HOME_PAGE_PATH}`,
-        permanent: false,
-      },
+    const client = createClient({ previewData })
+    let page
+    try {
+        page = await client.getByUID<Content.RichContentPageDocument>(
+            'rich_content_page',
+            'page-not-found'
+        )
+    } catch (error) {
+        return {
+            redirect: {
+                destination: `${HOME_PAGE_PATH}`,
+                permanent: false,
+            },
+        }
     }
-  }
-  return {
-    props: {
-      page: page || null,
-    },
-  }
+    return {
+        props: {
+            page: page || null,
+        },
+    }
 }
 
 const NotFoundPage = ({
-  page,
+    page,
 }: {
-  page?: Content.RichContentPageDocument | Content.ContentPageDocument | null
+    page?: Content.RichContentPageDocument | Content.ContentPageDocument | null
 }) => {
-  const router = useRouter()
-  const pathname = usePathname()
-  // const [show404, setShow404] = useState(false)
-  const eventShare = pathname.split('/')
-  const u = router.asPath?.split('?u=')
-  const consultantPathRegex = /^\/consultants\/.*$/
-  const isEeventShare = eventShare?.[1] === 'eventshare'
-  useLayoutEffect(() => {
-    if (['/my-account/profile', '/my-account/orders'].includes(pathname)) {
-      router.push(router.asPath)
-    } else if (consultantPathRegex.test(router.asPath)) {
-      router.push(router.asPath)
-    } else if (isEeventShare) {
-      router.push(`/?u=${u[1]}&eventshare=${eventShare?.[2]}`)
+    const router = useRouter()
+    const pathname = usePathname()
+    // const [show404, setShow404] = useState(false)
+    const eventShare = pathname.split('/')
+    const u = router.asPath?.split('?u=')
+    const consultantPathRegex = /^\/consultants\/.*$/
+    const isEeventShare = eventShare?.[1] === 'eventshare'
+    useLayoutEffect(() => {
+        if (['/my-account/profile', '/my-account/orders'].includes(pathname)) {
+            router.push(router.asPath)
+        } else if (consultantPathRegex.test(router.asPath)) {
+            router.push(router.asPath)
+        } else if (isEeventShare) {
+            router.push(`/?u=${u[1]}&eventshare=${eventShare?.[2]}`)
+        }
+
+        // setTimeout(() => {
+        //   setShow404(true)
+        // }, 7500)
+    }, [])
+
+    // Check if the route is '/restricted-route' to show a specific message.
+    if (!(['/my-account/profile', '/my-account/orders', 'u='].includes(pathname) || isEeventShare)) {
+        return (
+            <div className="container mx-auto">
+                {/* show prismic 404 page */}
+                {page?.type === 'rich_content_page' && (
+                    <>
+                        <NextSeo
+                            description={asText(page?.data.meta_description) || undefined}
+                            title={asText(page?.data.meta_title) || undefined}
+                        />
+                        <main>
+                            <SliceZone components={components} slices={page?.data.body} />
+                        </main>
+                    </>
+                )}
+            </div>
+        )
     }
-
-    // setTimeout(() => {
-    //   setShow404(true)
-    // }, 7500)
-  }, [])
-
-  // Check if the route is '/restricted-route' to show a specific message
-  if (!(['/my-account/profile', '/my-account/orders', 'u='].includes(pathname) || isEeventShare)) {
-    return (
-      <div className="container mx-auto">
-        {/* show prismic 404 page */}
-        {page?.type === 'rich_content_page' && (
-          <>
-            <NextSeo
-              description={asText(page?.data.meta_description) || undefined}
-              title={asText(page?.data.meta_title) || undefined}
-            />
-            <main>
-              <SliceZone components={components} slices={page?.data.body} />
-            </main>
-          </>
-        )}
-      </div>
-    )
-  }
-  // Default content for the not found page
-  return <LoadingOverlay visible={true} />
+    // Default content for the not found page
+    return <LoadingOverlay visible={true} />
 }
 
 export default NotFoundPage
