@@ -103,19 +103,7 @@ export const getNewCartItems = (
       }) => {
         const productSku = ProductSKU.toLowerCase()
         const correspondingItem = originalCartItems.find(item => item.sku === productSku)
-
-        console.log(
-          '🚀 ~ correspondingItem:',
-
-          items
-        )
-
-        console.log(
-          '🚀 ~ originalCartItems:',
-
-          originalCartItems
-        )
-        console.log(cartItem, 'cartitem')
+        
         const fallbackValues = {
           catalogId: 0,
           displayCategories: [],
@@ -128,15 +116,6 @@ export const getNewCartItems = (
           quantityAvailable: 0,
           subscribable: false,
         }
-
-        console.log(correspondingItem, 'correspondingItem')
-        console.log(ProductDisplayName)
-        console.log(
-          correspondingItem?.displayName == ProductDisplayName
-            ? correspondingItem?.displayName
-            : ProductDisplayName || cartItem.displayName,
-          'namee'
-        )
         const item = {
           availability: cartItem?.availability || [],
           cartUrl: ProductCartUrl,

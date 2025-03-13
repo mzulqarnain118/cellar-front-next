@@ -89,8 +89,6 @@ export const PayForOrder = ({
   const { isAddressFormOpened, isPaymentFormOpened } = useCheckoutStore()
   const { data: shippingAddresses } = useAddressesAndCreditCardsQuery()
 
-  console.log('🚀 ~ shippingAddresses:', shippingAddresses)
-
   const { setErrors } = useCheckoutActions()
   const { mutate: payForOrder, isLoading: isCheckingOut } =
     useCheckoutPayForOrderMutation(cartTotalData)
