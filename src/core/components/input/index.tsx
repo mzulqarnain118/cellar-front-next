@@ -65,7 +65,7 @@ export const Input = forwardRef<HTMLInputElement, Props>(
         <div
           className={clsx(
             'flex w-full items-center justify-center gap-2 px-0 pb-1',
-            noSpacing ? 'pt-0' : 'pt-4'
+            noSpacing ? 'pt-0 !pb-0' : 'pt-4'
           )}
         >
           <div className="form-control w-full">
