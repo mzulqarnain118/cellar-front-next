@@ -117,7 +117,7 @@ export const ImageAndText = ({ slice }: ImageAndTextProps) => {
                   href={getHref(linkText)}
                   style={linkStyle}
                   title={asText(slice.primary.cta_text)}
-                  onClick={() => console.log('Link Text', linkText)}
+                  onClick={() => console.info('Link Text', linkText)}
                 >
                   {asText(slice.primary.cta_text)}
                 </Link>

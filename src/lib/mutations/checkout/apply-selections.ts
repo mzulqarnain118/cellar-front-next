@@ -102,7 +102,7 @@ export const useApplyCheckoutSelectionsMutation = () => {
     }
   }, [error])
 
-  console.log()
+
   return useMutation<Response, Error, Partial<ApplyCheckoutSelectionsOptions>>({
     mutationFn: async data => {
       if (localStorage.getItem('loading')) {
@@ -223,7 +223,7 @@ export const useApplyCheckoutSelectionsMutation = () => {
         }
       }
 
-      console.log('InvalidateQueries GET_SUBTOTAL_QUERY query')
+
       await queryClient.invalidateQueries([GET_SUBTOTAL_QUERY, cart?.id])
       await queryClient.invalidateQueries({
         queryKey: [SHIPPING_METHODS_QUERY_KEY],

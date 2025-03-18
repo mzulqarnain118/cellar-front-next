@@ -152,18 +152,7 @@ export const ContactForm = () => {
     reason,
     subject,
   }) => {
-    console.log(
-      attachment,
-      body,
-      consultantName,
-      email,
-      fullName,
-      phoneNumber,
-      orderNumber,
-      reason,
-      subject
-    )
-    console.log('🚀 ~ ContactForm ~ attachment:', attachment)
+  
 
     const formData = new FormData()
     if (attachment !== undefined) {
@@ -195,14 +184,8 @@ export const ContactForm = () => {
       subject,
     }
 
-    console.log('formData: ', formData)
-
     try {
-      for (const key of formData?.entries()) {
-        console.log(key[0] + ', ' + key[1])
-      }
       const response = await api('v2/ContactUs', { body: formData, method: 'post' }).json()
-      console.log('🚀 ~ ContactForm ~ response:', response)
 
       if (response?.Success) {
         toastSuccess({ message: response?.Data || 'Email sent successfully' })

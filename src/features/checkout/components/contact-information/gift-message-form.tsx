@@ -94,8 +94,6 @@ export const GiftMessageForm = ({ refs }: GiftMessageFormProps) => {
 
   const onSubmit: SubmitHandler<GiftMessageFormSchema> = useCallback(
     ({ giftMessage: message, recipientEmail }) => {
-      console.log('isEditingGiftMessage: ', isEditingGiftMessage)
-      console.log('isAddingGiftMessage: ', isAddingGiftMessage)
 
       if (isAddingGiftMessage) {
         // if (giftMessage.message !== message || giftMessage.recipientEmail !== recipientEmail) {

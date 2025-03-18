@@ -260,8 +260,6 @@ export const Profile = (props: TabsPanelProps) => {
       phoneNumber,
       year,
     }) => {
-      console.log(mobile)
-      console.log(phoneNumber, 'number')
       const dateOfBirth = new Date(parseInt(year), parseInt(month) - 1, parseInt(day)).toISOString()
 
       updateCustomer({
