@@ -62,7 +62,7 @@ const generateSitemap = async () => {
   const filePath = path.join(__dirname, '../public/sitemap.xml')
   fs.writeFileSync(filePath, sitemapXml)
 
-  console.log('Sitemap generated at /public/sitemap.xml')
+  console.info('Sitemap generated at /public/sitemap.xml')
 }
 
 // Function to generate the XML structure for the sitemap

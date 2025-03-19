@@ -131,7 +131,7 @@ const updateTokenIfNecessary: BeforeRequestHook = async (request, _options) => {
         }
       }
     } catch (error) {
-      console.log('🚀 ~ constupdateTokenIfNecessary:BeforeRequestHook= ~ error:', error)
+      console.error('🚀 ~ constupdateTokenIfNecessary:BeforeRequestHook= ~ error:', error)
     }
   } else {
     // await signOut()

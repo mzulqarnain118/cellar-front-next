@@ -229,14 +229,14 @@ export const HoldAtLocationLocator = forwardRef<HTMLInputElement>((_props, ref) 
   singleWidgetManager.events.subscribe(
     singleWidgetManager.topics.subscribe.COLLECT_POINT_SELECTED,
     payload => {
-      console.log('COLLECT_POINT_SELECTED', payload)
+      console.info('COLLECT_POINT_SELECTED', payload)
     }
   )
 
   singleWidgetManager.events.subscribe(
     singleWidgetManager.topics.subscribe.SEARCH_REQUEST,
     payload => {
-      console.log('COLLECT_POINT_SELECTED', payload)
+      console.info('COLLECT_POINT_SELECTED', payload)
     }
   )
 

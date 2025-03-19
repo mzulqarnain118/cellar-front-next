@@ -166,7 +166,7 @@ export const useTastingQuery = ({ cartId, consultantDisplayId, eventshare, u }) 
   const queryKey = ['tasting', consultantDisplayId, u, cartId]
   return useQuery({
     queryFn: setTasting({ cartId, consultantDisplayId, eventshare, u }),
-    onError: err => console.log(err),
+    onError: err => console.error(err),
     onSuccess: response => {
       setTastingStorage(response)
     },

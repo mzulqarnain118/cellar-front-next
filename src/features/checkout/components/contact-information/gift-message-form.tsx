@@ -14,12 +14,12 @@ import { Typography } from '@/core/components/typogrpahy'
 import { useGiftMessageStorage } from '@/lib/hooks/use-gift-message-storage'
 import { useCartQuery } from '@/lib/queries/cart'
 import {
-  useCheckoutActions,
-  useCheckoutErrors,
-  useCheckoutGiftMessageCheckbox,
-  useCheckoutIsAddingGiftMessage,
-  useCheckoutIsEditingGiftMessage,
-  useCheckoutIsGift,
+    useCheckoutActions,
+    useCheckoutErrors,
+    useCheckoutGiftMessageCheckbox,
+    useCheckoutIsAddingGiftMessage,
+    useCheckoutIsEditingGiftMessage,
+    useCheckoutIsGift,
 } from '@/lib/stores/checkout'
 
 import { useAddGiftMessageMutation } from '../../mutations/add-gift-message'
@@ -94,9 +94,6 @@ export const GiftMessageForm = ({ refs }: GiftMessageFormProps) => {
 
   const onSubmit: SubmitHandler<GiftMessageFormSchema> = useCallback(
     ({ giftMessage: message, recipientEmail }) => {
-      console.log('isEditingGiftMessage: ', isEditingGiftMessage)
-      console.log('isAddingGiftMessage: ', isAddingGiftMessage)
-
       if (isAddingGiftMessage) {
         // if (giftMessage.message !== message || giftMessage.recipientEmail !== recipientEmail) {
         //   addGiftMessage({ message, recipientEmail })
