@@ -155,6 +155,12 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
                         src="//js.hs-scripts.com/4801108.js"
                         type="text/javascript"
                       />
+                         <Script
+                        async
+                        defer
+                        src="https://cdn.userway.org/widget.js" data-account="CsK55iAciy"
+                        type="text/javascript"
+                        />
                       <Script id="handleTastryAddToCart">{`
                         window.handleTastryAddToCart = (sku) => {
                           if (typeof sku === 'string') {
