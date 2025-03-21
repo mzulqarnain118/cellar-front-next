@@ -1,0 +1,8 @@
+.userway_buttons_wrapper {
+    position: fixed !important;
+    top: 3.5rem !important;
+    left: 3rem !important;
+    right: auto !important;
+    z-index: 9999 !important;
+    background: transparent !important;
+}
