@@ -162,3 +162,18 @@
     padding: 0rem 0 2rem 0;
     justify-content: center;
 }
+
+.userway_buttons_wrapper {
+    position: fixed !important;
+    top: 3.5rem !important;
+    left: 3rem !important;
+    right: auto !important;
+    z-index: 9999 !important;
+    background: transparent !important;
+}
+
+@media (max-width: 1000px) {
+    .userway_buttons_wrapper {
+        top: 1rem !important;    
+    }
+  }
