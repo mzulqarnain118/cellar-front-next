@@ -36,7 +36,6 @@ import { InternalLink } from 'prismic/internal-link'
 import { richTextComponents } from 'prismic/rich-text-components'
 import { theme } from 'theme'
 
-import '../app.css'
 import '../globals.css'
 
 const ProgressBar = dynamic(
