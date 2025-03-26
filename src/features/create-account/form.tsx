@@ -178,6 +178,7 @@ export const CreateAccountForm = () => {
   const { mutate: createAccount } = useCreateAccountMutation()
   const { mutate: validateEmail, isLoading: isValidatingEmail } = useValidateEmailMutation()
   const router = useRouter()
+  const { redirectTo = '' } = router.query
   const [isExistingCustomer, setIsExistingCustomer] = useState(false)
   const [fullName, setFullName] = useState('')
   const [isGuest, setIsGuest] = useState(false)
@@ -210,7 +211,7 @@ export const CreateAccountForm = () => {
     const payload: CreateAccountOptions = {
       callback: () => {
         // ! TODO: Create user welcome page.
-        router.push(HOME_PAGE_PATH)
+        router.push(redirectTo.toString() || HOME_PAGE_PATH)
       },
       dateOfBirth,
       email,
