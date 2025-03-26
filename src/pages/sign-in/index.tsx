@@ -92,7 +92,7 @@ const SignInPage: NextPage<PageProps> = () => {
       localStorage.setItem('createAccountConsultant', 'false')
     }
 
-    router.push(CREATE_ACCOUNT_PAGE_PATH)
+    router.push(`${CREATE_ACCOUNT_PAGE_PATH}${redirectTo ? '?redirectTo=/checkout' : ''}`)
   }, [router])
 
   const onSubmit: SubmitHandler<SignInSchema> = useCallback(
