@@ -155,6 +155,7 @@ export const ClubsEdit = ({
                 handleChange={handleQuantityChange}
                 handleMinus={handleQuantityRemove}
                 value={newQuantity}
+                displayName={subscription.ProductDisplayName}
               />
             ) : (
               <Typography>{subscription.Quantity}</Typography>
