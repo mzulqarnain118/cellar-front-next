@@ -182,6 +182,7 @@ export const CartItem = ({ product, disabled }: CartItemProps) => {
         min={MIN}
         size="sm"
         value={quantity}
+        displayName={product.displayName}
       />
     </div>
   )

@@ -149,6 +149,7 @@ export const CtaActions = ({ className }: CtaActionsProps) => {
           max={MAX}
           min={MIN}
           value={quantity}
+          displayName={product?.displayName}
         />
         {product && product?.quantityAvailable <= 0 ? (
           <Button className="text-lg" disabled={true}>
