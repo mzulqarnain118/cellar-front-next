@@ -214,6 +214,7 @@ export const ProductCard = ({
           min={MIN}
           size={isDesktop ? 'md' : 'sm'}
           value={quantity}
+          displayName={product?.displayName}
         />
       ),
     [

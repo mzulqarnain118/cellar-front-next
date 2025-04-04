@@ -151,6 +151,7 @@ export const CartProduct = ({ data }: CartProductProps) => {
               min={MIN}
               size="sm"
               value={quantity}
+              displayName={data?.displayName}
             />
           </div>
           <Price className="!text-14" price={data.price} onSalePrice={data.onSalePrice} />

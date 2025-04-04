@@ -7,6 +7,8 @@ import { clsx } from 'clsx'
 interface NumberPickerProps {
   /** Container class name. */
   containerClassName?: string
+  /** product display name */
+  displayName?: string | null
   /** Disable the number picker. Defaults to false. */
   disabled?: boolean
   /** Callback for when the add button is pressed. */
@@ -33,6 +35,7 @@ export const NumberPicker = ({
   handleChange,
   handleMinus,
   value,
+  displayName,
   max = 24,
   min = 1,
   size = 'md',
@@ -100,7 +103,7 @@ export const NumberPicker = ({
           `,
           size === 'sm' && 'h-8 w-6'
         )}
-        disabled={disabled || value === max}
+        disabled={disabled || value === max || displayName?.startsWith("VIP")}
         type="button"
         variant="light"
         onClick={handleAdd}
