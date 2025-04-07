@@ -248,7 +248,7 @@ export const ClubsEdit = ({
   const minDate = useMemo(() => new Date(), [])
 
   const frequency = useMemo(
-    () => frequencies.find(frequency => frequency.label === newFrequency),
+    () => frequencies.find(frequency => frequency.value === newFrequency),
     [frequencies, newFrequency]
   )
 
@@ -258,14 +258,14 @@ export const ClubsEdit = ({
         ? {
             ...subscription,
             AddressID: addressUsedForMembership || 0,
-            Frequency: frequency?.value || subscription?.Frequency,
+            Frequency: frequency?.label || subscription?.Frequency,
             NextProcessingDate: newNextOrderDate?.toISOString() || subscription?.NextProcessingDate,
             PaymentToken: creditCardUsedForMembership || subscription?.PaymentToken,
             Quantity: newQuantity || subscription?.Quantity,
             ShippingMethod: newShippingData.Value || subscription?.ShippingMethod,
             ShippingMethodID: newShippingData.Key || subscription?.ShippingMethodID,
             SubscriptionFrequencyID:
-              parseInt(frequency?.label || '0') || subscription?.SubscriptionFrequencyID,
+              parseInt(frequency?.value || '0') || subscription?.SubscriptionFrequencyID,
             SubscriptionID: subscriptionId,
           }
         : undefined,
@@ -454,7 +454,9 @@ export const ClubsEdit = ({
                       data={frequencies}
                       label="Frequency"
                       value={newFrequency}
-                      onChange={setNewFrequency}
+                      onChange={(value) => {
+                        setNewFrequency(value)
+                      }}
                     />
                     <Select
                       data={shippingMethods}
