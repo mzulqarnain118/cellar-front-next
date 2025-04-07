@@ -362,7 +362,7 @@ export const ClubsEdit = ({
   )
 
   const handleCancel = useCallback(() => {
-    router.push(`${MY_ACCOUNT_PAGE_PATH}/clubs/${subscriptionId}`)
+    router.push(`${MY_ACCOUNT_PAGE_PATH}/${router?.asPath?.includes("auto-sips") ? 'auto-sips' : 'clubs'}/${subscriptionId}`)
   }, [router, subscriptionId])
 
   const handleSave = useCallback(() => {

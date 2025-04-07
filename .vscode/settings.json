@@ -1,30 +1,30 @@
-{
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true,
-  "editor.codeActionsOnSave": {
-    "source.fixAll": "explicit",
-    "source.fixAll.eslint": "explicit",
-    "source.organizeImports": "explicit"
-  },
-  "editor.rulers": [100],
-  "eslint.validate": ["javascript", "typescript"],
-  "files.associations": {
-    "*.env.development": "env",
-    "*.env.production": "env",
-    "*.env.development.local": "env",
-    "*.env.production.local": "env",
-    "*.env.template": "env",
-    ".env.local": "env"
-  },
-  "files.exclude": {
-    "**/node_modules": true
-  },
-  "tailwindCSS.classAttributes": ["class", "className", "ngClass", "classNames", "inputClassName"],
-  "[env]": {
-    "editor.defaultFormatter": "IronGeek.vscode-env"
-  },
-  "[jsonc]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "typescript.tsdk": "node_modules/typescript/lib"
-}
+// {
+//   "editor.defaultFormatter": "esbenp.prettier-vscode",
+//   "editor.formatOnSave": true,
+//   "editor.codeActionsOnSave": {
+//     "source.fixAll": "explicit",
+//     "source.fixAll.eslint": "explicit",
+//     "source.organizeImports": "explicit"
+//   },
+//   "editor.rulers": [100],
+//   "eslint.validate": ["javascript", "typescript"],
+//   "files.associations": {
+//     "*.env.development": "env",
+//     "*.env.production": "env",
+//     "*.env.development.local": "env",
+//     "*.env.production.local": "env",
+//     "*.env.template": "env",
+//     ".env.local": "env"
+//   },
+//   "files.exclude": {
+//     "**/node_modules": true
+//   },
+//   "tailwindCSS.classAttributes": ["class", "className", "ngClass", "classNames", "inputClassName"],
+//   "[env]": {
+//     "editor.defaultFormatter": "IronGeek.vscode-env"
+//   },
+//   "[jsonc]": {
+//     "editor.defaultFormatter": "esbenp.prettier-vscode"
+//   },
+//   "typescript.tsdk": "node_modules/typescript/lib"
+// }
