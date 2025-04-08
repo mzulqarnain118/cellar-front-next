@@ -82,7 +82,7 @@ export const NumberPicker = ({
           size === 'sm' && '!h-8',
           size === 'md' && '!h-10'
         )}
-        disabled={disabled}
+        disabled={disabled || displayName?.startsWith("VIP")}
         inputMode="numeric"
         max={max}
         min={min}
