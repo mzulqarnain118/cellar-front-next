@@ -14,6 +14,7 @@ import { LoadingOverlay } from '@mantine/core'
 import { asText } from '@prismicio/client'
 import { GetStaticPropsContext } from 'next'
 import { NextSeo } from 'next-seo'
+import { pathToBeIgnored } from '@/lib/constants'
 
 export const getStaticProps = async ({ previewData }: GetStaticPropsContext) => {
     const client = createClient({ previewData })
@@ -65,7 +66,7 @@ const NotFoundPage = ({
     }, [])
 
     // Check if the route is '/restricted-route' to show a specific message.
-    if (!(['/my-account/profile', '/my-account/orders', 'u='].includes(pathname) || isEeventShare)) {
+    if (!(pathToBeIgnored.includes(pathname) || isEeventShare)) {
         return (
             <div className="container mx-auto">
                 {/* show prismic 404 page */}
