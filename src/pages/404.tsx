@@ -52,7 +52,7 @@ const NotFoundPage = ({
     const consultantPathRegex = /^\/consultants\/.*$/
     const isEeventShare = eventShare?.[1] === 'eventshare'
     useLayoutEffect(() => {
-        if (['/my-account/profile', '/my-account/orders'].includes(pathname)) {
+        if (pathToBeIgnored.includes(pathname)) {
             router.push(router.asPath)
         } else if (consultantPathRegex.test(router.asPath)) {
             router.push(router.asPath)
