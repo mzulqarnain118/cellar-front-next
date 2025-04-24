@@ -2,7 +2,7 @@
 
 import { Content } from '@prismicio/client'
 import { SliceZone } from '@prismicio/react'
-import { useLayoutEffect } from 'react'
+import { useLayoutEffect, useState } from 'react'
 
 import { components } from '@/components/slices'
 import { createClient } from '@/prismic-io'
@@ -46,7 +46,7 @@ const NotFoundPage = ({
 }) => {
     const router = useRouter()
     const pathname = usePathname()
-    // const [show404, setShow404] = useState(false)
+    const [show404, setShow404] = useState(false)
     const eventShare = pathname.split('/')
     const u = router.asPath?.split('?u=')
     const consultantPathRegex = /^\/consultants\/.*$/
@@ -60,9 +60,9 @@ const NotFoundPage = ({
             router.push(`/?u=${u[1]}&eventshare=${eventShare?.[2]}`)
         }
 
-        // setTimeout(() => {
-        //   setShow404(true)
-        // }, 7500)
+        setTimeout(() => {
+          setShow404(true)
+        }, 1500)
     }, [])
 
     // Check if the route is '/restricted-route' to show a specific message.
@@ -70,7 +70,7 @@ const NotFoundPage = ({
         return (
             <div className="container mx-auto">
                 {/* show prismic 404 page */}
-                {page?.type === 'rich_content_page' && (
+                {page?.type === 'rich_content_page' &&  show404 &&(
                     <>
                         <NextSeo
                             description={asText(page?.data.meta_description) || undefined}
