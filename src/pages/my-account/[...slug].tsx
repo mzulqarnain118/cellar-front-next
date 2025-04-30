@@ -1,8 +1,8 @@
 import { ElementType, useCallback } from 'react'
 
 import dynamic from 'next/dynamic'
-import Image from 'next/image'
-import Link from 'next/link'
+// import Image from 'next/image'
+// import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Script from 'next/script'
 
@@ -32,7 +32,7 @@ import { Wallet } from '@/features/customer-portal/components/wallet'
 import {
   CUSTOMER_PORTAL_BANNER_QUERY_KEY,
   getCustomerPortalBanner,
-  useCustomerPortalBanner,
+//   useCustomerPortalBanner,
 } from '@/features/customer-portal/queries/banner'
 import { useCustomerPortalIsLoading } from '@/features/store'
 import { MY_ACCOUNT_PAGE_PATH, SIGN_IN_PAGE_PATH } from '@/lib/paths'
@@ -154,7 +154,7 @@ type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
 const MyAccountPage: NextPage<PageProps> = () => {
   const isDesktop = useIsDesktop()
-  const { data: banner } = useCustomerPortalBanner()
+//   const { data: banner } = useCustomerPortalBanner()
   const { push, query } = useRouter()
   const slug = query.slug?.[0]
   const friendlyName = slugMap[slug || '']?.friendlyName
@@ -183,7 +183,7 @@ const MyAccountPage: NextPage<PageProps> = () => {
             >
               {friendlyName}
             </Typography>
-            {banner?.imageUrl ? (
+            {/* {banner?.imageUrl ? (
               <Link
                 className={`${isDesktop ? 'h-[146px]' : 'h-[88px]'} ${
                   isDesktop ? 'w-[1012px]' : 'w-[609px]'
@@ -199,7 +199,7 @@ const MyAccountPage: NextPage<PageProps> = () => {
                   width={isDesktop ? 1012 : 609}
                 />
               </Link>
-            ) : undefined}
+            ) : undefined} */}
           </div>
           <Tabs
             classNames={tabsClassNames}
