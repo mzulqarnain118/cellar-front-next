@@ -160,7 +160,7 @@ export const PickUp = ({ refs, cartTotalData }: PickUpProps) => {
 
   useEffect(() => {
     if (session?.user.isGuest) {
-        if(isLpuDisabled &&  selectedPickUpOption === 'lpu') return
+      if(isLpuDisabled &&  selectedPickUpOption === 'lpu') return
       selectedPickUpOption && pickupOptions[selectedPickUpOption]()
     } else if (!session?.user.isGuest) {
       isLpuDisabled ? pickupOptions.hal() :  pickupOptions.lpu()
