@@ -177,7 +177,7 @@ export const PickUp = ({ refs, cartTotalData }: PickUpProps) => {
         classNames={radioClassNames}
         color="brand"
         disabled={isLpuDisabled || isUpdatingShippingMethod}
-        label={isLpuDisabled ? 'Scout & Cellar, Local Pick Up in Dallas, Texas - No Longer Available effective 5/17/25' : `Scout &amp; Cellar, Local Pick Up in Dallas, Texas`}
+        label={isLpuDisabled ? 'Scout & Cellar, Local Pick Up in Dallas, Texas - No Longer Available effective 5/17/25' : `Scout & Cellar, Local Pick Up in Dallas, Texas`}
         size="sm"
         onChange={handleLpuOpen}
       />
