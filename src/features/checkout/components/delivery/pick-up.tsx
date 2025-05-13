@@ -44,9 +44,12 @@ interface PickUpProps {
   cartTotalData: any
 }
 
-const radioClassNames: RadioProps['classNames'] = { label: 'text-14' }
 
 export const PickUp = ({ refs, cartTotalData }: PickUpProps) => {
+  const isLpuDisabled= process.env.NEXT_PUBLIC_DISABLED_LOCAL_PICK_UP === "true";
+  const radioClassNames: RadioProps['classNames'] = {
+  label: `text-14 ${isLpuDisabled ? 'cursor-not-allowed' : ''}`
+    };
   const errors = useCheckoutErrors()
   const { setErrors, setSelectedPickUpOption, setActiveShippingAddress } = useCheckoutActions()
   const { mutate: updateShippingMethod, isLoading: isUpdatingShippingMethod } =
@@ -157,9 +160,10 @@ export const PickUp = ({ refs, cartTotalData }: PickUpProps) => {
 
   useEffect(() => {
     if (session?.user.isGuest) {
+        if(isLpuDisabled &&  selectedPickUpOption === 'lpu') return
       selectedPickUpOption && pickupOptions[selectedPickUpOption]()
     } else if (!session?.user.isGuest) {
-      pickupOptions.lpu()
+      isLpuDisabled ? pickupOptions.hal() :  pickupOptions.lpu()
     }
   }, [])
 
@@ -172,8 +176,8 @@ export const PickUp = ({ refs, cartTotalData }: PickUpProps) => {
         checked={lpuOpened}
         classNames={radioClassNames}
         color="brand"
-        disabled={isUpdatingShippingMethod}
-        label="Scout &amp; Cellar, Local Pick Up in Dallas, Texas"
+        disabled={isLpuDisabled || isUpdatingShippingMethod}
+        label={isLpuDisabled ? 'Scout & Cellar, Local Pick Up in Dallas, Texas - No Longer Available effective 5/17/25' : `Scout &amp; Cellar, Local Pick Up in Dallas, Texas`}
         size="sm"
         onChange={handleLpuOpen}
       />
