@@ -44,12 +44,10 @@ interface PickUpProps {
   cartTotalData: any
 }
 
-
+const radioClassNames: RadioProps['classNames'] = { label: 'text-14' }
 export const PickUp = ({ refs, cartTotalData }: PickUpProps) => {
   const isLpuDisabled= process.env.NEXT_PUBLIC_DISABLED_LOCAL_PICK_UP === "true";
-  const radioClassNames: RadioProps['classNames'] = {
-  label: `text-14 ${isLpuDisabled ? 'cursor-not-allowed' : ''}`
-    };
+
   const errors = useCheckoutErrors()
   const { setErrors, setSelectedPickUpOption, setActiveShippingAddress } = useCheckoutActions()
   const { mutate: updateShippingMethod, isLoading: isUpdatingShippingMethod } =
@@ -58,7 +56,7 @@ export const PickUp = ({ refs, cartTotalData }: PickUpProps) => {
   const [abcOpened, { close: closeAbc, toggle: toggleAbcOpened }] = useDisclosure(
     cartTotalData?.shipping.methodId === ABC_STORE_SHIPPING_METHOD_ID
   )
-  const [halOpened, { close: closeHal, toggle: toggleHalOpened }] = useDisclosure(false)
+  const [halOpened, { close: closeHal, open: openHal }] = useDisclosure(isLpuDisabled ? true : false)
   const [lpuOpened, { close: closeLpu, toggle: toggleLpuOpened }] = useDisclosure(
     cartTotalData?.shipping.methodId === LOCAL_PICK_UP_SHIPPING_METHOD_ID
   )
@@ -120,7 +118,7 @@ export const PickUp = ({ refs, cartTotalData }: PickUpProps) => {
   const handleHalOpen = useCallback(() => {
     closeAbc()
     closeLpu()
-    toggleHalOpened()
+    openHal()
     setSelectedPickUpOption('hal')
     setErrors(prev => ({ ...prev, delivery: '' }))
     //  shippingMethods?.[0]?.shippingMethodId
@@ -133,7 +131,7 @@ export const PickUp = ({ refs, cartTotalData }: PickUpProps) => {
     setErrors,
     setSelectedPickUpOption,
     shippingMethods,
-    toggleHalOpened,
+    openHal,
     updateShippingMethod,
   ])
 
@@ -217,6 +215,7 @@ export const PickUp = ({ refs, cartTotalData }: PickUpProps) => {
         size="sm"
         onChange={handleHalOpen}
       />
+      
       <Collapse in={halOpened}>
         <HoldAtLocationLocator ref={refs.halRef} />
       </Collapse>
