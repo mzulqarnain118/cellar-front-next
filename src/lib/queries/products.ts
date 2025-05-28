@@ -34,7 +34,6 @@ export const getAllProducts: QueryFunction<ProductsSchema[] | null> = async () =
     return null
   }
 }
-
 export const getProductByCartUrl: QueryFunction<ProductsSchema | null> = async ({ queryKey }) => {
   try {
     const response = await localApi(`products/${queryKey[1]}`)
