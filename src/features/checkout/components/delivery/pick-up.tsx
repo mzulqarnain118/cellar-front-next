@@ -158,12 +158,15 @@ export const PickUp = ({ refs, cartTotalData }: PickUpProps) => {
 
   useEffect(() => {
     if (session?.user.isGuest) {
-      if(isLpuDisabled &&  selectedPickUpOption === 'lpu') return
+      if(isLpuDisabled) {
+        pickupOptions.hal()
+        return
+    }
       selectedPickUpOption && pickupOptions[selectedPickUpOption]()
     } else if (!session?.user.isGuest) {
       isLpuDisabled ? pickupOptions.hal() :  pickupOptions.lpu()
     }
-  }, [])
+  }, [selectedPickUpOption])
 
   return (
     <div className="flex flex-col space-y-3">
